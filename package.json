@@ -20,6 +20,8 @@
         "react-chartjs-2": "^5.2.0",
         "react-dom": "^18.2.0",
         "react-loader-spinner": "^5.3.4",
-        "react-router-dom": "^6.6.2"
+        "react-paginate": "^8.1.4",
+        "react-router-dom": "^6.6.2",
+        "react-to-print": "^2.14.11"
     }
 }
