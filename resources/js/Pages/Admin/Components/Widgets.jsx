@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ICSNotification from "./Notification/ICSNotification";
 import PARNotification from "./Notification/PARNotification";
-import Profilesett from "./Profilesettings/Profilesett";
+import Profilesett from "./ProfileSettings/ProfileSettings";
 
 
 export default function Widgets({ className, notifData, clickTabsSide, toggleDarkMode,read }) {
