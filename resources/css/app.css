@@ -1,0 +1,176 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn-color-1 {
+        background: linear-gradient(90deg, #2374e1 0%, #0d34ff 99.99%);
+    }
+    .btn-color-2 {
+        background: linear-gradient(90deg, #0d34ff 0%, #2374e1 99.99%);
+    }
+    .btn-color-3 {
+        @apply  font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB];
+    }
+    .btn-color-4 {
+        @apply bg-primary dark:bg-lightColor-800 border border-border-iconLight dark:border-lightColor-500;
+    }
+    .btn-color-5 {
+        @apply bg-red-600 hover:bg-red-700 dark:bg-lightColor-800 dark:border-lightColor-500;
+    }
+    .rounded-profile {
+        @apply rounded-full p-2 w-10 h-10 text-white text-center items-center font-medium;
+    }
+    .default-btn {
+        @apply bg-[#F5F5F5] border border-[#BBBBBB];
+    }
+
+    /** User status */
+    .offlineUser {
+        @apply bg-[#ECECEC] text-[#6E6E6E] font-medium;
+    }
+    .activeUser {
+        @apply bg-[#E4E7FF] text-primary font-medium;
+    }
+    /** Item status */
+    .receivedItem {
+        @apply bg-[#ECECEC] text-[#6E6E6E] font-medium;
+    }
+    .inspectingItem {
+        @apply bg-[#D7FFEA] text-[#14AE5C] font-medium;
+    }
+    .repairingItem {
+        @apply bg-[#F7E4FF] text-[#C235FF] font-medium;
+    }
+    .rfrItem {
+        @apply bg-[#FFF8DE] text-[#E4B200] font-medium;
+    }
+    .returnedItem {
+        @apply bg-[#E4E7FF] text-primary font-medium;
+    }
+    .unserviceableItem {
+        @apply bg-[#FFE6EB] text-[#FF486A] font-medium;
+    }
+
+    /** Page active */
+    .activePage {
+        @apply text-primary font-semibold dark:text-white dark:border-white rounded-r-full mr-2;
+    }
+
+    .activePage {
+        background: linear-gradient(
+            270deg, 
+            #E5E7FF 0%, #E4E9F8 0.01%, rgba(255, 255, 255, 0.67) 100%, rgba(255, 255, 255, 0.67) 100%);
+        color: theme("colors.blue.800");
+    }
+    .darkActivePage {
+        background: linear-gradient(
+            270deg,
+            #2374e1 0%,
+            rgba(35, 116, 225, 0) 100%
+        );
+        color: theme("colors.lightColor-900");
+    }
+
+    .hoverPage {
+        @apply font-semibold bg-gray-50 dark:bg-neutral-700 dark:text-white transition ease-in-out rounded-r-full mr-2;
+    }
+
+    /** table style */
+    .custom-t {
+        @apply border-collapse;
+    }
+    .rounded-tableRow:first-child{
+        border-radius: 20px 0 0 20px;
+    }
+    .rounded-tableRow:last-child{
+        border-radius: 0 20px 20px 0;
+    }
+
+    /** modal style */
+    .bg-focus {
+        background: rgba(67, 67, 67, 0.58);
+    }
+
+    /** User interface styles */
+    .uiActiveTab {
+        @apply font-semibold text-blue-800 border-b-4 border-blue-800;
+    }
+    .iiCard {
+        background: linear-gradient(180deg, #65e4fd 0%, #5967f7 100%);
+    }
+    .rriCard {
+        background: linear-gradient(180deg, #cacaca 0%, #878787 100%);
+    }
+    .ball1 {
+        background: radial-gradient(
+                132.59% 126.71% at 128% 4.09%,
+                #1534ff 39.59%,
+                #65e4fd 100%
+            )
+            /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+        transform: rotate(150.71deg);
+    }
+    .ball3 {
+        background: radial-gradient(
+                103.95% 99.35% at 99.37% 15.84%,
+                #1534ff 25.33%,
+                #65e4fd 100%
+            )
+            /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+        transform: rotate(138.69deg);
+    }
+    .ball2 {
+        background: radial-gradient(
+                103.95% 99.35% at 99.37% 15.84%,
+                #1534ff 25.33%,
+                #65e4fd 100%
+            )
+            /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+        transform: rotate(55.55deg);
+    }
+
+    /** Pagination styles */
+    .paginationButtons {
+        @apply flex gap-10 justify-center items-center py-3 font-semibold w-[550px];
+    }
+    .paginationButtons a {
+        @apply w-8 h-8 flex items-center justify-center;
+    }
+    .paginationActive {
+        @apply bg-primary text-white rounded-full;
+    }
+    .nextButtons, .previousButtons, .paginationDisabled {
+        @apply hover:text-text-gray-2;
+    }
+    /** Pagination styles */
+
+    /* gradients */
+    .gradient-1 {
+        background: linear-gradient(325.34deg, #5C6CBC -51.89%, #FFFFFF 131.82%);
+    }
+
+    /** Custom scroll */
+    ::-webkit-scrollbar {
+        width: 0.8em;
+        height: 0.8em;
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+        margin-block: 0.1em;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #bcc0c4;
+        border: 2px solid;
+        border-radius: 100vw;
+        @apply border-app-bg;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: theme("colors.gray.400");
+    }
+}

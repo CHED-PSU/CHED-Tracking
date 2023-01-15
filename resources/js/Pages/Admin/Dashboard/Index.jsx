@@ -14,56 +14,56 @@ import Loader from "../../../components/Loader";
 
 
 export default function Dashboard({ className }) { 
-    const [yearData, setYearData] = useState([])
-    const annualSum = {
-        labels: yearData?.map((data) => data.year),
-        datasets: [
-            {
-                label: "Annual for this Month",
-                data: yearData?.map((data) => data.total_cost),
-                backgroundColor: [
-                    "rgba(251, 93, 145, 1)",
-                    "rgba(99, 120, 254, 1)",
-                    "rgba(30, 58, 138, 1)",
-                    "rgba(255, 123, 163, 1)",
-                    "rgba(99, 120, 255, 1)",
-                    "rgba(251, 96, 148, 1)",
-                    "rgba(255, 123, 163, 1)",
-                    "rgba(71, 93, 241, 1)",
-                    "rgba(99, 120, 255, 1)",
-                    "rgba(30, 58, 138, 1)",
-                    "rgba(250, 101, 155, 1)",
-                    "rgba(255, 123, 163, 1)",
-                ],
-                hoverOffset: 10,
-            },
-        ],
-    };
+    // const [yearData, setYearData] = useState([])
+    // const annualSum = {
+    //     labels: yearData?.map((data) => data.year),
+    //     datasets: [
+    //         {
+    //             label: "Annual for this Month",
+    //             data: yearData?.map((data) => data.total_cost),
+    //             backgroundColor: [
+    //                 "rgba(251, 93, 145, 1)",
+    //                 "rgba(99, 120, 254, 1)",
+    //                 "rgba(30, 58, 138, 1)",
+    //                 "rgba(255, 123, 163, 1)",
+    //                 "rgba(99, 120, 255, 1)",
+    //                 "rgba(251, 96, 148, 1)",
+    //                 "rgba(255, 123, 163, 1)",
+    //                 "rgba(71, 93, 241, 1)",
+    //                 "rgba(99, 120, 255, 1)",
+    //                 "rgba(30, 58, 138, 1)",
+    //                 "rgba(250, 101, 155, 1)",
+    //                 "rgba(255, 123, 163, 1)",
+    //             ],
+    //             hoverOffset: 10,
+    //         },
+    //     ],
+    // };
 
-    const [totalUser, setTotalUsers] = useState("N/A");
+    // const [totalUser, setTotalUsers] = useState("N/A");
 
-    const [totalDonation] = useState();
+    // const [totalDonation] = useState();
 
-    const [totalDestructed] = useState(
-        TotalDestructedData.total.toLocaleString()
-    );
+    // const [totalDestructed] = useState(
+    //     TotalDestructedData.total.toLocaleString()
+    // );
 
-    const [totalSold] = useState(TotalSoldData.total.toLocaleString());
+    // const [totalSold] = useState(TotalSoldData.total.toLocaleString());
 
-    const pendingReq = {
-        datasets: [
-            {
-                label: "Pending Requests",
-                data: [countAccepted, countPending],
-                backgroundColor: [
-                    "rgba(255, 255, 255, 1)",
-                    "rgba(206, 0, 62, 1)",
-                ],
-                borderWidth: 0,
-                hoverOffset: 5,
-            },
-        ],
-    }
+    // const pendingReq = {
+    //     datasets: [
+    //         {
+    //             label: "Pending Requests",
+    //             data: [countAccepted, countPending],
+    //             backgroundColor: [
+    //                 "rgba(255, 255, 255, 1)",
+    //                 "rgba(206, 0, 62, 1)",
+    //             ],
+    //             borderWidth: 0,
+    //             hoverOffset: 5,
+    //         },
+    //     ],
+    // }
 
 
 
@@ -71,7 +71,7 @@ export default function Dashboard({ className }) {
         <>
             <div className={className + "  2xl:px-10 xl:px-5 px-5"}>
                 {/* Loader */}
-                {loader ? <Loader /> : ""}
+                {/* {loader ? <Loader /> : ""} */}
                 {/* Loader */}
 
                 <div className="flex 2xl:w-2/3 xl:w-[70%] w-[65%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5 border-r border-neutral-200">
@@ -85,7 +85,7 @@ export default function Dashboard({ className }) {
                                     TracKagamitan's current users.
                                 </div>
                                 <div className="mt-2 2xl:text-5xl xl:text-4xl text-4xl font-bold text-white w-3/5">
-                                    {totalUser}
+                                    {/* {totalUser} */}
                                 </div>
                             </div>
                         </div>
@@ -98,12 +98,12 @@ export default function Dashboard({ className }) {
                                     Total Pending Request for today.
                                 </div>
                                 <div className="mt-2 xl:w-[64%] w-[64%] 2xl:text-5xl xl:text-4xl text-4xl font-bold truncate">
-                                    {countPending}
+                                    {/* {countPending} */}
                                 </div>
                             </div>
                             <div className="flex flex-col items-center w-fit 2xl:space-y-4 xl:space-y-2 space-y-2">
                                 <div className="2xl:h-40 2xl:w-40 xl:h-24 xl:w-24 h-24 w-24 flex-none">
-                                    <PendingReq chartData={pendingReq} />
+                                    {/* <PendingReq chartData={pendingReq} /> */}
                                 </div>
                                 <div className="flex 2xl:flex-row xl:flex-col flex-col justify-center flex-none text-xs 2xl:gap-6 xl:gap-1 gap-1">
                                     <div className="flex 2xl:gap-3 xl:gap-2 gap-2 items-center">
@@ -163,7 +163,7 @@ export default function Dashboard({ className }) {
                         <div className="font-semibold">Annual Summary</div>
                         <div className="rounded-2xl border border-[#DDDDDD] h-full w-full bg-white dark:bg-darkColor-800 space-y-3">
                             <div className="relative w-full h-full 2xl:py-6 xl:py-4 py-4 2xl:px-8 xl:px-5 px-5">
-                                <AnnualSum chartData={annualSum} />
+                                {/* <AnnualSum chartData={annualSum} /> */}
                             </div>
                         </div>
                     </div>

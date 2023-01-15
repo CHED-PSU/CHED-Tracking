@@ -46,40 +46,40 @@ export default function Index() {
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
 
-    const getNotif = () => {
-        fetch("http://" + url.hostname + ":8000/api/get_notification", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setNotifData(data.notifData);
-            });
+    // const getNotif = () => {
+    //     fetch("http://" + url.hostname + ":8000/api/get_notification", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: value.id,
+    //     })
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             setNotifData(data.notifData);
+    //         });
 
-        fetch(
-            "http://" +
-                url.hostname +
-                ":8000/api/get_numbers_of_unread_notification",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: value.id,
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                setRead(data.unread);
-            });
-    };
+    //     fetch(
+    //         "http://" +
+    //             url.hostname +
+    //             ":8000/api/get_numbers_of_unread_notification",
+    //         {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: value.id,
+    //         }
+    //     )
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             setRead(data.unread);
+    //         });
+    // };
 
-    useEffect(() => {
-        getNotif();
-    }, []);
+    // useEffect(() => {
+    //     getNotif();
+    // }, []);
 
     return (
         <div className="relative w-full h-screen flex bg-[#fafafa] dark:bg-darkColor-900 transition-all duration-150 transform overflow-hidden">
