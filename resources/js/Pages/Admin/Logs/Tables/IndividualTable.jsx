@@ -7,47 +7,19 @@ import UserList from "../TableList/UserList";
 export default function IndividualTable({ className }) {
     const [openForms, setOpenForms] = useState("close");
 
-    const [users, setUsers] = useState();
-    const [items, setItems] = useState('NONE');
-    const [total, setTotal] = useState();
-
-    const domain = window.location.href;
-    const url = new URL(domain)
-
-
-    function clickForms(index, id) {
-        if (id === undefined) {
-            setOpenForms(index);
-        } else {
-            axios.post('api/getIndividualItemsForAdmin', id).then(res => {
-                setItems(res.data.items)
-                setTotal(res.data.totalPrice)
-                setOpenForms(index);
-            })
-
-            fetch('http://' + url.hostname + ':8000/api/getIndividualItemsForAdmin', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: id
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    setItems(data.items)
-                    setTotal(data.totalPrice)
-                    setOpenForms(index);
-                })
-        }
+    function clickForms(index) {
+        setOpenForms(index);
     }
-    
+
+    const pageCount = 5;
+    const changePage = ({ selected }) => {
+        setPageNumber(selected)
+    };
 
     return (
         <div className={className + " w-fit h-full relative"}>
             {openForms === "in-in" ? <IndividualInventory
                 clickForms={clickForms}
-                items={items}
-                total={total}
                 className={""}
             /> : ""}
 
@@ -63,7 +35,7 @@ export default function IndividualTable({ className }) {
                         <th className="h-10 w-56 font-medium text-left">
                             Email & Mobile No
                         </th>
-                        <th className="h-10 w-32 font-medium text-right pr-6">
+                        <th className="h-10 w-32 font-medium text-center">
                             Actions
                         </th>
                     </tr>
@@ -77,8 +49,8 @@ export default function IndividualTable({ className }) {
                 <ReactPaginate
                     previousLabel={"Prev"}
                     nextLabel={"Next"}
-                    pageCount={'pageCount'}
-                    onPageChange={'changePage'}
+                    pageCount={pageCount}
+                    onPageChange={changePage}
                     containerClassName={"paginationButtons"}
                     previousLinkClassName={"previousButtons"}
                     nextLinkClassName={"nextButtons"}

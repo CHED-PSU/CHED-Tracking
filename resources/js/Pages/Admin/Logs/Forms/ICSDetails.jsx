@@ -5,6 +5,7 @@ import ICSprintable from "../Printables/ICSprintable";
 
 export default function ICSDetails(props) {
     const ref = useRef();
+    
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         docunentTitle: 'emp-data',

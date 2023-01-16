@@ -6,56 +6,21 @@ import UserList from "../TableList/UserList";
 
 export default function PARTable({ className }) {
     const [openForms, setOpenForms] = useState("close");
-    const [users, setUsers] = useState();
-    const [par, setPar] = useState('None');
-    const [total, setTotal] = useState();
-    const [name, setName] = useState('')
 
-    const domain = window.location.href;
-    const url = new URL(domain)
-
-    function clickForms(index, id) {
-        if (id === undefined) {
-            setOpenForms(index);
-        } else {
-
-            fetch('http://' + url.hostname + ':8000/api/getPARList', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: id
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    if (data.allPar === null) {
-                        setPar('None')
-                    } else {
-                        setPar(data.allPar)
-                        setTotal(data.total)
-                        setOpenForms(index);
-                    }
-                })
-
-            fetch('http://' + url.hostname + ':8000/api/getSpecificUser', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: id
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    setName(data.name)
-                })
-        }
+    function clickForms(index) {
+        setOpenForms(index);
     }
+
+    const pageCount = 5;
+    const changePage = ({ selected }) => {
+        setPageNumber(selected)
+    };
 
 
     return (
         <div className={className + " w-fit h-full relative"}>
             {openForms === "par-control" ? <PARControl
-                clickForms={clickForms}  
+                clickForms={clickForms}
             /> : ""}
 
             <table className="flex">
@@ -70,7 +35,7 @@ export default function PARTable({ className }) {
                         <th className="h-10 w-56 font-medium text-left">
                             Email & Mobile No
                         </th>
-                        <th className="h-10 w-32 font-medium text-right pr-6">
+                        <th className="h-10 w-32 font-medium text-center">
                             Actions
                         </th>
                     </tr>
@@ -84,8 +49,8 @@ export default function PARTable({ className }) {
                 <ReactPaginate
                     previousLabel={"Prev"}
                     nextLabel={"Next"}
-                    pageCount={'pageCount'}
-                    onPageChange={'changePage'}
+                    pageCount={pageCount}
+                    onPageChange={changePage}
                     containerClassName={"paginationButtons"}
                     previousLinkClassName={"previousButtons"}
                     nextLinkClassName={"nextButtons"}

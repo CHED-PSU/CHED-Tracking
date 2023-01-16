@@ -1,8 +1,15 @@
 import React from "react";
 import AppLogo from "../../../components/AppLogo";
 
-export default function Sidebar() {
-    
+export default function Sidebar(props) {
+    function refreshPage() {
+        window.location.reload(false);
+    }
+
+    function clickSidebar(index) {
+        props.setSidebar(index);
+    }
+
     return (
         <div className="sticky top-0 flex flex-none flex-col h-screen 2xl:w-72 xl:w-[260px] w-[260px] bg-white dark:bg-darkColor-800 text-center border-r border-neutral-200 shrink-0 z-20 transition-all duration-150 transform">
             {/* Logo */}
@@ -12,6 +19,7 @@ export default function Sidebar() {
             >
                 <div className="h-full w-full flex items-center justify-center">
                     <div
+                        onClick={refreshPage}
                         className="flex items-center font-semibold text-gray-600 dark:text-gray-50 gap-2 cursor-pointer"
                     >
                         <AppLogo className="2xl:w-10 2xl:h-10 xl:w-8 xl:h-8 w-8 h-8" />
@@ -31,7 +39,14 @@ export default function Sidebar() {
                     {/* Page Links */}
                     <ul className="links flex-none 2xl:text-sm xl:text-[13px] text-[13px] text-darkColor-800 dark:text-lightColor-800 font-medium">
                         {/* Dashboard Link */}
-                        <li className="activePage">
+                        <li 
+                            onClick={() => clickSidebar("dashboard")}
+                            className={
+                                props.sidebar === "dashboard"
+                                    ? "activePage dark:text-primary"
+                                    : "hover:hoverPage dark:hover:darkHoverPage"
+                            }
+                        >
                             <div className="flex w-full items-center gap-4 pl-10 cursor-pointer 2xl:h-16 xl:h-14 h-14 py-3 select-none">
                                 <i className="fa-solid fa-square-poll-horizontal 2xl:text-xl xl:text-lg text-lg"></i>
                                 <h4 className=" leading-3">Dashboard</h4>
@@ -39,7 +54,14 @@ export default function Sidebar() {
                         </li>
 
                         {/* Pending Link */}
-                        <li className="hover:hoverPage dark:hover:darkHoverPage">
+                        <li 
+                            onClick={() => clickSidebar("pending")}
+                            className={
+                                props.sidebar === "pending"
+                                    ? "activePage dark:text-primary"
+                                    : "hover:hoverPage dark:hover:darkHoverPage"
+                            }
+                        >
                             <div className="flex w-full items-center gap-4 pl-10 cursor-pointer 2xl:h-16 xl:h-14 h-14 py-3 select-none">
                                 <i className="fa-solid fa-envelope-open-text 2xl:text-xl xl:text-lg text-lg"></i>
                                 <h4 className=" leading-3">Pending Requests</h4>
@@ -47,7 +69,14 @@ export default function Sidebar() {
                         </li>
 
                         {/* Logs Link */}
-                        <li className="hover:hoverPage dark:hover:darkHoverPage">
+                        <li 
+                            onClick={() => clickSidebar("logs")}
+                            className={
+                                props.sidebar === "logs"
+                                    ? "activePage dark:text-primary"
+                                    : "hover:hoverPage dark:hover:darkHoverPage"
+                            }
+                        >
                             <div className="flex w-full items-center gap-4 pl-10 cursor-pointer 2xl:h-16 xl:h-14 h-14 py-3 select-none">
                                 <i className="fa-solid fa-list-check 2xl:text-xl xl:text-lg text-lg"></i>
                                 <h4 className=" leading-3">Logs</h4>
@@ -55,7 +84,14 @@ export default function Sidebar() {
                         </li>
 
                         {/* Return Link */}
-                        <li className="hover:hoverPage dark:hover:darkHoverPage">
+                        <li 
+                            onClick={() => clickSidebar("return")}
+                            className={
+                                props.sidebar === "return"
+                                    ? "activePage dark:text-primary"
+                                    : "hover:hoverPage dark:hover:darkHoverPage"
+                            }
+                        >
                             <div className="flex w-full items-center gap-4 pl-10 cursor-pointer 2xl:h-16 xl:h-14 h-14 py-3 select-none">
                                 <i className="fa-solid fa-box-archive 2xl:text-xl xl:text-lg text-lg"></i>
                                 <h4 className=" leading-3">Return Items</h4>
@@ -63,7 +99,14 @@ export default function Sidebar() {
                         </li>
 
                         {/* Unserviceable Link */}
-                        <li className="hover:hoverPage dark:hover:darkHoverPage">
+                        <li 
+                            onClick={() => clickSidebar("unserv")}
+                            className={
+                                props.sidebar === "unserv"
+                                    ? "activePage dark:text-primary"
+                                    : "hover:hoverPage dark:hover:darkHoverPage"
+                            }
+                        >
                             <div className="flex w-full items-center gap-4 pl-10 cursor-pointer 2xl:h-16 xl:h-14 h-14 py-3 select-none">
                                 <i className="fa-solid fa-dumpster 2xl:text-xl xl:text-lg text-lg"></i>
                                 <h4 className=" leading-3">Unserviceable</h4>
@@ -71,7 +114,14 @@ export default function Sidebar() {
                         </li>
 
                         {/* Forecasting Link */}
-                        <li className="hover:hoverPage dark:hover:darkHoverPage">
+                        <li 
+                            onClick={() => clickSidebar("forecast")}
+                            className={
+                                props.sidebar === "forecast"
+                                    ? "activePage dark:text-primary"
+                                    : "hover:hoverPage dark:hover:darkHoverPage"
+                            }
+                        >
                             <div className="flex w-full items-center gap-4 pl-10 cursor-pointer 2xl:h-16 xl:h-14 h-14 py-3 select-none">
                                 <i className="fa-solid fa-chart-line 2xl:text-xl xl:text-lg text-lg"></i>
                                 <h4 className=" leading-3">Forecasting</h4>

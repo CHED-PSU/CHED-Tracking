@@ -8,42 +8,21 @@ export default function
     PARControl(props) {
     const [openSubForms, setOpenSubForms] = useState("close");
     const [parItems, setParItems] = useState('None');
-    const user = localStorage.getItem('localSession');
-    const value = JSON.parse(user);
-    const domain = window.location.href;
-    const url = new URL(domain)
-    
+
     function clickSubForms(index, id) {
-        if (id === undefined) {
-            setOpenSubForms(index);
-        } else {
-            
-            fetch('http://' + url.hostname + ':8000/api/getICSDetails', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: id
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    if (data.icsItems === null) {
-                        setParItems('None')
-                    } else {
-                        setParItems(data.icsItems)
-                        setOpenSubForms(index);
-                    }
-                })
-        }
+        setOpenSubForms(index);
     }
 
+    const pageCount = 5;
+    const changePage = ({ selected }) => {
+        setPageNumber(selected)
+    };
 
     return (
         <div className={props.className}>
             {openSubForms === "par-details" ? <PARDetails
                 clickSubForms={clickSubForms}
             /> : ""}
-
 
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-30">
 
@@ -116,13 +95,13 @@ export default function
                     </div>
                     {/* table */}
                 </div>
-                
+
                 <div className="absolute bottom-10 w-full flex justify-center z-40">
                     <ReactPaginate
                         previousLabel={"Prev"}
                         nextLabel={"Next"}
-                        pageCount={'pageCount'}
-                        onPageChange={'changePage'}
+                        pageCount={pageCount}
+                        onPageChange={changePage}
                         containerClassName={"paginationButtons"}
                         previousLinkClassName={"previousButtons"}
                         nextLinkClassName={"nextButtons"}
@@ -130,7 +109,7 @@ export default function
                         activeClassName={"paginationActive"}
                     />
                 </div>
-                
+
             </div>
         </div>
     );

@@ -8,43 +8,22 @@ import ICSDetails from "../Forms/ICSDetails";
 export default function ICSControl(props) {
     const [openSubForms, setOpenSubForms] = useState("close");
     const [icsItems, setIcsItems] = useState();
-
-    const user = localStorage.getItem('localSession');
-    const value = JSON.parse(user);
-
     const [loader, setLoader] = useState(true);
 
-    const domain = window.location.href;
-    const url = new URL(domain)
-
-    function clickSubForms(index, id) {
-
-        if (id === undefined) {
-            setOpenSubForms(index);
-        } else {
-            fetch('http://' + url.hostname + ':8000/api/getICSDetails', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: id
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    setIcsItems(data.icsItems)
-                    setOpenSubForms(index);
-                })
-        }
+    function clickSubForms(index) {
+        setOpenSubForms(index);
     }
 
+    const pageCount = 5;
+    const changePage = ({ selected }) => {
+        setPageNumber(selected)
+    };
 
     return (
 
         <div className={props.className}>
             {openSubForms === "ics-details" ? <ICSDetails
                 clickSubForms={clickSubForms}
-                icsItems={icsItems}
-
                 className={""}
             /> : ""}
             {/* {loader ? <Loader /> : ""} */}
@@ -104,7 +83,7 @@ export default function ICSControl(props) {
                                                 onClick={() => clickSubForms("ics-details")}
                                                 className="pr-6 flex items-center justify-end w-full h-12 gap-3">
                                                 <div className="">
-                                                    <button className="btn-color-3 rounded-full py-2 px-3 text-text-black"><i class="fa-solid fa-eye"></i> View</button>
+                                                    <button className="btn-color-3 rounded-full py-2 px-3 text-text-black"><i className="fa-solid fa-eye"></i> View</button>
                                                 </div>
                                             </div>
                                         </td>
@@ -125,8 +104,8 @@ export default function ICSControl(props) {
                     <ReactPaginate
                         previousLabel={"Prev"}
                         nextLabel={"Next"}
-                        pageCount={'pageCount'}
-                        onPageChange={'changePage'}
+                        pageCount={pageCount}
+                        onPageChange={changePage}
                         containerClassName={"paginationButtons"}
                         previousLinkClassName={"previousButtons"}
                         nextLinkClassName={"nextButtons"}
