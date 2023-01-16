@@ -17,6 +17,7 @@ export default function Router() {
                     <Route path="/" element={<Navigate to="/login"/>} />
                     <Route path="/login" element={<PublicRoute />}/>
                     <Route path="/dashboard" element={<RoutingCondition />} />
+                    <Route path="/user" element={<UserIndex />} />
             </Routes>
         </div>
     );

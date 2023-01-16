@@ -32,16 +32,14 @@ export default function Index() {
     const toggleDarkMode = () => {
         setTheme(theme === "dark" ? "light" : "dark");
     };
-    //dark mode
 
     const [toggleTabs, setToggleTabs] = useState("home");
-
 
     function clickTabs(index) {
         setToggleTabs(index);
     }
 
-    
+ 
 
     return (
         <div className="relative w-full h-screen flex bg-[#fafafa] dark:bg-darkColor-900 transition-all duration-150 transform overflow-x-hidden">
@@ -132,8 +130,6 @@ export default function Index() {
                         className="w-full flex justify-end"
                         clickTabs={clickTabs}
                         toggleDarkMode={toggleDarkMode}
-                        unread={unread}
-                        notifData={Object.values(notifData)}
                     />
                 </nav>
 
