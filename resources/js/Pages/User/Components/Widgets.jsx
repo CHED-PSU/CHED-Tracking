@@ -3,12 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Widgets(props) {
-    const [name, setName] = useState('');
-    const [role, setRole] = useState('');
+    const [name, setName] = useState('default');
+    const [role, setRole] = useState('default');
 
     useEffect(()=>{
-        const user = localStorage.getItem('localSession');
-        const value =JSON.parse(user);
         setName(value.name.toUpperCase());
         setRole(value.role);
     })
@@ -18,9 +16,9 @@ export default function Widgets(props) {
 
     const handleLogOut = () => {
         localStorage.removeItem('localSession')
-
         nav('/');
     }
+
     // Modal for Notification and Profile
     const [openNotifDropdown, setOpenNotifDropdown] = useState(false);
     const [openProfileDropdown, setOpenProfileDropdown] = useState(false);
@@ -154,7 +152,7 @@ export default function Widgets(props) {
                 /> */}
 
                 {/* Notification */}
-                {openNotifDropdown ? <NotifDropdown clickTabs={props.clickTabs} ref={notifDropdown} notifData={props.notifData != null ?Object.values(props.notifData) : null}/> : ""}
+                {openNotifDropdown ? <NotifDropdown clickTabs={props.clickTabs} ref={notifDropdown}/> : ""}
                 {/* Notification */}
 
                 {/* Profile */}

@@ -33,6 +33,7 @@ export default function Index() {
         setTheme(theme === "dark" ? "light" : "dark");
     };
 
+    const [read, setRead] = useState('');
     const [toggleTabs, setToggleTabs] = useState("home");
 
     function clickTabs(index) {
@@ -130,6 +131,7 @@ export default function Index() {
                         className="w-full flex justify-end"
                         clickTabs={clickTabs}
                         toggleDarkMode={toggleDarkMode}
+                        unread = {read}
                     />
                 </nav>
 

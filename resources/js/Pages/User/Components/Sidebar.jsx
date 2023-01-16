@@ -3,15 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import AppLogo from "../../../components/AppLogo";
 
 export default function Sidebar(props) {
-    const [openForms, setOpenForms] = useState("close");
-    function clickForms(index) {
-        setOpenForms(index);
+    function refreshPage() {
+        window.location.reload(false);
     }
 
     const nav = useNavigate();
 
     const handleLogOut = () => {
-
         localStorage.removeItem('localSession')
         nav('/');
     }
