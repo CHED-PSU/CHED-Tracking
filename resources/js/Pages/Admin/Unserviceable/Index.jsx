@@ -13,7 +13,6 @@ export default function Unserviceable({ className }) {
     const [donation, setDonation] = useState([]);
     const [destruction, setDestruction] = useState();
     const [sales, setSales] = useState();
-
     
     return (
         <div className={className + " flex justify-center"}>

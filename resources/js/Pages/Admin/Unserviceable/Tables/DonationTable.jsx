@@ -3,6 +3,11 @@ import ReactPaginate from "react-paginate";
 
 export default function DonationTable({ className }) {
 
+    const pageCount = 5;
+    const changePage = ({ selected }) => {
+        setPageNumber(selected)
+    };
+
     return (
         <div className={className + " w-fit h-full relative"}>
                 <table className="">

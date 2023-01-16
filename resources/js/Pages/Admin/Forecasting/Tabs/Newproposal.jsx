@@ -130,7 +130,7 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
                   <h1 className='font-semibold text-text-black'>Predict Year:</h1>
                   <div className='flex gap-3'>
                      <input type="number" name="" id="numberInput" className='w-full rounded-md border border-neutral-500 p-3 outline-none cursor-pointer' />
-                     <button className='border bg-col btn-color-1 px-5 rounded-lg text-white text-lg'><i class="fa-solid fa-check"></i></button>
+                     <button className='border bg-col btn-color-1 px-5 rounded-lg text-white text-lg'><i className="fa-solid fa-check"></i></button>
                   </div>
                </div>
             </form>

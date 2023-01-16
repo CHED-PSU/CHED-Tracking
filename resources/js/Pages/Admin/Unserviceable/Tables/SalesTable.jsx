@@ -3,6 +3,11 @@ import ReactPaginate from "react-paginate";
 
 export default function SalesTable({ className, items }) {
 
+    const pageCount = 5;
+    const changePage = ({ selected }) => {
+        setPageNumber(selected)
+    };
+
     return (
         <div className={className + " w-fit h-full relative"}>
                 <table className="">
@@ -18,7 +23,7 @@ export default function SalesTable({ className, items }) {
                             {/* no */}
                             <td>
                                 <a className="text-left pl-6 text-[14px]">
-                                    {salesItem.id}
+                                    0
                                 </a>
                             </td>
                             {/* requested by */}

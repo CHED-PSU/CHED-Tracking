@@ -3,10 +3,12 @@ import { useReactToPrint } from "react-to-print";
 
 export default function IndividualInventory(props) {
     const ref = useRef();
+
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         docunentTitle: 'emp-data',
     })
+    
     const IndividualItem = (items) => {
         return items.map(data => {
             return <>
@@ -37,7 +39,7 @@ export default function IndividualInventory(props) {
                                 </p>
                             </div>
                         </div>
-                        <div className="flex w-1/2 justify-end items-end">
+                        <div onClick={handlePrint} className="flex w-1/2 justify-end items-end">
                             <div className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer">
                                 <i className="fa-solid fa-print mr-1"></i>
                                 Print

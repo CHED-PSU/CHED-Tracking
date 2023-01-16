@@ -26,11 +26,11 @@ export default function
 
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-30">
 
-                <div className=" h-full w-3/5 border border-[#C8C8C8]">
+                <div className=" h-full w-3/5 border-x border-[#C8C8C8]">
                     {/* header */}
                     <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                         <div className="w-1/2">
-                            <button onClick={() => props.clickForms("close")} class="py-3 mt-4">
+                            <button onClick={() => props.clickForms("close")} className="py-3 mt-4">
                                 <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
                             </button>
                             <div className="text-left cursor-defaul">
@@ -62,13 +62,13 @@ export default function
                                 <tbody id="logs-ics-slips-table">
                                     <tr className="text-xs h-16 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 text-text-gray dark:text-white">
                                         <td className="text-left pl-6 pr-3 text-text-gray text-2base">0</td>
-                                        <td class="text-left px-3">
+                                        <td className="text-left px-3">
                                             <div className="flex flex-col gap-1">
                                                 <h5 className="text-base text-text-black font-semibold"></h5>
                                                 <h6 className="text-text-gray text-2base">Date Acquired: 0</h6>
                                             </div>
                                         </td>
-                                        <td Name="text-left px-3">
+                                        <td className="text-left px-3">
                                             <div className="flex flex-col gap-1">
                                                 <h5 className="text-base font-semibold text-text-blue">0</h5>
                                                 <h6 className="text-text-gray text-2base">Php</h6>
@@ -80,7 +80,7 @@ export default function
                                                 onClick={() => clickSubForms("par-details")}
                                                 className="pr-6 flex items-center justify-end w-full h-12 gap-3">
                                                 <div className="">
-                                                    <button className="btn-color-3 rounded-full py-2 px-3 text-text-black"><i class="fa-solid fa-eye"></i> View</button>
+                                                    <button className="btn-color-3 rounded-full py-2 px-3 text-text-black"><i className="fa-solid fa-eye"></i> View</button>
                                                 </div>
                                             </div>
                                         </td>

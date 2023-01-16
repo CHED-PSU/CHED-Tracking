@@ -8,7 +8,7 @@ export default function ICSDetails(props) {
     
     const handlePrint = useReactToPrint({
         content: () => ref.current,
-        docunentTitle: 'emp-data',
+        documentTitle: 'emp-data',
     })
 
     return (
@@ -16,7 +16,7 @@ export default function ICSDetails(props) {
         <div className={props.className}>
 
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40">
-                <div className="dark:bg-darkColor-800 h-full w-[70%] border border-[#C8C8C8]">
+                <div className="dark:bg-darkColor-800 h-full w-[70%] border-x border-[#C8C8C8]">
                     {/* header */}
                     <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                         <div className="w-1/2">
@@ -112,26 +112,26 @@ export default function ICSDetails(props) {
                                     
                                     <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                         <td className="text-center px-3 border">
-                                            {data.quantity}
+                                            default
                                         </td>
                                         <td className="text-center px-3 border">
-                                            {data.unit}
+                                            default
                                         </td>
                                         <td className="text-center px-3 border">
-                                            {data.price * data.quantity}
+                                            default
                                         </td>
                                         <td className="text-left px-3 py-3 border">
                                             <div className="flex items-center">
                                                 <div className="font-semibold mr-3">
-                                                    {data.article}
+                                                    default
                                                 </div>
                                                 <div>
-                                                    {data.description}
+                                                    default
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="text-left px-3 border">
-                                            {data.property_no}
+                                            default
                                         </td>
                                         <td className="text-center px-3 border"></td>
                                     </tr>

@@ -1,12 +1,18 @@
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+
 export default function PARDetails(props) {
     const ref = useRef();
+
+    const handlePrint = useReactToPrint({
+        content: () => ref.current,
+        documentTitle: 'emp-data',
+    })
     
     return (
         <div className={props.className}>
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40">
-                <div className="dark:bg-darkColor-800 h-full w-[70%] border border-[#C8C8C8]">
+                <div className="dark:bg-darkColor-800 h-full w-[70%] border-x border-[#C8C8C8]">
                     {/* header */}
                     <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                         <div className="w-1/2">
