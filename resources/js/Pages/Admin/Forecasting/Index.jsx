@@ -26,42 +26,6 @@ export default function Forecasting({ className }) {
     const [dpredictedyAxis, dsetpredictedyAxis] = useState([]);
     const [dpredicted, dsetpredicted] = useState();
 
-    useEffect(() => {
-        fetch("http://" + url.hostname + ":8000/api/forecast", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setData(data.data);
-                setxAxis(data.xAxis);
-                setyAxis(data.yAxis);
-                setpredictedyAxis(data.predicted_data);
-                setpredicted(data.predicted);
-            });
-
-
-    }, []);
-
-    useEffect(()=>{
-        fetch("http://" + url.hostname + ":8000/api/disposalForecast", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                dsetData(data.data);
-                dsetxAxis(data.xAxis);
-                dsetyAxis(data.yAxis);
-                dsetpredictedyAxis(data.predicted_data);
-                dsetpredicted(data.predicted);
-            });
-    },[])
-
     return (
         <div className={className + " flex justify-center"}>
             <div className="absolute -right-14 bottom-0 w-1/3">
@@ -72,12 +36,26 @@ export default function Forecasting({ className }) {
                 {/*tab buttons*/}
                 <div className="pb-3">
                     <ul className="flex gap-4">
-                        <li className="btn-color-4 text-white dark:text-black font-semibold rounded-full">
+                        <li
+                            onClick={() => clickTabs("disposal")}
+                            className={
+                                toggleTabs === "disposal"
+                                    ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
+                                    : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                            }
+                        >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
                                 Disposal
                             </div>
                         </li>
-                        <li className="btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full">
+                        <li
+                            onClick={() => clickTabs("newproposal")}
+                            className={
+                                toggleTabs === "newproposal"
+                                    ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
+                                    : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                            }
+                        >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
                                 New Proposal
                             </div>
