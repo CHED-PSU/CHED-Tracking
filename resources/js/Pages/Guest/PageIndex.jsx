@@ -26,32 +26,27 @@ export default function GuestIndex() {
     const submitHandler = (e) => {
         e.preventDefault()
 
-        // const data = {
-        //     username: formData.username,
-        //     password: formData.password
-        // }
+        const data = {
+            username: formData.username,
+            password: formData.password
+        }
 
-        // fetch('/api/login', {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(data)
-        // })
-        //     .then(response => response.json())
-        //     .then((data)=> {
-        //         navigate("/dashboard")
-        //             const item = {
-        //                 name: data.name,
-        //                 role: data.role,
-        //                 Authenticated: true,
-        //                 Path: data.destinations,
-        //                 id: data.id
-        //             }
+        if (data.username === "" || data.password === "") {
+            console.log("please put data inside")
+        }else{
+            axios.post("/api/login", {
+                data: data
+            })
+                .then(response => {
+                    console.log(response.data)
+                })
+        }
 
-        //             localStorage.setItem("localSession", JSON.stringify(item));
-        //     })
-        navigate("/dashboard")
+        // 
+
+
+        
+        // navigate("/dashboard")
     }
 
     return (
