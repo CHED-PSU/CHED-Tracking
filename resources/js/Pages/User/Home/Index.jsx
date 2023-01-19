@@ -7,6 +7,15 @@ export default function Index(props) {
     const [numberOfItems, setNumberOfItems] = useState()
     const [acceptedItems, setAcceptedItems] = useState([])
     const [recentIssuance, setRecentIssuance] = useState([])
+<<<<<<< HEAD
+=======
+    const domain = window.location.href;
+    const url = new URL(domain)
+    const user = localStorage.getItem('localSession');
+    const value = JSON.parse(user);
+
+    
+>>>>>>> 82e13a17a0280e1a7e24331bed833aa54690e03a
 
     const recentIssuanceMapper = (items) => {
         return items?.map(data => {
@@ -49,14 +58,11 @@ export default function Index(props) {
         })
     }
 
-    console.log(acceptedItems?.length)
-
     const acceptedRequestMapper = (items) => {
         return items.map(data => {
             return <Accepted data={data} />
         })
     }
-    console.log(acceptedItems)
     return (
         <div className={props.className + " 2xl:px-10 xl:px-5 px-5 2xl:py-5 xl:py-3 py-3"}>
             <div className="flex flex-col 2xl:w-[70%] xl:w-[65%] w-[65%] h-full 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:pr-10 xl:pr-5 pr-5">
