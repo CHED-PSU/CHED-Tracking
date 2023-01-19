@@ -3,12 +3,22 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Widgets(props) {
+
+    const [toggleTabs, setToggleTabs] = useState("all");
+    function clickTabs(index) {
+        setToggleTabs(index);
+    }
+
+
+    const user = localStorage.getItem('localSession');
+    const value = JSON.parse(user);
+
     const [name, setName] = useState('default');
     const [role, setRole] = useState('default');
 
     useEffect(()=>{
-        setName(value.name.toUpperCase());
-        setRole(value.role);
+        setName(value.name)
+        setRole(value.role)
     })
 
     //for LogOut
@@ -47,6 +57,70 @@ export default function Widgets(props) {
             document.removeEventListener("mousedown", handler);
         };
     });
+
+    //for Notification mapping
+
+    const [notificationItems, setNotificationItems] = useState([]);
+
+    useEffect(()=>{
+        axios.get('/api/getNotificationItems').then(res =>{
+            setNotificationItems(res.data)
+        })
+    },[])
+
+    const notifMapper = (items) => {
+        if (items != null) {
+            return items.map(data => {
+                var created_at = new Date(data.created_at);
+
+                let today = new Date();
+
+                var distance = today.getTime() - created_at.getTime();
+
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+                if(data.np_id === 1){
+                    return (
+                        <li className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700">
+                            <div className="flex h-full items-center justify-between gap-3 px-3">
+                                <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
+                                    {data.firstname.charAt(0)}
+                                </div>
+                                <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
+                                    <div className="text-sm 2xl:leading-0 xl:leading-4">
+                                        <span className="font-semibold">
+                                            {data.firstname}
+                                        </span>{" "}
+                                        <span className="">
+                                            {" "}
+                                            has issued you an { data.description} form.
+                                        </span>
+                                    </div>
+                                    <div className="text-xs text-blue-400">
+                                        {days === 1 || days === 0 ? "a day ago": days + " days ago"}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Ping Notif */}
+                            {data.status_id === 1 ? <div className="h-auto flex relative">
+                                <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                    <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                                </span>
+                            </div> : ""}
+                        </li>
+                    )
+                }
+                
+            })
+
+        } else {
+            <li className="py-5 text-center cursor-default">
+                <small>You don't have notification yet</small>
+            </li>
+        }
+    }
 
 
 
@@ -152,7 +226,62 @@ export default function Widgets(props) {
                 /> */}
 
                 {/* Notification */}
-                {openNotifDropdown ? <NotifDropdown clickTabs={props.clickTabs} ref={notifDropdown}/> : ""}
+                <div
+                    ref={notifDropdown}
+                    className={openNotifDropdown ? "" : "hidden"}
+                >
+                    <div className="relative w-fit min-h-fit 2xl:max-h-[660px] xl:max-h-[500px] max-h-[500px] bg-white border border-neutral-200 dark:border-neutral-700 dark:bg-darkColor-800 rounded-xl 2xl:py-4 xl:py-3 py-3 2xl:pl-5 2xl:pr-4 xl:px-4 px-4 2xl:space-y-3 xl:space-y-2 space-y-2 shadow-lg">
+                        <div className="text-left cursor-default 2xl:pt-1">
+                            <h2 className="2xl:text-xl xl:text-lg text-lg font-semibold dark:text-neutral-200">
+                                Notification
+                            </h2>
+                            <p className="text-xs 2xl:mt-0 xl:-mt-1 -mt-1 text-slate-600 dark:text-neutral-300">
+                                You've got 9 unread notifications.
+                            </p>
+                        </div>
+
+                        {/*tab buttons*/}
+                        <ul className="flex gap-2">
+                            <li
+                                onClick={() => clickTabs("all")}
+                                className={
+                                    toggleTabs === "all"
+                                        ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
+                                        : "btn-color-3 border border-border-iconLight dark:border-neutral-700 dark:bg-darkColor-800 dark:text-white hover:bg-neutral-200 rounded-full"
+                                }
+                            >
+                                <div className="select-none text-xs w-fit px-5 py-2 cursor-pointer">
+                                    All
+                                </div>
+                            </li>
+                            {/* <li
+                                onClick={() => clickTabs("unread")}
+                                className={
+                                    toggleTabs === "unread"
+                                        ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
+                                        : "btn-color-3 border border-border-iconLight dark:border-neutral-700 dark:bg-darkColor-800 dark:text-white hover:bg-neutral-200 rounded-full"
+                                }
+                            >
+                                <div className="select-none text-xs w-fit px-5 py-2 cursor-pointer">
+                                    Unread
+                                </div>
+                            </li> */}
+                        </ul>
+                        {/*tab buttons*/}
+
+                        {/* All Tabs */}
+                        <div
+                            className={
+                                toggleTabs === "all" ? "flex" : "hidden"
+                            }
+                        >
+                            <ul className="min-h-fit 2xl:max-h-[520px] xl:max-h-[380px] max-h-[380px] pr-1 overflow-auto flex-row space-y-2 2xl:w-[350px] xl:w-[300px] w-[300px]">
+                                {notifMapper(Object.values(notificationItems))}
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 {/* Notification */}
 
                 {/* Profile */}

@@ -3,7 +3,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build --watch ",
-        "preview": "php artisan serve --host=10.0.254.2 --port=8000 & vite preview --host=10.0.254.2 --port=8000"
+        "preview": "php artisan serve --host=10.0.254.2 --port=8000 & vite preview --host=10.0.254.2 --port=8000",
+        "start": "nodemon socket.js"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.13",
@@ -16,13 +17,17 @@
     },
     "dependencies": {
         "@vitejs/plugin-react": "^3.0.1",
-        "chart.js": "^4.1.2",
+        "chart.js": "^4.2.0",
+        "express": "^4.18.2",
+        "nodemon": "^2.0.20",
         "react": "^18.2.0",
         "react-chartjs-2": "^5.2.0",
         "react-dom": "^18.2.0",
         "react-loader-spinner": "^5.3.4",
         "react-paginate": "^8.1.4",
         "react-router-dom": "^6.6.2",
-        "react-to-print": "^2.14.11"
+        "react-to-print": "^2.14.11",
+        "socket.io": "^4.5.4",
+        "socket.io-client": "^4.5.4"
     }
 }

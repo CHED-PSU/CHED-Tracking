@@ -12,44 +12,7 @@ export default function Index(props) {
     const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
 
-    useEffect(() => {
-        fetch('http://' + url.hostname + ':8000/api/getIndividualNumberOfItems', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setNumberOfItems(data.items)
-            })
-        fetch('http://' + url.hostname + ':8000/api/acceptedRequest', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setAcceptedItems(data.acceptedItems)
-            })
-
-        fetch('http://' + url.hostname + ':8000/api/getRecentIssuanceUser', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setRecentIssuance(data.recentIssuance)
-            })
-
-    }, [])
-
+    
 
     const recentIssuanceMapper = (items) => {
         return items?.map(data => {
@@ -92,14 +55,11 @@ export default function Index(props) {
         })
     }
 
-    console.log(acceptedItems?.length)
-
     const acceptedRequestMapper = (items) => {
         return items.map(data => {
             return <Accepted data={data} />
         })
     }
-    console.log(acceptedItems)
     return (
         <div className={props.className + " 2xl:px-10 xl:px-5 px-5 2xl:py-5 xl:py-3 py-3"}>
             <div className="flex flex-col 2xl:w-[70%] xl:w-[65%] w-[65%] h-full 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:pr-10 xl:pr-5 pr-5">

@@ -39,8 +39,7 @@ export default function Index() {
     const [sidebar, setSidebar] = useState("dashboard");
     const [notifData, setNotifData] = useState(null);
     
-    const domain = window.location.href;
-    const url = new URL(domain);
+    
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
 
@@ -120,10 +119,8 @@ export default function Index() {
                     {/* Titles */}
 
                     <Widgets
-                        notifData={notifData != null ? notifData : null}
                         toggleDarkMode={toggleDarkMode}
                         className="w-full flex justify-end"
-                        unread = {read}
                     />
                 </nav>
 

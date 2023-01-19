@@ -5,6 +5,11 @@ import AdminIndex from "../Admin/PageIndex";
 import InputError from "../../components/InputError";
 import axios from "axios";
 
+import io from "socket.io-client";
+const socket = io.connect("http://127.0.0.1:8001")
+
+
+
 export default function GuestIndex() {
 
     const navigate = useNavigate()
@@ -23,6 +28,8 @@ export default function GuestIndex() {
         })
     }
 
+    
+
     const submitHandler = (e) => {
         e.preventDefault()
 
@@ -38,7 +45,18 @@ export default function GuestIndex() {
                 data: data
             })
                 .then(response => {
-                    console.log(response.data)
+                    navigate("/dashboard")
+                    const item = {
+                        name: response.data.name,
+                        role: response.data.role,
+                        Authenticated: true,
+                        Path: response.data.destinations,
+                        id: response.data.id
+                    }
+                    
+                    localStorage.setItem("localSession", JSON.stringify(item));
+                    
+                    socket.emit("user_loggedIn", {message: "Someone Logged In"})
                 })
         }
 
