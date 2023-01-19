@@ -10,6 +10,7 @@
     <link rel="shortcut icon" type="image/png" href="{{ URL::asset('img/logo.png') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/fontawesome.min.css') }} ">
     <link rel="stylesheet" href="{{ URL::asset('css/all.min.css') }} ">
+    
     <!-- Vite -->
     @viteReactRefresh
     @vite(['resources/css/app.css','resources/js/app.jsx'])

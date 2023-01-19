@@ -3,7 +3,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build --watch ",
-        "preview": "php artisan serve --host=10.0.254.2 --port=8000 & vite preview --host=10.0.254.2 --port=8000"
+        "serve": "php artisan serve --host=192.168.1.6 --port=8000",
+        "preview": "vite --host=192.168.1.6 --port=8000"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.13",

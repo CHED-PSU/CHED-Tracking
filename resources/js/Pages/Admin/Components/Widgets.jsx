@@ -5,7 +5,7 @@ import PARNotification from "./Notification/PARNotification";
 import Profilesett from "./ProfileSettings/ProfileSettings";
 
 
-export default function Widgets({ className, notifData, clickTabsSide, toggleDarkMode,read }) {
+export default function Widgets({ className, notifData, clickTabsSide, toggleDarkMode, read }) {
     const [openProfSett, setOpenProfSett] = useState("close");
 
     function clickProfSett(index) {
@@ -26,7 +26,6 @@ export default function Widgets({ className, notifData, clickTabsSide, toggleDar
     const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
 
-
     let notifButton = useRef();
     let notifDropdown = useRef();
     let profileButton = useRef();
@@ -42,9 +41,6 @@ export default function Widgets({ className, notifData, clickTabsSide, toggleDar
     }
 
     useEffect(() => {
-
-        
-
         const handler = (event) => {
             if (!notifButton.current.contains(event.target) && openICSNotification === "close" && openPARNotification === "close") {
                 if (!notifDropdown.current.contains(event.target) && openICSNotification === "close" && openPARNotification === "close") {
@@ -75,92 +71,6 @@ export default function Widgets({ className, notifData, clickTabsSide, toggleDar
     function clickPARNotification(index) {
         setOpenPARNotification(index);
     }
-
-
-    // const notifMapper = (items) => {
-    //     if (items != null) {
-    //         return items.map(data => {
-    //             var created_at = new Date(data.created_at);
-
-    //             let today = new Date();
-
-    //             var distance = today.getTime() - created_at.getTime();
-
-    //             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-
-    //             if(data.purpose_id === 5){
-    //                 return (
-    //                     <li className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700">
-    //                         <div className="flex h-full items-center justify-between gap-3 px-3">
-    //                             <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-    //                                 {data.firstname.charAt(0)}
-    //                             </div>
-    //                             <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-    //                                 <div className="text-sm 2xl:leading-0 xl:leading-4">
-    //                                     <span className="font-semibold">
-    //                                         {data.firstname}
-    //                                     </span>{" "}
-    //                                     <span className="">
-    //                                         {" "}
-    //                                         { data.description}
-    //                                     </span>
-    //                                 </div>
-    //                                 <div className="text-xs text-blue-400">
-    //                                     {days === 1 || days === 0 ? "a day ago": days + " days ago"}
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-
-    //                         {/* Ping Notif */}
-    //                         {data.status_id === 1 ? <div className="h-auto flex relative">
-    //                             <span className="flex h-4 w-4 mr-4 pointer-events-none">
-    //                                 <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-    //                                 <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-    //                             </span>
-    //                         </div> : ""}
-    //                     </li>
-    //                 )
-    //             }else{
-    //                 return (
-    //                     <li onClick={() => clickTabsSide("pending")} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
-    //                         <div className="flex h-full items-center justify-between gap-3 px-3">
-    //                             <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-    //                                 {data.firstname.charAt(0)}
-    //                             </div>
-    //                             <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-    //                                 <div className="text-sm 2xl:leading-0 xl:leading-4">
-    //                                     <span className="font-semibold">
-    //                                         {data.firstname}
-    //                                     </span>{" "}
-    //                                     <span className="">
-    //                                         {" "}
-    //                                         {data.description === "has accepted the issued property." ? data.description : "has requested to return an item"}
-    //                                     </span>
-    //                                 </div>
-    //                                 <div className="text-xs text-blue-400">
-    //                                     {days === 1 || days === 0 ? "a day ago": days + " days ago"}
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-
-    //                         {/* Ping Notif */}
-    //                         {data.status_id === 1 ? <div className="h-auto flex relative">
-    //                             <span className="flex h-4 w-4 mr-4 pointer-events-none">
-    //                                 <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-    //                                 <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-    //                             </span>
-    //                         </div> : ""}
-    //                     </li>
-    //                 )
-    //             }
-    //         })
-
-    //     } else {
-    //         <li className="py-5 text-center cursor-default">
-    //             <small>You don't have notification yet</small>
-    //         </li>
-    //     }
-    // }
 
     return (
         <div className={className}>
@@ -225,7 +135,7 @@ export default function Widgets({ className, notifData, clickTabsSide, toggleDar
                         </svg>
                     </div>
                     {/* Ping Notification */}
-                   {read > 0 ?  <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
+                    {read > 0 ? <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 bg-blue-500 justify-center items-center text-white font-semibold text-ss"></span>
                     </span> : ''}
@@ -296,7 +206,7 @@ export default function Widgets({ className, notifData, clickTabsSide, toggleDar
                                     All
                                 </div>
                             </li>
-                            {/* <li
+                            <li
                                 onClick={() => clickTabs("unread")}
                                 className={
                                     toggleTabs === "unread"
@@ -307,7 +217,7 @@ export default function Widgets({ className, notifData, clickTabsSide, toggleDar
                                 <div className="select-none text-xs w-fit px-5 py-2 cursor-pointer">
                                     Unread
                                 </div>
-                            </li> */}
+                            </li>
                         </ul>
                         {/*tab buttons*/}
 
@@ -316,11 +226,93 @@ export default function Widgets({ className, notifData, clickTabsSide, toggleDar
                             className={toggleTabs === "all" ? "flex" : "hidden"}
                         >
                             <ul className="min-h-fit 2xl:max-h-[520px] xl:max-h-[380px] max-h-[380px] pr-1 overflow-auto flex-row space-y-2 2xl:w-[350px] xl:w-[300px] w-[300px]">
-                                {/* no notification */}
-                                {/* {notifData?.length != 0 ? notifMapper(notifData) : 
-                                <li className="py-5 text-center cursor-default">
-                                    <small>You don't have notification yet</small>
-                                </li>} */}
+                                <li onClick={() => clickICSNotification("open")} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
+                                    <div className="flex h-full items-center justify-between gap-3 px-3">
+                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
+                                            M
+                                        </div>
+                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
+                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
+                                                <span className="font-semibold">
+                                                    Allan
+                                                </span>{" "}
+                                                <span className="">
+                                                    {" "}
+                                                    sent a request for return.
+                                                </span>
+                                            </div>
+                                            <div className="text-xs text-blue-400">
+                                                1 day ago
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Ping Notif */}
+                                    <div className="h-auto flex relative">
+                                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                                        </span>
+                                    </div>
+                                </li>
+                                <li className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
+                                    <div className="flex h-full items-center justify-between gap-3 px-3">
+                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
+                                            M
+                                        </div>
+                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
+                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
+                                                <span className="font-semibold">
+                                                    Allan
+                                                </span>{" "}
+                                                <span className="">
+                                                    {" "}
+                                                    sent a request for return.
+                                                </span>
+                                            </div>
+                                            <div className="text-xs text-blue-400">
+                                                1 day ago
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Ping Notif */}
+                                    <div className="h-auto flex relative">
+                                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                                        </span>
+                                    </div>
+                                </li>
+                                <li className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
+                                    <div className="flex h-full items-center justify-between gap-3 px-3">
+                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
+                                            M
+                                        </div>
+                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
+                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
+                                                <span className="font-semibold">
+                                                    Allan
+                                                </span>{" "}
+                                                <span className="">
+                                                    {" "}
+                                                    sent a request for return.
+                                                </span>
+                                            </div>
+                                            <div className="text-xs text-blue-400">
+                                                1 day ago
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Ping Notif */}
+                                    <div className="h-auto flex relative">
+                                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                                        </span>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
 
@@ -337,93 +329,6 @@ export default function Widgets({ className, notifData, clickTabsSide, toggleDar
                                 </li>
                                 {/* no notification */}
 
-                                <li className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
-                                    <div className="flex h-full items-center justify-between gap-3 px-3">
-                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-                                            M
-                                        </div>
-                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
-                                                <span className="font-semibold">
-                                                    Allan
-                                                </span>{" "}
-                                                <span className="">
-                                                    {" "}
-                                                    sent a request for return.
-                                                </span>
-                                            </div>
-                                            <div className="text-xs text-blue-400">
-                                                1 day ago
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Ping Notif */}
-                                    <div className="h-auto flex relative">
-                                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-                                        </span>
-                                    </div>
-                                </li>
-                                <li className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
-                                    <div className="flex h-full items-center justify-between gap-3 px-3">
-                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-                                            M
-                                        </div>
-                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
-                                                <span className="font-semibold">
-                                                    Allan
-                                                </span>{" "}
-                                                <span className="">
-                                                    {" "}
-                                                    sent a request for return.
-                                                </span>
-                                            </div>
-                                            <div className="text-xs text-blue-400">
-                                                1 day ago
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Ping Notif */}
-                                    <div className="h-auto flex relative">
-                                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-                                        </span>
-                                    </div>
-                                </li>
-                                <li className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
-                                    <div className="flex h-full items-center justify-between gap-3 px-3">
-                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-                                            M
-                                        </div>
-                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
-                                                <span className="font-semibold">
-                                                    Allan
-                                                </span>{" "}
-                                                <span className="">
-                                                    {" "}
-                                                    sent a request for return.
-                                                </span>
-                                            </div>
-                                            <div className="text-xs text-blue-400">
-                                                1 day ago
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Ping Notif */}
-                                    <div className="h-auto flex relative">
-                                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-                                        </span>
-                                    </div>
-                                </li>
                             </ul>
                         </div>
                     </div>

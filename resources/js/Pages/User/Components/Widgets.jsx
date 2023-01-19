@@ -7,11 +7,11 @@ export default function Widgets(props) {
     const [role, setRole] = useState('default');
 
     useEffect(()=>{
-        setName(value.name.toUpperCase());
-        setRole(value.role);
+        setName(name.toUpperCase());
+        setRole(role);
     })
 
-    //for LogOut
+    //for Logout
     const nav = useNavigate();
 
     const handleLogOut = () => {

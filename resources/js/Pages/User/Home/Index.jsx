@@ -7,49 +7,6 @@ export default function Index(props) {
     const [numberOfItems, setNumberOfItems] = useState()
     const [acceptedItems, setAcceptedItems] = useState([])
     const [recentIssuance, setRecentIssuance] = useState([])
-    const domain = window.location.href;
-    const url = new URL(domain)
-    const user = localStorage.getItem('localSession');
-    const value = JSON.parse(user);
-
-    useEffect(() => {
-        fetch('http://' + url.hostname + ':8000/api/getIndividualNumberOfItems', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setNumberOfItems(data.items)
-            })
-        fetch('http://' + url.hostname + ':8000/api/acceptedRequest', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setAcceptedItems(data.acceptedItems)
-            })
-
-        fetch('http://' + url.hostname + ':8000/api/getRecentIssuanceUser', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setRecentIssuance(data.recentIssuance)
-            })
-
-    }, [])
-
 
     const recentIssuanceMapper = (items) => {
         return items?.map(data => {
