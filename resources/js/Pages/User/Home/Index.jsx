@@ -7,15 +7,12 @@ export default function Index(props) {
     const [numberOfItems, setNumberOfItems] = useState()
     const [acceptedItems, setAcceptedItems] = useState([])
     const [recentIssuance, setRecentIssuance] = useState([])
-<<<<<<< HEAD
-=======
     const domain = window.location.href;
     const url = new URL(domain)
     const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
 
     
->>>>>>> 82e13a17a0280e1a7e24331bed833aa54690e03a
 
     const recentIssuanceMapper = (items) => {
         return items?.map(data => {

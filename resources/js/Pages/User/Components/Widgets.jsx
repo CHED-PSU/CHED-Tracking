@@ -17,13 +17,8 @@ export default function Widgets(props) {
     const [role, setRole] = useState('default');
 
     useEffect(()=>{
-<<<<<<< HEAD
-        setName(name.toUpperCase());
-        setRole(role);
-=======
         setName(value.name)
         setRole(value.role)
->>>>>>> 82e13a17a0280e1a7e24331bed833aa54690e03a
     })
 
     //for Logout

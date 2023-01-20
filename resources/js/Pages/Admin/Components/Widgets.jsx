@@ -6,11 +6,7 @@ import PARNotification from "./Notification/PARNotification";
 import Profilesett from "./ProfileSettings/ProfileSettings";
 
 
-<<<<<<< HEAD
-export default function Widgets({ className, notifData, clickTabsSide, toggleDarkMode, read }) {
-=======
 export default function Widgets({ className, clickTabsSide, toggleDarkMode,read }) {
->>>>>>> 82e13a17a0280e1a7e24331bed833aa54690e03a
     const [openProfSett, setOpenProfSett] = useState("close");
 
     function clickProfSett(index) {
@@ -80,8 +76,6 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode,read 
         setOpenPARNotification(index);
     }
 
-<<<<<<< HEAD
-=======
     
 
 
@@ -170,7 +164,6 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode,read 
         }
     }
 
->>>>>>> 82e13a17a0280e1a7e24331bed833aa54690e03a
     return (
         <div className={className}>
             <Profilesett
