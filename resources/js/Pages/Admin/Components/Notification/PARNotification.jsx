@@ -1,25 +1,11 @@
 import React, { useEffect, useRef } from "react";
 
 export default function PARNotification({ className, clickPARNotification }) {
-    let modalBody = useRef();
-
-    useEffect(() => {
-        const handler = (event) => {
-            if (!modalBody.current.contains(event.target)) {
-                clickPARNotification("close");
-            }
-        };
-        document.addEventListener("mousedown", handler);
-
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    });
 
     return (
         <div className={className}>
             <div className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-50">
-                <div ref={modalBody} className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-12 py-8 z-20">
+                <div className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-12 py-8 z-20">
                     <button onClick={() => clickPARNotification("close")} className="closeModal text-xl">
                         <i className="fa-solid fa-xmark"></i>
                     </button>

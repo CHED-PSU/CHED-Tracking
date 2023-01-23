@@ -22,7 +22,7 @@ export default function Widgets(props) {
         setRole(value.role)
     })
 
-    //for LogOut
+    //for Logout
     const nav = useNavigate();
 
     const handleLogOut = () => {

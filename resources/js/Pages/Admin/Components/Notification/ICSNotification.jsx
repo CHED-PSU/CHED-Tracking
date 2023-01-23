@@ -1,25 +1,11 @@
 import React, { useEffect, useRef } from "react";
 
 export default function ICSNotification({ className, clickICSNotification }) {
-    let modalBody = useRef();
-
-    useEffect(() => {
-        const handler = (event) => {
-            if (!modalBody.current.contains(event.target)) {
-                clickICSNotification("close");
-            }
-        };
-        document.addEventListener("mousedown", handler);
-
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    });
 
    return (
         <div className={className}>
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-50">
-                <div ref={modalBody} className="w-1/3 bg-white dark:bg-darkColor-800 shadow-lg rounded-2xl px-12 py-8 space-y-4 z-20">
+                <div className="w-1/3 bg-white dark:bg-darkColor-800 shadow-lg rounded-2xl px-12 py-8 space-y-4 z-20">
                     <div className="text-center dark:text-white">
                         <div className="w-full text-left">
                             <button onClick={() => clickICSNotification("close")} className="text-xl dark:text-white">
