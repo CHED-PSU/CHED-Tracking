@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\ItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 
 //User Notification
-Route::get('/getNotificationItems',[FormController::class, 'getNotificationItems']);
+    //Notification List
+    Route::post('/getNotificationItems',[FormController::class, 'getNotificationItems']);
+
+    //Notification Form Item List
+    Route::post('/getNotifSecListItems',[ItemController::class,'getNotifSecListItems']);
+
+    //Notification Form Details
+    Route::post('/getFormDetails',[FormController::class,'getFormDetails']);

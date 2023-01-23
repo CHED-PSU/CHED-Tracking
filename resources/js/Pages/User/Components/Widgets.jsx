@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import ICSIssuedNotification from "./notification components/ICSIssuedNotification";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -56,63 +57,91 @@ export default function Widgets(props) {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
+        
     });
 
-    //for Notification mapping
+    // Modal for Notification Item
+    const [openNotifSpecList, setOpenNotifSpecList] = useState(false)
+    const [listId, setListId] = useState()
 
+    const notifSpecList = (id) => {
+        setListId(id)
+        setOpenNotifSpecList(!openNotifSpecList)
+        setOpenNotifDropdown(!openNotifDropdown)
+        
+    }
+
+    //for Notification mapping
     const [notificationItems, setNotificationItems] = useState([]);
 
+
+
     useEffect(()=>{
-        axios.get('/api/getNotificationItems').then(res =>{
-            setNotificationItems(res.data)
-        })
+        async function getNotificationItems(){
+            try{
+                const res = await axios.post('/api/getNotificationItems',{
+                    id: value.id
+                });
+                setNotificationItems(res.data)
+            }catch(error){
+                console.log(error)
+            }
+        }
+
+        getNotificationItems();
+        
+        
     },[])
+    
 
     const notifMapper = (items) => {
-        if (items != null) {
-            return items.map(data => {
-                var created_at = new Date(data.created_at);
+        
+        if (items != "") {
+            return items.map(nfItems => {
+                
+                return nfItems.map(data => {
+                    var created_at = new Date(data.created_at);
+                    let today = new Date();
 
-                let today = new Date();
+                    var distance = today.getTime() - created_at.getTime();
 
-                var distance = today.getTime() - created_at.getTime();
-
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-
-                if(data.np_id === 1){
-                    return (
-                        <li className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700">
-                            <div className="flex h-full items-center justify-between gap-3 px-3">
-                                <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-                                    {data.firstname.charAt(0)}
-                                </div>
-                                <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-                                    <div className="text-sm 2xl:leading-0 xl:leading-4">
-                                        <span className="font-semibold">
-                                            {data.firstname}
-                                        </span>{" "}
-                                        <span className="">
-                                            {" "}
-                                            has issued you an { data.description} form.
-                                        </span>
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    if(data.np_id === 1){
+                        return (
+                            <li onClick={() => notifSpecList(data.id)} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
+                                <div className="flex h-full items-center justify-between gap-3 px-3">
+                                    <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
+                                        {data.firstname.charAt(0)}
                                     </div>
-                                    <div className="text-xs text-blue-400">
-                                        {days === 1 || days === 0 ? "a day ago": days + " days ago"}
+                                    <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
+                                        <div className="text-sm 2xl:leading-0 xl:leading-4">
+                                            <span className="font-semibold">
+                                                {data.firstname}
+                                            </span>{" "}
+                                            <span className="">
+                                                {" "}
+                                                has issued you an { data.description} form.
+                                            </span>
+                                        </div>
+                                        <div className="text-xs text-blue-400">
+                                            {days === 1 || days === 0 ? "a day ago": days + " days ago"}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* Ping Notif */}
-                            {data.status_id === 1 ? <div className="h-auto flex relative">
-                                <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                                    <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-                                </span>
-                            </div> : ""}
-                        </li>
-                    )
+                                {/* Ping Notif */}
+                                {data.ns === 2 ? <div className="h-auto flex relative">
+                                    <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                        <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                                    </span>
+                                </div> : ""}
+                            </li>
+                        )
+                    }
                 }
                 
+                )
             })
 
         } else {
@@ -228,9 +257,8 @@ export default function Widgets(props) {
                 {/* Notification */}
                 <div
                     ref={notifDropdown}
-                    className={openNotifDropdown ? "" : "hidden"}
                 >
-                    <div className="relative w-fit min-h-fit 2xl:max-h-[660px] xl:max-h-[500px] max-h-[500px] bg-white border border-neutral-200 dark:border-neutral-700 dark:bg-darkColor-800 rounded-xl 2xl:py-4 xl:py-3 py-3 2xl:pl-5 2xl:pr-4 xl:px-4 px-4 2xl:space-y-3 xl:space-y-2 space-y-2 shadow-lg">
+                    {openNotifDropdown? <div className="relative w-fit min-h-fit 2xl:max-h-[660px] xl:max-h-[500px] max-h-[500px] bg-white border border-neutral-200 dark:border-neutral-700 dark:bg-darkColor-800 rounded-xl 2xl:py-4 xl:py-3 py-3 2xl:pl-5 2xl:pr-4 xl:px-4 px-4 2xl:space-y-3 xl:space-y-2 space-y-2 shadow-lg">
                         <div className="text-left cursor-default 2xl:pt-1">
                             <h2 className="2xl:text-xl xl:text-lg text-lg font-semibold dark:text-neutral-200">
                                 Notification
@@ -280,7 +308,8 @@ export default function Widgets(props) {
                                 
                             </ul>
                         </div>
-                    </div>
+                    </div>: 
+                    ""}
                 </div>
                 {/* Notification */}
 
@@ -318,6 +347,7 @@ export default function Widgets(props) {
                 </div>
                 {/* Profile */}
             </div>
+            {openNotifSpecList ? <ICSIssuedNotification  listId = {listId != null? listId: null}/> : ""}
         </div>
     );
 }
