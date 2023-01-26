@@ -5,7 +5,8 @@ import { set } from "lodash";
 
 export default function ICSIssuedNotification({
     clickSetPar,
-    listId
+    listId,
+    setOpenNotifSpecList
 }) {
     let modalBody = useRef();
 
@@ -65,6 +66,21 @@ export default function ICSIssuedNotification({
     }, [])
 
 
+    //accepting and declining the issued forms
+
+    async function acceptIssuedForm(formId){
+        try{
+            await axios.post('api/acceptIssuedForm', {
+                formId: formId
+            }).then(
+                
+            )
+        } catch (e){
+            console.log(e)
+        }
+    }
+
+
     const itemsData = (item) => {
         return item.map((data) => {
             return (
@@ -94,7 +110,7 @@ export default function ICSIssuedNotification({
                     className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-12 py-8 z-20"
                 >
                     <button
-                        onClick={() => clickSetPar(false)}
+                        onClick={() => setOpenNotifSpecList(false)}
                         className="closeModal text-xl"
                     >
                         <i className="fa-solid fa-xmark"></i>
@@ -231,23 +247,24 @@ export default function ICSIssuedNotification({
                         {/* Hide this buttons if the form is already accepted */}
 
                         {confirmation === 'TBD' ?
-                            <>
-                                <div className="flex flex-col space-y-3">
-                                    <button
-                                        className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
-                                    >
-                                        Accept
-                                    </button>
-                                    <button
-                                        className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
-                                    >
-                                        Decline
-                                    </button>  
-                                </div> 
-                            </> 
-                            : 
-                            <button className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] disabled cursor-not-allowed">wow</button>}
 
+                            <button className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] disabled cursor-not-allowed">wow</button>
+                        :
+                        <>
+                            <div className="flex flex-col space-y-3">
+                                <button
+                                    className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
+                                >
+                                    Accept
+                                </button>
+                                <button
+                                    className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
+                                >
+                                    Decline
+                                </button>
+                            </div>
+                        </>
+                        }
 
 
 

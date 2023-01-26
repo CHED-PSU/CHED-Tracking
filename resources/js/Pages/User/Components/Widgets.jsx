@@ -347,7 +347,7 @@ export default function Widgets(props) {
                 </div>
                 {/* Profile */}
             </div>
-            {openNotifSpecList ? <ICSIssuedNotification  listId = {listId != null? listId: null}/> : ""}
+            {openNotifSpecList ? <ICSIssuedNotification  listId = {listId != null? listId: null} setOpenNotifSpecList = {setOpenNotifSpecList}/> : ""}
         </div>
     );
 }
