@@ -74,19 +74,19 @@ export default function Widgets(props) {
     //for Notification mapping
     const [notificationItems, setNotificationItems] = useState([]);
 
-
+    async function getNotificationItems(){
+        try{
+            const res = await axios.post('/api/getNotificationItems',{
+                id: value.id
+            });
+            setNotificationItems(res.data)
+        }catch(error){
+            console.log(error)
+        }
+    }
 
     useEffect(()=>{
-        async function getNotificationItems(){
-            try{
-                const res = await axios.post('/api/getNotificationItems',{
-                    id: value.id
-                });
-                setNotificationItems(res.data)
-            }catch(error){
-                console.log(error)
-            }
-        }
+        
 
         getNotificationItems();
         
@@ -95,10 +95,8 @@ export default function Widgets(props) {
     
 
     const notifMapper = (items) => {
-        
-        if (items != "") {
+        if (items.length > 0) {
             return items.map(nfItems => {
-                
                 return nfItems.map(data => {
                     var created_at = new Date(data.created_at);
                     let today = new Date();
@@ -107,37 +105,69 @@ export default function Widgets(props) {
 
                     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
                     if(data.np_id === 1){
-                        return (
-                            <li onClick={() => notifSpecList(data.id)} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
-                                <div className="flex h-full items-center justify-between gap-3 px-3">
-                                    <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-                                        {data.firstname.charAt(0)}
-                                    </div>
-                                    <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-                                        <div className="text-sm 2xl:leading-0 xl:leading-4">
-                                            <span className="font-semibold">
-                                                {data.firstname}
-                                            </span>{" "}
-                                            <span className="">
-                                                {" "}
-                                                has issued you an { data.description} form.
-                                            </span>
+                        if(data.ns_id === 2){
+                            return (
+                                <li onClick={() => notifSpecList(data.id)} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
+                                    <div className="flex h-full items-center justify-between gap-3 px-3">
+                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
+                                            {data.firstname.charAt(0)}
                                         </div>
-                                        <div className="text-xs text-blue-400">
-                                            {days === 1 || days === 0 ? "a day ago": days + " days ago"}
+                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
+                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
+                                                <span className="font-semibold">
+                                                    {data.firstname}
+                                                </span>{" "}
+                                                <span className="">
+                                                    {" "}
+                                                    has issued you an { data.description} form.
+                                                </span>
+                                            </div>
+                                            <div className="text-xs text-blue-400">
+                                                {days === 1 || days === 0 ? "a day ago": days + " days ago"}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                {/* Ping Notif */}
-                                {data.ns === 2 ? <div className="h-auto flex relative">
-                                    <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                                        <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-                                    </span>
-                                </div> : ""}
-                            </li>
-                        )
+    
+                                    {/* Ping Notif */}
+                                    <div className="h-auto flex relative">
+                                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                                        </span>
+                                    </div>
+                                    
+                                </li>
+                            )
+                        }else{
+                            return (
+                                <li onClick={() => notifSpecList(data.id)} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
+                                    <div className="flex h-full items-center justify-between gap-3 px-3">
+                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
+                                            {data.firstname.charAt(0)}
+                                        </div>
+                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
+                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
+                                                <span className="font-semibold">
+                                                    {data.firstname}
+                                                </span>{" "}
+                                                <span className="">
+                                                    {" "}
+                                                    has issued you an { data.description} form.
+                                                </span>
+                                            </div>
+                                            <div className="text-xs text-blue-400">
+                                                {days === 1 || days === 0 ? "a day ago": days + " days ago"}
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    {/* Ping Notif */}
+                                    
+                                    
+                                </li>
+                            )
+                        }
+                        
                     }
                 }
                 
@@ -145,9 +175,12 @@ export default function Widgets(props) {
             })
 
         } else {
-            <li className="py-5 text-center cursor-default">
-                <small>You don't have notification yet</small>
-            </li>
+            
+            return(
+                <li className="py-5 text-center cursor-default">
+                    <small>You don't have notification yet</small>
+                </li>
+            )
         }
     }
 
@@ -155,6 +188,7 @@ export default function Widgets(props) {
 
     return (
         <div className={props.className}>
+            
             {/* Buttons */}
             <div className="w-fit flex items-center 2xl:space-x-4 xl:space-x-3 space-x-3">
                 {/* Dark Mode Button */}

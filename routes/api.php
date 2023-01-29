@@ -33,3 +33,15 @@ Route::post('/login', [AuthController::class, 'login']);
 
     //Notification Form Details
     Route::post('/getFormDetails',[FormController::class,'getFormDetails']);
+
+    //Accept and Decline Issued form from notification
+    Route::post('acceptIssuedForm',[FormController::class,'acceptIssuedForm']); 
+    Route::post('declineIssuedForm',[FormController::class,'declineIssuedForm']);
+
+//User Home Area
+    //recent Issuance
+        Route::post('HomeData',[FormController::class,'HomeData']);
+
+//User Items Area
+    //Items fetcher
+        Route::post('getuserIndividualItems',[ItemController::class,'getuserIndividualItems']);

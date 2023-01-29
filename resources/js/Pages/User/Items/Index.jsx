@@ -13,71 +13,37 @@ export default function Index({ className }) {
     const [checkedData, setCheckedData] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const [individualData, setIndividualData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [openForm, setOpenFormHandler] = useState(false)
 
     const [itemsData, setItemsData] = useState([])
     const [filteredItemsData, setFilteredItemsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const domain = window.location.href;
-    const url = new URL(domain)
     const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
 
-    const [openForms, setOpenForms] = useState(false);
 
     useEffect(() => {
-        if (itemsData.length === 0) {
+        const getIndividualItems = async () =>{
+            setLoading(true)
+            try{
+                await axios.post('api/getuserIndividualItems',{ 
+                    user_id: value.id
+                }).then(res => {
+                    setItemsData(res.data.itemsData)
+                    setFilteredItemsData(res.data.itemsData)
 
-            fetch('http://' + url.hostname + ':8000/api/getIndividualItems', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: value.id
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    setItemsData(data.data)
                 })
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+            }
         }
+        getIndividualItems()
+    }, [])
 
-        setFilteredItemsData(itemsData)
-    }, [itemsData])
-
-
-    const closeFormHandler = () => {
-        setOpenForms(!openForms)
-        fetch('http://' + url.hostname + ':8000/api/getIndividualItems', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setItemsData(data.data)
-            })
-    }
-
-    const openFormHandler = (e) => {
-
-       
-
-        fetch('http://' + url.hostname + ':8000/api/getIndividualItemReturn', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: e.target.value
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    setIndividualData(data.data)
-                    setOpenForms(!openForms)
-                })
-
-
-    }
+    
 
     const checkHandler = (e) => {
         const { value, checked } = e.target;
@@ -102,11 +68,12 @@ export default function Index({ className }) {
 
 
 
-
     const renderItems = (itemsData) => {
         return itemsData.map(data => {
 
-            return <IndividualItems checkHandler={checkHandler} openFormHandler={openFormHandler} article={data.article} description={data.description} date={data.created_at} value={data.id} key={data.id} />
+            let date = new Date(data.created_at)
+            let date_text = date.toString()
+            return <IndividualItems checkHandler={checkHandler} openFormHandler={openFormHandler} article={data.article} description={data.description} date={date_text} value={data.id} key={data.id} />
         })
     }
 
@@ -125,6 +92,11 @@ export default function Index({ className }) {
         }
     }
 
+    //for Form functions
+
+    const openFormHandler = (e) =>{
+    }
+
     return (
         <div
             className={
@@ -132,11 +104,7 @@ export default function Index({ className }) {
                 "  flex-col 2xl:px-10 xl:px-5 px-5 2xl:py-5 xl:py-3 py-3 items-center"
             }
         >
-            {openForms ? <ReturnRequest
-                data={individualData}
-                openFormHandler={openFormHandler}
-                closeFormHandler={closeFormHandler}
-            /> : ""}
+            
             <div className="absolute -right-14 bottom-0 w-1/3">
                 <AdminBg />
             </div>
@@ -182,6 +150,7 @@ export default function Index({ className }) {
                     </table>
                 </div>
             </div>
+            {openForm ? <ReturnRequest /> : ""}
         </div>
     );
 }

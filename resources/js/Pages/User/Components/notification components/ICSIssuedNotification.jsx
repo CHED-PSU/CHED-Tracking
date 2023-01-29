@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import Alert from "../../../../components/Alert";
+import Alert from "../Alerts/WidgetAcceptAlert";
 import { set } from "lodash";
+import { data } from "autoprefixer";
 
 export default function ICSIssuedNotification({
-    clickSetPar,
     listId,
     setOpenNotifSpecList
 }) {
@@ -14,8 +14,8 @@ export default function ICSIssuedNotification({
 
     const [items, setItems] = useState([]);
     const [formDetails, setFormDetails] = useState([]);
-    const [confirmation, setConfirmation] = useState();
-    const [accept, setAccept] = useState(false);
+    
+
 
 
 
@@ -49,7 +49,7 @@ export default function ICSIssuedNotification({
                 listId: listId
             }).then(res => {
                 setFormDetails(res.data.form_details)
-                setConfirmation(res.data.confirmation)
+                
             })
         } catch (e) {
             console.log(e)
@@ -57,7 +57,6 @@ export default function ICSIssuedNotification({
             setLoading(false);
         }
 
-        console.log(formDetails)
     }
 
     useEffect(() => {
@@ -68,18 +67,11 @@ export default function ICSIssuedNotification({
 
     //accepting and declining the issued forms
 
-    async function acceptIssuedForm(formId){
-        try{
-            await axios.post('api/acceptIssuedForm', {
-                formId: formId
-            }).then(
-                
-            )
-        } catch (e){
-            console.log(e)
-        }
+    const clickAlert = (val) =>{
+        setOpenAlert(val);
     }
 
+    
 
     const itemsData = (item) => {
         return item.map((data) => {
@@ -101,9 +93,66 @@ export default function ICSIssuedNotification({
         });
     };
 
+    //alert 
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
+    const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
+    const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
+    const [alertButtonColor, setAlertButtonColor] = useState("blue"); // none, blue, or red
+    const [alertYesButton, setAlertYesButton] = useState("Yes");
+    const [alertNoButton, setAlertNoButton] = useState("No");
+    const [alertFunction, setAlertFunction] = useState();
+
+    const acceptHandler = () =>{
+        setAlertIcon("question");
+        setAlertHeader("Confirmation");
+        setAlertDesc("Are you sure you want to accept it?");
+        setAlertButtonColor("blue");
+        setAlertYesButton("Accept");
+        setAlertNoButton("Cancel");
+        setAlertFunction('acceptIssuedForm')
+        clickAlert(true)
+    }
+
+    const declineHandler = () => {
+        setAlertIcon("question");
+        setAlertHeader("Confirmation");
+        setAlertDesc("Are you sure you want to decline it?");
+        setAlertButtonColor("red");
+        setAlertYesButton("Decline");
+        setAlertNoButton("Cancel");
+        setAlertFunction('declineIssuedForm')
+        clickAlert(true)
+    }
+
+
+    const feedback = (button,desc,icon) =>{
+        setAlertButtonColor(button)
+        setAlertDesc(desc)
+        setAlertIcon(icon)
+    }
+
 
     return (
         <div ref={modalBody}>
+            {openAlert ? (
+                <Alert
+                    alertIcon={alertIcon}
+                    alertHeader={alertHeader}
+                    alertDesc={alertDesc}
+                    alertButtonColor={alertButtonColor}
+                    alertYesButton={alertYesButton}
+                    alertNoButton={alertNoButton}
+                    alertFunction={alertFunction}
+                    clickAlert={clickAlert}
+                    listId={listId}
+                    feedback = {feedback}
+                    className={""}
+                    
+                />
+            ) : (
+                ""
+            )}
             <div className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-30">
                 <div
                     ref={modalBody}
@@ -246,28 +295,18 @@ export default function ICSIssuedNotification({
                     <div className="pt-2">
                         {/* Hide this buttons if the form is already accepted */}
 
-                        {confirmation === 'TBD' ?
-
-                            <button className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] disabled cursor-not-allowed">wow</button>
-                        :
-                        <>
-                            <div className="flex flex-col space-y-3">
-                                <button
+                        <div className="flex flex-col space-y-3 ">
+                                <button onClick={acceptHandler}
                                     className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
                                 >
                                     Accept
                                 </button>
-                                <button
+                                <button onClick={declineHandler}
                                     className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
                                 >
                                     Decline
                                 </button>
-                            </div>
-                        </>
-                        }
-
-
-
+                            </div> 
 
                         {/* Accepted Button (unhide this button if the form is already accepted) */}
                     </div>

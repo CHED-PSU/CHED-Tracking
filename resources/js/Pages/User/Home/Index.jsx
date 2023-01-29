@@ -12,7 +12,31 @@ export default function Index(props) {
     const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
 
+    const [loader, setLoader] = useState(false)
+
     
+
+    useEffect(()=>{
+        async function getHomeData(){
+            setLoader(true)
+            try{
+                await axios.post('api/HomeData', {
+                    user_id: value.id
+                }).then(res =>{
+                    setRecentIssuance(res.data.recentIssuance)
+                    setNumberOfItems(res.data.numberOFItems)
+                })
+            }catch (e){
+                console.log(e)
+            }finally{
+                setLoader(false)
+            }
+        }
+
+        getHomeData()
+    },[])
+
+    console.log(recentIssuance)
 
     const recentIssuanceMapper = (items) => {
         return items?.map(data => {
@@ -42,9 +66,9 @@ export default function Index(props) {
                         <div className="rounded-lg bg-[#F0F2F5]">
                             <h4 className="text-sm font-medium py-2 px-3">
                                 <font className="font-bold">You</font> have
-                                been issued an{" "}
+                                been issued {" "}
                                 <font className="font-bold">
-                                    {data.totalItems === 1 ? "single item" : "many items"}
+                                    {data.assign_no}
                                 </font>{" "}
                                 from Inventory
                             </h4>
@@ -122,7 +146,7 @@ export default function Index(props) {
                             </div>
 
                         </div>
-                        {recentIssuance?.length != 0 ? recentIssuanceMapper(recentIssuance) : <div className="flex items-center justify-center pb-8 cursor-default">
+                        {recentIssuance?.length != 0 ? recentIssuanceMapper(Object.values(recentIssuance)) : <div className="flex items-center justify-center pb-8 cursor-default">
                             <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 rounded-full w-[300px] h-[300px]">
                                 <img src="./img/no_data.png" alt="no data" className="w-52" draggable="false" />
                                 <strong className="text-text-gray-2 text-sm">You haven't been issued yet</strong>
@@ -145,7 +169,7 @@ export default function Index(props) {
                                     Items
                                 </div>
                                 <div className="w-full 2xl:text-5xl xl:text-3xl text-3xl font-bold text-white">
-                                    {numberOfItems}
+                                    {numberOfItems != null ? numberOfItems : 0}
                                 </div>
                             </div>
                         </div>

@@ -3,9 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Alert from "../../../../components/Alert";
 export default function ReturnRequest(props) {
     const modalBody = useRef();
-    const defect = useRef();
-    const purpose = useRef();
-    const comment = useRef();
+
 
 
     const [openAlert, setOpenAlert] = useState(false);

@@ -20,4 +20,18 @@ class ItemController extends Controller
 
         return response()->json(['items' => $items]);
     }
+
+    public function getuserIndividualItems(Request $req){
+        $getUserItems = DB::table('trackings as t')
+        ->select('i.article','i.description','un.created_at','it.id')
+        ->join('inventory_tracking as it','t.id','=','it.tracking_id')
+        ->join('users_notification as un','un.trackings_id','=','t.id')
+        ->join('inventories as i','it.inventory_id','=','i.id')
+        ->where('t.received_by',$req->input('user_id'))
+        ->where('un.confirmation','accepted')
+        ->whereNot('i.property_id',1)
+        ->get();
+        
+        return response()->json(['itemsData'=>$getUserItems]);
+    }
 }
