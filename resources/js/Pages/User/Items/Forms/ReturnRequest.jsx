@@ -4,7 +4,9 @@ import Alert from "../../../../components/Alert";
 export default function ReturnRequest(props) {
     const modalBody = useRef();
 
+    useEffect(()=>{
 
+    })
 
     const [openAlert, setOpenAlert] = useState(false);
     const [isOther, setIsOther] = useState(false);
@@ -51,82 +53,7 @@ export default function ReturnRequest(props) {
         setOptionHandler(e.target.value)
     }
 
-    const returnitemhandler = (e) => {
-
-        if (defecthandler === undefined) {
-            setAlertIcon('exclamation')
-            setAlertHeader('REQUIRED!!')
-            setAlertDesc('You need to fill out the defect section!')
-            setAlertButtonColor('red')
-            setAlertYesButton('Understood')
-            setAlertNoButton('Whatever')
-            setOpenAlert(true)
-        } else {
-            if (optionhandler === undefined) {
-                setAlertIcon('exclamation')
-                setAlertHeader('REQUIRED!!')
-                setAlertDesc('You need to fill out the status section!')
-                setAlertButtonColor('red')
-                setAlertYesButton('Understood')
-                setAlertNoButton('Whatever')
-                setOpenAlert(true)
-            } else {
-                if (optionhandler === "Other") {
-                    if (commenthandler === "None") {
-                        setAlertIcon('exclamation')
-                        setAlertHeader('REQUIRED!!')
-                        setAlertDesc('You need to fill out the comment section!')
-                        setAlertButtonColor('red')
-                        setAlertYesButton('Understood')
-                        setAlertNoButton('Whatever')
-                        setOpenAlert(true)
-                    } else {
-                        let id = e.target.value;
-                        const data = [defecthandler, optionhandler, commenthandler, id]
-                        fetch('http://' + url.hostname + ':8000/api/returnIndividualItem', {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify(data)
-                        })
-                            .then(response => response.json())
-                            .then((data) => {
-                                setAlertIcon('check')
-                                setAlertHeader('Success!!')
-                                setAlertDesc('You need to fill out the comment section!')
-                                setAlertButtonColor('none')
-                                setAlertYesButton('Understood')
-                                setAlertNoButton('Okay')
-                                setOpenAlert(true)
-                            })
-                        setTimeout(props.closeFormHandler, 1500)
-                    }
-                } else {
-                    let id = e.target.value;
-                    const data = [defecthandler, optionhandler, commenthandler, id,value.id]
-                    fetch('http://' + url.hostname + ':8000/api/returnIndividualItem', {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify(data)
-                        })
-                            .then(response => response.json())
-                            .then((data) => {
-                                setAlertIcon('check')
-                                setAlertHeader('Success!!')
-                                setAlertDesc('You need to fill out the comment section!')
-                                setAlertButtonColor('none')
-                                setAlertYesButton('Understood')
-                                setAlertNoButton('Okay')
-                                setOpenAlert(true)
-                            })
-                        setTimeout(props.closeFormHandler, 1500)
-                }
-            }
-        }
-    }
+    
 
     return (
         <div>
@@ -157,15 +84,15 @@ export default function ReturnRequest(props) {
                             <h6 className="text-[18px] pb-2">Description of Property</h6>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Type:</h6>
-                                <h5 className="underline">{props.data.article}</h5>
+                                <h5 className="underline">{}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Serial No:</h6>
-                                <h5 className="underline">{props.data.property_no}</h5>
+                                <h5 className="underline">{}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Acuisituin Cost:</h6>
-                                <h5 className="underline">P{props.data.price}</h5>
+                                <h5 className="underline">P{}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Nature of last repair:</h6>
@@ -176,11 +103,11 @@ export default function ReturnRequest(props) {
                             <h6 className="text-[18px] pb-2">Control No:</h6>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Brand/Model:</h6>
-                                <h5 className="underline">{props.data.description}</h5>
+                                <h5 className="underline">{}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Property No:</h6>
-                                <h5 className="underline">{props.data.property_no}</h5>
+                                <h5 className="underline">{}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Date of last repair:</h6>
@@ -211,7 +138,7 @@ export default function ReturnRequest(props) {
                     </div>
                     <div className="flex gap-3 w-full justify-end">
                         <button onClick={props.openFormHandler} className="btn-color-5 text-white rounded-full px-4 py-2 font-medium">Cancel</button>
-                        <button onClick={returnitemhandler} value={props.data.id} className="btn-color-4 text-white rounded-full px-4 py-2 font-medium">Send</button>
+                        <button className="btn-color-4 text-white rounded-full px-4 py-2 font-medium">Send</button>
                     </div>
 
                 </div>

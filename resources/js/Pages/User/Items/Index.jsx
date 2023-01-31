@@ -14,7 +14,7 @@ export default function Index({ className }) {
     const [selectAll, setSelectAll] = useState(false);
     const [individualData, setIndividualData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [openForm, setOpenFormHandler] = useState(false)
+    const [openForm, setOpenForm] = useState(false)
 
     const [itemsData, setItemsData] = useState([])
     const [filteredItemsData, setFilteredItemsData] = useState([]);
@@ -95,6 +95,7 @@ export default function Index({ className }) {
     //for Form functions
 
     const openFormHandler = (e) =>{
+        setOpenForm(true);
     }
 
     return (

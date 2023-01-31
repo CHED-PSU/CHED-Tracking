@@ -16,11 +16,7 @@ export default function Index() {
     //dark mode
     const [theme, setTheme] = useState(null);
 
-    useEffect(()=>{
-        socket.on("User_Notif" , (data) => {
-            alert(data.message)
-        })
-    },[socket])
+    
 
     useEffect(() => {
         if (window.matchMedia("(prefers-color-scheme: dark)").matches) {

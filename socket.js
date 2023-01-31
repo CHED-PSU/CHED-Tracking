@@ -20,9 +20,14 @@ io.on("connection", (socket)=>{
 
     socket.on('user_loggedIn', (data)=>{
         socket.broadcast.emit("User_Notif",data)
+        console.log(data.message)
+    })
+
+    socket.on('User_Notif', (data) => {
+        socket.broadcast.emit('Admin_Notif', data)
     })
 })
 
 server.listen(8001, ()=>{
-    console.log("Server is running")
+    console.log("Server is running") 
 })

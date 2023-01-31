@@ -1,22 +1,32 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import io from "socket.io-client";
+const socket = io.connect("http://127.0.0.1:8001")
 
 export default function ConditionalAlert(props) {
 
+    const user = localStorage.getItem('localSession');
+    const value = JSON.parse(user);
+
     let modalBody = useRef();
-    
+    const [accepted, setAccepted] = useState(false)
+    const [declined, setDeclined] = useState(false)
 
     const acceptIssuedForm = () =>{
         try{
             axios.post('api/acceptIssuedForm', {
                 listId: props.listId
-            }).then(
+            }).then( res => {
                 props.feedback('none','Successfully accepted','check')
-            )
+                setAccepted(true)
+            })
         } catch (e){
             console.log(e)
         }
         
+        if(accepted === true){
+            socket.emit('User_Accept', {message: value.name + '  has accepted the item'})
+        }
     }
     const declineIssuedForm = () =>{
         try{

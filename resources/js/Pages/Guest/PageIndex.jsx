@@ -56,7 +56,6 @@ export default function GuestIndex() {
                     
                     localStorage.setItem("localSession", JSON.stringify(item));
                     
-                    socket.emit("user_loggedIn", {message: "Someone Logged In"})
                 })
         }
 
