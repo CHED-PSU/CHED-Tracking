@@ -19,7 +19,7 @@ io.on("connection", (socket)=>{
     console.log(`User Connected: ${socket.id}`)
 
     socket.on('user_loggedIn', (data)=>{
-        console.log(data)
+        socket.broadcast.emit("User_Notif",data)
     })
 })
 

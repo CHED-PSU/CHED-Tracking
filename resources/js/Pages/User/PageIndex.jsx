@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
+
+const socket = io.connect("http://127.0.0.1:8001")
 
 import Sidebar from "./Components/Sidebar";
 import Widgets from "./Components/Widgets";
@@ -12,6 +15,12 @@ import Theme from "./Theme/Index";
 export default function Index() {
     //dark mode
     const [theme, setTheme] = useState(null);
+
+    useEffect(()=>{
+        socket.on("User_Notif" , (data) => {
+            alert(data.message)
+        })
+    },[socket])
 
     useEffect(() => {
         if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
