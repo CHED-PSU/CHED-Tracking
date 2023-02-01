@@ -45,3 +45,5 @@ Route::post('/login', [AuthController::class, 'login']);
 //User Items Area
     //Items fetcher
         Route::post('getuserIndividualItems',[ItemController::class,'getuserIndividualItems']);
+    //Item Request Form Fetcher
+        Route::post('getItemRequestData',[ItemController::class, 'getItemRequestData']);

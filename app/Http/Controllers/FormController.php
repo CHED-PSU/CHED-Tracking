@@ -61,7 +61,8 @@ class FormController extends Controller
                 foreach($getItems as $item){
                     $temp_date = [
                         'inventory_id' => $item->inventory_id,
-                        'item_status'           => 'owned'
+                        'item_status'           => 'owned',
+                        'tracking_id'           => $req->input('listId')
                     ];
 
                     array_push($user_item_data, $temp_date);

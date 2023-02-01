@@ -15,6 +15,7 @@ export default function Index({ className }) {
     const [individualData, setIndividualData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [openForm, setOpenForm] = useState(false)
+    const [valueId, setValueId] = useState();
 
     const [itemsData, setItemsData] = useState([])
     const [filteredItemsData, setFilteredItemsData] = useState([]);
@@ -95,6 +96,7 @@ export default function Index({ className }) {
     //for Form functions
 
     const openFormHandler = (e) =>{
+        setValueId(e.target.value)
         setOpenForm(true);
     }
 
@@ -151,7 +153,7 @@ export default function Index({ className }) {
                     </table>
                 </div>
             </div>
-            {openForm ? <ReturnRequest /> : ""}
+            {openForm ? <ReturnRequest valueId = {valueId ? valueId : ''} /> : ""}
         </div>
     );
 }

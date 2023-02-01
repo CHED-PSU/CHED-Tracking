@@ -1,12 +1,29 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Alert from "../../../../components/Alert";
 export default function ReturnRequest(props) {
     const modalBody = useRef();
+    const [loading, setLoading] = useState(false);
+    const [itemData, setItemData] = useState();
 
     useEffect(()=>{
+        const getItemRequestData = async () => {
+            setLoading(true);
+            try{
+                await axios.post('/api/getItemRequestData',{
+                    it_id: props.valueId
+                }).then(res =>{
+                    setItemData(res.data.itemData)
+                })
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+            }
+        }
 
-    })
+        getItemRequestData()
+    },[])
 
     const [openAlert, setOpenAlert] = useState(false);
     const [isOther, setIsOther] = useState(false);
