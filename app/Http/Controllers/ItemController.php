@@ -42,13 +42,28 @@ class ItemController extends Controller
             //User Items Data Fetcher
             public function getItemRequestData(Request $req){
                 $getUserItemsData = DB::table('inventory_tracking as it')
-                ->select('')
+                ->select('ty.abbr as type','i.description as brand','i.property_no','it.id','ia.price')
                 ->join('trackings as t','t.id','it.tracking_id')
                 ->join('user_items as ui','it.inventory_id','=','ui.inventory_id')
                 ->join('inventories as i','i.id','=','it.inventory_id')
+                ->join('types as ty','ty.id','=','i.type_id')
+                ->join('iar_inventory as ia','ia.inventory_id','=','it.inventory_id')
                 ->where('it.id',$req->input('it_id'))
                 ->first();
                 
-                var_dump($getUserItemsData);
+                return response()->json([
+                    'itemData'=>$getUserItemsData
+                ]);
+            }
+
+            public function returnItemsToAdmin(Request $req){
+                $returnItems = DB::table('user_returned_items')
+                ->insert([
+                    'inventory_tracking_id' => $req->input('inventory_tracking_id'),
+                    'defect' => $req->input('defect'),
+                    'status' => $req->input('reason')
+                ]);
+
+
             }
 }

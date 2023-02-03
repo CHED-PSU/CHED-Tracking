@@ -1,8 +1,45 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import io from "socket.io-client";
+const socket = io.connect("http://127.0.0.1:8001")
 
 export default function ConditionalAlert(props) {
 
+    const user = localStorage.getItem('localSession');
+    const value = JSON.parse(user);
+
     let modalBody = useRef();
+    const [accepted, setAccepted] = useState(false)
+    const [declined, setDeclined] = useState(false)
+
+    const acceptIssuedForm = () =>{
+        try{
+            axios.post('api/acceptIssuedForm', {
+                listId: props.listId
+            }).then( res => {
+                props.feedback('none','Successfully accepted','check')
+                setAccepted(true)
+            })
+        } catch (e){
+            console.log(e)
+        }
+        
+        if(accepted === true){
+            socket.emit('User_Accept', {message: value.name + '  has accepted the item'})
+        }
+    }
+    const declineIssuedForm = () =>{
+        try{
+            axios.post('api/declineIssuedForm', {
+                listId: props.listId
+            }).then(
+                props.feedback('none','Successfully declined','check')
+            )
+        } catch (e){
+            console.log(e)
+        }
+        
+    }
 
     return (
         <div className={props.className}>
@@ -55,20 +92,20 @@ export default function ConditionalAlert(props) {
 
                     </div>
                     <div className="flex gap-4 items-center justify-center">
-                        <div  className="btn-color-3 dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full px-5 py-3 cursor-pointer">
+                        <div onClick={() => props.clickAlert(false)} className="btn-color-3 dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full px-5 py-3 cursor-pointer">
                             {props.alertNoButton}
                         </div>
                         
                         {/* Red Button */}
-                        <div className={props.alertButtonColor === "red" ? "" : "hidden"}>
+                        <div onClick={declineIssuedForm} className={props.alertButtonColor === "red" ? "" : "hidden"}>
                             <div  className="bg-red-600 hover:bg-red-700 text-white rounded-full px-5 py-3 cursor-pointer font-semibold">
                                 {props.alertYesButton}
                             </div>
                         </div>
                         {/* Red Button */}
 
-                        {/* Red Button */}
-                        <div className={props.  alertButtonColor === "blue" ? "" : "hidden"}>
+                        {/* Blue Button */}
+                        <div onClick={acceptIssuedForm} className={props.alertButtonColor === "blue" ? "" : "hidden"}>
                             <div  className="bg-primary text-white rounded-full px-5 py-3 cursor-pointer font-semibold">
                                 {props.alertYesButton}
                             </div>

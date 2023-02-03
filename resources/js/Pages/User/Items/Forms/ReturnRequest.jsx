@@ -1,29 +1,30 @@
 import axios, { AxiosError } from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import Alert from "../../../../components/Alert";
+import Alert from '../../Components/Alerts/itemsAlert'
+
 export default function ReturnRequest(props) {
     const modalBody = useRef();
     const [loading, setLoading] = useState(false);
     const [itemData, setItemData] = useState();
 
-    useEffect(()=>{
+    useEffect(() => {
         const getItemRequestData = async () => {
             setLoading(true);
-            try{
-                await axios.post('/api/getItemRequestData',{
+            try {
+                await axios.post('/api/getItemRequestData', {
                     it_id: props.valueId
-                }).then(res =>{
+                }).then(res => {
                     setItemData(res.data.itemData)
                 })
-            }catch(e){
+            } catch (e) {
                 console.log(e)
-            }finally{
+            } finally {
                 setLoading(false)
             }
         }
 
         getItemRequestData()
-    },[])
+    }, [])
 
     const [openAlert, setOpenAlert] = useState(false);
     const [isOther, setIsOther] = useState(false);
@@ -42,6 +43,28 @@ export default function ReturnRequest(props) {
 
     function clickAlert(index) {
         setOpenAlert(index);
+        if (defecthandler === undefined || defecthandler === "") {
+            setAlertIcon('exclamation')
+            setAlertHeader('Warning')
+            setAlertDesc('Defect must be filled out')
+            setAlertButtonColor('none')
+            setAlertNoButton('Okay')
+        } else {
+            if (optionhandler === undefined) {
+                setAlertIcon('exclamation')
+                setAlertHeader('Warning')
+                setAlertDesc('Status must be filled out')
+                setAlertButtonColor('none')
+                setAlertNoButton('Okay')
+            }else{
+                setAlertIcon('question')
+                setAlertHeader('Confirmation')
+                setAlertDesc('Are you sure you want return the item?')
+                setAlertButtonColor('blue')
+                setAlertYesButton('Yes')
+                setAlertNoButton('No')
+            }
+        }
     }
 
     //end of alert
@@ -70,7 +93,28 @@ export default function ReturnRequest(props) {
         setOptionHandler(e.target.value)
     }
 
-    
+
+    //Return Item handler
+    const sendHandler = () => {
+        data = {
+            'defect': defecthandler,
+            'reason': optionhandler,
+            'inventory_tracking_id': props.valueID
+        }
+
+        try {
+            axios.post('api/returnItemsToAdmin', {
+                data: data
+            }).then(res => {
+                if (res.data.success == 'success') {
+
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
 
     return (
         <div>
@@ -82,6 +126,9 @@ export default function ReturnRequest(props) {
                 alertYesButton={alertYesButton}
                 alertNoButton={alertNoButton}
                 clickAlert={clickAlert}
+                defecthandler = {defecthandler}
+                optionhandler = {optionhandler}
+                valueId = {props.valueId}
                 className={""}
             /> : ""}
             <div className="z-30 w-full h-full bg-neutral-800 bg-opacity-75 fixed top-0 right-0 flex justify-center items-center">
@@ -101,15 +148,15 @@ export default function ReturnRequest(props) {
                             <h6 className="text-[18px] pb-2">Description of Property</h6>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Type:</h6>
-                                <h5 className="underline">{}</h5>
+                                <h5 className="underline">{itemData ? itemData.type : 'N/A'}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Serial No:</h6>
-                                <h5 className="underline">{}</h5>
+                                <h5 className="underline">{ }</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Acuisituin Cost:</h6>
-                                <h5 className="underline">P{}</h5>
+                                <h5 className="underline">P{itemData ? itemData.price : 'N/A'}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Nature of last repair:</h6>
@@ -120,11 +167,11 @@ export default function ReturnRequest(props) {
                             <h6 className="text-[18px] pb-2">Control No:</h6>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Brand/Model:</h6>
-                                <h5 className="underline">{}</h5>
+                                <h5 className="underline">{itemData ? itemData.brand : 'N/A'}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Property No:</h6>
-                                <h5 className="underline">{}</h5>
+                                <h5 className="underline">{itemData ? itemData.property_no : 'N/A'}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Date of last repair:</h6>
@@ -155,7 +202,7 @@ export default function ReturnRequest(props) {
                     </div>
                     <div className="flex gap-3 w-full justify-end">
                         <button onClick={props.openFormHandler} className="btn-color-5 text-white rounded-full px-4 py-2 font-medium">Cancel</button>
-                        <button className="btn-color-4 text-white rounded-full px-4 py-2 font-medium">Send</button>
+                        <button onClick={clickAlert} value={itemData ? itemData.id : 'N/A'} className="btn-color-4 text-white rounded-full px-4 py-2 font-medium">Send</button>
                     </div>
 
                 </div>

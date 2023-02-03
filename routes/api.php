@@ -47,3 +47,6 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post('getuserIndividualItems',[ItemController::class,'getuserIndividualItems']);
     //Item Request Form Fetcher
         Route::post('getItemRequestData',[ItemController::class, 'getItemRequestData']);
+
+    //return items to admin
+        Route::post('returnItemsToAdmin',[ItemController::class, 'returnItemsToAdmin']);
