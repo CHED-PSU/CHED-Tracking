@@ -29,12 +29,29 @@ class ItemController extends Controller
                 $getUserItems = DB::table('user_items as ui')
                 ->select('i.article','i.description','ui.created_at')
                 ->join('trackings as t','t.id','=','ui.tracking_id')
-                // ->join('inventory_tracking as it','it.tracking_id','=','t.id')
                 ->join('inventories as i','i.id','=','ui.inventory_id')
                 ->where('t.received_by',$req->input('user_id'))
                 ->where('ui.item_status','owned')
                 ->get();
+
+                $getItemsId = DB::table('inventory_tracking as it')
+                ->select('it.id')
+                ->join('trackings as t','t.id','=','it.tracking_id')
+                ->join('users_notification as un','un.trackings_id','=','t.id')
+                ->where('t.received_by',$req->input('user_id'))
+                ->where('un.confirmation','accepted')
+                ->get();
+
+                $count = 0;
                 
+                foreach($getUserItems as $items){
+                   
+                    $data = $getItemsId[$count]->id;
+                    $items->id = $data;
+                    $count++;
+                }
+                
+
                 return response()->json(['itemsData'=>$getUserItems]);
             }
 

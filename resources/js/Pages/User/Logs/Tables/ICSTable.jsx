@@ -16,22 +16,7 @@ export default function ICSTable({ className, toggleTabs, clickTabs }) {
     const value = JSON.parse(user);
 
     useEffect(() => {
-        if (icsItems.length === 0) {
-
-            fetch('http://' + url.hostname + ':8000/api/getICS', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: value.id
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    setIcsItems(data.allICS);
-                })
-        }
-
-        setFilteredItemsData(icsItems)
+        
     }, [icsItems])
 
     useEffect(() => {
