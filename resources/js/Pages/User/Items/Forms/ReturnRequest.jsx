@@ -95,25 +95,7 @@ export default function ReturnRequest(props) {
 
 
     //Return Item handler
-    const sendHandler = () => {
-        data = {
-            'defect': defecthandler,
-            'reason': optionhandler,
-            'inventory_tracking_id': props.valueID
-        }
-
-        try {
-            axios.post('api/returnItemsToAdmin', {
-                data: data
-            }).then(res => {
-                if (res.data.success == 'success') {
-
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }
+    
 
 
     return (
@@ -128,7 +110,7 @@ export default function ReturnRequest(props) {
                 clickAlert={clickAlert}
                 defecthandler = {defecthandler}
                 optionhandler = {optionhandler}
-                valueId = {props.valueId}
+                valueId = {itemData ? itemData.id : 'N/A'}
                 className={""}
             /> : ""}
             <div className="z-30 w-full h-full bg-neutral-800 bg-opacity-75 fixed top-0 right-0 flex justify-center items-center">

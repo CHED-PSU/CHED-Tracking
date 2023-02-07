@@ -97,7 +97,7 @@ export default function Index({ className }) {
 
     const openFormHandler = (e) =>{
         setValueId(e.target.value)
-        setOpenForm(true);
+        setOpenForm(!openForm);
     }
 
     return (
@@ -153,7 +153,7 @@ export default function Index({ className }) {
                     </table>
                 </div>
             </div>
-            {openForm ? <ReturnRequest valueId = {valueId ? valueId : ''} /> : ""}
+            {openForm ? <ReturnRequest openFormHandler= {openFormHandler} valueId = {valueId ? valueId : ''} /> : ""}
         </div>
     );
 }

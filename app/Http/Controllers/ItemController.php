@@ -26,14 +26,13 @@ class ItemController extends Controller
         //User Items Area
             //User Items Fetcher
             public function getuserIndividualItems(Request $req){
-                $getUserItems = DB::table('trackings as t')
-                ->select('i.article','i.description','un.created_at','it.id')
-                ->join('inventory_tracking as it','t.id','=','it.tracking_id')
-                ->join('users_notification as un','un.trackings_id','=','t.id')
-                ->join('inventories as i','it.inventory_id','=','i.id')
+                $getUserItems = DB::table('user_items as ui')
+                ->select('i.article','i.description','ui.created_at')
+                ->join('trackings as t','t.id','=','ui.tracking_id')
+                // ->join('inventory_tracking as it','it.tracking_id','=','t.id')
+                ->join('inventories as i','i.id','=','ui.inventory_id')
                 ->where('t.received_by',$req->input('user_id'))
-                ->where('un.confirmation','accepted')
-                ->whereNot('i.property_id',1)
+                ->where('ui.item_status','owned')
                 ->get();
                 
                 return response()->json(['itemsData'=>$getUserItems]);
@@ -57,13 +56,28 @@ class ItemController extends Controller
             }
 
             public function returnItemsToAdmin(Request $req){
-                $returnItems = DB::table('user_returned_items')
-                ->insert([
-                    'inventory_tracking_id' => $req->input('inventory_tracking_id'),
-                    'defect' => $req->input('defect'),
-                    'status' => $req->input('reason')
+                $returned_items = DB::table('user_returned_items')
+                ->insertGetId([
+                    'inventory_tracking_id' => $req->input('data')['inventory_tracking_id'],
+                    'defect' => $req->input('data')['defect'],
+                    'status' => $req->input('data')['reason'],
+                    'confirmation' => 'Pending'
                 ]);
 
+                DB::table('user_items as ui')
+                ->join('inventory_tracking as it','it.inventory_id','=','ui.inventory_id')
+                ->where('it.id',$req->input('data')['inventory_tracking_id'])
+                ->update([
+                    'item_status' => 'Requested to be return'
+                ]);
+
+                DB::table('admin_notification')->insert([
+                    'user_returned_items_id' => $returned_items,
+                    'ns_id' => 2,
+                    'np_id' => 4,
+                    'confirmation' => 'Pending',
+                    'description'  => 'has requested to return an item'
+                ]);
 
             }
 }
