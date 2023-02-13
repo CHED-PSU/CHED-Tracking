@@ -7,6 +7,8 @@ export default function PARTable({ className, toggleTabs, clickTabs }) {
     const [parItems, setParItems] = useState([]);
     const [filteredItemsData, setFilteredItemsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    
+    const [Loading, setLoading] = useState(false);
 
     const domain = window.location.href;
     const url = new URL(domain)
@@ -15,19 +17,23 @@ export default function PARTable({ className, toggleTabs, clickTabs }) {
 
     useEffect(() => {
 
-            fetch('http://' + url.hostname + ':8000/api/getPAR', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: value.id
-            })
-                .then(response => response.json())
-                .then((data) => {
-                    setParItems(data.allPAR);
+        const getParItems = async () => {
+            setLoading(true)
+            try{
+                await axios.post('api/getPAR',{
+                    user_id: value.id
+                }).then(res =>{
+                    setParItems(res.data.allPar)
                 })
-
-
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+                
+            }
+        }
+        
+        getParItems()
         setFilteredItemsData(parItems)
     }, [])
 

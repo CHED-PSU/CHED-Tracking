@@ -15,7 +15,8 @@ export default function ConditionalAlert(props) {
     const acceptIssuedForm = () =>{
         try{
             axios.post('api/acceptIssuedForm', {
-                listId: props.listId
+                listId: props.listId,
+                user_id: value.id
             }).then( res => {
                 props.feedback('none','Successfully accepted','check')
                 setAccepted(true)
@@ -31,7 +32,8 @@ export default function ConditionalAlert(props) {
     const declineIssuedForm = () =>{
         try{
             axios.post('api/declineIssuedForm', {
-                listId: props.listId
+                listId: props.listId,
+                user_id: value.id
             }).then(
                 props.feedback('none','Successfully declined','check')
             )

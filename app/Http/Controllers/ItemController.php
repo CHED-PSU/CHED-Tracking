@@ -90,6 +90,7 @@ class ItemController extends Controller
 
                 DB::table('admin_notification')->insert([
                     'user_returned_items_id' => $returned_items,
+                    'user_id'      => $req->input('user_id'),
                     'ns_id' => 2,
                     'np_id' => 4,
                     'confirmation' => 'Pending',

@@ -50,3 +50,12 @@ Route::post('/login', [AuthController::class, 'login']);
 
     //return items to admin
         Route::post('returnItemsToAdmin',[ItemController::class, 'returnItemsToAdmin']);
+
+//User Logs Area
+    //get data for tables
+        //ICS
+            Route::post('getICS',[FormController::class,'getICS']);
+        //PAR
+            Route::post('getPAR',[FormController::class,'getPAR']);
+        //Individual Items
+            Route::post('getIndividualItems',[FormController::class,'getIndividualItems']);

@@ -50,7 +50,7 @@ class FormController extends Controller
             public function acceptIssuedForm(Request $req){
 
                 $getItems = DB::table('trackings as t')
-                ->select('it.inventory_id')
+                ->select('it.id')
                 ->join('inventory_tracking as it', 'it.tracking_id','=','t.id')
                 ->where('t.id',$req->input('listId'))
                 ->get();
@@ -60,7 +60,7 @@ class FormController extends Controller
 
                 foreach($getItems as $item){
                     $temp_date = [
-                        'inventory_id' => $item->inventory_id,
+                        'inventory_id'          => $item->inventory_id,
                         'item_status'           => 'owned',
                         'tracking_id'           => $req->input('listId')
                     ];
@@ -75,6 +75,7 @@ class FormController extends Controller
 
                 $data = [
                     'trackings_id' => $req->input('listId'),
+                    'user_id'      => $req->input('user_id'),
                     'ns_id'        => 2,
                     'np_id'        => 2,
                     'description'  => 'has accepted the issued Form',
@@ -91,6 +92,7 @@ class FormController extends Controller
 
                 $data = [
                     'trackings_id' => $req->input('listId'),
+                    'user_id'      => $req->input('user_id'),
                     'ns_id'        => 2,
                     'np_id'        => 3,
                     'description'  => 'has declined the issued Form',
@@ -121,6 +123,64 @@ class FormController extends Controller
                 return response()->json(['recentIssuance'=>$recentIssuance,'numberOFItems'=>$getTotalItems]);
             }
 
+        //Logs Area
+
+            //ICS Table
+            public function getICS(Request $request)
+            {
+                $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(in.price * it.quantity) as total"), 'it.tracking_id')->join('iar_inventory as in', 'in.inventory_id', '=', 'it.inventory_id')->groupBy('it.tracking_id');
+                $result = DB::table('trackings as t')
+                    ->joinSub($subQuery, 'subData', function ($join) {
+                        $join->on('t.id', '=', 'subData.tracking_id');
+                    })
+                    ->where('t.received_by', $request->input('user_id'))
+                    ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
+                    ->where('ui.description', 'ICS')
+                    ->where('ui.confirmation', 'accepted')
+                    // ->groupBy('t.id')
+                    ->get();
+                    
+                    
+        
+                return response()->json([
+                    'allICS' => $result
+                ]);
+            }
+
+            public function getPAR(Request $request)
+            {
+                $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(in.price * it.quantity) as total"), 'it.tracking_id')->join('iar_inventory as in', 'in.inventory_id', '=', 'it.inventory_id')->groupBy('it.tracking_id');
+                $result = DB::table('trackings as t')
+                    ->joinSub($subQuery, 'subData', function ($join) {
+                        $join->on('t.id', '=', 'subData.tracking_id');
+                    })
+                    ->where('t.received_by', $request->input('user_id'))
+                    ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
+                    ->where('ui.description', 'PAR')
+                    ->where('ui.confirmation', 'accepted')
+                    // ->groupBy('t.id')
+                    ->get();
+                    
+                    
+        
+                return response()->json([
+                    'allPAR' => $result
+                ]);
+            }
+
+            public function getIndividualItems(Request $req){
+                $items = DB::table('trackings as t')
+                // ->select('ui.ui_id','it.quantity as qty','i.unit','ia.price as amount','i.description','i.property_no as code','it.eul','i.article','ui.item_status as remarks','it.id')
+                // ->join('inventory_tracking as it','it.tracking_id','=','t.id')
+                // ->join('inventories as i','i.id','=','it.inventory_id')
+                // ->join('iar_inventory as ia','ia.inventory_id','=','it.inventory_id')
+                ->join('user_items as ui','ui.tracking_id','=','t.id')
+                ->where('t.received_by',$req->input('user_id'))
+                ->where('ui.item_status','owned')
+                ->get();
+
+                return response()->json(['allIndivItems'=>$items]);
+            }
 
     
 }

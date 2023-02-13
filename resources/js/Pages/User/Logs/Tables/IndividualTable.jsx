@@ -9,6 +9,7 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
     const [totalPrice, setTotalPrice] = useState('');
     const [filteredItemsData, setFilteredItemsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [Loading, setLoading] = useState(false);
 
     const domain = window.location.href;
     const url = new URL(domain)
@@ -16,24 +17,23 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
     const value = JSON.parse(user);
 
     useEffect(() => {
-        if (indivItems.length === 0) {
-            
-            fetch('http://' + url.hostname + ':8000/api/getIndividualItemsForLogs', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setIndivItems(data.items);
-                setTotalPrice(data.totalPrice)
-            })
+        const getIndividualItems = async () => {
+            setLoading(true);
+            try{
+                await axios.post('/api/getIndividualItems',{
+                    user_id: value.id
+                }).then(res=>{
+                    setIndivItems(res.data.allIndivItems)
+                })
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+            }
         }
-
+        getIndividualItems()
         setFilteredItemsData(indivItems)
-    }, [indivItems])
+    }, [])
 
     useEffect(() => {
         search()
@@ -222,7 +222,7 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
                                     {/* no data */}
 
                                     {/* index 1 */}
-                                    {filteredItemsData?.length != 0 ? itemsMapper(Object.values(filteredItemsData)) : <td colspan="10" className="text-center h-12 bg-white border">
+                                    {filteredItemsData?.length != 0 ? itemsMapper(Object.values(indivItems)) : <td colspan="10" className="text-center h-12 bg-white border">
                                         <small>No data available in table</small>
                                     </td>}
                                     {/*  /index 1 */}

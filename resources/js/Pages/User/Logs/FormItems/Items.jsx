@@ -13,20 +13,20 @@ export default function Items({ data, date }) {
                 {data.description}
             </td>
             <td className="text-center px-2 border">
-                {data.quantity}
+                {data.qty}
             </td>
             <td className="text-center px-2 border"></td>
             <td className="text-center px-2 border">
-                {data.property_no}
+                {data.code}
             </td>
             <td className="text-center px-2 border">
-                16995.00
+                {data.qty * data.amount}
             </td>
             <td className="text-center px-2 border">
                 {date.getMonth()+"/"+date.getDay()+'/'+date.getFullYear()}
             </td>
             <td className="text-center px-2 border">
-                {data.status}
+                {data.remarks}
             </td>
             <td className="text-center px-2 border"></td>
         </tr>

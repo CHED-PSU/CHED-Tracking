@@ -9,6 +9,7 @@ export default function ICSTable({ className, toggleTabs, clickTabs }) {
     const [icsItems, setIcsItems] = useState([]);
     const [filteredItemsData, setFilteredItemsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [Loading, setLoading] = useState(false);
 
     const domain = window.location.href;
     const url = new URL(domain)
@@ -16,11 +17,31 @@ export default function ICSTable({ className, toggleTabs, clickTabs }) {
     const value = JSON.parse(user);
 
     useEffect(() => {
+        const getIcsItems = async () => {
+            setLoading(true)
+            try{
+                await axios.post('api/getICS',{
+                    user_id: value.id
+                }).then(res =>{
+                    setIcsItems(res.data.allICS)
+                    
+                })
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+                
+            }
+        }
         
-    }, [icsItems])
+        getIcsItems()
+        setFilteredItemsData(icsItems)
+        
+    }, [])
 
     useEffect(() => {
         search()
+        setFilteredItemsData(icsItems)
     }, [searchTerm])
 
 

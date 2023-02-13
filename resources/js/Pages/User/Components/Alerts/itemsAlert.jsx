@@ -25,7 +25,8 @@ export default function ConditionalAlert(props) {
 
         try {
             axios.post('api/returnItemsToAdmin', {
-                data: data
+                data: data,
+                user_id: value.id
             }).then(res => {
                 if (res.data.success == 'success') {
                     setAlertIcon('check')
