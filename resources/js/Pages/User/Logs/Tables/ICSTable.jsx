@@ -9,7 +9,7 @@ export default function ICSTable({ className, toggleTabs, clickTabs }) {
     const [icsItems, setIcsItems] = useState([]);
     const [filteredItemsData, setFilteredItemsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [Loading, setLoading] = useState(false);
+    const [Loading, setLoading] = useState(true);
 
     const domain = window.location.href;
     const url = new URL(domain)
@@ -18,25 +18,24 @@ export default function ICSTable({ className, toggleTabs, clickTabs }) {
 
     useEffect(() => {
         const getIcsItems = async () => {
-            setLoading(true)
-            try{
-                await axios.post('api/getICS',{
+            try {
+                await axios.post('api/getICS', {
                     user_id: value.id
-                }).then(res =>{
+                }).then(res => {
                     setIcsItems(res.data.allICS)
-                    
+
                 })
-            }catch(e){
+            } catch (e) {
                 console.log(e)
-            }finally{
+            } finally {
                 setLoading(false)
-                
+
             }
         }
-        
+
         getIcsItems()
         setFilteredItemsData(icsItems)
-        
+
     }, [])
 
     useEffect(() => {
@@ -127,11 +126,19 @@ export default function ICSTable({ className, toggleTabs, clickTabs }) {
                     {/* no data */}
 
                     {/*item 1*/}
-                    {filteredItemsData?.length != 0 ? icsMapper(Object.values(filteredItemsData)) : <tr>
-                        <td colspan="5" className="text-center h-12 bg-white border">
-                            <small>No data available in table</small>
-                        </td>
-                    </tr>}
+                    {
+                        Loading ?
+                            <>
+                                <tr>
+                                    <td colspan="5" className="text-center h-12 bg-white border">
+                                        <small>No data available in table</small>
+                                    </td>
+                                </tr>
+                            </> :
+                            icsMapper(Object.values(icsItems))
+                        
+                    }
+
 
 
                     {/*item 5*/}

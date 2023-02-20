@@ -16,6 +16,8 @@ export default function ICSDetails({ className, clickSubForms, id }) {
     const [designation, setdesignation] = useState('');
     const [designation2, setdesignation2] = useState('');
 
+    const [Loading, setLoading] = useState(true);
+
     const pageStyle = "@page{}"
     const handlePrint = useReactToPrint({
         content: () => ref.current,
@@ -29,25 +31,55 @@ export default function ICSDetails({ className, clickSubForms, id }) {
     const value = JSON.parse(user);
 
     useEffect(() => {
-        
-        fetch('http://' + url.hostname + ':8000/api/get_items', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setIcsItemLists(data.items)
-                setform_no(data.ics_no)
-                setReceived(data.received)
-                setIssued(data.issued)
-                setReceivedDate(data.received_date)
-                setIssuedDate(data.issued_date)
-                setdesignation(data.designation1)
-                setdesignation2(data.designation2)
-            })
+
+
+        const getItemsIcs = async () => {
+
+            try {
+                const response = await axios.post('/api/getIcsDetails', {
+                    id: id
+                });
+
+                const data = await response.data.data;
+                const form_details = await response.data.form_details
+
+                setIcsItemLists(data)
+                setform_no(form_details.ics_no)
+                setReceived(form_details.received)
+                setIssued(form_details.issued)
+                setReceivedDate(form_details.received_date)
+                setIssuedDate(form_details.issued_date)
+                setdesignation(form_details.designation1)
+                setdesignation2(form_details.designation2)
+
+            } catch (e) {
+                console.log(e)
+            } finally {
+                setLoading(false)
+            }
+
+        }
+
+        getItemsIcs();
+
+        // fetch('http://' + url.hostname + ':8000/api/get_items', {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: id
+        // })
+        //     .then(response => response.json())
+        //     .then((data) => {
+        //         setIcsItemLists(data.items)
+        //         setform_no(data.ics_no)
+        //         setReceived(data.received)
+        //         setIssued(data.issued)
+        //         setReceivedDate(data.received_date)
+        //         setIssuedDate(data.issued_date)
+        //         setdesignation(data.designation1)
+        //         setdesignation2(data.designation2)
+        //     })
     }, [])
 
     const icsItemListsMapper = (items) => {
@@ -154,19 +186,22 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                 </thead>
                                 <tbody id="slip-table">
                                     {/* index 1 */}
-                                    {icsItemListsMapper(Object.values(icsItemLists))}
+                                    {Loading ?
+                                        <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                            <td
+                                                colSpan="6"
+                                                className="text-xs px-2 h-fit text-center"
+                                            >
+                                                *nothing follows*
+                                            </td>
+                                        </tr> :
+                                        icsItemListsMapper(Object.values(icsItemLists))
+                                    }
                                     {/* index 1 */}
                                     {/* index 2 */}
 
                                     {/* index 2 */}
-                                    <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td
-                                            colSpan="6"
-                                            className="text-xs px-2 h-fit text-center"
-                                        >
-                                            *nothing follows*
-                                        </td>
-                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>

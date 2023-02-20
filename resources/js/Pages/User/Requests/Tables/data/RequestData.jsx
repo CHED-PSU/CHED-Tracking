@@ -27,7 +27,7 @@ export default function RequestData(props) {
                     </div>
                 </div>
                 <div className="flex my-auto w-fit 2xl:gap-3 xl:gap-2 gap-2 2xl:text-sm xl:text-xs text-xs">
-                    <button value={props.id} className="2xl:h-10 xl:h-9 h-9 px-4 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
+                    <button onClick={props.buttoN} value={props.id} className="2xl:h-10 xl:h-9 h-9 px-4 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
                         {props.button}
                     </button>
                 </div>

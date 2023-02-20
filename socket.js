@@ -16,15 +16,14 @@ const io = new Server(server, {
 })
 
 io.on("connection", (socket)=>{
-    console.log(`User Connected: ${socket.id}`)
 
     socket.on('user_loggedIn', (data)=>{
         socket.broadcast.emit("User_Notif",data)
         console.log(data.message)
     })
 
-    socket.on('User_Notif', (data) => {
-        socket.broadcast.emit('Admin_Notif', data)
+    socket.on('User_Accept', ({message}) => {
+        io.emit('Admin_Notif', {message:message})
     })
 
     socket.on('User_return_item', (data) => {

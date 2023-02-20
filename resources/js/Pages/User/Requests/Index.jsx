@@ -9,6 +9,7 @@ export default function Index({ className }) {
     const [toggleTabs, setToggleTabs] = useState("pending");
     const [pendingCount, setPendingCount] = useState(0);
     const [acceptedCount, setAcceptedCount] = useState(0);
+    const [Loading, setLoading] = useState(true);
 
     function clickTabs(index) {
         setToggleTabs(index);
@@ -19,19 +20,24 @@ export default function Index({ className }) {
     const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
     useEffect(()=>{
-       
-        fetch('http://' + url.hostname + ':8000/api/getRequestDataCount', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
+       const getPendingAcceptedRequests = async () => {
+        setLoading(true);
+            try{
+                const response = await axios.post('api/getPendingAcceptedRequests',{
+                    user_id: value.id
+                })
+
+                const data = response.data;
                 setPendingCount(data.pending)
                 setAcceptedCount(data.accepted)
-            })
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+            }
+       }
+       getPendingAcceptedRequests()
+       
     },[])
 
     return (

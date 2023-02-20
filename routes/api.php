@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -55,7 +56,23 @@ Route::post('/login', [AuthController::class, 'login']);
     //get data for tables
         //ICS
             Route::post('getICS',[FormController::class,'getICS']);
+            
+            //ICS details
+                Route::post('getIcsDetails', [FormController::class, 'getIcsDetails']);
         //PAR
             Route::post('getPAR',[FormController::class,'getPAR']);
         //Individual Items
             Route::post('getIndividualItems',[FormController::class,'getIndividualItems']);
+
+//User Requests Area
+    //Pending Requests
+        //Pending and Accepted Count
+            Route::post('getPendingAcceptedRequests', [GeneralController::class, 'getPendingAcceptedRequests']);
+
+        //Pending Data
+            Route::post('getPendingRequests', [FormController::class, 'getPendingRequests']);
+
+
+//Admin Notification
+    //get admin notification items
+        Route::get('getAdminNotification',[FormController::class, 'getAdminNotification']);

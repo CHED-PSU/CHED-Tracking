@@ -147,6 +147,40 @@ class FormController extends Controller
                 ]);
             }
 
+                //ICS table
+
+                public function getIcsDetails(Request $req){
+                    $getItems = DB::table('trackings as t')
+                    ->select('it.quantity','i.unit','ia.price','i.description','i.property_no','it.eul')
+                    ->join('inventory_tracking as it','it.tracking_id','=','t.id')
+                    ->join('inventories as i', 'i.id','=','it.inventory_id')
+                    ->join('iar_inventory as ia','ia.inventory_id','=','it.inventory_id')
+                    ->where('t.id',$req->input('id'))
+                    ->get();
+
+                    $getFormDetails = DB::table('trackings as t')
+                    ->select('t.assign_no','u1.firstname as issuerf','u1.surname as issuerS','u2.firstname as receiverf','u2.surname as receiverS','u1.designation as issuerD','u2.designation as receiverD','t.created_at as issuerDate','ui.created_at as receiverDate')
+                    ->join('users as u1','u1.id','=','t.issued_by')
+                    ->join('users as u2','u2.id','=','t.received_by')
+                    ->join('user_items as ui','ui.tracking_id','=','t.id')
+                    ->where('t.id',$req->input('id'))
+                    ->first();
+                    
+                    $data = [
+                        'ics_no' => $getFormDetails->assign_no,
+                        'issued' => $getFormDetails->issuerf . '' . $getFormDetails->issuerS,
+                        'received' => $getFormDetails->receiverf . '' . $getFormDetails->receiverS,
+                        'issued_date' => $getFormDetails->receiverDate,
+                        'received_date'   => $getFormDetails->issuerDate,
+                        'designation2' => $getFormDetails->issuerD,
+                        'designation1' => $getFormDetails->receiverD
+                    ];
+
+
+                    return response()->json(['data'=>$getItems, 'form_details'=>$data]);
+                }
+
+            //PAR Table
             public function getPAR(Request $request)
             {
                 $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(in.price * it.quantity) as total"), 'it.tracking_id')->join('iar_inventory as in', 'in.inventory_id', '=', 'it.inventory_id')->groupBy('it.tracking_id');
@@ -168,19 +202,60 @@ class FormController extends Controller
                 ]);
             }
 
+
+            //Inidividual inventory table
             public function getIndividualItems(Request $req){
                 $items = DB::table('trackings as t')
-                // ->select('ui.ui_id','it.quantity as qty','i.unit','ia.price as amount','i.description','i.property_no as code','it.eul','i.article','ui.item_status as remarks','it.id')
-                // ->join('inventory_tracking as it','it.tracking_id','=','t.id')
-                // ->join('inventories as i','i.id','=','it.inventory_id')
-                // ->join('iar_inventory as ia','ia.inventory_id','=','it.inventory_id')
-                ->join('user_items as ui','ui.tracking_id','=','t.id')
+                ->select('ui.ui_id','it.quantity as qty','i.unit','ia.price as amount','i.description','i.property_no as code','it.eul','i.article','ui.item_status as remarks','it.id')
+                ->join('inventory_tracking as it','it.tracking_id','=','t.id')
+                ->join('inventories as i','i.id','=','it.inventory_id')
+                ->join('iar_inventory as ia','ia.inventory_id','=','it.inventory_id')
+                ->join('user_items as ui','ui.inventory_tracking_id','=','it.id')
                 ->where('t.received_by',$req->input('user_id'))
                 ->where('ui.item_status','owned')
                 ->get();
 
-                return response()->json(['allIndivItems'=>$items]);
+                $total_price = 0;
+
+                foreach($items as $i){
+                    $total_price += $i->amount;
+                }
+
+                return response()->json(['allIndivItems'=>$items ,'total_price'=> $total_price]);
             }
 
+        // Pending Requests Area
+            public function getPendingRequests(Request $req){
+                $getItems = DB::table('user_returned_items as uri')
+                ->select('uri.created_at','ia.price','i.article','i.description','uri.uri_id')
+                ->join('inventory_tracking as it','it.id','=','uri.inventory_tracking_id')
+                ->join('inventories as i','i.id','=','it.inventory_id')
+                ->join('iar_inventory as ia','ia.inventory_id','=','i.id')
+                ->where('uri.user_id',$req->input('id'))
+                ->where('uri.confirmation','Pending')
+                ->get();
+
+                return response()->json(['data'=>$getItems]);
+            }
+
+
+    //Admin Area
+        //Notification Area
+            //Notification Items
+                public function getAdminNotification(Request $req){
+                    $getAdminNotification = DB::table('admin_notification as an')
+                    ->select('an.an_id')
+                    ->join('user_returned_items as uri','uri.uri_id','=','an.user_returned_items_id')
+                    ->join('users as u','u.id','=','an.user_id')
+                    ->get();
+
+                    $getAdminRequest = DB::table('admin_notification as an')
+                    ->select('an.an_id')
+                    ->join('trackings as t','t.id','=','an.tracking_id')
+                    ->join('users as u','u.id','=','an.user_id')
+                    ->get();
+
+                    var_dump($getAdminNotification);
+                }
     
 }

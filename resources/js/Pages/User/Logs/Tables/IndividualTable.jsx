@@ -9,7 +9,7 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
     const [totalPrice, setTotalPrice] = useState('');
     const [filteredItemsData, setFilteredItemsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [Loading, setLoading] = useState(false);
+    const [Loading, setLoading] = useState(true);
 
     const domain = window.location.href;
     const url = new URL(domain)
@@ -18,17 +18,18 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
 
     useEffect(() => {
         const getIndividualItems = async () => {
-            setLoading(true);
-            try{
-                await axios.post('/api/getIndividualItems',{
+            
+            try {
+                await axios.post('/api/getIndividualItems', {
                     user_id: value.id
-                }).then(res=>{
+                }).then(res => {
                     setIndivItems(res.data.allIndivItems)
+                    setTotalPrice(res.data.total_price);
                 })
-            }catch(e){
+            } catch (e) {
                 console.log(e)
-            }finally{
-                setLoading(false)
+            } finally {
+                setLoading(false);
             }
         }
         getIndividualItems()
@@ -220,11 +221,18 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
                                     {/* no data */}
 
                                     {/* no data */}
-
+                                    {
+                                        Loading ?
+                                            <>
+                                                <td colspan="10" className="text-center h-12 bg-white border">
+                                                    <small>No data available in table</small>
+                                                </td>
+                                            </>
+                                            :
+                                            itemsMapper(Object.values(indivItems))
+                                    }
                                     {/* index 1 */}
-                                    {filteredItemsData?.length != 0 ? itemsMapper(Object.values(indivItems)) : <td colspan="10" className="text-center h-12 bg-white border">
-                                        <small>No data available in table</small>
-                                    </td>}
+                                    
                                     {/*  /index 1 */}
                                 </tbody>
                             </table>
@@ -233,7 +241,7 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
                     </div>
                     {/* table container */}
                     <div className="w-full flex justify-end gap-1 text-sm mt-4">
-                        Total Amount: <span>{totalPrice}</span>
+                        Total Amount: <span>{Loading ? 'computing....' : totalPrice}</span>
                     </div>
                 </div>
             </div>
