@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
-import DonationTable from "./Tables/DonationTable";
-import DestructionTable from "./Tables/DestructionTable";
-import SalesTable from "./Tables/SalesTable";
+import ItemTab from "./Tables/ItemTab";
+import MasterList from "./Tables/MasterList";
 import AdminBg from "../../../Components/AdminBg";
 
 export default function Unserviceable({ className }) {
-    const [toggleTabs, setToggleTabs] = useState("donation");
+    const [toggleTabs, setToggleTabs] = useState("item");
 
     function clickTabs(index) {
         setToggleTabs(index);
     }
-    const [donation, setDonation] = useState([]);
-    const [destruction, setDestruction] = useState();
-    const [sales, setSales] = useState();
+    const [itemtab, setItemTab] = useState([]);
+    const [masterlist, setMasterList] = useState();
     
     return (
-        <div className={className + " flex justify-center"}>
+        <div className={className + " flex justify-center relative"}>
             <div className="absolute -right-14 bottom-0 w-1/3">
                 <AdminBg />
             </div>
@@ -24,70 +22,50 @@ export default function Unserviceable({ className }) {
                 <div className="pb-3">
                     <ul className="flex gap-4">
                         <li
-                            onClick={() => clickTabs("donation")}
+                            onClick={() => clickTabs("item")}
                             className={
-                                toggleTabs === "donation"
+                                toggleTabs === "item"
                                     ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
                                     : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
                             }
                         >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                                Donation
+                                Item
                             </div>
                         </li>
                         <li
-                            onClick={() => clickTabs("destruction")}
+                            onClick={() => clickTabs("master-list")}
                             className={
-                                toggleTabs === "destruction"
+                                toggleTabs === "master-list"
                                     ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
                                     : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
                             }
                         >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                                Destruction
+                                Master List
                             </div>
                         </li>
-                        <li
-                            onClick={() => clickTabs("sales")}
-                            className={
-                                toggleTabs === "sales"
-                                    ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                    : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
-                            }
-                        >
-                            <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                                Sales
-                            </div>
-                        </li>
+                        
                     </ul>
                 </div>
                 {/*tab buttons*/}
 
                 {/*Tabs*/}
-                <div className="flex flex-col h-full">
-                    {toggleTabs === "donation" ? <DonationTable
+                <div className="flex flex-col h-full mb-12 py-2 px-4 border rounded-lg bg-white">
+                    {/*Item Table*/}
+                    {toggleTabs === "item" ? <ItemTab
                         className={""}
-                        items={donation.length != 0 ? donation : null}
+                        items={itemtab.length != 0 ? itemtab : null}
                     /> : ""}
-                    {/*Donation Table*/}
-
-                    {/*Donation Table*/}
+                    {/*Item Table*/}
 
                     {/*Destruction Table*/}
-                    {toggleTabs === "destruction" ? <DestructionTable
+                    {toggleTabs === "master-list" ? <MasterList
                         className={""}
-                        items={destruction != undefined ? destruction : null}
+                        items={masterlist != undefined ? masterlist : null}
                     /> : ""}
 
                     {/*Destruction Table*/}
-
-                    {/*Sales Table*/}
-                    {toggleTabs === "sales" ? <SalesTable
-                        items={sales != undefined ? sales : null}
-                        className={""}
-                    /> : ""}
-                    {/*Sales Table*/}
-
 
                 </div>
                 {/*Tabs*/}
