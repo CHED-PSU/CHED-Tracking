@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class GeneralController extends Controller
 {
+    //User Pending
     public function getPendingAcceptedRequests(Request $req){
         $pendingCount = DB::table('user_returned_items')
         ->where('confirmation','Pending')
@@ -21,4 +22,29 @@ class GeneralController extends Controller
 
         return response()->json(['pending'=> $pendingCount,'accepted'=>$acceptedCount]);
     }
+
+    //Admin Dashboard
+    public function getAdminDashboardData(Request $req){
+        $totalUsers = DB::table('users')
+        ->count();
+
+        $recentIssuance = DB::table('trackings as t')
+        ->select('t.assign_no','u1.firstname as ufirstname','u1.surname as uSurname','t.created_at','u2.firstname as rfirstname','u2.surname as rSurname')
+        ->join('users as u1','u1.id','=','t.issued_by')
+        ->join('users as u2','u2.id','=','t.received_by')
+        ->get();
+
+        return response()->json(['total_users'=>$totalUsers,'recent_issuance' => $recentIssuance]);
+    }
+
+    //Admin Logs
+        //Admin User Data Fetcher
+            public function getUserLists(){
+                $userList = DB::table('users')
+                ->select('users.firstname','users.surname','users.designation','r.name')
+                ->join('roles as r','r.id','=','users.role_id')
+                ->get();
+
+                return response()->json(['user_lists' => $userList]);
+            }
 }

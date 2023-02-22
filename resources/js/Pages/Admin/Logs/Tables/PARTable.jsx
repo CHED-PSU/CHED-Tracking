@@ -6,9 +6,36 @@ import UserList from "../TableList/UserList";
 
 export default function PARTable({ className }) {
     const [openForms, setOpenForms] = useState("close");
+    const [Loading, setLoading] = useState(true);
+    const [parControl, setParControl] = useState();
+    const [totalPrice, setTotalPrice] = useState();
+    const [UserLists, setUserLists] = useState()
 
     function clickForms(index) {
         setOpenForms(index);
+    }
+
+    useEffect(() => {
+        const getUsers = async () => {
+            setLoading(true)
+            try {
+                const response = await axios.get('api/getUserLists')
+                const data = response.data
+                setUserLists(data.user_lists)
+            } catch (e) {
+                console.log(e)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        getUsers()
+    }, [])
+
+    const userMapper = (items) => {
+        return items?.map(data => {
+            return <UserList firstname={data.firstname} surname={data.surname} designation={data.designation} name={data.name} id={data.id} type={'par-control'} getData={getData} clickForms={clickForms} />
+        })
     }
 
     const pageCount = 5;
@@ -16,10 +43,23 @@ export default function PARTable({ className }) {
         setPageNumber(selected)
     };
 
+    async function getData(id) {
+        try {
+            const response = await axios.post('api/getUserParControls', { id: id })
+            const data = response.data
+            setParControl(data.ics_controls)
+            setTotalPrice(data.total_price)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
 
     return (
         <div className={className + " w-fit h-full relative"}>
             {openForms === "par-control" ? <PARControl
+                parControl = {parControl ? parControl : ''}
+                totalPrice = {totalPrice ? totalPrice : ''}
                 clickForms={clickForms}
             /> : ""}
 
@@ -40,7 +80,7 @@ export default function PARTable({ className }) {
                         </th>
                     </tr>
                     {/*item 1*/}
-                    <UserList type={'par-control'} clickForms={clickForms} />
+                    {Loading ? '' : userMapper(UserLists)}
                     {/*item 2*/}
                 </thead>
             </table>

@@ -40,7 +40,7 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                     id: id
                 });
 
-                const data = await response.data.data;
+                const data = await response.data.dataItems;
                 const form_details = await response.data.form_details
 
                 setIcsItemLists(data)

@@ -8,12 +8,48 @@ export default function IndividualInventory(props) {
         content: () => ref.current,
         docunentTitle: 'emp-data',
     })
-    
+
     const IndividualItem = (items) => {
         return items.map(data => {
             return <>
-                
+
             </>
+        })
+    }
+
+    const itemsMapper = (items) => {
+        return items?.map(data => {
+            const date = new Date(data.created_At)
+            return (
+                <tr className="text-xs text-darkColor-700 h-12 border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                    <td className="text-center px-2 border">
+                        1
+                    </td>
+                    <td className="text-center px-2 border">
+                        {data.article}
+                    </td>
+                    <td className="text-left px-2 border">
+                        {data.description}
+                    </td>
+                    <td className="text-center px-2 border">
+                        {data.qty}
+                    </td>
+                    <td className="text-center px-2 border"></td>
+                    <td className="text-center px-2 border">
+                        {data.code}
+                    </td>
+                    <td className="text-center px-2 border">
+                        {data.qty * data.amount}
+                    </td>
+                    <td className="text-center px-2 border">
+                        {date.getMonth() + "/" + date.getDay() + '/' + date.getFullYear()}
+                    </td>
+                    <td className="text-center px-2 border">
+                        {data.remarks}
+                    </td>
+                    <td className="text-center px-2 border"></td>
+                </tr>
+            )
         })
     }
     return (
@@ -160,36 +196,9 @@ export default function IndividualInventory(props) {
                                                 FURNITURE AND FIXTURES
                                             </th>
                                         </tr>
-                                         
+
                                         {/* index 1 */}
-                                        <tr className="text-xs text-darkColor-700 h-12 border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                            <td className="text-center px-2 border">
-                                                0
-                                            </td>
-                                            <td className="text-center px-2 border">
-                                                0
-                                            </td>
-                                            <td className="text-left px-2 border">
-                                                0
-                                            </td>
-                                            <td className="text-center px-2 border">
-                                                0
-                                            </td>
-                                            <td className="text-center px-2 border"></td>
-                                            <td className="text-center px-2 border">
-                                                0
-                                            </td>
-                                            <td className="text-center px-2 border">
-                                                0
-                                            </td>
-                                            <td className="text-center px-2 border">
-                                                0
-                                            </td>
-                                            <td className="text-center px-2 border">
-                                                N/AS
-                                            </td>
-                                            <td className="text-center px-2 border"></td>
-                                        </tr>
+                                        {props.indivItems?.lenght !== 0 ? itemsMapper(Object.values(props.indivItems)) : ''}
 
                                     </tbody>
                                 </table>
@@ -198,7 +207,7 @@ export default function IndividualInventory(props) {
                         </div>
                         {/* table container */}
                         <div className="w-full flex justify-end gap-1 text-sm mt-4">
-                            Total Amount: <span>47760.00</span>
+                            Total Amount: <span>{props.totalPrice}</span>
                         </div>
                     </div>
                     {/* data table */}

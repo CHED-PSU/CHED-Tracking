@@ -6,9 +6,47 @@ import UserList from "../TableList/UserList";
 
 export default function IndividualTable({ className }) {
     const [openForms, setOpenForms] = useState("close");
+    const [Loading, setLoading] = useState(true);
+    const [UserLists, setUserLists] = useState();
+    const [indivItems, setIndivItems] = useState();
+    const [totalPrice, setTotalPrice] = useState();
 
     function clickForms(index) {
         setOpenForms(index);
+    }
+
+    useEffect(() => {
+        const getUsers = async () => {
+            setLoading(true)
+            try {
+                const response = await axios.get('api/getUserLists')
+                const data = response.data
+                setUserLists(data.user_lists)
+            } catch (e) {
+                console.log(e)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        getUsers()
+    }, [])
+
+    const userMapper = (items) => {
+        return items?.map(data => {
+            return <UserList firstname={data.firstname} surname={data.surname} designation={data.designation} name={data.name} id={data.id} type={'in-in'} getData={getData} clickForms={clickForms} />
+        })
+    }
+
+    async function getData(id) {
+        try {
+            const response = await axios.post('api/getIndividualItems', { id: id })
+            const data = response.data
+            setIndivItems(data.allIndivItems)
+            setTotalPrice(data.total_price)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     const pageCount = 5;
@@ -19,6 +57,8 @@ export default function IndividualTable({ className }) {
     return (
         <div className={className + " w-fit h-full relative"}>
             {openForms === "in-in" ? <IndividualInventory
+            indivItems = {indivItems ? indivItems : ''}
+            totalPrice = {totalPrice ? totalPrice : ''}
                 clickForms={clickForms}
                 className={""}
             /> : ""}
@@ -40,7 +80,7 @@ export default function IndividualTable({ className }) {
                         </th>
                     </tr>
                     {/*item 1*/}
-                    <UserList type={"in-in"} clickForms={clickForms} />
+                    {Loading ? '' : userMapper(UserLists)}
                     {/*item 2*/}
                 </thead>
             </table>

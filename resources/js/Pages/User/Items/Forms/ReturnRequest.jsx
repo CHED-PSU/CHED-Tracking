@@ -12,7 +12,7 @@ export default function ReturnRequest(props) {
             setLoading(true);
             try {
                 await axios.post('/api/getItemRequestData', {
-                    it_id: props.valueId
+                    ui_id: props.valueId
                 }).then(res => {
                     setItemData(res.data.itemData)
                 })
@@ -110,7 +110,7 @@ export default function ReturnRequest(props) {
                 clickAlert={clickAlert}
                 defecthandler = {defecthandler}
                 optionhandler = {optionhandler}
-                valueId = {itemData ? itemData.id : 'N/A'}
+                valueId = {props.valueId}
                 className={""}
             /> : ""}
             <div className="z-30 w-full h-full bg-neutral-800 bg-opacity-75 fixed top-0 right-0 flex justify-center items-center">

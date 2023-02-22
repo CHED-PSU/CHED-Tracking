@@ -8,6 +8,38 @@ export default function PARDetails(props) {
         content: () => ref.current,
         documentTitle: 'emp-data',
     })
+
+    const parItemsMapper = (items) => {
+        return items?.map(data => {
+            return (
+                <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                    <td className="text-center px-3 border">
+                        {data.quantity}
+                    </td>
+                    <td className="text-center px-3 border">
+                        {data.unit}
+                    </td>
+                    <td className="text-center px-3 border">
+                    {data.description}
+                    </td>
+                    <td className="text-left px-3 py-3 border">
+                        <div className="flex items-center">
+                            <div className="font-semibold mr-3">
+                                
+                            </div>
+                            <div>
+                                {data.property_no}
+                            </div>
+                        </div>
+                    </td>
+                    <td className="text-left px-3 border">
+                        {data.created_at}
+                    </td>
+                    <td className="text-center px-3 border">{data.quantity * data.price}</td>
+                </tr>
+            )
+        })
+    }
     
     return (
         <div className={props.className}>
@@ -27,7 +59,7 @@ export default function PARDetails(props) {
                                     PAR Details
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
-                                    <b>Logs</b> / PAR / 0
+                                    <b>Logs</b> / PAR / {props.formDetails.ics_no}
                                 </p>
                             </div>
                         </div>
@@ -68,10 +100,10 @@ export default function PARDetails(props) {
                             <div className="">
                                 <div className="pt-1 flex items-center gap-2">
                                     <div className="text-xs dark:text-white">
-                                        PAR No:
+                                        PAR No: 
                                     </div>
                                     <div className="text-xs dark:text-gray-400 font-semibold">
-                                        0
+                                    {props.formDetails.ics_no}
                                     </div>
                                 </div>
                             </div>
@@ -104,36 +136,7 @@ export default function PARDetails(props) {
                                     </tr>
                                 </thead>
                                 <tbody id="slip-table">
-                                    <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td className="text-center px-3 border">
-                                            0
-                                        </td>
-                                        <td className="text-center px-3 border">
-                                            0
-                                        </td>
-                                        <td className="text-left px-3 py-3 border">
-                                            <div className="flex flex-col gap-1">
-                                                <div className="font-semibold mr-3">
-                                                    0
-                                                </div>
-                                                <div>
-                                                    0
-                                                </div>
-                                                <div className="text-center">
-                                                    *nothing follows*
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className=" px-3 border">
-                                            0
-                                        </td>
-                                        <td className="text-center px-3 border">
-                                            0
-                                        </td>
-                                        <td className="text-center px-3 border">
-                                            0
-                                        </td>
-                                    </tr>
+                                {props.icsItems?.lenght !== 0 ? parItemsMapper(Object.values(props.parItems)) : ''}
                                 </tbody>
                             </table>
                         </div>
@@ -141,7 +144,7 @@ export default function PARDetails(props) {
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center">
                                 <div className="w-fit">
                                     <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                        Issued by: 0
+                                        Issued by: {props.formDetails.issued}
                                     </div>
                                     <div
                                         className="pt-1 text-left text-sm underline font-semibold dark:text-white"
@@ -151,20 +154,17 @@ export default function PARDetails(props) {
                                         Signature Over Printed Name
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        0   
+                                    {props.formDetails.designation2}
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        0
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        0
+                                    {props.formDetails.issued_date}
                                     </div>
                                 </div>
                             </div>
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center">
                                 <div className="w-fit">
                                     <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                        Received by: 0
+                                        Received by: {props.formDetails.received}
                                     </div>
                                     <div
                                         className="pt-1 text-left text-sm underline font-semibold dark:text-white"
@@ -174,13 +174,10 @@ export default function PARDetails(props) {
                                         Signature Over Printed Name
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        0
+                                    {props.formDetails.designation1}
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        0
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        0
+                                    {props.formDetails.received_date}
                                     </div>
                                 </div>
                             </div>

@@ -27,7 +27,7 @@ class ItemController extends Controller
             //User Items Fetcher
             public function getuserIndividualItems(Request $req){
                 $getUserItems = DB::table('user_items as ui')
-                ->select('i.article','i.description','ui.created_at','it.id')
+                ->select('i.article','i.description','ui.created_at','ui.ui_id')
                 ->join('trackings as t','t.id','=','ui.tracking_id')
                 ->join('inventory_tracking as it','it.id','=','ui.inventory_tracking_id')
                 ->join('inventories as i','i.id','=','it.inventory_id')
@@ -43,25 +43,27 @@ class ItemController extends Controller
 
             //User Items Data Fetcher
             public function getItemRequestData(Request $req){
-                $getUserItemsData = DB::table('inventory_tracking as it')
-                ->select('ty.abbr as type','i.description as brand','i.property_no','it.id','ia.price')
+                $getUserItemsData = DB::table('user_items as ui as ui')
+                ->select('ty.abbr as type','i.description as brand','i.property_no','ui.ui_id','ia.price')
+                ->join('inventory_tracking as it','it.id','=','ui.inventory_tracking_id')
                 ->join('trackings as t','t.id','it.tracking_id')
-                ->join('user_items as ui','it.inventory_id','=','ui.inventory_id')
                 ->join('inventories as i','i.id','=','it.inventory_id')
                 ->join('types as ty','ty.id','=','i.type_id')
                 ->join('iar_inventory as ia','ia.inventory_id','=','it.inventory_id')
-                ->where('it.id',$req->input('it_id'))
+                ->where('ui_id',$req->input('ui_id'))
                 ->first();
                 
+                // var_dump($getUserItemsData);
                 return response()->json([
                     'itemData'=>$getUserItemsData
                 ]);
             }
 
             public function returnItemsToAdmin(Request $req){
+                
                 $returned_items = DB::table('user_returned_items')
                 ->insertGetId([
-                    'inventory_tracking_id' => $req->input('data')['inventory_tracking_id'],
+                    'ui_id' => $req->input('data')['ui_id'],
                     'user_id' => $req->input('user_id'),
                     'defect' => $req->input('data')['defect'],
                     'status' => $req->input('data')['reason'],
@@ -69,8 +71,7 @@ class ItemController extends Controller
                 ]);
 
                 DB::table('user_items as ui')
-                ->join('inventory_tracking as it','it.inventory_id','=','ui.inventory_id')
-                ->where('it.id',$req->input('data')['inventory_tracking_id'])
+                ->where('ui.ui_id',$req->input('data')['ui_id'])
                 ->update([
                     'item_status' => 'Requested to be return'
                 ]);
@@ -84,5 +85,60 @@ class ItemController extends Controller
                     'description'  => 'has requested to return an item'
                 ]);
 
+                return response()->json(['success' => 'success']);
+
             }
+    
+    //Admin Area
+        //Pending Items Fetcher
+            public function getPendingitems(Request $req){
+                $getPendingItems = DB::table('user_returned_items as uri')
+                ->select('i.article','i.description','uri.uri_id','ia.price','uri.created_at','uri.defect','t.assign_no')
+                ->join('user_items as ui','ui.ui_id','=','uri.ui_id')
+                ->join('inventory_tracking as it','it.id','=','ui.inventory_tracking_id')
+                ->join('inventories as i','i.id','=','it.inventory_id')
+                ->join('iar_inventory as ia','ia.inventory_id','=','i.id')
+                ->join('trackings as t','t.id','=','it.tracking_id')
+                ->where('uri.confirmation','pending')
+                ->get();
+
+                return response()->json(['pending_items' => $getPendingItems]);
+            }
+
+        //Returned Items Fetcher
+            public function getReturnedItems(){
+                $returnedItems = DB::table('user_returned_items as uri')
+                ->select('uri.uri_id','i.article','uri.created_at','uri.defect','u.firstname','u.surname','uri.status')
+                ->join('user_items as ui','ui.ui_id','=','uri.ui_id')
+                ->join('inventory_tracking as it','it.id','=','ui.inventory_tracking_id')
+                ->join('inventories as i','i.id','=','it.inventory_id')
+                ->join('users as u','u.id','=','uri.user_id')
+                ->where('uri.confirmation','accepted')
+                ->get();
+
+                return response()->json(['returnedItems' => $returnedItems]);
+            }
+            
+            //returned Items Data Fetcher
+                public function getAdminReturnedItemsData(Request $req){
+                    $getAdminReturnedItemsData = DB::table('user_returned_items as uri')
+                    ->select('req.designation as reqD','rec.designation as recD','t.abbr','ia.price','i.article','i.property_no','uri.defect','req.firstname as reqF','req.surname as reqS','rec.firstname as recF','rec.surname as recS','uri.created_at', 'uri.uri_id')
+                    ->join('user_items as ui','ui.ui_id','=','uri.ui_id')
+                    ->join('inventory_tracking as it','it.id','=','ui.inventory_tracking_id')
+                    ->join('inventories as i','i.id','=','it.inventory_id')
+                    ->join('users as req','req.id','=','uri.user_id')
+                    ->join('users as rec','rec.id','=','uri.received_by')
+                    ->join('types as t','t.id','=','i.type_id')
+                    ->join('iar_inventory as ia','ia.inventory_id','=','it.inventory_id')
+                    ->where('uri.uri_id', $req->input('id'))
+                    ->get();
+
+                    $getAdminReturnedItemsInfo = DB::table('returned_items_info as rii')
+                    ->where('uri_id', $req->input('id'))
+                    ->first();
+
+                    return response()->json(['adminReturnedItemsData' => $getAdminReturnedItemsData, 'adminReturnedItemsInfo' => $getAdminReturnedItemsInfo]);
+                }
+
+
 }

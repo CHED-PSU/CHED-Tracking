@@ -8,10 +8,18 @@ import ICSDetails from "../Forms/ICSDetails";
 export default function ICSControl(props) {
     const [openSubForms, setOpenSubForms] = useState("close");
     const [icsItems, setIcsItems] = useState();
-    const [loader, setLoader] = useState(true);
+    const [formDetails, setFormDetails] = useState()
 
     function clickSubForms(index) {
         setOpenSubForms(index);
+    }
+
+    function getICSdetails(index) {
+        axios.post('api/getIcsDetails', { id: index }).then(response => {
+            setIcsItems(response.data.dataItems)
+            setFormDetails(response.data.form_details)
+        })
+
     }
 
     const pageCount = 5;
@@ -19,10 +27,44 @@ export default function ICSControl(props) {
         setPageNumber(selected)
     };
 
+    const icsItemsMapper = (items) => {
+        return items?.map(data => {
+            return (
+                <tr className="text-xs h-16 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 text-text-gray dark:text-white">
+                    <td className="text-left pl-6 pr-3 text-text-gray text-2base">{data.assign_no}</td>
+                    <td className="text-left px-3">
+                        <div className="flex flex-col gap-1">
+                            <h5 className="text-base text-text-black font-semibold"></h5>
+                            <h6 className="text-text-gray text-2base">Date Acquired: {data.created_at}</h6>
+                        </div>
+                    </td>
+                    <td className="text-left px-3">
+                        <div className="flex flex-col gap-1">
+                            <h5 className="text-base font-semibold text-text-blue">{data.total}</h5>
+                            <h6 className="text-text-gray text-2base">Php</h6>
+                        </div>
+                    </td>
+                    <td className="text-left px-3 text-2base">{data.firstname + ' ' + data.surname}</td>
+                    <td className="text-right">
+                        <div
+                            onClick={() => { clickSubForms("ics-details"), getICSdetails(data.trackings_id) }}
+                            className="pr-6 flex items-center justify-end w-full h-12 gap-3">
+                            <div className="">
+                                <button className="btn-color-3 rounded-full py-2 px-3 text-text-black"><i className="fa-solid fa-eye"></i> View</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            )
+        })
+    }
+
     return (
 
         <div className={props.className}>
             {openSubForms === "ics-details" ? <ICSDetails
+                icsItems={icsItems ? icsItems : ''}
+                formDetails={formDetails ? formDetails : ''}
                 clickSubForms={clickSubForms}
                 className={""}
             /> : ""}
@@ -62,38 +104,12 @@ export default function ICSControl(props) {
                                     </tr>
                                 </thead>
                                 <tbody id="logs-ics-slips-table">
-
-                                    <tr className="text-xs h-16 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 text-text-gray dark:text-white">
-                                        <td className="text-left pl-6 pr-3 text-text-gray text-2base">0</td>
-                                        <td className="text-left px-3">
-                                            <div className="flex flex-col gap-1">
-                                                <h5 className="text-base text-text-black font-semibold"></h5>
-                                                <h6 className="text-text-gray text-2base">Date Acquired: 0</h6>
-                                            </div>
-                                        </td>
-                                        <td className="text-left px-3">
-                                            <div className="flex flex-col gap-1">
-                                                <h5 className="text-base font-semibold text-text-blue">0</h5>
-                                                <h6 className="text-text-gray text-2base">Php</h6>
-                                            </div>
-                                        </td>
-                                        <td className="text-left px-3 text-2base">0</td>
-                                        <td className="text-right">
-                                            <div
-                                                onClick={() => clickSubForms("ics-details")}
-                                                className="pr-6 flex items-center justify-end w-full h-12 gap-3">
-                                                <div className="">
-                                                    <button className="btn-color-3 rounded-full py-2 px-3 text-text-black"><i className="fa-solid fa-eye"></i> View</button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
+                                    {props.icsControl?.lenght !== 0 ? icsItemsMapper(Object.values(props.icsControl)) : ''}
                                 </tbody>
                             </table>
 
                             <div className="mt-5 text-sm">
-                                <font className="text-text-gray">Total ICS Amount: </font>P0
+                                <font className="text-text-gray">Total ICS Amount: </font>P {props.totalPrice}
                             </div>
                         </div>
                     </div>

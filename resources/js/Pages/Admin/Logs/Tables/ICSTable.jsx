@@ -6,9 +6,41 @@ import UserList from "../TableList/UserList";
 
 export default function ICSTable({ className }) {
     const [openForms, setOpenForms] = useState("close");
-   
+    const [Loading, setLoading] = useState(true);
+    const [UserLists, setUserLists] = useState()
+    const [IcsControl, setIcsControl] = useState();
+    const [totalPrice, setTotalPrice] = useState();
+
+    useEffect(() => {
+        const getUsers = async () => {
+            setLoading(true)
+            try {
+                const response = await axios.get('api/getUserLists')
+                const data = response.data
+                setUserLists(data.user_lists)
+            } catch (e) {
+                console.log(e)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        getUsers()
+    }, [])
+
     function clickForms(index) {
         setOpenForms(index);
+    }
+
+    async function getData(id) {
+        try {
+            const response = await axios.post('api/getUserIcsControls', { id: id })
+            const data = response.data
+            setIcsControl(data.ics_controls)
+            setTotalPrice(data.total_price)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     const pageCount = 5;
@@ -16,9 +48,17 @@ export default function ICSTable({ className }) {
         setPageNumber(selected)
     };
 
+    const userMapper = (items) => {
+        return items?.map(data => {
+            return <UserList firstname={data.firstname} surname={data.surname} designation={data.designation} name={data.name} id={data.id} type={'ics-control'} getData={getData} clickForms={clickForms} />
+        })
+    }
+
     return (
         <div className={className + " w-fit h-full relative"}>
             {openForms === "ics-control" ? <ICSControl
+                icsControl = {IcsControl ? IcsControl : ''}
+                totalPrice = {totalPrice ? totalPrice : ''}
                 clickForms={clickForms}
                 className={""}
             /> : ""}
@@ -40,7 +80,7 @@ export default function ICSTable({ className }) {
                         </th>
                     </tr>
                     {/*item 1*/}
-                    <UserList type={'ics-control'} clickForms={clickForms} />
+                    {Loading ? '' : userMapper(UserLists)}
                     {/*item 2*/}
                 </thead>
             </table>

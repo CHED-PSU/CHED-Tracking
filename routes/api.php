@@ -61,6 +61,9 @@ Route::post('/login', [AuthController::class, 'login']);
                 Route::post('getIcsDetails', [FormController::class, 'getIcsDetails']);
         //PAR
             Route::post('getPAR',[FormController::class,'getPAR']);
+            
+            //PAR details
+                Route::post('getParDetails', [FormController::class, 'getParDetails']);
         //Individual Items
             Route::post('getIndividualItems',[FormController::class,'getIndividualItems']);
 
@@ -75,4 +78,29 @@ Route::post('/login', [AuthController::class, 'login']);
 
 //Admin Notification
     //get admin notification items
-        Route::get('getAdminNotification',[FormController::class, 'getAdminNotification']);
+        Route::get('getAdminNotification',[FormController::class, 'getAdminNotification']); 
+        Route::get('getAdminRequest',[FormController::class, 'getAdminRequest']);
+
+//Admin Dashboard
+    Route::get('getAdminDashboardData',[GeneralController::class, 'getAdminDashboardData']);
+
+//Admin Pending Items
+    Route::get('getPendingItems',[ItemController::class, 'getPendingitems']);
+        //get Returned Items Data
+            Route::post('getReturnedItemsData',[FormController::class, 'getReturnedItemsData']);
+                //accept pending request
+                    Route::post('acceptPendingRequest',[FormController::class, 'acceptPendingRequest']);
+                //decline pending request
+                    Route::post('declinePendingRequest',[FormController::class, 'declinePendingRequest']);
+//Admin Logs Area
+    // Admin Users Data Fetcher 
+        Route::get('getUserLists',[GeneralController::class, 'getUserLists']);
+            //get User Ics Controls
+                Route::post('getUserIcsControls',[FormController::class, 'getUserIcsControls']);
+            //get User PAR Controls
+                Route::post('getUserParControls',[FormController::class, 'getUserParControls']);
+//Admin Returned Items
+    // Admin Returned Items Fetcher
+        Route::get('getReturnedItems',[ItemController::class,'getReturnedItems']);
+            //Returned Items Data Fetcher
+                Route::post('getAdminReturnedItemsData',[ItemController::class,'getAdminReturnedItemsData']);

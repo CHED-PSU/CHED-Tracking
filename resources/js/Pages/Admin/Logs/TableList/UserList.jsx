@@ -2,6 +2,7 @@ import react from "react";
 
 
 export default function UserList(props) {
+    const data = props.data;
 
     return (
         <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -17,10 +18,10 @@ export default function UserList(props) {
                     </div>
                     <div className="flex flex-col gap-1">
                         <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium text-text-black">
-                            default
+                            {props.firstname + ' ' + props.surname}
                         </h4>
                         <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
-                            default
+                            {props.name}
                         </p>
                     </div>
                 </a>
@@ -34,7 +35,7 @@ export default function UserList(props) {
                             Offline
                         </h5>
                         <p className="text-[#878787] text-[14px]">
-                            Last login: 26 Sept 2022
+                            {props.designation}
                         </p>
                     </div>
                 </a>
@@ -55,7 +56,7 @@ export default function UserList(props) {
             {/* mobile no */}
             <td>
                 <div
-                    onClick={() => props.clickForms(props.type)}
+                    onClick={() => {props.clickForms(props.type), props.getData(props.id)}}
                     className="pr-6 flex items-center justify-end w-full h-12 gap-3 cursor-pointer"
                     value = {0}
                 >

@@ -40,7 +40,41 @@ export default function Dashboard({ className }) {
     //     ],
     // };
 
-    // const [totalUser, setTotalUsers] = useState("N/A");
+    const [totalUser, setTotalUsers] = useState("N/A");
+    const [Loading, setLoading] = useState(true);
+    const [recentIssuance, setRecentIssuance] = useState();
+
+    useEffect(()=>{
+        const getAdminDashboardData = async () =>{
+            setLoading(true)
+            try{
+                const response = await axios.get('api/getAdminDashboardData')
+                const data = response.data
+                setTotalUsers(data.total_users);
+                setRecentIssuance(data.recent_issuance)
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+            }
+        }
+        getAdminDashboardData()
+    },[])
+
+    const recentIssuanceMapper = (item) =>{
+        return  item?.map(data =>{
+            
+            var created_at = new Date(data.created_at);
+
+            let today = new Date();
+
+            var distance = today.getTime() - created_at.getTime();
+
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+            return <RequistionItems data ={data} date = {days} />
+        })
+    }
 
     // const [totalDonation] = useState();
 
@@ -85,7 +119,7 @@ export default function Dashboard({ className }) {
                                     TracKagamitan's current users.
                                 </div>
                                 <div className="mt-2 2xl:text-5xl xl:text-4xl text-4xl font-bold text-white w-3/5">
-                                    {/* {totalUser} */}
+                                    {Loading ? 'N/A' : totalUser}
                                 </div>
                             </div>
                         </div>
@@ -176,14 +210,14 @@ export default function Dashboard({ className }) {
                                 Recent Issuance
                             </div>
                         </div>
-
-                        {/* no data */}
-                        <div className="flex items-center justify-center cursor-default">
+                        {Loading ? <div className="flex items-center justify-center cursor-default">
                                     <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 rounded-full w-[300px] h-[300px]">
                                         <img src="./img/no_data.png" alt="no data" className="w-52" draggable="false" />
                                         <strong className="text-text-gray-2 text-sm">You haven't been issued yet</strong>
                                     </div>
-                                </div>
+                                </div> : recentIssuanceMapper(recentIssuance)}
+                        {/* no data */}
+                        
                     </div>
 
 
