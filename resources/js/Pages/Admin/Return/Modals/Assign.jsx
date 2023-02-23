@@ -9,9 +9,11 @@ export default function Assign({ className, clickAssignModal, prevOwner, users, 
     function clickTabs(index) {
         setToggleTabs(index);
     }
-    
+
+    console.log(users)
+
     let modalBody = useRef();
-    
+
     useEffect(() => {
         const handler = (event) => {
             if (!modalBody.current.contains(event.target)) {
@@ -41,7 +43,7 @@ export default function Assign({ className, clickAssignModal, prevOwner, users, 
                     </div>
                     <div className="flex justify-center pb-5">
                         <div className="flex bg-gray-200 rounded-full">
-                            <button 
+                            <button
                             onClick={() => clickTabs("pre-owner")}
                             className={
                                 toggleTabs === "pre-owner"
@@ -51,7 +53,7 @@ export default function Assign({ className, clickAssignModal, prevOwner, users, 
                             >
                                 Previous Owner
                             </button>
-                            <button 
+                            <button
                             onClick={() => clickTabs("other-user")}
                             className={
                                 toggleTabs === "other-user"
@@ -63,9 +65,9 @@ export default function Assign({ className, clickAssignModal, prevOwner, users, 
                             </button>
                         </div>
                     </div>
-                    
+
                     {toggleTabs === "pre-owner" ? <PreOwner
-                    prevOwner={prevOwner}
+                    users={users}
                     clickAssignModal={clickAssignModal}
                     id={id}
                     className={ ""}
@@ -73,10 +75,10 @@ export default function Assign({ className, clickAssignModal, prevOwner, users, 
                     {toggleTabs === "other-user" ? <OtherUser
                     users={users}
                     id={id}
-                    
+
                     className={ "" }
                     />: ""}
-                    
+
                 </div>
             </div>
         </div>

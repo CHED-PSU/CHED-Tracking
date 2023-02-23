@@ -47,4 +47,13 @@ class GeneralController extends Controller
 
                 return response()->json(['user_lists' => $userList]);
             }
+    //admin return items
+        //admin user fetcher
+            public function getUsers(){
+                $getUsers = DB::table('users')
+                ->where('deleted_at',null)
+                ->get();
+
+                return response()->json(['users' =>$getUsers]);
+            }
 }

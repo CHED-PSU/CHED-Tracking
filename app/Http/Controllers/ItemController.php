@@ -10,7 +10,7 @@ class ItemController extends Controller
 {
     //User Area
         //User notification area
-        public function getNotifSecListItems(Request $req){ 
+        public function getNotifSecListItems(Request $req){
 
             $items = DB::table('users_notification as un')
             ->select('it.quantity','it.eul','i.description','i.article as unit','i.property_no as inventory_no','i.id')
@@ -35,8 +35,8 @@ class ItemController extends Controller
                 ->where('ui.item_status','owned')
                 ->get();
 
-                
-                
+
+
 
                 return response()->json(['itemsData'=>$getUserItems]);
             }
@@ -52,7 +52,7 @@ class ItemController extends Controller
                 ->join('iar_inventory as ia','ia.inventory_id','=','it.inventory_id')
                 ->where('ui_id',$req->input('ui_id'))
                 ->first();
-                
+
                 // var_dump($getUserItemsData);
                 return response()->json([
                     'itemData'=>$getUserItemsData
@@ -60,7 +60,7 @@ class ItemController extends Controller
             }
 
             public function returnItemsToAdmin(Request $req){
-                
+
                 $returned_items = DB::table('user_returned_items')
                 ->insertGetId([
                     'ui_id' => $req->input('data')['ui_id'],
@@ -88,7 +88,7 @@ class ItemController extends Controller
                 return response()->json(['success' => 'success']);
 
             }
-    
+
     //Admin Area
         //Pending Items Fetcher
             public function getPendingitems(Request $req){
@@ -108,7 +108,7 @@ class ItemController extends Controller
         //Returned Items Fetcher
             public function getReturnedItems(){
                 $returnedItems = DB::table('user_returned_items as uri')
-                ->select('uri.uri_id','i.article','uri.created_at','uri.defect','u.firstname','u.surname','uri.status')
+                ->select('uri.uri_id','i.article','uri.created_at','uri.defect','u.firstname','u.surname','uri.status','u.id')
                 ->join('user_items as ui','ui.ui_id','=','uri.ui_id')
                 ->join('inventory_tracking as it','it.id','=','ui.inventory_tracking_id')
                 ->join('inventories as i','i.id','=','it.inventory_id')
@@ -118,7 +118,7 @@ class ItemController extends Controller
 
                 return response()->json(['returnedItems' => $returnedItems]);
             }
-            
+
             //returned Items Data Fetcher
                 public function getAdminReturnedItemsData(Request $req){
                     $getAdminReturnedItemsData = DB::table('user_returned_items as uri')
@@ -137,8 +137,31 @@ class ItemController extends Controller
                     ->where('uri_id', $req->input('id'))
                     ->first();
 
-                    return response()->json(['adminReturnedItemsData' => $getAdminReturnedItemsData, 'adminReturnedItemsInfo' => $getAdminReturnedItemsInfo]);
+                    $getUsers = DB::table('users')
+                    ->where('deleted_at',null)
+                    ->get();
+
+                    return response()->json(['adminReturnedItemsData' => $getAdminReturnedItemsData, 'adminReturnedItemsInfo' => $getAdminReturnedItemsInfo, 'users' => $getUsers]);
                 }
+            //return items pre save
+                public function returnItemsPreSave(Request $req){
+                    DB::table('returned_items_info')
+                    ->where('uri_id',$req->input('id'))
+                    ->update($req->input('data'));
+                }
+            //return items post save
+            public function returnItemsPostSave(Request $req){
+                DB::table('returned_items_info')
+                ->where('uri_id',$req->input('id'))
+                ->update($req->input('data'));
+            }
+
+            //return  item change status
+            public function returnedItemsChangeStatus(Request $req){
+                DB::table('user_returned_items')
+                ->where('uri_id',$req->input('id'))
+                ->update($req->input('data'));
+            }
 
 
 }

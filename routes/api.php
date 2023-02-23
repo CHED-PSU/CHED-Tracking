@@ -36,7 +36,7 @@ Route::post('/login', [AuthController::class, 'login']);
     Route::post('/getFormDetails',[FormController::class,'getFormDetails']);
 
     //Accept and Decline Issued form from notification
-    Route::post('acceptIssuedForm',[FormController::class,'acceptIssuedForm']); 
+    Route::post('acceptIssuedForm',[FormController::class,'acceptIssuedForm']);
     Route::post('declineIssuedForm',[FormController::class,'declineIssuedForm']);
 
 //User Home Area
@@ -56,12 +56,12 @@ Route::post('/login', [AuthController::class, 'login']);
     //get data for tables
         //ICS
             Route::post('getICS',[FormController::class,'getICS']);
-            
+
             //ICS details
                 Route::post('getIcsDetails', [FormController::class, 'getIcsDetails']);
         //PAR
             Route::post('getPAR',[FormController::class,'getPAR']);
-            
+
             //PAR details
                 Route::post('getParDetails', [FormController::class, 'getParDetails']);
         //Individual Items
@@ -78,7 +78,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 //Admin Notification
     //get admin notification items
-        Route::get('getAdminNotification',[FormController::class, 'getAdminNotification']); 
+        Route::get('getAdminNotification',[FormController::class, 'getAdminNotification']);
         Route::get('getAdminRequest',[FormController::class, 'getAdminRequest']);
 
 //Admin Dashboard
@@ -93,7 +93,7 @@ Route::post('/login', [AuthController::class, 'login']);
                 //decline pending request
                     Route::post('declinePendingRequest',[FormController::class, 'declinePendingRequest']);
 //Admin Logs Area
-    // Admin Users Data Fetcher 
+    // Admin Users Data Fetcher
         Route::get('getUserLists',[GeneralController::class, 'getUserLists']);
             //get User Ics Controls
                 Route::post('getUserIcsControls',[FormController::class, 'getUserIcsControls']);
@@ -104,3 +104,11 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::get('getReturnedItems',[ItemController::class,'getReturnedItems']);
             //Returned Items Data Fetcher
                 Route::post('getAdminReturnedItemsData',[ItemController::class,'getAdminReturnedItemsData']);
+            //Admin return pre save
+                Route::post('returnItemsPreSave',[ItemController::class, 'returnItemsPreSave']);
+            //Admin return Items post save
+            Route::post('returnItemsPostSave',[ItemController::class, 'returnItemsPostSave']);
+            //admin return items change status
+            Route::post('returnedItemsChangeStatus',[ItemController::class, 'returnedItemsChangeStatus']);
+            //admin User Fetcher
+            Route::get('getUsers',[GeneralController::class, 'getUsers']);

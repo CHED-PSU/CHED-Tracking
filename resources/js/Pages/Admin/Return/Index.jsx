@@ -15,6 +15,7 @@ export default function Return({ className }) {
     const [Loading, setLoading] = useState(true);
     const [returnedItems, setReturnedItems] = useState();
     const [id, setId] = useState()
+    const [users, setUsers] = useState();
 
     useEffect(() => {
         const getReturnedItems = async () => {
@@ -39,8 +40,10 @@ export default function Return({ className }) {
         setOpenForms(index);
     }
 
-    function clickAssignModal(index) {
+    function clickAssignModal(index, id) {
         setOpenAssignModal(index);
+        setId(id)
+        getUsers()
     }
 
     function clickDisposeModal(index) {
@@ -51,6 +54,17 @@ export default function Return({ className }) {
     const changePage = ({ selected }) => {
         setPageNumber(selected)
     };
+
+    const getUsers = () => {
+        try{
+            axios.get('api/getUsers').then(response => {
+                setUsers(response.data.users)
+            })
+        }catch(e){
+            console.log(e)
+        }
+    }
+
 
     const returnItemsMapper = (items) => {
         return items?.map(data => {
@@ -104,7 +118,7 @@ export default function Return({ className }) {
 
                             <button
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn "
-                                onClick={() => clickAssignModal("open")}
+                                onClick={() => {clickAssignModal("open",data.id)}}
                             >
                                 <i className="fa-solid fa-box"></i>
                             </button>
@@ -136,6 +150,8 @@ export default function Return({ className }) {
 
             {openAssignModal === "open" ? <AssignModal
                 clickAssignModal={clickAssignModal}
+                id = {id ? id : ''}
+                users = {users ? users : users}
                 className={""}
             /> : ""}
 

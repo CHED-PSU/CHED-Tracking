@@ -3,13 +3,14 @@ import React, { useState } from "react";
 
 import Alert from "../../../../../components/Alert";
 
-export default function PreOwner({ className, prevOwner, id, clickAssignModal }) {
+export default function PreOwner({ className,users, prevOwner, id, clickAssignModal }) {
 
     const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
     const domain = window.location.href;
     const url = new URL(domain)
 
+    console.log(users)
 
     const [openAlert, setOpenAlert] = useState(false);
     const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
@@ -55,7 +56,6 @@ export default function PreOwner({ className, prevOwner, id, clickAssignModal })
                     .then(data => {
                         if (data.success === 'success') {
                             setOpenAlert(false)
-
                         }
                         setAlertIcon("check")
                         setAlertHeader("Success!")
@@ -102,9 +102,9 @@ export default function PreOwner({ className, prevOwner, id, clickAssignModal })
                     <img src="./img/profile-pic.jpeg" alt="profile" className="rounded-full w-18 h-18 object-cover" />
                     <div className="w-full space-y-2">
                         <div className="border-b-2 border-gray-300 w-full">
-                            <h2 className="text-2xl text-text-gray-2 font-semibold">{prevOwner != undefined ? prevOwner[0].firstname + ' ' + prevOwner[0].surname : ""}</h2>
+                            <h2 className="text-2xl text-text-gray-2 font-semibold">{users != undefined ? users[id-1].firstname + ' ' + users[id -1].surname : ""}</h2>
                         </div>
-                        <p className="text-sm text-text-gray-2 font-medium">{prevOwner != undefined ? prevOwner[0].name : ""}</p>
+                        <p className="text-sm text-text-gray-2 font-medium">{users != undefined ? users[id-1].name : ""}</p>
                     </div>
                 </div>
                 <div className="flex justify-center mt-[50px]">

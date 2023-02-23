@@ -10,6 +10,7 @@ export default function InspectionForm(props) {
     const [Loading, setLoading] = useState();
     const [returnedItemsData, setReturnedItemsData] = useState();
     const [returnedItemsInfo, setReturnedItemsInfo] = useState();
+    const [users, setUsers] = useState();
 
     useEffect(() => {
         const getData = async () => {
@@ -18,7 +19,8 @@ export default function InspectionForm(props) {
                 await axios.post('api/getAdminReturnedItemsData', { id: props.id }).then(response => {
 
                     setReturnedItemsData(response.data.adminReturnedItemsData)
-
+                    setUsers(Object.values(response.data.users))
+                    console.log(response.data.users)
                     setReturnedItemsInfo(response.data.adminReturnedItemsInfo)
                 })
             } catch (e) {
@@ -30,6 +32,14 @@ export default function InspectionForm(props) {
 
         getData()
     },[])
+
+    const userMapper = (user) => {
+        return user.map(data => {
+            return <>
+                <option value={data.id}>{data.firstname + ' ' + data.surname}</option>
+            </>
+        })
+    }
 
     console.log(returnedItemsInfo)
 
@@ -44,6 +54,84 @@ export default function InspectionForm(props) {
         content: () => ref.current,
         documentTitle: 'emp-data',
     })
+
+    const [preNature, setPreNature] = useState();
+    const [preParts, setPreParts] = useState();
+    const [PreDate, setPreDate] = useState();
+    const [PreInspection, setPreInspection] = useState();
+    const [PreApproved, setPreApproved] = useState();
+    const [postfindings, setPostFindings] = useState();
+    const [postApproved, setPostApproved] = useState();
+    const [PostDate, setPostDate] = useState();
+    const [status, setStatus] = useState();
+
+    const natureScope = (e) => {
+        setPreNature(e.target.value)
+    }
+
+    const prePartsChange = (e) => {
+        setPreParts(e.target.value)
+    }
+
+    const preInspection = (e) =>{
+        setPreInspection(e.target.value)
+    }
+
+    const preApproved = (e) =>{
+        setPreApproved(e.target.value)
+    }
+
+    const PostApproved = (e) =>{
+        setPostApproved(e.target.value)
+    }
+
+    const preDate = (e) => {
+        setPreDate(e.target.value)
+    }
+
+    const postFindings = (e) => {
+        setPostFindings(e.target.value)
+    }
+
+    const postDate = (e) => {
+        setPostDate(e.target.value)
+    }
+
+    const preSave = () => {
+
+        const data = {
+            'pre_nature': preNature,
+            'pre_inspected': PreInspection,
+            'pre_approved': PreApproved,
+            'pre_parts': preParts,
+            'updated_at': PreDate
+        }
+
+        axios.post('api/returnItemsPreSave', {data: data, id: props.id}).then(response => {
+
+        })
+    }
+
+    const postSave = () => {
+        const data = {
+            'post_findings': postfindings,
+            'post_approve' : postApproved,
+            'updated_at' : PostDate
+        }
+
+        axios.post('api/returnItemsPostSave', {data: data, id: props.id}).then(response => {
+
+        })
+    }
+
+    const changeStatus = (e) => {
+        setStatus(e.target.value)
+        const data = {
+            'status': e.target.value
+        }
+
+        axios.post('api/returnedItemsChangeStatus',{id: props.id, data: data})
+    }
 
     return (
         <div className={props.className}>
@@ -199,7 +287,7 @@ export default function InspectionForm(props) {
 
                         <div className="flex flex-col justify-between">
                             <label htmlFor="Status" className="text-base font-semibold">Status</label>
-                            <select onChange={defaultxt} name="" value='' id="Status" className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none">
+                            <select onChange={changeStatus} name="" value={status} id="Status" className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none">
                                 <option id="" value="" disabled>None</option>
                                 <option id="Received" value="Received">Received</option>
                                 <option id="Inspecting" value="Inspecting">Inspecting</option>
@@ -214,40 +302,42 @@ export default function InspectionForm(props) {
                         <div className="mt-5">
                             <label htmlFor="natureScope" className="text-base font-semibold">Nature and Scope of work to be
                                 done:</label>
-                            <textarea value={returnedItemsInfo ? returnedItemsInfo.pre_nature : ''} name="" id="pre_natureScope" onChange={defaultxt} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
+                            <textarea  name="" id="pre_natureScope" onChange={natureScope} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
                         </div>
 
                         <div className="mt-2">
                             <label htmlFor="parts" className="text-base font-semibold">Parts to be supplied / replaced:</label>
-                            <textarea value={returnedItemsInfo ? returnedItemsInfo.pre_parts : ''} name="" id="pre_parts" onChange={defaultxt} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
+                            <textarea value={returnedItemsInfo ? returnedItemsInfo.pre_parts : ''} name="" id="pre_parts" onChange={prePartsChange} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
                         </div>
 
                         <div className="space-y-5 mt-5">
                             <div className="flex flex-col justify-between">
                                 <label htmlFor="pre_inspectedByDropdown" className="text-base font-semibold">Inspected By</label>
-                                <select value={returnedItemsInfo ? returnedItemsInfo.pre_inspected : ''} onChange={defaultxt} name="" id="pre_inspectedByDropdown"
+                                <select value={returnedItemsInfo ? returnedItemsInfo.pre_inspected : ''} onChange={preInspection} name="" id="pre_inspectedByDropdown"
                                     className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none">
                                     <option value="none">None</option>
-                                    {defaultxt}
+                                    {users ? userMapper(users) : ''}
+
                                 </select>
                             </div>
 
                             <div className="flex flex-col justify-between">
                                 <label htmlFor="pre_approvedByDropdown" className="text-base font-semibold">Approved By</label>
-                                <select value={returnedItemsInfo ? returnedItemsInfo.pre_approved : ''} onChange={defaultxt} name="" id="pre_approvedByDropdown"
+                                <select value={returnedItemsInfo ? returnedItemsInfo.pre_approved : ''} onChange={preApproved} name="" id="pre_approvedByDropdown"
                                     className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none">
                                     <option value="none">None</option>
+                                    {users ? userMapper(users) : ''}
                                     {defaultxt}
                                 </select>
                             </div>
 
                             <div className="flex flex-col justify-between">
                                 <label htmlFor="inspectedByDropdown" className="text-base font-semibold">Date</label>
-                                <input value={defaultxt} type="date" name="" onChange={defaultxt} id="pre_date" className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"></input>
+                                <input value={returnedItemsInfo ? returnedItemsInfo.updated_at : ''} type="date" name="" onChange={preDate} id="pre_date" className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"></input>
                             </div>
 
                             <div className="flex gap-3 mt-14">
-                                <button onClick={defaultxt} id="save_changes"
+                                <button onClick={preSave} id="save_changes"
                                     className="h-10 w-24 p-1 btn-sm bg-primary rounded-full dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold">Save</button>
                             </div>
 
@@ -256,27 +346,28 @@ export default function InspectionForm(props) {
 
                             <div className="mt-10">
                                 <label htmlFor="findings" className="text-base font-semibold">Findings:</label>
-                                <textarea disabled={defaultxt} value={returnedItemsInfo ? returnedItemsInfo.post_findings : ''} name="" id="post_findings" onChange={defaultxt} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
+                                <textarea value={returnedItemsInfo ? returnedItemsInfo.post_findings : ''} name="" id="post_findings" onChange={postFindings} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
                             </div>
 
                             <div className="space-y-4 mt-5">
                                 <div className="flex flex-col justify-between">
                                     <label htmlFor="post_inspectedByDropdown" className="text-base font-semibold">Approved By</label>
-                                    <select disabled={defaultxt} value={returnedItemsInfo ? returnedItemsInfo.post_approved : ''} onChange={defaultxt} name="" id="post_inspectedByDropdown"
+                                    <select  value={returnedItemsInfo ? returnedItemsInfo.post_approved : ''} onChange={PostApproved} name="" id="post_inspectedByDropdown"
                                         className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none">
                                         <option value="none">None</option>
+                                        {users ? userMapper(users) : ''}
                                         {defaultxt}
                                     </select>
                                 </div>
 
                                 <div className="flex flex-col justify-between">
                                     <label htmlFor="post_date" className="text-base font-semibold">Date</label>
-                                    <input value={returnedItemsInfo ? returnedItemsInfo.updated_ats : ''} disabled={true} type="date" name="" onChange={defaultxt} id="post_date" className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"></input>
+                                    <input   type="date" name="" onChange={postDate} id="post_date" className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"></input>
                                 </div>
                             </div>
 
                             <div className="flex gap-3 mt-14">
-                                <button onClick={defaultxt} disabled={true} id="save_changes"
+                                <button onClick={postSave}  id="save_changes"
                                     className={0 === 0 ? "h-10 w-24 p-1 btn-sm bg-primary rounded-full dark:bg-active-icon hover:btn-color-3 text-lightColor-800 font-semibold" : "h-10 w-24 p-1 btn-sm bg-primary rounded-full dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"}>Save</button>
                             </div>
 
