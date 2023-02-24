@@ -41,7 +41,7 @@ class GeneralController extends Controller
         //Admin User Data Fetcher
             public function getUserLists(){
                 $userList = DB::table('users')
-                ->select('users.firstname','users.surname','users.designation','r.name')
+                ->select('users.firstname','users.surname','users.designation','r.name','users.id')
                 ->join('roles as r','r.id','=','users.role_id')
                 ->get();
 
