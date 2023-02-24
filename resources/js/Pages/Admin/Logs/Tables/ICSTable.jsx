@@ -11,6 +11,9 @@ export default function ICSTable({ className }) {
     const [IcsControl, setIcsControl] = useState();
     const [totalPrice, setTotalPrice] = useState();
 
+    const user = localStorage.getItem('localSession');
+    const value = JSON.parse(user);
+
     useEffect(() => {
         const getUsers = async () => {
             setLoading(true)
@@ -33,6 +36,7 @@ export default function ICSTable({ className }) {
     }
 
     async function getData(id) {
+        console.log(id)
         try {
             const response = await axios.post('api/getUserIcsControls', { id: id })
             const data = response.data
