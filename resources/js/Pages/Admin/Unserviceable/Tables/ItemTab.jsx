@@ -25,9 +25,10 @@ export default function ItemTab({ className }) {
                             <th className="h-10 w-16 font-medium text-left pl-6">
                                 <div className="flex item-center"><input type="checkbox" className=""/></div>
                             </th>
-                            <th className="h-10 w-72 font-medium text-left">Items</th>
-                            <th className="h-10 w-96 font-medium text-left">Description</th>
+                            <th className="h-10 w-58 font-medium text-left">Items</th>
+                            <th className="h-10 w-80 font-medium text-left">Description</th>
                             <th className="h-10 w-80 font-medium text-left">Remarks</th>
+                            <th className="h-10 font-medium text-right pr-6">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,6 +63,18 @@ export default function ItemTab({ className }) {
                                         <p className="text-[#878787] text-[14px]">Equipment donated to XYZ organization.</p>
                                     </div>
                                 </a>
+                            </td>
+                            <td>
+                                <div className="pr-6 flex items-center justify-end w-full h-12 gap-3 cursor-pointer">
+                                    <div className="">
+                                        <div 
+                                            onClick={() => props.clickForms(props.type)}
+                                            className="btn-color-3 rounded-full py-2 px-3 text-text-black"
+                                        >
+                                            <i className="fa-solid fa-eye"></i> View
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         {/*
