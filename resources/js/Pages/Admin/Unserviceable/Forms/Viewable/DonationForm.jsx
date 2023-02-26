@@ -95,7 +95,7 @@ export default function DonationForm(props) {
                                 <div className="flex gap-7 ml-40">
                                     <div className="">
                                         <div className="flex gap-1 pb-2">
-                                            <input type="radio" name="transferType" id="donation" value="Donation"/>
+                                            <input type="radio" name="transferType" id="donation" value="Donation" checked/>
                                             <label for="donation" className="text-black font-medium text-xs">Donation</label>
                                         </div>
                                         <div className="flex gap-1">
