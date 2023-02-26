@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import DonationForm from "../Forms/DonationForm";
+import DonationForm from "../Forms/Viewable/DonationForm";
 import OrgList from "../MasterListList/OrgList";
 
 export default function DonationTab({ className }) {

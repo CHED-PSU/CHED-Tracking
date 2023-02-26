@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import SalesForm from "../Forms/SalesForm";
+import SalesForm from "../Forms/Viewable/SalesForm";
+import SalesFormEdit from "../Forms/Editable/SalesForm";
 import OrgList from "../MasterListList/OrgList";
 
 export default function SalesTab({ className }) {

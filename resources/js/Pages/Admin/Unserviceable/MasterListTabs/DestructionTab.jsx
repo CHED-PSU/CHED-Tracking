@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import DestructionForm from "../Forms/DestructionForm";
+import DestructionForm from "../Forms/Viewable/DestructionForm";
 import OrgList from "../MasterListList/OrgList";
 
 export default function DestructionTab({ className }) {
