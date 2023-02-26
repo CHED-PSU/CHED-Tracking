@@ -153,7 +153,7 @@ export default function ReturnRequest(props) {
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Property No:</h6>
-                                <h5 className="underline">{itemData ? itemData.property_no : 'N/A'}</h5>
+                                <h5 className="underline">{itemData ? itemData.code : 'N/A'}</h5>
                             </div>
                             <div className="flex gap-2">
                                 <h6 className="font-semibold ">Date of last repair:</h6>

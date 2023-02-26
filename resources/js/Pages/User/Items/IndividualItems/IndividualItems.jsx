@@ -3,6 +3,7 @@ import React, {useState} from "react";
 
 export default function IndividualItems(props) {
     
+    
 
     return (
         <>
@@ -16,7 +17,7 @@ export default function IndividualItems(props) {
                 />
             </td>
             <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
-                {props.article}
+                {props.code}
             </td>
             <td className="text-sm">{props.description}</td>
             <td className="text-sm">{props.date}</td>

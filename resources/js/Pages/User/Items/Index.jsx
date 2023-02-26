@@ -75,7 +75,7 @@ export default function Index({ className }) {
             let date = new Date(data.created_at)
             let date_text = date.toString()
             console.log(data.ui_id)
-            return <IndividualItems checkHandler={checkHandler} openFormHandler={openFormHandler} article={data.article} description={data.description} date={date_text} value={data.ui_id} key={data.ui_id} />
+            return <IndividualItems checkHandler={checkHandler} code = {data.code} openFormHandler={openFormHandler} article={data.article} description={data.description} date={date_text} value={data.ui_id} key={data.ui_id} />
         })
     }
 
@@ -131,7 +131,7 @@ export default function Index({ className }) {
                             <tr className="">
                                 <th className="w-24"></th>
                                 <th className="font-medium text-left">
-                                    Item Name
+                                    Item Code
                                 </th>
                                 <th className="font-medium text-left">
                                     Description

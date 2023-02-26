@@ -10,7 +10,18 @@ export default function InspectionForm(props) {
     const [Loading, setLoading] = useState();
     const [returnedItemsData, setReturnedItemsData] = useState();
     const [returnedItemsInfo, setReturnedItemsInfo] = useState();
+    const [returnedUsersInfo, setReturnedUsersInfo] = useState();
     const [users, setUsers] = useState();
+
+    const [preNature, setPreNature] = useState();
+    const [preParts, setPreParts] = useState();
+    const [PreDate, setPreDate] = useState();
+    const [PreInspection, setPreInspection] = useState();
+    const [PreApproved, setPreApproved] = useState();
+    const [postfindings, setPostFindings] = useState();
+    const [postApproved, setPostApproved] = useState();
+    const [PostDate, setPostDate] = useState();
+    const [status, setStatus] = useState();
 
     useEffect(() => {
         const getData = async () => {
@@ -20,8 +31,11 @@ export default function InspectionForm(props) {
 
                     setReturnedItemsData(response.data.adminReturnedItemsData)
                     setUsers(Object.values(response.data.users))
-                    console.log(response.data.users)
                     setReturnedItemsInfo(response.data.adminReturnedItemsInfo)
+                    setReturnedUsersInfo(response.data.return_items_users_info)
+                    setPreInspection(response.data.return_items_users_info.pre_inspected)
+                    setPreApproved(response.data.return_items_users_info.pre_approved)
+                    setPostApproved(response.data.return_items_users_info.post_approve)
                 })
             } catch (e) {
                 console.log(e)
@@ -29,7 +43,7 @@ export default function InspectionForm(props) {
                 setLoading(false)
             }
         }
-
+        
         getData()
     },[])
 
@@ -55,15 +69,7 @@ export default function InspectionForm(props) {
         documentTitle: 'emp-data',
     })
 
-    const [preNature, setPreNature] = useState();
-    const [preParts, setPreParts] = useState();
-    const [PreDate, setPreDate] = useState();
-    const [PreInspection, setPreInspection] = useState();
-    const [PreApproved, setPreApproved] = useState();
-    const [postfindings, setPostFindings] = useState();
-    const [postApproved, setPostApproved] = useState();
-    const [PostDate, setPostDate] = useState();
-    const [status, setStatus] = useState();
+    
 
     const natureScope = (e) => {
         setPreNature(e.target.value)
@@ -147,45 +153,45 @@ export default function InspectionForm(props) {
                             <div className="text-sm font-medium">Regional Office XI</div>
                             <div className="text-sm font-semibold">SUPPLY & PROCUREMENT UNIT</div>
                             <div className="text-xs flex flex-col items-end text-right font-semibold mt-3 w-full">
-                                <div className="w-1/3">Control No.: RTRN-2023-{returnedItemsData ? returnedItemsData[0].uri_id : ''}</div>
-                                <div className="w-1/3">Date: {returnedItemsData ? returnedItemsData[0].created_at : ''}<span id="request_date"></span></div>
+                                <div className="w-1/3">Control No.: RTRN-2023-{returnedItemsData ? returnedItemsData.uri_id : ''}</div>
+                                <div className="w-1/3">Date: {returnedItemsData ? returnedItemsData.created_at : ''}<span id="request_date"></span></div>
                             </div>
                             <div className="text-base font-semibold mt-3 mb-3">REQUEST FOR INSPECTION and REPAIR</div>
                             <div className="text-left text-sm flex justify-between font-medium mb-4">
                                 <div className="">
                                     <div>Description of Property </div>
-                                    <div>Type No: <font className="font-semibold">{returnedItemsData ? returnedItemsData[0].abbr : ''}</font></div>
-                                    <div>Acquisition Cost: <font className="font-semibold">{returnedItemsData ? returnedItemsData[0].price : ''}</font></div>
+                                    <div>Type No: <font className="font-semibold">{returnedItemsData ? returnedItemsData.abbr : ''}</font></div>
+                                    <div>Acquisition Cost: <font className="font-semibold">{returnedItemsData ? returnedItemsData.price : ''}</font></div>
                                     <div>Nature of last repair: N/A</div>
                                 </div>
                                 <div className=" w-72">
-                                    <div>Brand/Model: <font className="font-semibold">{returnedItemsData ? returnedItemsData[0].article : ''}</font></div>
-                                    <div>Property No: <font className="font-semibold">{returnedItemsData ? returnedItemsData[0].property_no : ''}</font></div>
+                                    <div>Brand/Model: <font className="font-semibold">{returnedItemsData ? returnedItemsData.article : ''}</font></div>
+                                    <div>Property No: <font className="font-semibold">{returnedItemsData ? returnedItemsData.property_no : ''}</font></div>
                                     <div>Date of repair <font className="font-semibold">N/A</font></div>
                                 </div>
                             </div>
                             <div className="text-left mb-3">
                                 <div className="font-semibold text-base">DEFECT:</div>
-                                <div className="underline text-justify">{returnedItemsData ? returnedItemsData[0].defect : ''}</div>
+                                <div className="underline text-justify">{returnedItemsData ? returnedItemsData.defect : ''}</div>
                             </div>
                             {/* personnel req */}
                             <div className="flex text-left">
                                 <div className="w-1/3">
                                     <div className="font-semibold mb-10">Request by:</div>
                                     <div>
-                                        <h5 className="font-semibold">{returnedItemsData ? returnedItemsData[0].reqF + ' ' + returnedItemsData[0].reqS : ''}</h5>
-                                        <p>({returnedItemsData ? returnedItemsData[0].reqD : ''}/User)</p>
+                                        <h5 className="font-semibold">{returnedItemsData ? returnedItemsData.reqF + ' ' + returnedItemsData.reqS : ''}</h5>
+                                        <p>({returnedItemsData ? returnedItemsData.reqD : ''}/User)</p>
                                     </div>
                                 </div>
                                 <div className="w-1/3 flex flex-col items-center text-center justify-end">
-                                    <div>{returnedItemsData ? returnedItemsData[0].created_at : ''}</div>
+                                    <div>{returnedItemsData ? returnedItemsData.created_at : ''}</div>
                                     <div className="font-base mb-4 border-t-2 border-darkColor-700 w-52">Date</div>
                                 </div>
                                 <div className="w-1/3 pl-8">
                                     <div className="font-semibold mb-10">Received by:</div>
                                     <div>
-                                        <h5 className="font-semibold">{returnedItemsData ? returnedItemsData[0].recF + ' ' + returnedItemsData[0].recS : ''}</h5>
-                                        <p>Date:  <font className="font-semibold">{returnedItemsData ? returnedItemsData[0].created_at : ''}</font></p>
+                                        <h5 className="font-semibold">{returnedItemsData ? returnedItemsData.recF + ' ' + returnedItemsData.recS : ''}</h5>
+                                        <p>Date:  <font className="font-semibold">{returnedItemsData ? returnedItemsData.created_at : ''}</font></p>
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +219,7 @@ export default function InspectionForm(props) {
                                 <div className="w-1/3">
                                     <div className="font-semibold mb-10">Inspected by:</div>
                                     <div>
-                                        <h5 className="font-semibold">{returnedItemsInfo ? returnedItemsInfo.pre_inspected : ''}</h5>
+                                        <h5 className="font-semibold">{PreInspection}</h5>
                                         <p>{defaultxt}</p>
                                     </div>
                                 </div>
@@ -224,7 +230,7 @@ export default function InspectionForm(props) {
                                 <div className="w-1/3 pl-8">
                                     <div className="font-semibold mb-10">Approved by: </div>
                                     <div>
-                                        <h5 className="font-semibold">{returnedItemsInfo ? returnedItemsInfo.pre_approved : ''}</h5>
+                                        <h5 className="font-semibold">{PreApproved}</h5>
                                         <p>{defaultxt}</p>
                                     </div>
                                 </div>
@@ -252,11 +258,11 @@ export default function InspectionForm(props) {
                                 <div className="w-2/3 pl-16">
                                     <div className="font-semibold mb-4">Pre-inspected by: </div>
                                     <div className="mb-6">
-                                        <h5 className="font-semibold">{returnedItemsInfo ? returnedItemsInfo.pre_inspected : ''}</h5>
+                                        <h5 className="font-semibold">{PreInspection}</h5>
                                         <p>{defaultxt}</p>
                                     </div>
                                     <div>
-                                        <h5 className="font-semibold">{returnedItemsInfo ? returnedItemsInfo.pre_inspected : ''}</h5>
+                                        <h5 className="font-semibold">{postApproved}</h5>
                                         <p>{defaultxt}</p>
                                     </div>
                                 </div>
@@ -302,18 +308,18 @@ export default function InspectionForm(props) {
                         <div className="mt-5">
                             <label htmlFor="natureScope" className="text-base font-semibold">Nature and Scope of work to be
                                 done:</label>
-                            <textarea  name="" id="pre_natureScope" onChange={natureScope} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
+                            <textarea value={preNature}  name="" id="pre_natureScope" onChange={natureScope} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
                         </div>
 
                         <div className="mt-2">
                             <label htmlFor="parts" className="text-base font-semibold">Parts to be supplied / replaced:</label>
-                            <textarea value={returnedItemsInfo ? returnedItemsInfo.pre_parts : ''} name="" id="pre_parts" onChange={prePartsChange} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
+                            <textarea value={preParts} name="" id="pre_parts" onChange={prePartsChange} className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"></textarea>
                         </div>
 
                         <div className="space-y-5 mt-5">
                             <div className="flex flex-col justify-between">
                                 <label htmlFor="pre_inspectedByDropdown" className="text-base font-semibold">Inspected By</label>
-                                <select value={returnedItemsInfo ? returnedItemsInfo.pre_inspected : ''} onChange={preInspection} name="" id="pre_inspectedByDropdown"
+                                <select value={PreInspection} onChange={preInspection} name="" id="pre_inspectedByDropdown"
                                     className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none">
                                     <option value="none">None</option>
                                     {users ? userMapper(users) : ''}

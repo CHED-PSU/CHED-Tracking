@@ -5,6 +5,7 @@ import AdminBg from "../../../Components/AdminBg";
 import InspectionForm from "./Forms/InspectionForm";
 import AssignModal from "./Modals/Assign";
 import DisposeModal from "./Modals/Dispose";
+import DisposalAlert from "../Return/Alert/DisposalAlert";
 
 export default function Return({ className }) {
 
@@ -15,38 +16,72 @@ export default function Return({ className }) {
     const [Loading, setLoading] = useState(true);
     const [returnedItems, setReturnedItems] = useState();
     const [id, setId] = useState()
+    const [user_id, setUserId] = useState();
     const [users, setUsers] = useState();
 
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
+    const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
+    const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
+    const [alertButtonColor, setAlertButtonColor] = useState("blue"); // none, blue, or red
+    const [alertYesButton, setAlertYesButton] = useState("Yes");
+    const [alertNoButton, setAlertNoButton] = useState("No");
+
+    const getReturnedItems = async () => {
+        setLoading(true)
+        try {
+            await axios.get('api/getReturnedItems').then(response => {
+                setReturnedItems(response.data.returnedItems)
+            })
+        } catch (e) {
+            console.log(e)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
-        const getReturnedItems = async () => {
+        getReturnedItems()
+        const getUsers = async () => {
             setLoading(true)
-            try {
-                await axios.get('api/getReturnedItems').then(response => {
-                    setReturnedItems(response.data.returnedItems)
+            try{
+                await axios.get('api/getUsers').then(response => {
+                    setUsers(response.data.users)
                 })
-            } catch (e) {
+            }catch(e){
                 console.log(e)
-            } finally {
+            }finally{
                 setLoading(false)
             }
         }
-        getReturnedItems()
+        getUsers()
     }, [])
 
     async function getReturnedItemsData(index) {
         setId(index)
     }
     function clickForms(index) {
+        getReturnedItems()
+        getUsers()
         setOpenForms(index);
+        
     }
 
-    function clickAssignModal(index, id) {
+    function clickAssignModal(index, id, user_id) {
+
         setOpenAssignModal(index);
         setId(id)
-        getUsers()
+        setUserId(user_id)
     }
 
     function clickDisposeModal(index) {
+        setAlertIcon("question")
+        setAlertHeader("Confirmation")
+        setAlertDesc("Are you sure you want to move the item to unserviceable?")
+        setAlertButtonColor('blue')
+        setAlertYesButton('Confirm')
+        setAlertNoButton('Cancel')
+        setOpenAlert(true)
         setOpenDisposeModal(index);
     }
 
@@ -55,15 +90,7 @@ export default function Return({ className }) {
         setPageNumber(selected)
     };
 
-    const getUsers = () => {
-        try{
-            axios.get('api/getUsers').then(response => {
-                setUsers(response.data.users)
-            })
-        }catch(e){
-            console.log(e)
-        }
-    }
+    
 
 
     const returnItemsMapper = (items) => {
@@ -109,7 +136,7 @@ export default function Return({ className }) {
                     {/* actions */}
                     <td>
                         <div className="flex gap-4 justify-end pr-6">
-                            <button
+                            <button value = {data.id}
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn cursor-pointer"
                                 onClick={() => { clickForms("ins-form"), getReturnedItemsData(data.uri_id) }}
                             >
@@ -118,7 +145,7 @@ export default function Return({ className }) {
 
                             <button
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn "
-                                onClick={() => {clickAssignModal("open",data.id)}}
+                                onClick={() => {clickAssignModal("open", data.uri_id, data.id)}}
                             >
                                 <i className="fa-solid fa-box"></i>
                             </button>
@@ -151,12 +178,19 @@ export default function Return({ className }) {
             {openAssignModal === "open" ? <AssignModal
                 clickAssignModal={clickAssignModal}
                 id = {id ? id : ''}
-                users = {users ? users : users}
+                user_id = {user_id ? user_id : ''}
+                users = {users ? users : ''}
                 className={""}
             /> : ""}
 
-            {openDisposeModal === "open" ? <DisposeModal
+            {openDisposeModal === "open" ? <DisposalAlert   
                 clickDisposeModal={clickDisposeModal}
+                alertIcon={alertIcon}
+                alertHeader={alertHeader}
+                alertDesc={alertDesc}
+                alertButtonColor={alertButtonColor}
+                alertYesButton={alertYesButton}
+                alertNoButton={alertNoButton}
                 className={""}
             /> : ""}
 

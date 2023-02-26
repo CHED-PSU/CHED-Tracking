@@ -424,7 +424,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                                     Notifications
                                 </div>
                             </li>
-                            <li
+                            {/* <li
                                 onClick={() => { clickTabs("unread"), requestClick() }}
                                 className={
                                     toggleTabs === "unread"
@@ -435,7 +435,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                                 <div className="select-none text-xs w-fit px-5 py-2 cursor-pointer">
                                     Requests
                                 </div>
-                            </li>
+                            </li> */}
                         </ul>
                         {/*tab buttons*/}
 

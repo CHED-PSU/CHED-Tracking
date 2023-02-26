@@ -23,7 +23,7 @@ export default function IcsItems({ data }) {
             <td>
                 <a className="text-left pl-6 flex items-center w-full gap-3">
                     <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
-                        {data.assign_no}
+                        {data.tracking_id}
                     </p>
                 </a>
             </td>

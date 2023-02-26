@@ -4,21 +4,14 @@ import React, { useEffect, useRef } from "react";
 export default function ConditionalAlert(props) {
 
     let modalBody = useRef();
-    const user = localStorage.getItem("localSession");
+
+    const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
 
-    const acceptClick = () => {
-        axios.post('api/acceptPendingRequest', {id: props.id, user_id: value.id}).then(
-            props.confirmation('accept')
-        )
-    }
-    const declineClick = () => {
-        axios.post('api/declinePendingRequest', {id: props.id,user_id: value.id}).then(
-            props.confirmation('decline')
-        )
-    }
-    const cancelClick = () => {
-        props.confirmation(false)
+    const acceptHandler = () => {
+        console.log('pasok')
+        axios.post('api/returnToPreviousOwner',{id:props.id, user_id: value.id})
+        props.success()
     }
 
     return (
@@ -71,13 +64,13 @@ export default function ConditionalAlert(props) {
                         </div>
 
                     </div>
-                    <div  className="flex gap-4 items-center justify-center">
-                        <div onClick={() => cancelClick(false)} className="btn-color-3 dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full px-5 py-3 cursor-pointer">
+                    <div className="flex gap-4 items-center justify-center">
+                        <div onClick={()=> { props.clickAlert(false)}} className="btn-color-3 dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full px-5 py-3 cursor-pointer">
                             {props.alertNoButton}
                         </div>
                         
                         {/* Red Button */}
-                        <div onClick={declineClick} className={props.alertButtonColor === "red" ? "" : "hidden"}>
+                        <div className={props.alertButtonColor === "red" ? "" : "hidden"}>
                             <div  className="bg-red-600 hover:bg-red-700 text-white rounded-full px-5 py-3 cursor-pointer font-semibold">
                                 {props.alertYesButton}
                             </div>
@@ -85,7 +78,7 @@ export default function ConditionalAlert(props) {
                         {/* Red Button */}
 
                         {/* Red Button */}
-                        <div onClick={acceptClick} className={props.  alertButtonColor === "blue" ? "" : "hidden"}>
+                        <div onClick={acceptHandler} className={props.  alertButtonColor === "blue" ? "" : "hidden"}>
                             <div  className="bg-primary text-white rounded-full px-5 py-3 cursor-pointer font-semibold">
                                 {props.alertYesButton}
                             </div>

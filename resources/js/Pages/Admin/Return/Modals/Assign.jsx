@@ -2,19 +2,24 @@ import React, { useState, useEffect, useRef } from "react";
 import PreOwner from "./Tabs/PreOwner";
 import OtherUser from "./Tabs/OtherUser";
 
-export default function Assign({ className, clickAssignModal, prevOwner, users, id }) {
+export default function Assign({ className,users, clickAssignModal, prevOwner, id, user_id }) {
     const [toggleTabs, setToggleTabs] = useState("pre-owner");
+    
+    
+    
+
+   
 
 
     function clickTabs(index) {
         setToggleTabs(index);
     }
 
-    console.log(users)
-
     let modalBody = useRef();
 
     useEffect(() => {
+        
+
         const handler = (event) => {
             if (!modalBody.current.contains(event.target)) {
                 clickAssignModal("close");
@@ -67,15 +72,15 @@ export default function Assign({ className, clickAssignModal, prevOwner, users, 
                     </div>
 
                     {toggleTabs === "pre-owner" ? <PreOwner
-                    users={users}
                     clickAssignModal={clickAssignModal}
                     id={id}
+                    user_id={user_id}
+                    users = {users}
                     className={ ""}
                     />: ""}
                     {toggleTabs === "other-user" ? <OtherUser
-                    users={users}
+                    users = {users? users : ''}
                     id={id}
-
                     className={ "" }
                     />: ""}
 

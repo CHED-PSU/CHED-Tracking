@@ -68,7 +68,7 @@ export default function Index(props) {
                                 <font className="font-bold">You</font> have
                                 been issued {" "}
                                 <font className="font-bold">
-                                    {data.assign_no}
+                                    {data.tracking_id}
                                 </font>{" "}
                                 from Inventory
                             </h4>

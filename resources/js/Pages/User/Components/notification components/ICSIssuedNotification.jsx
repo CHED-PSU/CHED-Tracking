@@ -196,7 +196,7 @@ export default function ICSIssuedNotification({
                                         <span id="form_identifier"></span>
                                     </div>
                                     <div className="text-xs  dark:text-gray-400 font-semibold">
-                                        {formDetails ? formDetails.assign_no : 'Nan'}
+                                        {formDetails ? formDetails.tracking_id : 'Nan'}
                                     </div>
                                 </div>
                             </div>

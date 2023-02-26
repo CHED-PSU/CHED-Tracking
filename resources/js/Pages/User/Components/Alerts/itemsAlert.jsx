@@ -13,26 +13,25 @@ export default function ConditionalAlert(props) {
     const [declined, setDeclined] = useState(false)
 
 
-    
+
     const acceptIssuedForm = () => {
         const data = {
             'defect': props.defecthandler,
             'reason': props.optionhandler,
-            'ui_id' : props.valueId,
+            'ui_id': props.valueId,
         }
 
         try {
             axios.post('api/returnItemsToAdmin', {
-                
+
                 data: data,
                 user_id: value.id
             }).then(res => {
-                setAlertIcon('check')
-                    setAlertHeader('Successful')
-                    setAlertDesc('Successfully Returned!')
-                    setAlertButtonColor('none')
-                    setAlertNoButton('Okay')
+                if(res.data.success === success){
+                    console.log('wow')
+                }
             })
+           
         } catch (e) {
             console.log(e)
         }

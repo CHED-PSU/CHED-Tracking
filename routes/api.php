@@ -112,3 +112,7 @@ Route::post('/login', [AuthController::class, 'login']);
             Route::post('returnedItemsChangeStatus',[ItemController::class, 'returnedItemsChangeStatus']);
             //admin User Fetcher
             Route::get('getUsers',[GeneralController::class, 'getUsers']);
+                //admin return item to previous owwner
+                    Route::post('returnToPreviousOwner',[ItemController::class, 'returnToPreviousOwner']);
+                //admin issue to another owner
+                    Route::post('assignToAnotherUser',[ItemController::class, 'assignToAnotherUser']);

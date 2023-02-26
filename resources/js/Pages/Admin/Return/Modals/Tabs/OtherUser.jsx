@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, {useRef, useState} from "react";
-import Alert from "../../../../../components/Alert";
+import Alert from "../../Alert/OtherUserAlert";
 
 export default function Other({ className,users,id }) {
 
@@ -20,27 +20,16 @@ export default function Other({ className,users,id }) {
     const [alertNoButton, setAlertNoButton] = useState("No");
     const [accept, setAccept] = useState(false);
 
-    function clickAlert(index, page, indic) {
-        if (page === 'return') {
-            if (indic === 'none') {
-                setOpenAlert(index);
-            } else {
-                if (indic === 'acceptNotif') {
-                    setOpenAlert(index);
-                    confirmHandler()
-                } else if (indic === 'declineNotif') {
-                    setOpenAlert(index);
-                }
-
-            }
-        }
+    function clickAlert(index) {
+        setOpenAlert(index);
     }
     
 
     const [current, setCurrent] = useState();
     const [currentRole, setCurrentRole] = useState();
     const [user_id, setUser_id] = useState();
-    console.log()
+
+
     const optionMapper = (items) => {
         return items?.map(data =>{
             return <option title={data.name} id={data.firstname + ' ' + data.surname} value={data.id}>{data.firstname + ' ' + data.surname}</option>
@@ -51,41 +40,22 @@ export default function Other({ className,users,id }) {
         clickAssignModal("close")
     }
 
-
+    const success = () => {
+        setAlertIcon("check")
+        setAlertHeader("Success")
+        setAlertDesc("You've successfuly returned an item to its previous owner.")
+        setAlertButtonColor('none')
+        setAlertYesButton('Confirm')
+        setAlertNoButton('Okay')
+    }
 
     const confirmHandler = () => {
         if (user_id !== undefined && current !==undefined) {
             const data = [id, user_id, value.id]
-            
             setOpenAlert(true)
-            fetch('http://' + url.hostname + ':8000/api/assignToOtherUser', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success === 'success') {
-                            setOpenAlert(false)
-                            
-                        }
-                        setAlertIcon("check")
-                        setAlertHeader("Success!")
-                        setAlertDesc("You have successfully returned the item to its previouse owner!")
-                        setAlertButtonColor('none')
-                        setAlertYesButton('Okay')
-                        setAlertNoButton('Okay')
-                        setAccept('acceptNotif')
-                        setOpenAlert(true)
-                        setTimeout(closer,2000)
-                    })
         }
 
     }
-
-    console.log(value)
     
     const confirmOtherUser = () => {
         setAlertIcon("question")
@@ -114,8 +84,10 @@ export default function Other({ className,users,id }) {
                 alertYesButton={alertYesButton}
                 alertNoButton={alertNoButton}
                 clickAlert={clickAlert}
-                destination={"return"}
-                accept={accept}
+                current = {value.id}
+                user_id = {user_id}
+                success = {success}
+                id = {id}
                 className={""}
             /> : ""}
             <div className="pb-16 space-y-3">

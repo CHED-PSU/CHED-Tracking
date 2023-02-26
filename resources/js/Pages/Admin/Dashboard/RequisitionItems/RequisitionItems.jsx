@@ -14,7 +14,7 @@ export default function RequistionItems(props) {
             <div className="flex flex-col w-full cursor-pointer 2xl:space-y-1 truncate">
                 <div className="w-full dark:text-white flex 2xl:gap-2 xl:gap-1 xl:pb-[2px] items-center">
                     <h4 className="font-semibold text-text-gray-2 2xl:text-base xl:text-sm">{props.data.rSurname}, {props.data.rfirstname.charAt(0)}</h4>
-                    <p className="2xl:text-sm xl:text-[13px] font-normal truncate"> had been issued {props.data.assign_no}
+                    <p className="2xl:text-sm xl:text-[13px] font-normal truncate"> had been issued {props.data.tracking_id}
                     </p>
                 </div>
                 <div className="flex text-xs dark:text-gray-300 2xl:gap-6 xl:gap-4 gap-4">
@@ -26,7 +26,7 @@ export default function RequistionItems(props) {
                     </h4>
                     <h4>
                         <font className="font-semibold text-text-gray-2">
-                            Date: {props.data.created_at    }
+                            Date: {props.data.date_received}
                         </font>
                      
                     </h4>

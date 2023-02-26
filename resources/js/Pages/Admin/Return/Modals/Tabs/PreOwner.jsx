@@ -1,16 +1,15 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import Alert from "../../../../../components/Alert";
+import Alert from "../../Alert/PrevOwnerAlert";
 
-export default function PreOwner({ className,users, prevOwner, id, clickAssignModal }) {
+export default function PreOwner({ className, prevOwner,users, id, clickAssignModal, user_id }) {
 
-    const user = localStorage.getItem('localSession');
-    const value = JSON.parse(user);
+   
     const domain = window.location.href;
     const url = new URL(domain)
-
-    console.log(users)
+    
+   
 
     const [openAlert, setOpenAlert] = useState(false);
     const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
@@ -21,19 +20,10 @@ export default function PreOwner({ className,users, prevOwner, id, clickAssignMo
     const [alertNoButton, setAlertNoButton] = useState("No");
     const [accept, setAccept] = useState(false);
 
-    function clickAlert(index, page, indic) {
-        if (page === 'return') {
-            if (indic === 'none') {
-                setOpenAlert(index);
-            } else {
-                if (indic === 'acceptNotif') {
-                    setOpenAlert(index);
-                    confirmHandler()
-                } else if (indic === 'declineNotif') {
-                    setOpenAlert(index);
-                }
-
-            }
+    function clickAlert(index) {
+        setOpenAlert(index);
+        if(index===false){
+            clickAssignModal('close')
         }
     }
     const closer =()=>{
@@ -41,34 +31,16 @@ export default function PreOwner({ className,users, prevOwner, id, clickAssignMo
     }
 
     const confirmHandler = () => {
-        if (prevOwner[0].id !== undefined) {
-            const data = [id, prevOwner[0].id,value.id]
-            setOpenAlert(true)
+        setOpenAlert(true)
+    }
 
-            fetch('http://' + url.hostname + ':8000/api/assignToPrevOwner', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success === 'success') {
-                            setOpenAlert(false)
-                        }
-                        setAlertIcon("check")
-                        setAlertHeader("Success!")
-                        setAlertDesc("You have successfully returned the item to its previouse owner!")
-                        setAlertButtonColor('none')
-                        setAlertYesButton('Okay')
-                        setAlertNoButton('Okay')
-                        setAccept('acceptNotif')
-                        setOpenAlert(true)
-                        setTimeout(closer,2000)
-                    })
-        }
-
+    const success = () => {
+        setAlertIcon("check")
+        setAlertHeader("Success")
+        setAlertDesc("You've successfuly returned an item to its previous owner.")
+        setAlertButtonColor('none')
+        setAlertYesButton('Confirm')
+        setAlertNoButton('Okay')
     }
 
     const confirmPrevOwner = () => {
@@ -78,10 +50,10 @@ export default function PreOwner({ className,users, prevOwner, id, clickAssignMo
         setAlertButtonColor('blue')
         setAlertYesButton('Confirm')
         setAlertNoButton('Cancel')
-        setAccept('acceptNotif')
         setOpenAlert(true)
     }
 
+  
 
     return (
         <div className={className}>
@@ -93,8 +65,10 @@ export default function PreOwner({ className,users, prevOwner, id, clickAssignMo
                 alertYesButton={alertYesButton}
                 alertNoButton={alertNoButton}
                 clickAlert={clickAlert}
-                destination={"return"}
-                accept={accept}
+                success = {success}
+                clickAssignModal = {clickAssignModal}
+                click
+                id ={id}
                 className={""}
             /> : ""}
             <div className="pb-16">
@@ -102,9 +76,9 @@ export default function PreOwner({ className,users, prevOwner, id, clickAssignMo
                     <img src="./img/profile-pic.jpeg" alt="profile" className="rounded-full w-18 h-18 object-cover" />
                     <div className="w-full space-y-2">
                         <div className="border-b-2 border-gray-300 w-full">
-                            <h2 className="text-2xl text-text-gray-2 font-semibold">{users != undefined ? users[id-1].firstname + ' ' + users[id -1].surname : ""}</h2>
+                            <h2 className="text-2xl text-text-gray-2 font-semibold">{users != undefined ? users[user_id-1].firstname + ' ' + users[user_id -1].surname : ""}</h2>
                         </div>
-                        <p className="text-sm text-text-gray-2 font-medium">{users != undefined ? users[id-1].name : ""}</p>
+                        <p className="text-sm text-text-gray-2 font-medium">{users != undefined ? users[user_id-1].name : ""}</p>
                     </div>
                 </div>
                 <div className="flex justify-center mt-[50px]">
