@@ -28,7 +28,8 @@ export default function GuestIndex() {
         })
     }
 
-    
+    const [alertUsername, setAlertUsername] = useState("");
+    const [alertPass, setAlertPass] = useState("");
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -38,31 +39,53 @@ export default function GuestIndex() {
             password: formData.password
         }
 
-        if (data.username === "" || data.password === "") {
-            console.log("please put data inside")
+        if (data.username === "" && data.password !== "") {
+            setAlertUsername("Please enter username.")
+            setAlertPass("")
+        }
+        else if (data.username !== "" && data.password === "") {
+            setAlertUsername("")
+            setAlertPass("Please enter password.")
+        }
+        else if (data.username === "" && data.password === "") {
+            setAlertUsername("Please enter username.")
+            setAlertPass("Please enter password.")
         }else{
             axios.post("/api/login", {
                 data: data
             })
                 .then(response => {
-                    navigate("/dashboard")
                     const item = {
                         name: response.data.name,
                         role: response.data.role,
-                        Authenticated: true,
+                        Authenticated: response.data.Authenticated,
                         Path: response.data.destinations,
                         id: response.data.id
                     }
-                    
-                    localStorage.setItem("localSession", JSON.stringify(item));
-                    
+
+                    if(item.Authenticated === true){
+                        navigate("/dashboard")
+                        localStorage.setItem("localSession", JSON.stringify(item));
+                    }else{
+                        if(item.Authenticated === "Username not found."){
+                            console.log(item.Authenticated)
+                            setAlertUsername(item.Authenticated)
+                            setAlertPass("")
+                        }
+                        if(item.Authenticated === "Password is incorrect."){
+                            console.log(item.Authenticated)
+                            setAlertUsername("")
+                            setAlertPass(item.Authenticated)
+                        }
+                    }
+
                 })
         }
 
-        // 
+        //
 
 
-        
+
         // navigate("/dashboard")
     }
 
@@ -83,8 +106,8 @@ export default function GuestIndex() {
                     />
 
                     <InputError
-                        message=""
-                        className="mt-1 text-sm text-red-500"
+                        message={alertUsername}
+                        className="mt-1 -mb-1 text-sm text-red-500"
                     />
                 </div>
 
@@ -102,7 +125,7 @@ export default function GuestIndex() {
                     />
 
                     <InputError
-                        message=""
+                        message={alertPass}
                         className="mt-1 text-sm text-red-500"
                     />
                 </div>
@@ -134,12 +157,6 @@ export default function GuestIndex() {
                         </button>
 
                     }
-
-                    {/* Temporary Button */}
-
-                    <Link to='/user' className="flex flex-none justify-center items-center btn-sm my-3 p-3 bg-primary rounded-full text-white 2xl:text-base xl:text-sm text-sm w-full cursor-pointer">Login as User</Link>
-
-
                 </div>
             </form>
         </Login>
