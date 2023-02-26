@@ -297,19 +297,24 @@ class ItemController extends Controller
         ->insert([
             'inventory_tracking_id' => $inventory_tracking_id->id,
             'prev_owner'            => $inventory_tracking_id->received_by,
-            'remarks'               => 'has been moved due to ' . $inventory_tracking_id->defect
+            'remarks'               => 'has been moved due to unserviceable due to ' . $inventory_tracking_id->defect,
+            'status'                => 'stand_by'
         ]);
+
+        DB::table('user_returned_items as uri')
+        ->update(['status' => 'Unserviceable']);
     }
 
     //admin Unserviceable Items
     public function getUnserviceableItems(Request $req){
         $items = DB::table('unserviceable_items as ut')
-        ->select('u.firstname','u.surname','pi.code','pi.description','t.date_received','ut.remarks')
+        ->select('u.firstname','u.surname','pi.code','pi.description','t.date_received','ut.remarks','ut.id')
         ->join('inventory_tracking as it','it.id','=','ut.inventory_tracking_id')
         ->join('purchase_request_items as pri','pri.id','=','it.purchase_request_item_id')
         ->join('product_items as pi','pi.id','=','pri.product_item_id')
         ->join('trackings as t','t.id','=','it.trackings_id')
         ->join('users as u','u.id','=','t.received_by')
+        ->where('ut.status','stand_by')
         ->get();
 
         return response()->json(['unserviceableItems' => $items]);

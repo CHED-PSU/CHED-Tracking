@@ -28,6 +28,15 @@ export default function ItemTab({ className }) {
         getUnserviceableItems();
     }, []);
 
+    const onSave = () => {
+        const checkbox = document.querySelector('.u_items');
+        const selecte = checkbox.map(checkbox => {
+            
+        })
+
+        console.log(selected)
+    }
+
     const itemsMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -35,7 +44,7 @@ export default function ItemTab({ className }) {
                     {/* checkbox */}
                     <td>
                         <div className="flex justify-center item-center">
-                            <input type="checkbox" className="" />
+                            <input type="checkbox" className="u_items" value={data.id}/>
                         </div>
                     </td>
                     {/* items */}
@@ -97,7 +106,7 @@ export default function ItemTab({ className }) {
             <div className="w-full flex justify-end  items-center pb-2">
                 <button
                     className="flex justify-center items-center gap-1 w-8 h-8 p-3 text-[14px] text-text-black rounded-full default-btn"
-                    onClick={() => clickDisposeModal("open")}
+                    onClick={onSave}
                 >
                     <i className="fa-solid fa-file-export"></i>
                 </button>
