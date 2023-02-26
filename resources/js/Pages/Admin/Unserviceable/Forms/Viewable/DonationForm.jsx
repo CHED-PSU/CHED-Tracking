@@ -3,16 +3,23 @@ import { useReactToPrint } from "react-to-print";
 
 export default function DonationForm(props) {
     const ref = useRef();
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         documentTitle: 'emp-data',
     })
 
+<<<<<<< HEAD
     function clickBtn(index) {
         props.setBtnType(index);
     }
 
+=======
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
     return (
 
         <div className={props.className + "fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
@@ -21,7 +28,11 @@ export default function DonationForm(props) {
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
                         <button
+<<<<<<< HEAD
                             onClick={() => clickBtn("close")}
+=======
+                            onClick={() => props.clickForms("close")}
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                             className="py-3 mt-4"
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
@@ -187,7 +198,11 @@ export default function DonationForm(props) {
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Approved by:</h5>
                                                         <div className="flex flex-col justify-between text-xs">
+<<<<<<< HEAD
                                                             MARICAR R. CASQUEJO,Ph.D.CESOIII
+=======
+                                                            MARICAR R. CASQUEJO,Ph.D.CESOIII		
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                                         </div>
                                                         <h6 className="text-xs">Director IV</h6>
                                                         <h6 className="text-sm">March 25, 2022</h6>
@@ -196,7 +211,11 @@ export default function DonationForm(props) {
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Released/Issue by:</h5>
                                                         <div className="flex flex-col justify-between text-xs">
+<<<<<<< HEAD
                                                             JERMINE R. BASISTER
+=======
+                                                            JERMINE R. BASISTER			
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                                         </div>
                                                         <h6 className="text-xs">AAVI, Supply Officer Designate</h6>
                                                         <h6 className="text-sm">March 25, 2022</h6>
@@ -205,7 +224,11 @@ export default function DonationForm(props) {
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Received by:</h5>
                                                         <div className="flex flex-col justify-between text-xs">
+<<<<<<< HEAD
                                                             AUGIE E. FUENTES, PhD.
+=======
+                                                            AUGIE E. FUENTES, PhD.			
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                                         </div>
                                                         <h6 className="text-xs">College President</h6>
                                                         <h6 className="text-sm">March 25, 2022</h6>
@@ -217,7 +240,11 @@ export default function DonationForm(props) {
                                 </tbody>
                             </table>
                         </div>
+<<<<<<< HEAD
 
+=======
+                        
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                     </div>
                 </div>
                 {/* data table */}

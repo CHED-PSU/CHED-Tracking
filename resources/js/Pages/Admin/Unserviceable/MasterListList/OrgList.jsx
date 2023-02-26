@@ -1,6 +1,5 @@
 import react from "react";
 
-
 export default function OrgList(props) {
 
     function clickBtn(index) {
@@ -10,6 +9,8 @@ export default function OrgList(props) {
 
     return (
         <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+
+
             {/* no */}
             <td>
                 <a className="text-left pl-6 text-[14px]">
@@ -50,6 +51,7 @@ export default function OrgList(props) {
             </td>
             <td>
                 <div className="pr-6 flex items-center justify-end w-full h-12 gap-3 cursor-pointer">
+<<<<<<< HEAD
                 <div className="flex gap-2">
                         <button
                             onClick={() => clickBtn("edit-" + props.type)}
@@ -61,6 +63,18 @@ export default function OrgList(props) {
                             onClick={() => clickBtn("view-" + props.type)}
                             className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
                         >
+=======
+                    <div className="flex gap-2">
+                        <button
+                            className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
+                        >
+                            <i className="fa-solid fa-pen"></i>
+                        </button>
+                        <div 
+                            onClick={() => props.clickForms(props.type)}
+                            className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
+                        >
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                             <i className="fa-solid fa-eye"></i>
                         </div>
                     </div>

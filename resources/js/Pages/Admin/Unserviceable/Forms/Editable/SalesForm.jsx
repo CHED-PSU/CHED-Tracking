@@ -3,16 +3,23 @@ import { useReactToPrint } from "react-to-print";
 
 export default function DonationForm(props) {
     const ref = useRef();
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         documentTitle: 'emp-data',
     })
 
+<<<<<<< HEAD
     function clickBtn(index) {
         props.setBtnType(index);
     }
 
+=======
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
     return (
 
         <div className={props.className + "fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
@@ -21,7 +28,11 @@ export default function DonationForm(props) {
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
                         <button
+<<<<<<< HEAD
                             onClick={() => clickBtn("close")}
+=======
+                            onClick={() => props.clickForms("close")}
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                             className="py-3 mt-4"
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
@@ -108,7 +119,11 @@ export default function DonationForm(props) {
                                 </tr>
                             </thead>
                             <tbody id="slip-table">
+<<<<<<< HEAD
 
+=======
+                                
+>>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                 <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                     <td className="text-center px-3 border">
                                         default

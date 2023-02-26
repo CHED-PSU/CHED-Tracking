@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import DisposeModal from "../Modals/Dispose";
 
 export default function ItemTab({ className }) {
     const pageCount = 5;
@@ -10,6 +11,11 @@ export default function ItemTab({ className }) {
 
     const [Loading, setLoading] = useState();
     const [UnserviceableItems, setUnserviceableItems] = useState();
+    const [openDisposeModal, setOpenDisposeModal] = useState("close");
+
+    function clickDisposeModal(index){
+        setOpenDisposeModal(index);
+    }
 
     const getUnserviceableItems = async () => {
         setLoading(true);
@@ -76,7 +82,7 @@ export default function ItemTab({ className }) {
                     </td>
                     {/* remarks */}
                     <td>
-                        <a className="text-left flex items-center w-full h-12 gap-3">
+                        <a className="text-left flex items-center w-full h-12 gap-3 pr-2">
                             <div className="flex flex-col gap-1">
                                 <p className="text-[#878787] text-[14px]">
                                     {data.remarks}
@@ -85,15 +91,13 @@ export default function ItemTab({ className }) {
                         </a>
                     </td>
                     <td>
-                        <div className="pr-6 flex items-center justify-end w-full h-12 gap-3 cursor-pointer">
-                            <div className="">
-                                <div
-                                    onClick={() => props.clickForms(props.type)}
-                                    className="btn-color-3 rounded-full py-2 px-3 text-text-black"
-                                >
-                                    <i className="fa-solid fa-eye"></i> View
-                                </div>
-                            </div>
+                        <div className="w-full flex justify-end pr-6">
+                            <button
+                                className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
+                                onClick={() => clickDisposeModal("open", data.uri_id)}
+                            >
+                                <i className="fa-solid fa-file-export"></i>
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -103,10 +107,16 @@ export default function ItemTab({ className }) {
 
     return (
         <div className={className + " w-fit h-full relative"}>
+
+            {openDisposeModal === "open" ? <DisposeModal
+                clickDisposeModal={clickDisposeModal}
+                className={""}
+            /> : ""}
+
             <div className="w-full flex justify-end  items-center pb-2">
                 <button
                     className="flex justify-center items-center gap-1 w-8 h-8 p-3 text-[14px] text-text-black rounded-full default-btn"
-                    onClick={onSave}
+                    onClick={() => clickDisposeModal("open")}
                 >
                     <i className="fa-solid fa-file-export"></i>
                 </button>
