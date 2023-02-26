@@ -34,7 +34,25 @@ class GeneralController extends Controller
         ->join('users as u2','u2.id','=','t.received_by')
         ->get();
 
-        return response()->json(['total_users'=>$totalUsers,'recent_issuance' => $recentIssuance]);
+        $countDonated = 1;
+        // $countDonated = DB::table('unserviceable_items')
+        // ->select('unserviceable_status')
+        // ->where('unserviceable_status', 1)
+        // ->count();
+
+        $countDestructed = 4;
+        // $countDestructed = DB::table('unserviceable_items')
+        // ->select('unserviceable_status')
+        // ->where('unserviceable_status', 2)
+        // ->count();
+
+        $countSold = 3;
+        // $countSold = DB::table('unserviceable_items')
+        // ->select('unserviceable_status')
+        // ->where('unserviceable_status', 3)
+        // ->count();
+
+        return response()->json(['total_users'=>$totalUsers,'recent_issuance' => $recentIssuance, 'countDonated'=>$countDonated, 'countDestructed'=>$countDestructed, 'countSold'=>$countSold]);
     }
 
     //Admin Logs

@@ -43,8 +43,15 @@ export default function Dashboard({ className }) {
     const [totalUser, setTotalUsers] = useState("N/A");
     const [Loading, setLoading] = useState(true);
     const [recentIssuance, setRecentIssuance] = useState();
+
+    //pending doughnut
     const [countPending, setCountPending] = useState(0);
     const [countAccepted, setCountAccepted] = useState(0);
+
+    //unserviceable
+    const [sales, setSales] = useState('0');
+    const [destruction, setDestruction] = useState('0');
+    const [donation, setDonation] = useState('0');
 
     useEffect(()=>{
         const getAdminDashboardData = async () =>{
@@ -54,6 +61,9 @@ export default function Dashboard({ className }) {
                 const data = response.data
                 setTotalUsers(data.total_users);
                 setRecentIssuance(data.recent_issuance)
+                setDonation(data.countDonated);
+                setDestruction(data.countDestructed);
+                setSales(data.countSold);
             }catch(e){
                 console.log(e)
             }finally{
@@ -199,7 +209,7 @@ export default function Dashboard({ className }) {
                                 </div>
                             </div>
                             <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A]">
-
+                                {donation}
                             </div>
                         </div>
                         <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 text-[#434343] rounded-xl border border-[#DDDDDD] bg-white dark:bg-darkColor-800">
@@ -212,7 +222,7 @@ export default function Dashboard({ className }) {
                                 </div>{" "}
                             </div>
                             <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A]">
-
+                                {destruction}
                             </div>
                         </div>
                         <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 rounded-xl text-[#434343] border border-[#DDDDDD] bg-white dark:bg-darkColor-800">
@@ -223,7 +233,7 @@ export default function Dashboard({ className }) {
                                 </div>
                             </div>{" "}
                             <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A]">
-
+                                {sales}
                             </div>
                         </div>
                     </div>
