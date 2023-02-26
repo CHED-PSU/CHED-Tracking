@@ -26,8 +26,12 @@ io.on("connection", (socket)=>{
         io.emit('Admin_Notif', {message:message})
     })
 
-    socket.on('User_return_item', (data) => {
-        socket.broadcast.emit('Admin_Notif', data)
+    socket.on('User_return_item', (message) => {
+        io.emit('Admin_Notif', {message:message})
+    }) 
+
+    socket.on('Admin_accept', (message) => {
+        io.emit('user_notif', {message:message})
     })
 })
 

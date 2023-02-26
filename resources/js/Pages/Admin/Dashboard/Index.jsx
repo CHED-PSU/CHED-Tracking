@@ -14,31 +14,31 @@ import Loader from "../../../components/Loader";
 
 
 export default function Dashboard({ className }) {
-    // const [yearData, setYearData] = useState([])
-    // const annualSum = {
-    //     labels: yearData?.map((data) => data.year),
-    //     datasets: [
-    //         {
-    //             label: "Annual for this Month",
-    //             data: yearData?.map((data) => data.total_cost),
-    //             backgroundColor: [
-    //                 "rgba(251, 93, 145, 1)",
-    //                 "rgba(99, 120, 254, 1)",
-    //                 "rgba(30, 58, 138, 1)",
-    //                 "rgba(255, 123, 163, 1)",
-    //                 "rgba(99, 120, 255, 1)",
-    //                 "rgba(251, 96, 148, 1)",
-    //                 "rgba(255, 123, 163, 1)",
-    //                 "rgba(71, 93, 241, 1)",
-    //                 "rgba(99, 120, 255, 1)",
-    //                 "rgba(30, 58, 138, 1)",
-    //                 "rgba(250, 101, 155, 1)",
-    //                 "rgba(255, 123, 163, 1)",
-    //             ],
-    //             hoverOffset: 10,
-    //         },
-    //     ],
-    // };
+    const [yearData, setYearData] = useState([])
+    const annualSum = {
+        labels: yearData?.map((data) => data.year),
+        datasets: [
+            {
+                label: "Annual for this Month",
+                data: yearData?.map((data) => data.total_cost),
+                backgroundColor: [
+                    "rgba(251, 93, 145, 1)",
+                    "rgba(99, 120, 254, 1)",
+                    "rgba(30, 58, 138, 1)",
+                    "rgba(255, 123, 163, 1)",
+                    "rgba(99, 120, 255, 1)",
+                    "rgba(251, 96, 148, 1)",
+                    "rgba(255, 123, 163, 1)",
+                    "rgba(71, 93, 241, 1)",
+                    "rgba(99, 120, 255, 1)",
+                    "rgba(30, 58, 138, 1)",
+                    "rgba(250, 101, 155, 1)",
+                    "rgba(255, 123, 163, 1)",
+                ],
+                hoverOffset: 10,
+            },
+        ],
+    };
 
     const [totalUser, setTotalUsers] = useState("N/A");
     const [Loading, setLoading] = useState(true);
@@ -70,6 +70,12 @@ export default function Dashboard({ className }) {
                 setLoading(false)
             }
         }
+
+        axios.get('api/totalCostPerYear').then(response => {
+            setYearData(response.data.data)
+            console.log(yearData);
+        })
+
         getAdminDashboardData()
     },[])
 

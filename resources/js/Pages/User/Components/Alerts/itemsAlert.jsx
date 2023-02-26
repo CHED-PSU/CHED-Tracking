@@ -20,16 +20,14 @@ export default function ConditionalAlert(props) {
             'reason': props.optionhandler,
             'ui_id': props.valueId,
         }
-
+        
         try {
             axios.post('api/returnItemsToAdmin', {
 
                 data: data,
                 user_id: value.id
             }).then(res => {
-                if(res.data.success === success){
-                    console.log('wow')
-                }
+                props.success('success')
             })
            
         } catch (e) {

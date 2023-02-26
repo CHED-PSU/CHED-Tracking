@@ -20,6 +20,10 @@ export default function ICSModal(props) {
         setOpenAlert(index)
     }
 
+    const closer = (data) => {
+            props.clickICSModal("close")
+    }
+
     const confirmation = (index) => {
         if (index === 'accept') {
             setAlertIcon("check");
@@ -28,6 +32,9 @@ export default function ICSModal(props) {
             setAlertButtonColor("none");
             setAlertNoButton("okay");
             setOpenAlert(true)
+            setAlertFunction(true)
+            props.LoadPendingData()
+           
         }else{
             setAlertIcon("check");
             setAlertHeader("Done");
@@ -35,10 +42,17 @@ export default function ICSModal(props) {
             setAlertButtonColor("none");
             setAlertNoButton("okay");
             setOpenAlert(true)
+            setAlertFunction(true)
+            props.LoadPendingData()
         }
 
         if(index === false){
-            setOpenAlert(false)
+            if(alertFunction === true){
+                closer()
+                setOpenAlert(false)
+            }else{
+                setOpenAlert(false)
+            }
         }
 
     }
@@ -200,7 +214,7 @@ export default function ICSModal(props) {
                     alertNoButton={alertNoButton}
                     alertFunction={alertFunction}
                     confirmation={confirmation}
-                    
+                    closer = {closer}
                      /> : ''
             }
 

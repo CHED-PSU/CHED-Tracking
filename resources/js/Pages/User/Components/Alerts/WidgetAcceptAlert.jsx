@@ -3,6 +3,7 @@ import axios from "axios";
 import io from "socket.io-client";
 const socket = io.connect("http://127.0.0.1:8001")
 
+
 export default function ConditionalAlert(props) {
 
     const user = localStorage.getItem('localSession');
@@ -24,7 +25,7 @@ export default function ConditionalAlert(props) {
         } catch (e){
             console.log(e)
         }
-        
+        setAccepted(true)
         if(accepted === true){
             socket.emit('User_Accept', {message: value.name + '  has accepted the item'})
         }

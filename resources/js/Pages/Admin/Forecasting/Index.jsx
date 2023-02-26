@@ -6,7 +6,7 @@ import Disposal from "./Tabs/Disposal";
 import Newproposal from "./Tabs/Newproposal";
 
 export default function Forecasting({ className }) {
-    const [toggleTabs, setToggleTabs] = useState("disposal");
+    const [toggleTabs, setToggleTabs] = useState("newproposal");
 
     const domain = window.location.href;
     const url = new URL(domain);
@@ -14,6 +14,8 @@ export default function Forecasting({ className }) {
     function clickTabs(index) {
         setToggleTabs(index);
     }
+    const [Loading, setLoading] = useState(true);
+
     const [data, setData] = useState([]);
     const [xAxis, setxAxis] = useState([]);
     const [yAxis, setyAxis] = useState([]);
@@ -26,6 +28,26 @@ export default function Forecasting({ className }) {
     const [dpredictedyAxis, dsetpredictedyAxis] = useState([]);
     const [dpredicted, dsetpredicted] = useState();
 
+    useEffect(() => {
+        const forecast = async () => {
+            setLoading(true)
+            try {
+                await axios.get('api/forecast').then(response => {
+                    setData(response.data.data);
+                    setxAxis(response.data.xAxis);
+                    setyAxis(response.data.yAxis);
+                    setpredictedyAxis(response.data.predicted_data);
+                    setpredicted(response.data.predicted);
+                })
+            } catch (e) {
+                console.log(e)
+            } finally {
+                setLoading(false)
+            }
+        }
+        forecast()
+    }, [])
+
     return (
         <div className={className + " flex justify-center"}>
             <div className="absolute -right-14 bottom-0 w-1/3">
@@ -36,18 +58,7 @@ export default function Forecasting({ className }) {
                 {/*tab buttons*/}
                 <div className="pb-3">
                     <ul className="flex gap-4">
-                        <li
-                            onClick={() => clickTabs("disposal")}
-                            className={
-                                toggleTabs === "disposal"
-                                    ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                    : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
-                            }
-                        >
-                            <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                                Disposal
-                            </div>
-                        </li>
+                        
                         <li
                             onClick={() => clickTabs("newproposal")}
                             className={

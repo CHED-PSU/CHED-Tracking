@@ -275,7 +275,7 @@ class FormController extends Controller
     {
         $getItems = DB::table('user_returned_items as uri')
             ->select('uri.created_at', 'pri.price', 'pi.code as article', 'pi.description', 'uri.uri_id')
-            ->join('user_items as ui','ui.ui_id','=','uri.ui_id')
+            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -298,6 +298,7 @@ class FormController extends Controller
         $getAdminNotification = DB::table('admin_notification as an')
             ->select('an.id', 'u.firstname', 'an.created_at', 'an.description', 'an.ns_id')
             ->join('users as u', 'u.id', '=', 'an.user_id')
+            ->orderBy('an.created_at','DESC')
             ->get();
 
         return response()->json(['admin_notification' => $getAdminNotification]);
@@ -337,12 +338,12 @@ class FormController extends Controller
     {
         DB::table('user_returned_items as uri')
             ->where('uri.uri_id', $req->input('id'))
-            ->update(['confirmation' => 'accepted','received_by' => $req->input('user_id')]);
+            ->update(['confirmation' => 'accepted', 'received_by' => $req->input('user_id')]);
 
         $user_id = DB::table('user_returned_items as uri')
-        ->select('uri.user_id')
-        ->where('uri.uri_id', $req->input('id'))
-        ->first();
+            ->select('uri.user_id')
+            ->where('uri.uri_id', $req->input('id'))
+            ->first();
 
 
         DB::table('users_notification')
@@ -369,9 +370,15 @@ class FormController extends Controller
             ->where('uri.uri_id', $req->input('id'))
             ->update(['confirmation' => 'declined']);
 
+        $user_id = DB::table('user_returned_items as uri')
+            ->select('uri.user_id')
+            ->where('uri.uri_id', $req->input('id'))
+            ->first();
+
         DB::table('users_notification')
             ->insert([
                 'user_id' => $req->input('user_id'),
+                'to_user_id' => $user_id->user_id,
                 'ns_id'   => 2,
                 'np_id'   => 3,
                 'confirmation' => 'declined',
@@ -389,17 +396,19 @@ class FormController extends Controller
     public function getUserIcsControls(Request $req)
     {
 
-        $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(in.price * it.quantity) as total"), 'it.tracking_id')->join('iar_inventory as in', 'in.inventory_id', '=', 'it.inventory_id')->groupBy('it.tracking_id');
+        $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')->groupBy('it.trackings_id');
         $result = DB::table('trackings as t')
             ->joinSub($subQuery, 'subData', function ($join) {
-                $join->on('t.id', '=', 'subData.tracking_id');
+                $join->on('t.id', '=', 'subData.trackings_id');
             })
             ->where('t.received_by', $req->input('id'))
             ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
-            ->join('users as u', 'u.id', '=', 't.issued_by')
             ->where('ui.description', 'ICS')
             ->where('ui.confirmation', 'accepted')
+            // ->groupBy('t.id')
             ->get();
+
+
 
         $totalPrice = 0;
 

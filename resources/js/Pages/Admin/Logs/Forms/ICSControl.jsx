@@ -31,7 +31,7 @@ export default function ICSControl(props) {
         return items?.map(data => {
             return (
                 <tr className="text-xs h-16 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 text-text-gray dark:text-white">
-                    <td className="text-left pl-6 pr-3 text-text-gray text-2base">{data.assign_no}</td>
+                    <td className="text-left pl-6 pr-3 text-text-gray text-2base">{data.tracking_id}</td>
                     <td className="text-left px-3">
                         <div className="flex flex-col gap-1">
                             <h5 className="text-base text-text-black font-semibold"></h5>

@@ -56,7 +56,7 @@ export default function ReturnRequest(props) {
                 setAlertDesc('Status must be filled out')
                 setAlertButtonColor('none')
                 setAlertNoButton('Okay')
-            }else{
+            } else {
                 setAlertIcon('question')
                 setAlertHeader('Confirmation')
                 setAlertDesc('Are you sure you want return the item?')
@@ -74,7 +74,17 @@ export default function ReturnRequest(props) {
     const value = JSON.parse(user);
 
 
-
+    const success = (data) => {
+        if (data === 'success') {
+            setAlertIcon("check")
+            setAlertHeader("Success")
+            setAlertDesc("You've successfuly returned an item to its previous owner.")
+            setAlertButtonColor('none')
+            setAlertYesButton('Confirm')
+            setAlertNoButton('Okay')
+            props.openFormHandler()
+        }
+    }
 
     const bbcommenthandler = (e) => {
         setCommentHandler(e.target.value)
@@ -95,7 +105,7 @@ export default function ReturnRequest(props) {
 
 
     //Return Item handler
-    
+
 
 
     return (
@@ -108,9 +118,10 @@ export default function ReturnRequest(props) {
                 alertYesButton={alertYesButton}
                 alertNoButton={alertNoButton}
                 clickAlert={clickAlert}
-                defecthandler = {defecthandler}
-                optionhandler = {optionhandler}
-                valueId = {props.valueId}
+                defecthandler={defecthandler}
+                optionhandler={optionhandler}
+                valueId={props.valueId}
+                success={success}
                 className={""}
             /> : ""}
             <div className="z-30 w-full h-full bg-neutral-800 bg-opacity-75 fixed top-0 right-0 flex justify-center items-center">

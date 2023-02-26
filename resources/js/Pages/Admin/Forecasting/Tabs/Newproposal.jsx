@@ -10,23 +10,16 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
    const predictRef = useRef(null)
    const [projectedValue, setProjectedValue] = useState(predicted);
    const [totalCostPerYear, settotalCostPerYear] = useState([]);
+
+
    const predictHandler = (e) => {
       e.preventDefault()
-
-      fetch('http://' + url.hostname + ':8000/api/forecastSpecific', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-
-            body: predictRef.current.value
-        })
-            .then(response => response.json())
-            .then((data) => {
-               setProjectedValue(data.predicted)
-            })
-
+      axios.post('api/forecastSpecific',{value: predictRef.current.value}).then(response => {
+         setProjectedValue(response.data.predicted)
+      })
    }
+
+ 
 
    useEffect(() => {
 
@@ -41,6 +34,28 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
                settotalCostPerYear(data.data)
             })
    }, [])
+
+   const dataMapper = (items) => {
+      return items?.map(data => {
+         return (
+            <tr className="bg-white h-12">
+               <td className="w-80 pl-16 text-left 2xl:text-base xl:text-sm text-sm rounded-tableRow">
+                  {data.id}
+               </td>
+               <td className="w-96 2xl:text-base xl:text-sm text-sm font-semibold text-text-black">
+                  {data.year}
+               </td>
+               <td className="w-40 text-sm rounded-tableRow">
+                  <div className="flex gap-2 items-center text-c-inspecting font-medium">
+                     <h5 className="2xl:text-sm xl:text-[13px] text-[13px]">
+                        ₱ {data.total_cost}
+                     </h5>
+                  </div>
+               </td>
+            </tr>
+         )
+      })
+   }
 
 
    var data = {
@@ -59,19 +74,7 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
             hoverOffset: 10,
             tension: 0.2,
          },
-         {
-            label: "Forecasted Data",
-            data: predictedyAxis.map((data) => parseInt(data)),
-            fill: true,
-            backgroundColor: [
-               "rgba(222, 212, 255, 0.4)"
-            ],
-            pointBackgroundColor: "rgba(179,41,127,1.00)",
-            borderColor: 'rgba(179,41,140,1.00)',
-            borderWidth: 2,
-            hoverOffset: 10,
-            tension: 0.2,
-         },
+         
       ],
    }
    
@@ -101,21 +104,7 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
                            </tr>
                         </thead>
                         <tbody className="block h-[250px] w-fit overflow-scroll space-y-3">
-                            <tr className="bg-white h-12">
-                                <td className="w-80 pl-16 text-left 2xl:text-base xl:text-sm text-sm rounded-tableRow">
-                                    0
-                                </td>
-                                <td className="w-96 2xl:text-base xl:text-sm text-sm font-semibold text-text-black">
-                                    0
-                                </td>
-                                <td className="w-40 text-sm rounded-tableRow">
-                                    <div className="flex gap-2 items-center text-c-inspecting font-medium">
-                                        <h5 className="2xl:text-sm xl:text-[13px] text-[13px]">
-                                            ₱ 0
-                                        </h5>
-                                    </div>
-                                </td>
-                            </tr>
+                        {totalCostPerYear?.length != 0 ? dataMapper(totalCostPerYear) : ""}
 
                         </tbody>
                      </table>
@@ -129,8 +118,8 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
                <div className="">
                   <h1 className='font-semibold text-text-black'>Predict Year:</h1>
                   <div className='flex gap-3'>
-                     <input type="number" name="" id="numberInput" className='w-full rounded-md border border-neutral-500 p-3 outline-none cursor-pointer' />
-                     <button className='border bg-col btn-color-1 px-5 rounded-lg text-white text-lg'><i className="fa-solid fa-check"></i></button>
+                     <input ref={predictRef} type="number" name="" id="numberInput" className='w-full rounded-md border border-neutral-500 p-3 outline-none cursor-pointer' />
+                     <button onClick={predictHandler} className='border bg-col btn-color-1 px-5 rounded-lg text-white text-lg'><i className="fa-solid fa-check"></i></button>
                   </div>
                </div>
             </form>
@@ -147,7 +136,7 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
                         Php
                      </div>
                      <div className="w-full 2xl:text-4xl xl:text-3xl text-3xl font-bold text-white">
-                        ₱0
+                        ₱ {projectedValue ? projectedValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                      </div>
                   </div>
                </div>

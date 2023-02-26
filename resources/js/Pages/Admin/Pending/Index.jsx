@@ -41,6 +41,24 @@ export default function Pending({ className }) {
         getPendingItems();
     },[])
 
+    const getPendingItems = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get('api/getPendingItems')
+            const data = response.data
+            setPendingItems(data.pending_items)
+            
+        } catch (e) {
+            console.log(e)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const LoadPendingData = () => {
+        getPendingItems()
+    }
+
     //const pageCount = Math.ceil(pendingRequests?.length / pendingPerPage);
     const pageCount = 5;
     const changePage = ({ selected }) => {
@@ -110,6 +128,7 @@ export default function Pending({ className }) {
             {/* Modals */}
             {openICSModal === "open" ? <ICSModal
                 clickICSModal={clickICSModal}
+                LoadPendingData= {LoadPendingData}
                 id = {Id !== undefined ? Id : 'N/A'}
             /> : ""}
             <PARModal

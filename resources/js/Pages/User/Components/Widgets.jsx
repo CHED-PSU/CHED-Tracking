@@ -2,10 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import ICSIssuedNotification from "./notification components/ICSIssuedNotification";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import io from "socket.io-client";
+const socket = io.connect("http://127.0.0.1:8001")
 
 export default function Widgets(props) {
 
     const [toggleTabs, setToggleTabs] = useState("all");
+    const [read, setRead] = useState()
     function clickTabs(index) {
         setToggleTabs(index);
     }
@@ -17,7 +20,15 @@ export default function Widgets(props) {
     const [name, setName] = useState('default');
     const [role, setRole] = useState('default');
 
-    useEffect(()=>{
+    useEffect(() => {
+        socket.on('user_notif', data => {
+            console.log('pasok')
+            setRead(true)
+        })
+
+    }, [socket])
+
+    useEffect(() => {
         setName(value.name)
         setRole(value.role)
     })
@@ -38,7 +49,7 @@ export default function Widgets(props) {
     let notifDropdown = useRef();
     let profileButton = useRef();
     let profileDropdown = useRef();
-    
+
     useEffect(() => {
         const handler = (event) => {
             if (!notifButton.current.contains(event.target)) {
@@ -57,7 +68,7 @@ export default function Widgets(props) {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-        
+
     });
 
     // Modal for Notification Item
@@ -68,31 +79,31 @@ export default function Widgets(props) {
         setListId(id)
         setOpenNotifSpecList(!openNotifSpecList)
         setOpenNotifDropdown(!openNotifDropdown)
-        
+
     }
 
     //for Notification mapping
     const [notificationItems, setNotificationItems] = useState([]);
 
-    async function getNotificationItems(){
-        try{
-            const res = await axios.post('/api/getNotificationItems',{
+    async function getNotificationItems() {
+        try {
+            const res = await axios.post('/api/getNotificationItems', {
                 id: value.id
             });
             setNotificationItems(res.data)
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
     }
 
-    useEffect(()=>{
-        
+    useEffect(() => {
+
 
         getNotificationItems();
-        
-        
-    },[])
-    
+
+
+    }, [])
+
 
     const notifMapper = (items) => {
         if (items.length > 0) {
@@ -104,8 +115,9 @@ export default function Widgets(props) {
                     var distance = today.getTime() - created_at.getTime();
 
                     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    if(data.np_id === 1){
-                        if(data.ns_id === 2){
+                    if (data.np_id === 1) {
+                        if (data.ns_id === 2) {
+                            console.log('pasok')
                             return (
                                 <li onClick={() => notifSpecList(data.id)} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
                                     <div className="flex h-full items-center justify-between gap-3 px-3">
@@ -119,15 +131,15 @@ export default function Widgets(props) {
                                                 </span>{" "}
                                                 <span className="">
                                                     {" "}
-                                                    has issued you an { data.description} form.
+                                                    has issued you an {data.description} form.
                                                 </span>
                                             </div>
                                             <div className="text-xs text-blue-400">
-                                                {days === 1 || days === 0 ? "a day ago": days + " days ago"}
+                                                {days === 1 || days === 0 ? "a day ago" : days + " days ago"}
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     {/* Ping Notif */}
                                     <div className="h-auto flex relative">
                                         <span className="flex h-4 w-4 mr-4 pointer-events-none">
@@ -135,10 +147,10 @@ export default function Widgets(props) {
                                             <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
                                         </span>
                                     </div>
-                                    
+
                                 </li>
                             )
-                        }else{
+                        } else {
                             return (
                                 <li onClick={() => notifSpecList(data.id)} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
                                     <div className="flex h-full items-center justify-between gap-3 px-3">
@@ -152,31 +164,31 @@ export default function Widgets(props) {
                                                 </span>{" "}
                                                 <span className="">
                                                     {" "}
-                                                    has issued you an { data.description} form.
+                                                    has issued you an {data.description} form.
                                                 </span>
                                             </div>
                                             <div className="text-xs text-blue-400">
-                                                {days === 1 || days === 0 ? "a day ago": days + " days ago"}
+                                                {days === 1 || days === 0 ? "a day ago" : days + " days ago"}
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     {/* Ping Notif */}
-                                    
-                                    
+
+
                                 </li>
                             )
                         }
-                        
+
                     }
                 }
-                
+
                 )
             })
 
         } else {
-            
-            return(
+
+            return (
                 <li className="py-5 text-center cursor-default">
                     <small>You don't have notification yet</small>
                 </li>
@@ -188,7 +200,7 @@ export default function Widgets(props) {
 
     return (
         <div className={props.className}>
-            
+
             {/* Buttons */}
             <div className="w-fit flex items-center 2xl:space-x-4 xl:space-x-3 space-x-3">
                 {/* Dark Mode Button */}
@@ -249,6 +261,10 @@ export default function Widgets(props) {
                         </svg>
 
                     </div>
+                    {read ? <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 bg-blue-500 justify-center items-center text-white font-semibold text-ss"></span>
+                    </span> : ''}
                 </button>
 
                 {/* Profile Button */}
@@ -273,7 +289,7 @@ export default function Widgets(props) {
                         </span>
                     </div>
                 </button>
-                
+
             </div>
 
             {/* Dropdowns */}
@@ -292,7 +308,7 @@ export default function Widgets(props) {
                 <div
                     ref={notifDropdown}
                 >
-                    {openNotifDropdown? <div className="relative w-fit min-h-fit 2xl:max-h-[660px] xl:max-h-[500px] max-h-[500px] bg-white border border-neutral-200 dark:border-neutral-700 dark:bg-darkColor-800 rounded-xl 2xl:py-4 xl:py-3 py-3 2xl:pl-5 2xl:pr-4 xl:px-4 px-4 2xl:space-y-3 xl:space-y-2 space-y-2 shadow-lg">
+                    {openNotifDropdown ? <div className="relative w-fit min-h-fit 2xl:max-h-[660px] xl:max-h-[500px] max-h-[500px] bg-white border border-neutral-200 dark:border-neutral-700 dark:bg-darkColor-800 rounded-xl 2xl:py-4 xl:py-3 py-3 2xl:pl-5 2xl:pr-4 xl:px-4 px-4 2xl:space-y-3 xl:space-y-2 space-y-2 shadow-lg">
                         <div className="text-left cursor-default 2xl:pt-1">
                             <h2 className="2xl:text-xl xl:text-lg text-lg font-semibold dark:text-neutral-200">
                                 Notification
@@ -339,11 +355,11 @@ export default function Widgets(props) {
                         >
                             <ul className="min-h-fit 2xl:max-h-[520px] xl:max-h-[380px] max-h-[380px] pr-1 overflow-auto flex-row space-y-2 2xl:w-[350px] xl:w-[300px] w-[300px]">
                                 {notifMapper(Object.values(notificationItems))}
-                                
+
                             </ul>
                         </div>
-                    </div>: 
-                    ""}
+                    </div> :
+                        ""}
                 </div>
                 {/* Notification */}
 
@@ -381,7 +397,7 @@ export default function Widgets(props) {
                 </div>
                 {/* Profile */}
             </div>
-            {openNotifSpecList ? <ICSIssuedNotification  listId = {listId != null? listId: null} setOpenNotifSpecList = {setOpenNotifSpecList}/> : ""}
+            {openNotifSpecList ? <ICSIssuedNotification listId={listId != null ? listId : null} setOpenNotifSpecList={setOpenNotifSpecList} /> : ""}
         </div>
     );
 }

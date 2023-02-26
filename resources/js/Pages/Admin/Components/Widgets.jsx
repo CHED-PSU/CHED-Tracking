@@ -10,7 +10,7 @@ const socket = io.connect("http://127.0.0.1:8001")
 
 export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
     const [openProfSett, setOpenProfSett] = useState("close");
-    const [read, setRead] = useState(false)
+    const [read, setRead] = useState()
     function clickProfSett(index) {
         setOpenProfSett(index);
     }
@@ -25,6 +25,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
         socket.on('Admin_Notif', data => {
             setRead(true)
         })
+        
     }, [socket])
 
     // Modal for Notification and Profile
@@ -193,7 +194,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                     </div>
 
                     {/* Ping Notif */}
-                    {data.status_id === 2 ? <div className="h-auto flex relative">
+                    {data.ns_id === 2 ? <div className="h-auto flex relative">
                         <span className="flex h-4 w-4 mr-4 pointer-events-none">
                             <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
@@ -353,7 +354,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                         </svg>
                     </div>
                     {/* Ping Notification */}
-                    {read > 0 ? <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
+                    {read  ? <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 bg-blue-500 justify-center items-center text-white font-semibold text-ss"></span>
                     </span> : ''}

@@ -1,21 +1,35 @@
 import axios from "axios";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import io from "socket.io-client";
+const socket = io.connect("http://127.0.0.1:8001")
 
 export default function ConditionalAlert(props) {
 
     let modalBody = useRef();
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
+    const [accepted, setAccepted] = useState()
 
     const acceptClick = () => {
         axios.post('api/acceptPendingRequest', {id: props.id, user_id: value.id}).then(
-            props.confirmation('accept')
+            props.confirmation('accept'),
+            setAccepted(true)
         )
+
+        if(accepted === true){
+            socket.emit('Admin_accept', {message: value.name + '  has accepted the item'})
+        }
     }
     const declineClick = () => {
         axios.post('api/declinePendingRequest', {id: props.id,user_id: value.id}).then(
-            props.confirmation('decline')
+            props.confirmation('decline'),
+            setAccepted(false)
         )
+
+        if(accepted === false){
+            
+            socket.emit('Admin_accept', {message: value.name + '  has accepted the item'})
+        }
     }
     const cancelClick = () => {
         props.confirmation(false)

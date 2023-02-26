@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ForecastingController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ItemController;
@@ -121,3 +122,8 @@ Route::post('/login', [AuthController::class, 'login']);
 //Admin Unserviceable Items
     //Admin Unserviceable Items
         Route::get('getUnserviceableItems',[ItemController::class, 'getUnserviceableItems']);
+
+//Admin forecasting Items
+    Route::get('forecast',[ForecastingController::class, 'forecast']);
+    Route::post('forecastSpecific',[ForecastingController::class, 'forecastSpecific']);
+    Route::get('totalCostPerYear',[ForecastingController::class,'totalCostPerYear']);

@@ -36,7 +36,6 @@ export default function ICSTable({ className }) {
     }
 
     async function getData(id) {
-        console.log(id)
         try {
             const response = await axios.post('api/getUserIcsControls', { id: id })
             const data = response.data
