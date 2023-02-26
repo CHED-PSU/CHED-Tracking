@@ -11,12 +11,12 @@ class GeneralController extends Controller
     //User Pending
     public function getPendingAcceptedRequests(Request $req){
         $pendingCount = DB::table('user_returned_items')
-        ->where('confirmation','Pending')
+        ->where('confirmation','pending')
         ->where('user_id',$req->input('user_id'))
         ->count();
 
         $acceptedCount = DB::table('user_returned_items')
-        ->where('confirmation','Accepted')
+        ->where('confirmation','accepted')
         ->where('user_id',$req->input('user_id'))
         ->count();
 

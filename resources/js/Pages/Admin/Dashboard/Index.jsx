@@ -13,7 +13,7 @@ import RequistionItems from "./RequisitionItems/RequisitionItems";
 import Loader from "../../../components/Loader";
 
 
-export default function Dashboard({ className }) { 
+export default function Dashboard({ className }) {
     // const [yearData, setYearData] = useState([])
     // const annualSum = {
     //     labels: yearData?.map((data) => data.year),
@@ -43,6 +43,8 @@ export default function Dashboard({ className }) {
     const [totalUser, setTotalUsers] = useState("N/A");
     const [Loading, setLoading] = useState(true);
     const [recentIssuance, setRecentIssuance] = useState();
+    const [countPending, setCountPending] = useState(0);
+    const [countAccepted, setCountAccepted] = useState(0);
 
     useEffect(()=>{
         const getAdminDashboardData = async () =>{
@@ -61,9 +63,41 @@ export default function Dashboard({ className }) {
         getAdminDashboardData()
     },[])
 
+    useEffect(()=>{
+        const getPendingAcceptedRequests = async () =>{
+            setLoading(true)
+            try{
+                const response = await axios.get('api/getPendingAcceptedRequests')
+                const data = response.data
+                setCountPending(data.pendingCount);
+                setCountAccepted(data.acceptedCount)
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+            }
+        }
+        getPendingAcceptedRequests()
+    },[])
+
+    const pendingReq = {
+        datasets: [
+            {
+                label: "Pending Requests",
+                data: [countAccepted, countPending],
+                backgroundColor: [
+                    "rgba(255, 255, 255, 1)",
+                    "rgba(206, 0, 62, 1)",
+                ],
+                borderWidth: 0,
+                hoverOffset: 5,
+            },
+        ],
+    }
+
     const recentIssuanceMapper = (item) =>{
-        return  item?.map(data =>{
-            
+        return  item?.slice(0, 3).map(data =>{
+
             var created_at = new Date(data.created_at);
 
             let today = new Date();
@@ -137,7 +171,7 @@ export default function Dashboard({ className }) {
                             </div>
                             <div className="flex flex-col items-center w-fit 2xl:space-y-4 xl:space-y-2 space-y-2">
                                 <div className="2xl:h-40 2xl:w-40 xl:h-24 xl:w-24 h-24 w-24 flex-none">
-                                    {/* <PendingReq chartData={pendingReq} /> */}
+                                    <PendingReq chartData={pendingReq} />
                                 </div>
                                 <div className="flex 2xl:flex-row xl:flex-col flex-col justify-center flex-none text-xs 2xl:gap-6 xl:gap-1 gap-1">
                                     <div className="flex 2xl:gap-3 xl:gap-2 gap-2 items-center">
@@ -165,7 +199,7 @@ export default function Dashboard({ className }) {
                                 </div>
                             </div>
                             <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A]">
-                                
+
                             </div>
                         </div>
                         <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 text-[#434343] rounded-xl border border-[#DDDDDD] bg-white dark:bg-darkColor-800">
@@ -178,7 +212,7 @@ export default function Dashboard({ className }) {
                                 </div>{" "}
                             </div>
                             <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A]">
-                                
+
                             </div>
                         </div>
                         <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 rounded-xl text-[#434343] border border-[#DDDDDD] bg-white dark:bg-darkColor-800">
@@ -189,7 +223,7 @@ export default function Dashboard({ className }) {
                                 </div>
                             </div>{" "}
                             <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A]">
-                               
+
                             </div>
                         </div>
                     </div>
@@ -217,7 +251,7 @@ export default function Dashboard({ className }) {
                                     </div>
                                 </div> : recentIssuanceMapper(recentIssuance)}
                         {/* no data */}
-                        
+
                     </div>
 
 
