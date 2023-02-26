@@ -63,7 +63,7 @@ export default function GuestIndex() {
                         id: response.data.id
                     }
 
-                    if(item.Authenticated === true){
+                    if(item.Authenticated === "true"){
                         navigate("/dashboard")
                         localStorage.setItem("localSession", JSON.stringify(item));
                     }else{
