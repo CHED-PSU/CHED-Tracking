@@ -227,7 +227,7 @@ export default function Return({ className }) {
                         </thead>
                         <tbody>
                             {Loading ? <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                <td colspan="5" className="text-center h-12 bg-white border">
+                                <td colSpan="5" className="text-center h-12 bg-white border">
                                     <small className="text-sm">No data available in table.</small>
                                 </td>
                             </tr> : returnItemsMapper(returnedItems)}

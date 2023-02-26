@@ -3,11 +3,14 @@ import { useReactToPrint } from "react-to-print";
 
 export default function DonationForm(props) {
     const ref = useRef();
-    
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         documentTitle: 'emp-data',
     })
+
+    function clickBtn(index) {
+        props.setBtnType(index);
+    }
 
     return (
 
@@ -17,7 +20,7 @@ export default function DonationForm(props) {
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
                         <button
-                            onClick={() => props.clickForms("close")}
+                            onClick={() => clickBtn("close")}
                             className="py-3 mt-4"
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
@@ -95,23 +98,23 @@ export default function DonationForm(props) {
                                 <div className="flex gap-7 ml-40">
                                     <div className="">
                                         <div className="flex gap-1 pb-2">
-                                            <input type="radio" name="transferType" id="donation" value="Donation"/>
+                                            <input type="radio" name="transferType" id="donation" value="Donation" checked/>
                                             <label for="donation" className="text-black font-medium text-xs">Donation</label>
                                         </div>
                                         <div className="flex gap-1">
-                                            <input type="radio" name="transferType" id="relocate" value="Relocate"/>
+                                            <input type="radio" name="transferType" id="relocate" value="Relocate" disabled/>
                                             <label for="relocate" className="text-black font-medium text-xs">Relocate</label>
                                         </div>
                                     </div>
                                     <div>
                                         <div className="flex gap-1 pb-2">
-                                            <input type="radio" name="transferType" id="reassignment" value="Donation"/>
+                                            <input type="radio" name="transferType" id="reassignment" value="Donation" disabled/>
                                             <label for="reassignment" className="text-black font-medium text-xs">Reassignment</label>
                                         </div>
                                         <div className="flex gap-1 items-center">
-                                            <input type="radio" name="transferType" id="others" value="Relocate"/>
+                                            <input type="radio" name="transferType" id="others" value="Relocate" disabled/>
                                             <label for="others" className="text-black font-medium text-xs">Others (Specify)</label>
-                                            <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none"/>
+                                            <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" disabled/>
                                         </div>
                                     </div>
                                 </div>
@@ -182,12 +185,8 @@ export default function DonationForm(props) {
                                                     {/* Approved by */}
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Approved by:</h5>
-                                                        <div className="flex flex-col justify-between">
-                                                            <form action="">
-                                                                <select name="" id="Status" className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer">
-                                                                    <option value="none">None</option>
-                                                                </select>
-                                                            </form>
+                                                        <div className="flex flex-col justify-between text-xs">
+                                                            MARICAR R. CASQUEJO,Ph.D.CESOIII
                                                         </div>
                                                         <h6 className="text-xs">Director IV</h6>
                                                         <h6 className="text-sm">March 25, 2022</h6>
@@ -195,25 +194,17 @@ export default function DonationForm(props) {
                                                     {/* Released/Issued by */}
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Released/Issue by:</h5>
-                                                        <div className="flex flex-col justify-between">
-                                                            <form action="">
-                                                                <select name="" id="Status" className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer">
-                                                                    <option value="none">None</option>
-                                                                </select>
-                                                            </form>
+                                                        <div className="flex flex-col justify-between text-xs">
+                                                            JERMINE R. BASISTER
                                                         </div>
-                                                        <h6 className="text-xs">Admin.Assist.IV/Property Officer Designate</h6>
+                                                        <h6 className="text-xs">AAVI, Supply Officer Designate</h6>
                                                         <h6 className="text-sm">March 25, 2022</h6>
                                                     </div>
                                                     {/* Received by */}
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Received by:</h5>
-                                                        <div className="flex flex-col justify-between">
-                                                            <form action="">
-                                                                <select name="" id="Status" className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer">
-                                                                    <option value="none">None</option>
-                                                                </select>
-                                                            </form>
+                                                        <div className="flex flex-col justify-between text-xs">
+                                                            AUGIE E. FUENTES, PhD.
                                                         </div>
                                                         <h6 className="text-xs">College President</h6>
                                                         <h6 className="text-sm">March 25, 2022</h6>
@@ -225,7 +216,6 @@ export default function DonationForm(props) {
                                 </tbody>
                             </table>
                         </div>
-                        
                     </div>
                 </div>
                 {/* data table */}
