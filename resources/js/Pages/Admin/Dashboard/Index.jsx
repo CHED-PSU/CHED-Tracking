@@ -176,7 +176,7 @@ export default function Dashboard({ className }) {
                                     Total Pending Request for today.
                                 </div>
                                 <div className="mt-2 xl:w-[64%] w-[64%] 2xl:text-5xl xl:text-4xl text-4xl font-bold truncate">
-                                    {/* {countPending} */}
+                                    {countPending}
                                 </div>
                             </div>
                             <div className="flex flex-col items-center w-fit 2xl:space-y-4 xl:space-y-2 space-y-2">
