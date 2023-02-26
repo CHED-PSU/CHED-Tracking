@@ -3,23 +3,15 @@ import { useReactToPrint } from "react-to-print";
 
 export default function DestructionForm(props) {
     const ref = useRef();
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         documentTitle: 'emp-data',
     })
 
-<<<<<<< HEAD
     function clickBtn(index) {
         props.setBtnType(index);
     }
 
-=======
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
     return (
 
         <div className={props.className + "fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
@@ -28,11 +20,7 @@ export default function DestructionForm(props) {
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
                         <button
-<<<<<<< HEAD
                             onClick={() => clickBtn("close")}
-=======
-                            onClick={() => props.clickForms("close")}
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                             className="py-3 mt-4"
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
@@ -137,11 +125,6 @@ export default function DestructionForm(props) {
                                     </tr>
                                 </thead>
                                 <tbody id="slip-table">
-<<<<<<< HEAD
-
-=======
-                                    
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                     <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                         <td className="text-center px-3 border">
                                             default
@@ -185,26 +168,14 @@ export default function DestructionForm(props) {
                                     Certified Correct:
                                 </div>
                                 <div className="text-center py-4">
-<<<<<<< HEAD
 
                                     <div
                                         className="pt-1 text-center text-sm underline font-semibold dark:text-white"
 
-=======
-                                    
-                                    <div
-                                        className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-                                        
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                     >CHERYL A. TAGALOG</div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
                                         Signature Over Printed Name of Supply and/or Property Custodian
                                     </div>
-<<<<<<< HEAD
-
-=======
-                                    
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                 </div>
                             </div>
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2">
@@ -212,17 +183,10 @@ export default function DestructionForm(props) {
                                 Disposal Approved:
                                 </div>
                                 <div className="text-center py-4">
-<<<<<<< HEAD
 
                                     <div
                                         className="pt-1 text-center text-sm underline font-semibold dark:text-white"
 
-=======
-                                    
-                                    <div
-                                        className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-                                        
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                     >RAUL C. ALVAREZ JR. CESO III</div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
                                         Signature Over Printed Name of Head of Agency/Entity of his/her Authorized Representative
@@ -249,11 +213,7 @@ export default function DestructionForm(props) {
                                 </li>
                                 <li className="flex gap-4">Item
                                     <div className="w-20 border-b"></div>
-<<<<<<< HEAD
                                     Transferred without cost to
-=======
-                                    Transferred without cost to 
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                     <div className="w-20 border-b"></div>
                                 </li>
                             </ul>
@@ -264,26 +224,14 @@ export default function DestructionForm(props) {
                                     Certified Correct:
                                 </div>
                                 <div className="text-center py-4">
-<<<<<<< HEAD
 
                                     <div
                                         className="pt-1 text-center text-sm underline font-semibold dark:text-white"
 
-=======
-                                    
-                                    <div
-                                        className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-                                        
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                     >MYRIAM B. FLORES</div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
                                         Signature Over Printed Name of Inspection Officer
                                     </div>
-<<<<<<< HEAD
-
-=======
-                                    
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                 </div>
                             </div>
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2">
@@ -293,11 +241,6 @@ export default function DestructionForm(props) {
                                 <div className="text-center py-4">
                                     <div
                                         className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-<<<<<<< HEAD
-
-=======
-                                        
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                     >HELENA L. VALDEZ</div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
                                     Signature Over Printed Name of Witness

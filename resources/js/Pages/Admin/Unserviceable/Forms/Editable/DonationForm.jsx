@@ -90,12 +90,7 @@ export default function DonationForm(props) {
                             <div className="flex justify-between text-sm">
                                 <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs text-th">
                                 To Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">
-<<<<<<< HEAD
                                 <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" placeholder="DAVAO DEL SUR STATE COLLEGE"/></font>
-=======
-                                <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" placeholder="DAVAO DEL SUR STATE COLLEGE"/>
-                                </font>
->>>>>>> 9f3b43a4b99a8c655202bc1858740c6adf39e3b2
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
                                     Date:  <font className="font-medium">0</font>
