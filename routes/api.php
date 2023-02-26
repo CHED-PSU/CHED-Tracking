@@ -116,3 +116,8 @@ Route::post('/login', [AuthController::class, 'login']);
                     Route::post('returnToPreviousOwner',[ItemController::class, 'returnToPreviousOwner']);
                 //admin issue to another owner
                     Route::post('assignToAnotherUser',[ItemController::class, 'assignToAnotherUser']);
+                //Admin move item to unserviceable item
+                    Route::post('moveItemstoUnserviceableItems',[ItemController::class, 'moveItemstoUnserviceableItems']);
+//Admin Unserviceable Items
+    //Admin Unserviceable Items
+        Route::get('getUnserviceableItems',[ItemController::class, 'getUnserviceableItems']);

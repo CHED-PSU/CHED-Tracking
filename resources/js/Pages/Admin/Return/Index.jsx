@@ -40,22 +40,33 @@ export default function Return({ className }) {
         }
     }
 
+    const getUsers = async () => {
+        setLoading(true)
+        try{
+            await axios.get('api/getUsers').then(response => {
+                setUsers(response.data.users)
+            })
+        }catch(e){
+            console.log(e)
+        }finally{
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
         getReturnedItems()
-        const getUsers = async () => {
-            setLoading(true)
-            try{
-                await axios.get('api/getUsers').then(response => {
-                    setUsers(response.data.users)
-                })
-            }catch(e){
-                console.log(e)
-            }finally{
-                setLoading(false)
-            }
-        }
+
         getUsers()
     }, [])
+
+    const success = () => {
+        setAlertIcon("check")
+        setAlertHeader("Success")
+        setAlertDesc("You've successfuly returned an item to its previous owner.")
+        setAlertButtonColor('none')
+        setAlertYesButton('Confirm')
+        setAlertNoButton('Okay')
+    }
 
     async function getReturnedItemsData(index) {
         setId(index)
@@ -64,7 +75,7 @@ export default function Return({ className }) {
         getReturnedItems()
         getUsers()
         setOpenForms(index);
-        
+
     }
 
     function clickAssignModal(index, id, user_id) {
@@ -74,7 +85,7 @@ export default function Return({ className }) {
         setUserId(user_id)
     }
 
-    function clickDisposeModal(index) {
+    function clickDisposeModal(index, id) {
         setAlertIcon("question")
         setAlertHeader("Confirmation")
         setAlertDesc("Are you sure you want to move the item to unserviceable?")
@@ -83,6 +94,7 @@ export default function Return({ className }) {
         setAlertNoButton('Cancel')
         setOpenAlert(true)
         setOpenDisposeModal(index);
+        setId(id)
     }
 
     const pageCount = 5;
@@ -90,7 +102,7 @@ export default function Return({ className }) {
         setPageNumber(selected)
     };
 
-    
+
 
 
     const returnItemsMapper = (items) => {
@@ -152,7 +164,7 @@ export default function Return({ className }) {
 
                             <button
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
-                                onClick={() => clickDisposeModal("open")}
+                                onClick={() => clickDisposeModal("open", data.uri_id)}
                             >
                                 <i className="fa-solid fa-trash-can-arrow-up"></i>
                             </button>
@@ -183,7 +195,7 @@ export default function Return({ className }) {
                 className={""}
             /> : ""}
 
-            {openDisposeModal === "open" ? <DisposalAlert   
+            {openDisposeModal === "open" ? <DisposalAlert
                 clickDisposeModal={clickDisposeModal}
                 alertIcon={alertIcon}
                 alertHeader={alertHeader}
@@ -191,7 +203,9 @@ export default function Return({ className }) {
                 alertButtonColor={alertButtonColor}
                 alertYesButton={alertYesButton}
                 alertNoButton={alertNoButton}
+                id = {id ? id : ''}
                 className={""}
+                success = {success}
             /> : ""}
 
             <div className="absolute -right-14 bottom-0 w-1/3">

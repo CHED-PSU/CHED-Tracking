@@ -173,7 +173,7 @@ class ItemController extends Controller
             ];
         }
 
-        
+
 
         return response()->json(['adminReturnedItemsData' => $getAdminReturnedItemsData, 'adminReturnedItemsInfo' => $getAdminReturnedItemsInfo, 'users' => $getUsers, 'return_items_users_info' => $data]);
     }
@@ -220,7 +220,7 @@ class ItemController extends Controller
         ->insert([
             'user_id' => $req->input('user_id'),
             'to_user_id' => $user_id->received_by,
-            'ns_id' => 2, 
+            'ns_id' => 2,
             'np_id' => 3,
             'confirmation' => 'Return to Owner',
             'description'  => 'has returned an item to you'
@@ -256,7 +256,7 @@ class ItemController extends Controller
         ->join('purchase_request_items as pri','pri.id','=','it.purchase_request_item_id')
         ->where('uri.uri_id', $req->input('data')['rii_id'])
         ->first();
-        
+
         $description = '';
         if($item_id->price > 40000){
             $description = 'PAR';
@@ -281,5 +281,37 @@ class ItemController extends Controller
             'confirmation'=> 'TBD',
             'description' => $description
         ]);
+    }
+
+    //admin moveItemstoUnserviceableItems
+    public function moveItemstoUnserviceableItems(Request $req){
+        $inventory_tracking_id = DB::table('user_returned_items as uri')
+        ->select('it.id','t.received_by','uri.defect')
+        ->join('user_items as ui','ui.ui_id','=','uri.ui_id')
+        ->join('inventory_tracking as it','it.id','=','ui.inventory_tracking_id')
+        ->join('trackings as t','t.id','=','it.trackings_id')
+        ->where('uri.uri_id',$req->input('id'))
+        ->first();
+
+        DB::table('unserviceable_items')
+        ->insert([
+            'inventory_tracking_id' => $inventory_tracking_id->id,
+            'prev_owner'            => $inventory_tracking_id->received_by,
+            'remarks'               => 'has been moved due to ' . $inventory_tracking_id->defect
+        ]);
+    }
+
+    //admin Unserviceable Items
+    public function getUnserviceableItems(Request $req){
+        $items = DB::table('unserviceable_items as ut')
+        ->select('u.firstname','u.surname','pi.code','pi.description','t.date_received','ut.remarks')
+        ->join('inventory_tracking as it','it.id','=','ut.inventory_tracking_id')
+        ->join('purchase_request_items as pri','pri.id','=','it.purchase_request_item_id')
+        ->join('product_items as pi','pi.id','=','pri.product_item_id')
+        ->join('trackings as t','t.id','=','it.trackings_id')
+        ->join('users as u','u.id','=','t.received_by')
+        ->get();
+
+        return response()->json(['unserviceableItems' => $items]);
     }
 }
