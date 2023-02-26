@@ -16,7 +16,11 @@ class AuthController extends Controller
         $validate = DB::table('users')->where('username', $data['username'])->first();
 
         if($validate === null){
-            echo 'wala';
+            $response = [
+                'Authenticated' => 'Username not found.',
+            ];
+
+            return response()->json($response);
         }else{
             if(Hash::check($data['password'], $validate->password)){
                 $roles = DB::table('roles')->select('name')->where('id', $validate->role_id)->first();
@@ -33,8 +37,9 @@ class AuthController extends Controller
 
                 $response = [
                     'status' => 200,
-                    'message' =>'Successfuly logged in',
+                    'message' =>'Successfuly logged in.',
                     'destinations' => $userDestination,
+                    'Authenticated' => 'true',
                     'name' => $validate->firstname . ' ' . $validate->surname,
                     'role' => $roles->name,
                     'id'   => $validate->id
@@ -43,7 +48,10 @@ class AuthController extends Controller
                 return response()->json($response);
 
             }else{
-                return response()->json('wrong password');
+                $response = [
+                    'Authenticated' => 'Password is incorrect.',
+                ];
+                return response()->json($response);
             }
         }
     }
