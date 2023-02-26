@@ -3,11 +3,15 @@ import { useReactToPrint } from "react-to-print";
 
 export default function DonationForm(props) {
     const ref = useRef();
-    
+
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         documentTitle: 'emp-data',
     })
+
+    function clickBtn(index) {
+        props.setBtnType(index);
+    }
 
     return (
 
@@ -17,7 +21,7 @@ export default function DonationForm(props) {
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
                         <button
-                            onClick={() => props.clickForms("close")}
+                            onClick={() => clickBtn("close")}
                             className="py-3 mt-4"
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
@@ -32,9 +36,8 @@ export default function DonationForm(props) {
                         </div>
                     </div>
                     <div className="flex w-1/2 justify-end items-end">
-                        <button onClick={handlePrint} className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer">
-                            <i className="fa-solid fa-print mr-1"></i>
-                            Print
+                        <button className="h-10 w-24 p-1 btn-sm bg-primary rounded-full dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold">
+                            Save
                         </button>
                     </div>
                 </div>
@@ -74,15 +77,20 @@ export default function DonationForm(props) {
                         <div className="mt-4 mb-2">
                             <div className="flex justify-between text-sm">
                                 <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs text-th">
-                                    From Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">CHEDRO XI</font>
+                                    From Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">
+                                        <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" placeholder="CHEDRO XI"/>
+                                        </font>
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
-                                    PTR No:  <font className="font-medium">2021-001-001</font>
+                                    PTR No:  <font className="font-medium">
+                                    <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" placeholder="2021-001-001"/>
+                                    </font>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs text-th">
-                                To Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">DAVAO DEL SUR STATE COLLEGE</font>
+                                To Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">
+                                <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" placeholder="DAVAO DEL SUR STATE COLLEGE"/></font>
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
                                     Date:  <font className="font-medium">0</font>
@@ -225,7 +233,7 @@ export default function DonationForm(props) {
                                 </tbody>
                             </table>
                         </div>
-                        
+
                     </div>
                 </div>
                 {/* data table */}

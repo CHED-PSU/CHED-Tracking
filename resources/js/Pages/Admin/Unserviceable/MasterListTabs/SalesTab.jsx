@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import SalesForm from "../Forms/SalesForm";
+import EditSalesForm from "../Forms/Editable/SalesForm";
+import ViewSalesForm from "../Forms/Viewable/SalesForm";
 import OrgList from "../MasterListList/OrgList";
 
 export default function SalesTab({ className }) {
     const [openForms, setOpenForms] = useState("close");
-   
+    const [btnType, setBtnType] = useState("");
+
     function clickForms(index) {
         setOpenForms(index);
     }
@@ -18,7 +20,14 @@ export default function SalesTab({ className }) {
 
     return (
         <div className={className + " w-fit h-full relative"}>
-            {openForms === 'sales-form' ? <SalesForm
+            {btnType === 'view-sales-form' ? <ViewSalesForm
+                setBtnType={setBtnType}
+                clickForms={clickForms}
+                className={""}
+            /> : ""}
+
+            {btnType === 'edit-sales-form' ? <EditSalesForm
+                setBtnType={setBtnType}
                 clickForms={clickForms}
                 className={""}
             /> : ""}
@@ -35,7 +44,7 @@ export default function SalesTab({ className }) {
                     </tr>
                 </thead>
                 <tbody>
-                    <OrgList type={'sales-form'} clickForms={clickForms} />
+                    <OrgList type={'sales-form'} clickForms={clickForms} setBtnType={setBtnType} />
                 </tbody>
             </table>
             <div className="absolute 2xl:bottom-10 xl:bottom-10 bottom-10 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">

@@ -1,12 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import DonationForm from "../Forms/DonationForm";
+import ViewDonationForm from "../Forms/Viewable/DonationForm";
+import EditDonationForm from "../Forms/Editable/DonationForm";
 import OrgList from "../MasterListList/OrgList";
 
 export default function DonationTab({ className }) {
     const [openForms, setOpenForms] = useState("close");
-   
+    const [btnType, setBtnType] = useState("");
+
+    function clickForms(index) {
+        setOpenForms(index);
+    }
+
     function clickForms(index) {
         setOpenForms(index);
     }
@@ -18,7 +24,14 @@ export default function DonationTab({ className }) {
 
     return (
         <div className={className + " w-fit h-full relative"}>
-            {openForms === 'donation-form' ? <DonationForm
+            {btnType === 'view-donation-form' ? <ViewDonationForm
+                clickForms={clickForms}
+                setBtnType={setBtnType}
+                className={""}
+            /> : ""}
+
+            {btnType === 'edit-donation-form' ? <EditDonationForm
+                setBtnType={setBtnType}
                 clickForms={clickForms}
                 className={""}
             /> : ""}
@@ -35,7 +48,7 @@ export default function DonationTab({ className }) {
                     </tr>
                 </thead>
                 <tbody>
-                    <OrgList type={'donation-form'} clickForms={clickForms} />
+                    <OrgList type={'donation-form'} clickForms={clickForms} setBtnType={setBtnType} />
                 </tbody>
             </table>
             <div className="absolute 2xl:bottom-10 xl:bottom-10 bottom-10 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">

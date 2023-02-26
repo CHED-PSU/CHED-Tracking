@@ -3,11 +3,15 @@ import { useReactToPrint } from "react-to-print";
 
 export default function DonationForm(props) {
     const ref = useRef();
-    
+
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         documentTitle: 'emp-data',
     })
+
+    function clickBtn(index) {
+        props.setBtnType(index);
+    }
 
     return (
 
@@ -17,7 +21,7 @@ export default function DonationForm(props) {
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
                         <button
-                            onClick={() => props.clickForms("close")}
+                            onClick={() => clickBtn("close")}
                             className="py-3 mt-4"
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
@@ -105,7 +109,7 @@ export default function DonationForm(props) {
                                 </tr>
                             </thead>
                             <tbody id="slip-table">
-                                
+
                                 <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                     <td className="text-center px-3 border">
                                         default

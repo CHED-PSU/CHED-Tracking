@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import DestructionForm from "../Forms/DestructionForm";
+import EditDestructionForm from "../Forms/Editable/DestructionForm";
+import ViewDestructionForm from "../Forms/Viewable/DestructionForm";
 import OrgList from "../MasterListList/OrgList";
 
 export default function DestructionTab({ className }) {
     const [openForms, setOpenForms] = useState("close");
-   
+    const [btnType, setBtnType] = useState("");
+
     function clickForms(index) {
         setOpenForms(index);
     }
@@ -18,10 +20,17 @@ export default function DestructionTab({ className }) {
 
     return (
         <div className={className + " w-fit h-full relative"}>
-            {openForms === 'destruction-form' ? <DestructionForm
+            {btnType === 'view-destruction-form' ? <ViewDestructionForm
+                setBtnType={setBtnType}
                 clickForms={clickForms}
                 className={""}
             /> : ""}
+
+            {btnType === 'edit-destruction-form' ? <EditDestructionForm
+                setBtnType={setBtnType}
+                clickForms={clickForms}
+            className={""}
+        /> : ""}
 
             <table className="">
                 <thead>
@@ -35,7 +44,7 @@ export default function DestructionTab({ className }) {
                     </tr>
                 </thead>
                 <tbody>
-                    <OrgList type={'destruction-form'} clickForms={clickForms} />
+                    <OrgList type={'destruction-form'} clickForms={clickForms} setBtnType={setBtnType} />
                 </tbody>
             </table>
             <div className="absolute 2xl:bottom-10 xl:bottom-10 bottom-10 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">

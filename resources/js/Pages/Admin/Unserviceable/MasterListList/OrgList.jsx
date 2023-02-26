@@ -3,6 +3,11 @@ import react from "react";
 
 export default function OrgList(props) {
 
+    function clickBtn(index) {
+        props.setBtnType(index);
+        console.log(index)
+    }
+
     return (
         <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
             {/* no */}
@@ -45,17 +50,26 @@ export default function OrgList(props) {
             </td>
             <td>
                 <div className="pr-6 flex items-center justify-end w-full h-12 gap-3 cursor-pointer">
-                    <div className="">
-                        <div 
-                            onClick={() => props.clickForms(props.type)}
-                            className="btn-color-3 rounded-full py-2 px-3 text-text-black"
+                <div className="flex gap-2">
+                        <button
+                            onClick={() => clickBtn("edit-" + props.type)}
+                            className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
                         >
-                            <i className="fa-solid fa-eye"></i> View
+                            <i className="fa-solid fa-pen"></i>
+                        </button>
+                        <div
+                            onClick={() => clickBtn("view-" + props.type)}
+                            className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
+                        >
+                            <i className="fa-solid fa-eye"></i>
                         </div>
                     </div>
                 </div>
             </td>
         </tr>
-        
+
     )
 }
+
+
+

@@ -3,11 +3,15 @@ import { useReactToPrint } from "react-to-print";
 
 export default function DestructionForm(props) {
     const ref = useRef();
-    
+
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         documentTitle: 'emp-data',
     })
+
+    function clickBtn(index) {
+        props.setBtnType(index);
+    }
 
     return (
 
@@ -17,7 +21,7 @@ export default function DestructionForm(props) {
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
                         <button
-                            onClick={() => props.clickForms("close")}
+                            onClick={() => clickBtn("close")}
                             className="py-3 mt-4"
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
@@ -32,9 +36,8 @@ export default function DestructionForm(props) {
                         </div>
                     </div>
                     <div className="flex w-1/2 justify-end items-end">
-                        <button onClick={handlePrint} className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer">
-                            <i className="fa-solid fa-print mr-1"></i>
-                            Print
+                        <button className="h-10 w-24 p-1 btn-sm bg-primary rounded-full dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold">
+                            Save
                         </button>
                     </div>
                 </div>
@@ -74,7 +77,9 @@ export default function DestructionForm(props) {
                         <div className="mt-4">
                             <div className="flex justify-between text-sm">
                                 <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs text-th">
-                                    Place of Storage: <font className="font-medium text-black">CHEDRO XI Stock Room</font>
+                                    Place of Storage: <font className="font-medium text-black">
+                                    <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" placeholder="CHEDRO XI Stock Room"/>
+                                    </font>
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
                                     Date :  <font className="font-medium">0</font>
@@ -121,7 +126,7 @@ export default function DestructionForm(props) {
                                     </tr>
                                 </thead>
                                 <tbody id="slip-table">
-                                    
+
                                     <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                         <td className="text-center px-3 border">
                                             default
@@ -165,15 +170,15 @@ export default function DestructionForm(props) {
                                     Certified Correct:
                                 </div>
                                 <div className="text-center py-4">
-                                    
+
                                     <div
                                         className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-                                        
+
                                     >CHERYL A. TAGALOG</div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
                                         Signature Over Printed Name of Supply and/or Property Custodian
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2">
@@ -181,10 +186,10 @@ export default function DestructionForm(props) {
                                 Disposal Approved:
                                 </div>
                                 <div className="text-center py-4">
-                                    
+
                                     <div
                                         className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-                                        
+
                                     >RAUL C. ALVAREZ JR. CESO III</div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
                                         Signature Over Printed Name of Head of Agency/Entity of his/her Authorized Representative
@@ -211,7 +216,7 @@ export default function DestructionForm(props) {
                                 </li>
                                 <li className="flex gap-4">Item
                                     <div className="w-20 border-b"></div>
-                                    Transferred without cost to 
+                                    Transferred without cost to
                                     <div className="w-20 border-b"></div>
                                 </li>
                             </ul>
@@ -222,15 +227,15 @@ export default function DestructionForm(props) {
                                     Certified Correct:
                                 </div>
                                 <div className="text-center py-4">
-                                    
+
                                     <div
                                         className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-                                        
+
                                     >MYRIAM B. FLORES</div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
                                         Signature Over Printed Name of Inspection Officer
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2">
@@ -240,7 +245,7 @@ export default function DestructionForm(props) {
                                 <div className="text-center py-4">
                                     <div
                                         className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-                                        
+
                                     >HELENA L. VALDEZ</div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
                                     Signature Over Printed Name of Witness
