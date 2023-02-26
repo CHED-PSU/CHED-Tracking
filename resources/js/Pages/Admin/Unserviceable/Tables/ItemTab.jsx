@@ -11,6 +11,8 @@ export default function ItemTab({ className }) {
     const [Loading, setLoading] = useState();
     const [UnserviceableItems, setUnserviceableItems] = useState();
 
+    const [uItemsId, setUItemsId] = useState([]);
+
     const getUnserviceableItems = async () => {
         setLoading(true);
         try {
@@ -28,6 +30,20 @@ export default function ItemTab({ className }) {
         getUnserviceableItems();
     }, []);
 
+    
+
+    const selectAll = (e) => {
+        const checkboxes = document.querySelectorAll('.u_items')
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = !checkbox.checked;
+        })
+    }
+
+    const singleHandleCheck = (e) => {
+        e.target.checked = !e.target.checked
+    }
+
+
     const itemsMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -35,7 +51,7 @@ export default function ItemTab({ className }) {
                     {/* checkbox */}
                     <td>
                         <div className="flex justify-center item-center">
-                            <input type="checkbox" className="" />
+                            <input onClick={singleHandleCheck} type="checkbox" className="u_items" value={data.id} checked={false}/>
                         </div>
                     </td>
                     {/* items */}
@@ -107,7 +123,7 @@ export default function ItemTab({ className }) {
                     <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                         <th className="h-10 w-16 font-medium text-left pl-6">
                             <div className="flex item-center">
-                                <input type="checkbox" className="" />
+                                <input onClick={selectAll} type="checkbox" className="" />
                             </div>
                         </th>
                         <th className="h-10 w-58 font-medium text-left">
