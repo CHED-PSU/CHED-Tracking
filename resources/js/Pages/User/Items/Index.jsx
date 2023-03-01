@@ -26,26 +26,26 @@ export default function Index({ className }) {
 
 
     useEffect(() => {
-        const getIndividualItems = async () =>{
+        const getIndividualItems = async () => {
             setLoading(true)
-            try{
-                await axios.post('api/getuserIndividualItems',{ 
+            try {
+                await axios.post('api/getuserIndividualItems', {
                     user_id: value.id
                 }).then(res => {
                     setItemsData(res.data.itemsData)
                     setFilteredItemsData(res.data.itemsData)
                     setCheckBoxData(res.data.itemsData)
                 })
-            }catch(e){
+            } catch (e) {
                 console.log(e)
-            }finally{
+            } finally {
                 setLoading(false)
             }
         }
         getIndividualItems()
     }, [])
 
-    
+
 
     const checkHandler = (e) => {
         const { value, checked } = e.target;
@@ -75,12 +75,50 @@ export default function Index({ className }) {
 
             let date = new Date(data.created_at)
             let date_text = date.toString()
-            return <IndividualItems checkHandler={checkHandler} check={data.check} code = {data.code} openFormHandler={openFormHandler} quantity={data.quantity} article={data.article} description={data.description} date={date_text} value={data.ui_id} key={data.ui_id} />
+            return (
+                <tr className="bg-[#F5F5F5]">
+                    <td className="text-center rounded-tableRow">
+                        <input
+                            type="checkbox"
+                            className="h-4 w-4"
+                            check={data.check}
+                            value={data.ui_id}
+                            onClick={handleChangeCheckBox}
+                        />
+                    </td>
+                    <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
+                        {data.quantity}
+                    </td>
+                    <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
+                        {data.code}
+                    </td>
+                    <td className="text-sm">{data.description}</td>
+                    <td className="text-sm">{data.date}</td>
+                    <td className="text-center py-3 rounded-tableRow">
+                        <button value={data.ui_id}
+                            onClick={openFormHandler}
+                            className="h-9 w-24 text-sm rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-medium">
+                            Return
+                        </button>
+                    </td>
+
+                </tr>
+            )
         })
     }
 
-    const filter = (filteredData) => {
-
+    const handleChangeCheckBox = (e) => {
+        setCheckBoxData(prev => {
+            
+            return prev.map(item=>{
+                
+                if(item.ui_id == e.target.value){
+                    return {...item, check: !item.check}
+                }else{
+                    return {...item}
+                }
+            })
+        })
     }
     const search = (value) => {
         setSearchTerm(value)
@@ -98,7 +136,7 @@ export default function Index({ className }) {
 
     //for Form functions
 
-    const openFormHandler = (e) =>{
+    const openFormHandler = (e) => {
         setValueId(e.target.value)
         setOpenForm(!openForm);
     }
@@ -110,7 +148,7 @@ export default function Index({ className }) {
                 "  flex-col 2xl:px-10 xl:px-5 px-5 2xl:py-5 xl:py-3 py-3 items-center"
             }
         >
-            
+
             <div className="absolute -right-14 bottom-0 w-1/3">
                 <AdminBg />
             </div>
@@ -159,7 +197,7 @@ export default function Index({ className }) {
                     </table>
                 </div>
             </div>
-            {openForm ? <ReturnRequest openFormHandler= {openFormHandler} valueId = {valueId ? valueId : ''} /> : ""}
+            {openForm ? <ReturnRequest openFormHandler={openFormHandler} valueId={valueId ? valueId : ''} /> : ""}
         </div>
     );
 }

@@ -14,7 +14,7 @@ export default function IndividualItems(props) {
                     className="h-4 w-4"
                     check = {props.check}
                     value={props.value}
-                    onChange={props.checkHandler}
+                    onChange={props.handleChangeCheckBox(props.value)}
                 />
             </td>
             <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
