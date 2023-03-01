@@ -19,7 +19,8 @@ class ItemController extends Controller
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->where('un.trackings_id', $req->input('listId'))
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
-            ->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')
+            ->join('iar_items as ia','ia.id','=','it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->get();
@@ -32,19 +33,35 @@ class ItemController extends Controller
     public function getuserIndividualItems(Request $req)
     {
         $getUserItems = DB::table('user_items as ui')
-            ->select('pi.description', 'ui.created_at', 'ui.ui_id', 'pi.code')
+            ->select('pi.description', 'ui.created_at', 'ui.ui_id', 'pi.code','pri.quantity')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('trackings as t', 't.id', '=', 'it.trackings_id')
-            ->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')
+            ->join('iar_items as ia','ia.id','=','it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->where('t.received_by', $req->input('user_id'))
             ->where('ui.item_status', 'owned')
             ->get();
 
+        $data = [];
+
+        foreach($getUserItems as $item){
+            $temp_data = [
+                'description' => $item->description,
+                'created_at' => $item->created_at,
+                'ui_id'      => $item->ui_id,
+                'code'       => $item->code,
+                'quantity'   => $item->quantity,
+                'check'      => false
+            ];
+
+            array_push($data,$temp_data);
+        }
+
+        
 
 
-
-        return response()->json(['itemsData' => $getUserItems]);
+        return response()->json(['itemsData' => $data]);
     }
 
     //User Items Data Fetcher
@@ -54,7 +71,8 @@ class ItemController extends Controller
             ->select('pu.name as type', 'pi.description as brand', 'pi.code', 'ui.ui_id', 'pri.price')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('trackings as t', 't.id', 'it.trackings_id')
-            ->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')
+            ->join('iar_items as ia','ia.id','=','it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->where('ui_id', $req->input('ui_id'))
