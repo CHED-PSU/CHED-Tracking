@@ -71,7 +71,7 @@ Route::post('/login', [AuthController::class, 'login']);
 //User Requests Area
     //Pending Requests
         //Pending and Accepted Count
-            Route::post('getPendingAcceptedRequests', [GeneralController::class, 'getPendingAcceptedRequests']);
+            Route::get('getPendingAcceptedRequests', [GeneralController::class, 'getPendingAcceptedRequests']);
 
         //Pending Data
             Route::post('getPendingRequests', [FormController::class, 'getPendingRequests']);

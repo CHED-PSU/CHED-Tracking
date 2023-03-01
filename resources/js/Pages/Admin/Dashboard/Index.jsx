@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; 30
+import axios from "axios";
+30;
 
 import {
     AnnualSumData,
@@ -12,9 +13,8 @@ import AnnualSum from "./Charts/AnnualSum";
 import RequistionItems from "./RequisitionItems/RequisitionItems";
 import Loader from "../../../components/Loader";
 
-
 export default function Dashboard({ className }) {
-    const [yearData, setYearData] = useState([])
+    const [yearData, setYearData] = useState([]);
     const annualSum = {
         labels: yearData?.map((data) => data.year),
         datasets: [
@@ -49,58 +49,66 @@ export default function Dashboard({ className }) {
     const [countAccepted, setCountAccepted] = useState(0);
 
     //unserviceable
-    const [sales, setSales] = useState('0');
-    const [destruction, setDestruction] = useState('0');
-    const [donation, setDonation] = useState('0');
+    const [sales, setSales] = useState("0");
+    const [destruction, setDestruction] = useState("0");
+    const [donation, setDonation] = useState("0");
 
-    useEffect(()=>{
-        const getAdminDashboardData = async () =>{
-            setLoading(true)
-            try{
-                const response = await axios.get('api/getAdminDashboardData')
-                const data = response.data
+    useEffect(() => {
+        const getAdminDashboardData = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get("api/getAdminDashboardData");
+                const data = response.data;
                 setTotalUsers(data.total_users);
-                setRecentIssuance(data.recent_issuance)
+                setRecentIssuance(data.recent_issuance);
                 setDonation(data.countDonated);
                 setDestruction(data.countDestructed);
                 setSales(data.countSold);
-            }catch(e){
-                console.log(e)
-            }finally{
-                setLoading(false)
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
             }
-        }
+        };
 
-        axios.get('api/totalCostPerYear').then(response => {
-            setYearData(response.data.data)
+        axios.get("api/totalCostPerYear").then((response) => {
+            setYearData(response.data.data);
             console.log(yearData);
-        })
+        });
 
-        getAdminDashboardData()
-    },[])
+        getAdminDashboardData();
+    }, []);
 
-    useEffect(()=>{
-        const getPendingAcceptedRequests = async () =>{
-            setLoading(true)
-            try{
-                const response = await axios.get('api/getPendingAcceptedRequests')
-                const data = response.data
-                setCountPending(data.pendingCount);
-                setCountAccepted(data.acceptedCount)
-            }catch(e){
-                console.log(e)
-            }finally{
-                setLoading(false)
+    useEffect(() => {
+        const getPendingAcceptedRequests = async () => {
+            setLoading(true);
+            try {
+                await axios
+                    .get("api/getPendingAcceptedRequests")
+                    .then((response) => {
+                        setCountPending(response.data.pending);
+                        setCountAccepted(response.data.accepted);
+
+                    console.log(response.data.pending)
+                    console.log(response.data.accepted)
+
+                    });
+
+
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
             }
-        }
-        getPendingAcceptedRequests()
-    },[])
+        };
+        getPendingAcceptedRequests();
+    }, []);
 
     const pendingReq = {
         datasets: [
             {
                 label: "Pending Requests",
-                data: [countAccepted, countPending],
+                data: Loading ? [countAccepted, countPending] : '',
                 backgroundColor: [
                     "rgba(255, 255, 255, 1)",
                     "rgba(206, 0, 62, 1)",
@@ -109,11 +117,10 @@ export default function Dashboard({ className }) {
                 hoverOffset: 5,
             },
         ],
-    }
+    };
 
-    const recentIssuanceMapper = (item) =>{
-        return  item?.slice(0, 3).map(data =>{
-
+    const recentIssuanceMapper = (item) => {
+        return item?.slice(0, 3).map((data) => {
             var created_at = new Date(data.created_at);
 
             let today = new Date();
@@ -122,9 +129,9 @@ export default function Dashboard({ className }) {
 
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
 
-            return <RequistionItems data ={data} date = {days} />
-        })
-    }
+            return <RequistionItems data={data} date={days} />;
+        });
+    };
 
     // const [totalDonation] = useState();
 
@@ -149,8 +156,6 @@ export default function Dashboard({ className }) {
     //     ],
     // }
 
-
-
     return (
         <>
             <div className={className + "  2xl:px-10 xl:px-5 px-5"}>
@@ -169,7 +174,7 @@ export default function Dashboard({ className }) {
                                     TracKagamitan's current users.
                                 </div>
                                 <div className="mt-2 2xl:text-5xl xl:text-4xl text-4xl font-bold text-white w-3/5">
-                                    {Loading ? 'N/A' : totalUser}
+                                    {Loading ? "N/A" : totalUser}
                                 </div>
                             </div>
                         </div>
@@ -187,7 +192,9 @@ export default function Dashboard({ className }) {
                             </div>
                             <div className="flex flex-col items-center w-fit 2xl:space-y-4 xl:space-y-2 space-y-2">
                                 <div className="2xl:h-40 2xl:w-40 xl:h-24 xl:w-24 h-24 w-24 flex-none">
-                                    <PendingReq chartData={pendingReq} />
+                                    <PendingReq
+                                        chartData={Loading ? pendingReq : ""}
+                                    />
                                 </div>
                                 <div className="flex 2xl:flex-row xl:flex-col flex-col justify-center flex-none text-xs 2xl:gap-6 xl:gap-1 gap-1">
                                     <div className="flex 2xl:gap-3 xl:gap-2 gap-2 items-center">
@@ -209,7 +216,9 @@ export default function Dashboard({ className }) {
                     <div className="w-full h-fit flex justify-between 2xl:gap-5 xl:gap-3 gap-3 z-10">
                         <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-3 p-4 text-[#434343] rounded-xl border border-[#DDDDDD] bg-white dark:bg-darkColor-800">
                             <div className="h-fit 2xl:space-y-1">
-                                <div className="font-bold xl:text-sm truncate">Total Donated Items</div>
+                                <div className="font-bold xl:text-sm truncate">
+                                    Total Donated Items
+                                </div>
                                 <div className="text-xs">
                                     Donated Unserviceable Equipment.
                                 </div>
@@ -233,7 +242,9 @@ export default function Dashboard({ className }) {
                         </div>
                         <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 rounded-xl text-[#434343] border border-[#DDDDDD] bg-white dark:bg-darkColor-800">
                             <div className="h-fit 2xl:space-y-1">
-                                <div className="font-bold xl:text-sm truncate">Total Sold Items</div>
+                                <div className="font-bold xl:text-sm truncate">
+                                    Total Sold Items
+                                </div>
                                 <div className="text-xs">
                                     Sold Unserviceable Equipment.
                                 </div>
@@ -247,7 +258,7 @@ export default function Dashboard({ className }) {
                         <div className="font-semibold">Annual Summary</div>
                         <div className="rounded-2xl border border-[#DDDDDD] h-full w-full bg-white dark:bg-darkColor-800 space-y-3">
                             <div className="relative w-full h-full 2xl:py-6 xl:py-4 py-4 2xl:px-8 xl:px-5 px-5">
-                                {/* <AnnualSum chartData={annualSum} /> */}
+                                <AnnualSum chartData={annualSum} />
                             </div>
                         </div>
                     </div>
@@ -260,16 +271,25 @@ export default function Dashboard({ className }) {
                                 Recent Issuance
                             </div>
                         </div>
-                        {Loading ? <div className="flex items-center justify-center cursor-default">
-                                    <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 rounded-full w-[300px] h-[300px]">
-                                        <img src="./img/no_data.png" alt="no data" className="w-52" draggable="false" />
-                                        <strong className="text-text-gray-2 text-sm">You haven't been issued yet</strong>
-                                    </div>
-                                </div> : recentIssuanceMapper(recentIssuance)}
+                        {Loading ? (
+                            <div className="flex items-center justify-center cursor-default">
+                                <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 rounded-full w-[300px] h-[300px]">
+                                    <img
+                                        src="./img/no_data.png"
+                                        alt="no data"
+                                        className="w-52"
+                                        draggable="false"
+                                    />
+                                    <strong className="text-text-gray-2 text-sm">
+                                        You haven't been issued yet
+                                    </strong>
+                                </div>
+                            </div>
+                        ) : (
+                            recentIssuanceMapper(recentIssuance)
+                        )}
                         {/* no data */}
-
                     </div>
-
 
                     <div className="2xl:space-y-1">
                         <div className="text-[#011284] 2xl:text-sm xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
