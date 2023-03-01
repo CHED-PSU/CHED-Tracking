@@ -24,6 +24,8 @@ export default function Index({ className }) {
     const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
 
+    const [selected, setSelected] = useState([]);
+
 
     useEffect(() => {
         const getIndividualItems = async () => {
@@ -107,18 +109,20 @@ export default function Index({ className }) {
         })
     }
 
+    const returnManyItems = () => {
+        console.log(checkboxData)
+    }
+
     const handleChangeCheckBox = (e) => {
-        setCheckBoxData(prev => {
-            
-            return prev.map(item=>{
-                
-                if(item.ui_id == e.target.value){
-                    return {...item, check: !item.check}
-                }else{
-                    return {...item}
+        checkboxData.map(item => {
+            if (item.ui_id == e.target.value) {
+                if(item.check == false){
+                    setCheckBoxData
                 }
-            })
+            } 
         })
+
+
     }
     const search = (value) => {
         setSearchTerm(value)
