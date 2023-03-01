@@ -18,6 +18,7 @@ export default function Index({ className }) {
     const [valueId, setValueId] = useState();
 
     const [itemsData, setItemsData] = useState([])
+    const [checkboxData, setCheckBoxData] = useState([])
     const [filteredItemsData, setFilteredItemsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const user = localStorage.getItem('localSession');
@@ -33,7 +34,7 @@ export default function Index({ className }) {
                 }).then(res => {
                     setItemsData(res.data.itemsData)
                     setFilteredItemsData(res.data.itemsData)
-
+                    setCheckBoxData(res.data.itemsData)
                 })
             }catch(e){
                 console.log(e)
@@ -74,12 +75,13 @@ export default function Index({ className }) {
 
             let date = new Date(data.created_at)
             let date_text = date.toString()
-            console.log(data.ui_id)
-            return <IndividualItems checkHandler={checkHandler} code = {data.code} openFormHandler={openFormHandler} article={data.article} description={data.description} date={date_text} value={data.ui_id} key={data.ui_id} />
+            return <IndividualItems checkHandler={checkHandler} check={data.check} code = {data.code} openFormHandler={openFormHandler} quantity={data.quantity} article={data.article} description={data.description} date={date_text} value={data.ui_id} key={data.ui_id} />
         })
     }
 
+    const filter = (filteredData) => {
 
+    }
     const search = (value) => {
         setSearchTerm(value)
 
@@ -130,6 +132,9 @@ export default function Index({ className }) {
                         <thead className="text-xs text-th dark:text-white cursor-default">
                             <tr className="">
                                 <th className="w-24"></th>
+                                <th className="font-medium text-left w-24">
+                                    Quantity
+                                </th>
                                 <th className="font-medium text-left">
                                     Item Code
                                 </th>

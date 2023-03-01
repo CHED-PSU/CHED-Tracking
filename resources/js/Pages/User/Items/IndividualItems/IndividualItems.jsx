@@ -12,9 +12,13 @@ export default function IndividualItems(props) {
                 <input
                     type="checkbox"
                     className="h-4 w-4"
+                    check = {props.check}
                     value={props.value}
                     onChange={props.checkHandler}
                 />
+            </td>
+            <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
+                {props.quantity}
             </td>
             <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
                 {props.code}
