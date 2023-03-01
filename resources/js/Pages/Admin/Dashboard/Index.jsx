@@ -163,7 +163,7 @@ export default function Dashboard({ className }) {
                 {/* {loader ? <Loader /> : ""} */}
                 {/* Loader */}
 
-                <div className="flex 2xl:w-2/3 xl:w-[70%] w-[65%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5 border-r border-neutral-200">
+                <div className="flex 2xl:w-2/3 xl:w-[70%] w-[65%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5 border-r border-neutral-200 dark:border-[#434343]">
                     <div className="flex w-full 2xl:h-60 xl:h-40 h-40 flex-none 2xl:gap-6 xl:gap-4 gap-4">
                         <div className="flex w-1/2 justify-end 2xl:px-10 xl:px-6 px-6 items-center rounded-2xl bg-cover bg-center bg-card-1 gap-10 drop-shadow-card1">
                             <div className="w-full flex-none text-right flex flex-col items-end 2xl:truncate">
@@ -214,51 +214,51 @@ export default function Dashboard({ className }) {
                         </div>
                     </div>
                     <div className="w-full h-fit flex justify-between 2xl:gap-5 xl:gap-3 gap-3 z-10">
-                        <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-3 p-4 text-[#434343] rounded-xl border border-[#DDDDDD] bg-white dark:bg-darkColor-800">
+                        <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-3 p-4 text-[#434343] rounded-xl border border-[#DDDDDD] dark:border-[#434343] bg-white dark:bg-darkColor-800">
                             <div className="h-fit 2xl:space-y-1">
-                                <div className="font-bold xl:text-sm truncate">
+                                <div className="font-bold xl:text-sm truncate dark:text-white">
                                     Total Donated Items
                                 </div>
-                                <div className="text-xs">
+                                <div className="text-xs dark:text-[#c4c4c4]">
                                     Donated Unserviceable Equipment.
                                 </div>
                             </div>
-                            <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A]">
+                            <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A] dark:text-[#476aca]">
                                 {donation}
                             </div>
                         </div>
-                        <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 text-[#434343] rounded-xl border border-[#DDDDDD] bg-white dark:bg-darkColor-800">
+                        <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 text-[#434343] rounded-xl border border-[#DDDDDD] dark:border-[#434343] bg-white dark:bg-darkColor-800">
                             <div className="h-fit 2xl:space-y-1">
-                                <div className="font-bold xl:text-sm truncate">
+                                <div className="font-bold xl:text-sm truncate dark:text-white">
                                     Total Destructed Items
                                 </div>
-                                <div className="text-xs">
+                                <div className="text-xs dark:text-[#c4c4c4]">
                                     Destructed Unserviceable Equipment.
                                 </div>{" "}
                             </div>
-                            <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A]">
+                            <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A] dark:text-[#476aca]">
                                 {destruction}
                             </div>
                         </div>
-                        <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 rounded-xl text-[#434343] border border-[#DDDDDD] bg-white dark:bg-darkColor-800">
+                        <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 rounded-xl text-[#434343] border border-[#DDDDDD] dark:border-[#434343] bg-white dark:bg-darkColor-800">
                             <div className="h-fit 2xl:space-y-1">
-                                <div className="font-bold xl:text-sm truncate">
+                                <div className="font-bold xl:text-sm truncate dark:text-white">
                                     Total Sold Items
                                 </div>
-                                <div className="text-xs">
+                                <div className="text-xs dark:text-[#c4c4c4]">
                                     Sold Unserviceable Equipment.
                                 </div>
                             </div>{" "}
-                            <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A]">
+                            <div className="2xl:text-5xl xl:text-4xl text-4xl 2xl:pt-2 text-right font-bold text-[#1E3A8A] dark:text-[#476aca]">
                                 {sales}
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-col flex-auto 2xl:space-y-2 xl:space-y-1 space-y-1 text-[#434343] dark:text-white 2xl:pt-1">
                         <div className="font-semibold">Annual Summary</div>
-                        <div className="rounded-2xl border border-[#DDDDDD] h-full w-full bg-white dark:bg-darkColor-800 space-y-3">
+                        <div className="rounded-2xl border border-[#DDDDDD] dark:border-[#434343] h-full w-full bg-white dark:bg-darkColor-800 space-y-3">
                             <div className="relative w-full h-full 2xl:py-6 xl:py-4 py-4 2xl:px-8 xl:px-5 px-5">
-                                <AnnualSum chartData={annualSum} />
+                                <AnnualSum chartData={annualSum} className="dark:text-white"/>
                             </div>
                         </div>
                     </div>
@@ -292,10 +292,10 @@ export default function Dashboard({ className }) {
                     </div>
 
                     <div className="2xl:space-y-1">
-                        <div className="text-[#011284] 2xl:text-sm xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
+                        <div className="text-[#011284] dark:text-[#476aca] 2xl:text-sm xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
                             Predicted Total Cost for this year.
                         </div>
-                        <div className="font-bold text-[#434343] 2xl:text-2xl xl:text-lg text-lg xl:pb-1">
+                        <div className="font-bold text-[#434343] dark:text-white 2xl:text-2xl xl:text-lg text-lg xl:pb-1">
                             Total Cost
                         </div>
                         <div className="flex 2xl:h-64 xl:h-40 h-40 py-4 px-7 rounded-2xl bg-card-3 bg-cover bg-center">

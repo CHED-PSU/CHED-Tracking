@@ -205,7 +205,7 @@ export default function Widgets(props) {
             <div className="w-fit flex items-center 2xl:space-x-4 xl:space-x-3 space-x-3">
                 {/* Dark Mode Button */}
                 <button onClick={props.toggleDarkMode} className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-darkColor-700 dark:hover:bg-amber-300 rounded-full flex justify-center items-center">
-                    <div className="2xl:w-6 xl:w-5 w-5 hover:fill-icon-light dark:fill-[#FFD23B] dark:hover:fill-icon-dark">
+                    <div className="2xl:w-full 2xl:p-2 xl:w-5 w-5 rounded-full hover:fill-[#FFD23B] dark:fill-[#FFD23B] dark:hover:fill-white">
                         <svg
                             className="inline-block dark:hidden"
                             version="1.0"
@@ -382,14 +382,14 @@ export default function Widgets(props) {
                                     </div>
                                 </div>
                             </li>
-                            <li className="flex text-left dark:text-white gap-3 2xl:py-3 xl:py-2 py-2 2xl:px-3 xl:px-2 px-2 rounded-md items-center hover:bg-slate-100 dark:hover:bg-darkColor-700">
-                                <button onClick={handleLogOut} className="flex justify-between gap-3 2xl:px-3 xl:px-2 px-2">
+                            <li onClick={handleLogOut} className="flex text-left dark:text-white gap-3 2xl:py-3 xl:py-2 py-2 2xl:px-3 xl:px-2 px-2 rounded-md items-center hover:bg-slate-100 dark:hover:bg-darkColor-700 cursor-pointer">
+                                <div className="flex justify-between gap-3 2xl:px-3 xl:px-2 px-2">
                                     <div className="flex-col">
                                         <h2 className="text-sm font-semibold">
                                             Logout
                                         </h2>
                                     </div>
-                                </button>
+                                </div>
 
                             </li>
                         </ul>

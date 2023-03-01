@@ -37,7 +37,7 @@ export default function ItemTab({ className }) {
     const onSave = () => {
         const checkbox = document.querySelector('.u_items');
         const selecte = checkbox.map(checkbox => {
-            
+
         })
 
         console.log(selected)

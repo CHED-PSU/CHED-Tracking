@@ -31,7 +31,7 @@ export default function Pending({ className }) {
                 const response = await axios.get('api/getPendingItems')
                 const data = response.data
                 setPendingItems(data.pending_items)
-                
+
             } catch (e) {
                 console.log(e)
             } finally {
@@ -47,7 +47,7 @@ export default function Pending({ className }) {
             const response = await axios.get('api/getPendingItems')
             const data = response.data
             setPendingItems(data.pending_items)
-            
+
         } catch (e) {
             console.log(e)
         } finally {
@@ -63,7 +63,7 @@ export default function Pending({ className }) {
     const pageCount = 5;
     const changePage = ({ selected }) => {
         setPageNumber(selected)
-    }; 
+    };
 
 
 
@@ -150,7 +150,7 @@ export default function Pending({ className }) {
                                 </div> : pendingItemsMapper(pendingItems)}
                     </ul>
 
-                    <div className="absolute bottom-10 w-full flex justify-center">
+                    <div className="absolute bottom-10 w-full flex justify-center dark:text-white">
                         <ReactPaginate
                             previousLabel={"Prev"}
                             nextLabel={"Next"}

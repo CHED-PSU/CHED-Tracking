@@ -56,7 +56,7 @@ module.exports = {
               "c-rfr": "#E4B200",
               "c-returned": "#011284",
               "c-unserviceable": "#FF486A",
-              
+
           },
           fontFamily: {
               sans: ["Montserrat", "sans-serif"],
@@ -84,6 +84,7 @@ module.exports = {
               "card-6": "url('../../public/img/items_card.png')",
               "card-7": "url('../../public/img/requests_card.png')",
               "card-8": "url('../../public/img/card_5.jpg')",
+              "card-9": "url('../../public/img/card_9.png')"
           },
       },
   },

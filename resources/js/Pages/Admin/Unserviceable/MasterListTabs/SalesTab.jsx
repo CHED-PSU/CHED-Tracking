@@ -47,7 +47,7 @@ export default function SalesTab({ className }) {
                     <OrgList type={'sales-form'} clickForms={clickForms} setBtnType={setBtnType} />
                 </tbody>
             </table>
-            <div className="absolute 2xl:bottom-10 xl:bottom-10 bottom-10 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
+            <div className="absolute 2xl:bottom-14 xl:bottom-14 bottom-14 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
                 <ReactPaginate
                     previousLabel={"Prev"}
                     nextLabel={"Next"}

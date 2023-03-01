@@ -4,6 +4,7 @@ import AdminBg from "../../../Components/AdminBg";
 import ICSTable from "./Tables/ICSTable";
 import PARTable from "./Tables/PARTable";
 import IndividualTable from "./Tables/IndividualTable";
+import Searchbar from "../Components/Searchbar";
 
 export default function Logs({ className }) {
     const [toggleTabs, setToggleTabs] = useState("ics");
@@ -19,7 +20,7 @@ export default function Logs({ className }) {
             </div>
             <div className="z-20 pt-3 flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
                 {/*tab buttons*/}
-                <div className="pb-3">
+                <div className="pb-3 h-14 items-center w-full flex justify-between ">
                     <ul className="flex gap-4">
                         <li
                             onClick={() => clickTabs("ics")}
@@ -58,11 +59,12 @@ export default function Logs({ className }) {
                             </div>
                         </li>
                     </ul>
+                    <div className=""><Searchbar /></div>
                 </div>
                 {/*tab buttons*/}
 
                 {/*Tabs*/}
-                <div className="flex flex-col h-full">
+                <div className="flex flex-col h-full pt-6 mb-12 py-2 px-4 border dark:border-[#434343] rounded-lg bg-white dark:bg-darkColor-800">
                     {/*ICS Table*/}
                     <ICSTable
                         className={toggleTabs === "ics" ? "" : "hidden"}

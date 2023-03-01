@@ -25,7 +25,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
         socket.on('Admin_Notif', data => {
             setRead(true)
         })
-        
+
     }, [socket])
 
     // Modal for Notification and Profile
@@ -304,7 +304,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
             <div className="w-fit flex items-center 2xl:space-x-4 xl:space-x-3 space-x-3">
                 {/* Dark Mode Button */}
                 <button onClick={toggleDarkMode} className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-darkColor-700 dark:hover:bg-amber-300 rounded-full flex justify-center items-center">
-                    <div className="2xl:w-6 xl:w-5 w-5 hover:fill-icon-light dark:fill-[#FFD23B] dark:hover:fill-icon-dark">
+                    <div className="2xl:w-full 2xl:p-2 xl:w-5 w-5 rounded-full hover:fill-[#FFD23B] dark:fill-[#FFD23B] dark:hover:fill-white">
                         <svg
                             className="inline-block dark:hidden"
                             version="1.0"

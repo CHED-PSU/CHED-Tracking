@@ -6,6 +6,7 @@ import InspectionForm from "./Forms/InspectionForm";
 import AssignModal from "./Modals/Assign";
 import DisposeModal from "./Modals/Dispose";
 import DisposalAlert from "../Return/Alert/DisposalAlert";
+import Searchbar from "../Components/Searchbar";
 
 export default function Return({ className }) {
 
@@ -212,7 +213,7 @@ export default function Return({ className }) {
                 <AdminBg />
             </div>
             <div className="relative flex items-center w-full flex-col 2xl:py-5 xl:py-3 py-3">
-
+            <div className="pb-4"><Searchbar /></div>
                 <div className="w-fit h-5/6 flex flex-col">
                     {/*table 1*/}
                     <table>

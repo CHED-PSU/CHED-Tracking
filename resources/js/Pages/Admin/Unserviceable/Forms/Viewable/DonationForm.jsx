@@ -51,8 +51,8 @@ export default function DonationForm(props) {
                                 PROPERTY TRANSFER REPORT
                             </div>
                         </div>
-                        <div className="flex justify-between items-center">
-                            <div className="">
+                        <div className="flex items-center pt-6">
+                            <div className="w-1/2">
                                 <div className="pt-4 flex items-center gap-2">
                                     <div className="text-xs dark:text-white">
                                         Entity Name:
@@ -62,7 +62,7 @@ export default function DonationForm(props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="">
+                            <div className="w-1/2">
                                 <div className="pt-1 flex items-center gap-2">
                                     <div className="text-xs dark:text-white">
                                         Fund Cluster:
@@ -76,18 +76,18 @@ export default function DonationForm(props) {
                         </div>
                         <div className="mt-4 mb-2">
                             <div className="flex justify-between text-sm">
-                                <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs text-th">
+                                <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs font-medium">
                                     From Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">CHEDRO XI</font>
                                 </div>
-                                <div className="border border-b-0 w-1/4 p-2 text-xs">
+                                <div className="border border-b-0 w-1/4 p-2 text-xs font-medium">
                                     PTR No:  <font className="font-medium">2021-001-001</font>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs text-th">
+                                <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs font-medium">
                                 To Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">DAVAO DEL SUR STATE COLLEGE</font>
                                 </div>
-                                <div className="border border-b-0 w-1/4 p-2 text-xs">
+                                <div className="border border-b-0 w-1/4 p-2 text-xs font-medium">
                                     Date:  <font className="font-medium">0</font>
                                 </div>
                             </div>
@@ -125,14 +125,14 @@ export default function DonationForm(props) {
                                 className="table-auto w-full min-w-[700px]"
                             >
                                 <thead>
-                                    <tr className="text-xs border dark:border-neutral-700 text-th dark:text-white cursor-default">
+                                    <tr className="text-xs border dark:border-neutral-700 font-medium dark:text-white cursor-default">
                                         <th className="h-10 w-32 font-medium border">
                                             Date Acquired
                                         </th>
                                         <th className="h-10 w-32 font-medium border">
                                             Property No
                                         </th>
-                                        <th className="h-10 font-medium border">
+                                        <th className="h-10 w-80 font-medium border">
                                             Description
                                         </th>
                                         <th className="h-10 w-40 font-medium border">
@@ -165,27 +165,27 @@ export default function DonationForm(props) {
                                         <td className="text-xs border text-center py-4" colSpan={5}>*nothing follows*</td>
                                     </tr>
                                     <tr>
-                                        <td className="text-xs border py-4" colSpan={5}>
+                                        <td className="text-xs font-medium border py-4" colSpan={5}>
                                             <div>
                                                 <p className="ml-4">Reason for Transfer:</p>
-                                                <h5 className="text-center text-black font-medium py-10">FOR DONATION.</h5>
+                                                <h5 className="text-base text-center text-black font-medium py-10">FOR DONATION.</h5>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="border" colSpan={5}>
                                             <div className="flex py-5">
-                                                <div className="w-1/6 px-4 text-xs flex flex-col justify-center gap-2 pt-6">
+                                                <div className="w-[130px] px-4 text-xs flex flex-col justify-center gap-2 pt-6 font-medium">
                                                     <h6>Signature:</h6>
                                                     <h6>Printed Name:</h6>
                                                     <h6>Designation:</h6>
                                                     <h6>Date:</h6>
                                                 </div>
-                                                <div className="flex w-5/6">
+                                                <div className="flex w-full">
                                                     {/* Approved by */}
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Approved by:</h5>
-                                                        <div className="flex flex-col justify-between text-xs">
+                                                        <div className="flex flex-col justify-between text-xs font-medium">
                                                             MARICAR R. CASQUEJO,Ph.D.CESOIII
                                                         </div>
                                                         <h6 className="text-xs">Director IV</h6>
@@ -194,7 +194,7 @@ export default function DonationForm(props) {
                                                     {/* Released/Issued by */}
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Released/Issue by:</h5>
-                                                        <div className="flex flex-col justify-between text-xs">
+                                                        <div className="flex flex-col justify-between text-xs font-medium">
                                                             JERMINE R. BASISTER
                                                         </div>
                                                         <h6 className="text-xs">AAVI, Supply Officer Designate</h6>
@@ -203,7 +203,7 @@ export default function DonationForm(props) {
                                                     {/* Received by */}
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Received by:</h5>
-                                                        <div className="flex flex-col justify-between text-xs">
+                                                        <div className="flex flex-col justify-between text-xs font-medium">
                                                             AUGIE E. FUENTES, PhD.
                                                         </div>
                                                         <h6 className="text-xs">College President</h6>

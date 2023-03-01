@@ -11,7 +11,7 @@ export default function Sidebar(props) {
     }
 
     return (
-        <div className="sticky top-0 flex flex-none flex-col h-screen 2xl:w-72 xl:w-[260px] w-[260px] bg-white dark:bg-darkColor-800 text-center border-r border-neutral-200 shrink-0 z-20 transition-all duration-150 transform">
+        <div className="sticky top-0 flex flex-none flex-col h-screen 2xl:w-72 xl:w-[260px] w-[260px] bg-white dark:bg-darkColor-800 text-center border-r border-neutral-200 dark:border-[#434343] shrink-0 z-20 transition-all duration-150 transform">
             {/* Logo */}
             <div
                 className="flex-none 2xl:h-[118px] xl:h-[100px] h-[100px] dark:border-neutral-700"
@@ -25,7 +25,7 @@ export default function Sidebar(props) {
                         <AppLogo className="2xl:w-10 2xl:h-10 xl:w-8 xl:h-8 w-8 h-8" />
                         <h4 className="select-none font-bold">
                             Trac
-                            <font className="text-primary dark:text-[#011284]">
+                            <font className="text-primary dark:text-[#476aca]">
                                 Kagamitan
                             </font>
                         </h4>
@@ -39,11 +39,11 @@ export default function Sidebar(props) {
                     {/* Page Links */}
                     <ul className="links flex-none 2xl:text-sm xl:text-[13px] text-[13px] text-darkColor-800 dark:text-lightColor-800 font-medium">
                         {/* Dashboard Link */}
-                        <li 
+                        <li
                             onClick={() => clickSidebar("dashboard")}
                             className={
                                 props.sidebar === "dashboard"
-                                    ? "activePage dark:text-primary"
+                                    ? "activePage dark:text-primary dark:bg-darkHoverPage"
                                     : "hover:hoverPage dark:hover:darkHoverPage"
                             }
                         >
@@ -54,7 +54,7 @@ export default function Sidebar(props) {
                         </li>
 
                         {/* Pending Link */}
-                        <li 
+                        <li
                             onClick={() => clickSidebar("pending")}
                             className={
                                 props.sidebar === "pending"
@@ -69,7 +69,7 @@ export default function Sidebar(props) {
                         </li>
 
                         {/* Logs Link */}
-                        <li 
+                        <li
                             onClick={() => clickSidebar("logs")}
                             className={
                                 props.sidebar === "logs"
@@ -84,7 +84,7 @@ export default function Sidebar(props) {
                         </li>
 
                         {/* Return Link */}
-                        <li 
+                        <li
                             onClick={() => clickSidebar("return")}
                             className={
                                 props.sidebar === "return"
@@ -99,7 +99,7 @@ export default function Sidebar(props) {
                         </li>
 
                         {/* Unserviceable Link */}
-                        <li 
+                        <li
                             onClick={() => clickSidebar("unserv")}
                             className={
                                 props.sidebar === "unserv"
@@ -114,7 +114,7 @@ export default function Sidebar(props) {
                         </li>
 
                         {/* Forecasting Link */}
-                        <li 
+                        <li
                             onClick={() => clickSidebar("forecast")}
                             className={
                                 props.sidebar === "forecast"
@@ -129,21 +129,14 @@ export default function Sidebar(props) {
                         </li>
                     </ul>
 
-                    <div className=" w-full flex justify-center items-center">
-                        <img
-                            draggable="false"
-                            src="./img/sidebar_illustration.png"
-                            className="2xl:h-52 xl:h-36 h-36"
-                        />
-                    </div>
                 </div>
             </div>
 
             <div className="flex-none h-20 flex text-center items-center mx-6">
                 <button className="font-semibold 2xl:text-md xl:text-[15px] text-[15px] dark:text-lightColor-800 mx-auto">
-                    Log out 
+                    Log out
                 </button>
-                
+
             </div>
         </div>
     );

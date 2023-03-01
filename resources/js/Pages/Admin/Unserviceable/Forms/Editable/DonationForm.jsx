@@ -76,21 +76,21 @@ export default function DonationForm(props) {
                         </div>
                         <div className="mt-4 mb-2">
                             <div className="flex justify-between text-sm">
-                                <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs text-th">
+                                <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs font-medium">
                                     From Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">
-                                        <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" placeholder="CHEDRO XI"/>
+                                        <input type="text" name="" id="" className="border-b border-black font-semibold outline-none uppercase" placeholder="CHEDRO XI"/>
                                         </font>
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
                                     PTR No:  <font className="font-medium">
-                                    <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" placeholder="2021-001-001"/>
+                                    <input type="number" name="" id="" className="border-b border-black font-semibold outline-none uppercase" placeholder="2021-001-001"/>
                                     </font>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs text-th">
+                                <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs font-medium ">
                                 To Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">
-                                <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none" placeholder="DAVAO DEL SUR STATE COLLEGE"/></font>
+                                <input type="text" name="" id="" className="border-b border-black font-semibold outline-none w-80 uppercase" placeholder="DAVAO DEL SUR STATE COLLEGE"/></font>
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
                                     Date:  <font className="font-medium">0</font>
@@ -116,10 +116,10 @@ export default function DonationForm(props) {
                                             <input type="radio" name="transferType" id="reassignment" value="Donation"/>
                                             <label for="reassignment" className="text-black font-medium text-xs">Reassignment</label>
                                         </div>
-                                        <div className="flex gap-1 items-center">
+                                        <div className="flex gap-1 items-center w-full">
                                             <input type="radio" name="transferType" id="others" value="Relocate"/>
                                             <label for="others" className="text-black font-medium text-xs">Others (Specify)</label>
-                                            <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none"/>
+                                            <input type="text" name="" id="" className="border-b border-black font-medium outline-none w-80"/>
                                         </div>
                                     </div>
                                 </div>
@@ -180,7 +180,7 @@ export default function DonationForm(props) {
                                     <tr>
                                         <td className="border" colSpan={5}>
                                             <div className="flex py-5">
-                                                <div className="w-1/6 px-4 text-xs flex flex-col justify-center gap-2 pt-6">
+                                                <div className="w-[130px] px-4 text-xs flex flex-col justify-center gap-2 pt-6">
                                                     <h6>Signature:</h6>
                                                     <h6>Printed Name:</h6>
                                                     <h6>Designation:</h6>
@@ -191,11 +191,9 @@ export default function DonationForm(props) {
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Approved by:</h5>
                                                         <div className="flex flex-col justify-between">
-                                                            <form action="">
                                                                 <select name="" id="Status" className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer">
                                                                     <option value="none">None</option>
                                                                 </select>
-                                                            </form>
                                                         </div>
                                                         <h6 className="text-xs">Director IV</h6>
                                                         <h6 className="text-sm">March 25, 2022</h6>
@@ -204,11 +202,9 @@ export default function DonationForm(props) {
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Released/Issue by:</h5>
                                                         <div className="flex flex-col justify-between">
-                                                            <form action="">
                                                                 <select name="" id="Status" className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer">
                                                                     <option value="none">None</option>
                                                                 </select>
-                                                            </form>
                                                         </div>
                                                         <h6 className="text-xs">Admin.Assist.IV/Property Officer Designate</h6>
                                                         <h6 className="text-sm">March 25, 2022</h6>
@@ -217,11 +213,9 @@ export default function DonationForm(props) {
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
                                                         <h5 className="pb-6 text-sm font-medium">Received by:</h5>
                                                         <div className="flex flex-col justify-between">
-                                                            <form action="">
                                                                 <select name="" id="Status" className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer">
                                                                     <option value="none">None</option>
                                                                 </select>
-                                                            </form>
                                                         </div>
                                                         <h6 className="text-xs">College President</h6>
                                                         <h6 className="text-sm">March 25, 2022</h6>

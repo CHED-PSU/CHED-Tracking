@@ -21,7 +21,7 @@ export default function Index({ className }) {
     const value = JSON.parse(user);
 
     useEffect(() => {
-        
+
 
         fetch('http://' + url.hostname + ':8000/api/getTotalICSPAR', {
             method: "POST",
@@ -87,7 +87,7 @@ export default function Index({ className }) {
                         <div className="font-bold text-[#434343] 2xl:text-2xl xl:text-lg text-lg xl:pb-1">
                             Total PAR
                         </div>
-                        <div className="flex 2xl:h-52 xl:h-40 h-40 2xl:py-4 2xl:px-6 xl:py-3 xl:px-5 py-3 px-5 rounded-2xl bg-card-3 bg-cover bg-center">
+                        <div className="flex 2xl:h-52 xl:h-40 h-40 2xl:py-4 2xl:px-6 xl:py-3 xl:px-5 py-3 px-5 rounded-2xl bg-card-9 bg-cover bg-center">
                             <div className="w-full gap-3">
                                 <div className="2xl:text-xl xl:text-lg text-lg text-white">
                                     Php

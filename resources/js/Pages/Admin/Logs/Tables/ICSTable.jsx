@@ -69,13 +69,13 @@ export default function ICSTable({ className }) {
             <table className="flex">
                 <thead>
                     <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                        <th className="h-10 2xl:w-80 xl:w-72 w-72 font-medium text-left pl-6">
+                        <th className="h-10 2xl:w-96 xl:w-72 w-72 font-medium text-left pl-6">
                             Name
                         </th>
                         <th className="h-10 w-56 font-medium text-left">
                             User Status
                         </th>
-                        <th className="h-10 w-56 font-medium text-left">
+                        <th className="h-10 w-72 font-medium text-left">
                             Email & Mobile No
                         </th>
                         <th className="h-10 w-32 font-medium text-center">
@@ -88,7 +88,7 @@ export default function ICSTable({ className }) {
                 </thead>
             </table>
 
-            <div className="absolute bottom-10 w-full flex justify-center">
+            <div className="absolute 2xl:bottom-2 xl:bottom-2 bottom-2 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
                 <ReactPaginate
                     previousLabel={"Prev"}
                     nextLabel={"Next"}
