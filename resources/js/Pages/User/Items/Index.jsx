@@ -116,13 +116,25 @@ export default function Index({ className }) {
     const handleChangeCheckBox = (e) => {
         checkboxData.map(item => {
             if (item.ui_id == e.target.value) {
-                if(item.check == false){
-                    setCheckBoxData
+                if(e.target.checked === true)
+                {
+                    const value = e.target.value;
+                    const newArray = [...selected,value]
+                    setSelected(newArray);
+                }else{
+                    const originalArray = [...selected]
+                    const index = originalArray.indexOf(e.target.value)
+                    originalArray.splice(index,1);
+                    setSelected(originalArray)
+                    
                 }
-            } 
+            }
         })
+    }
 
 
+    const returnHandler = () => {
+        console.log(selected)
     }
     const search = (value) => {
         setSearchTerm(value)
@@ -163,7 +175,7 @@ export default function Index({ className }) {
                     </button>
                     <div className="flex gap-4">
                         <Searchbar setSearchTerm={setSearchTerm} search={search} className="h-10" />
-                        <button className="h-10 text-sm font-medium text-black w-fit px-4 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full">
+                        <button onClick = {returnHandler} className="h-10 text-sm font-medium text-black w-fit px-4 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full">
                             <i className="fa-solid fa-box-archive text-base"></i>
                             Return
                         </button>
