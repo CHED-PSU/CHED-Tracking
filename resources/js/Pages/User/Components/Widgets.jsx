@@ -294,16 +294,6 @@ export default function Widgets(props) {
 
             {/* Dropdowns */}
             <div className="absolute w-fit h-fit flex justify-end 2xl:top-20 xl:top-16 top-16 2xl:right-10 xl:right-5 right-5 z-50">
-                {/* Modals */}
-                {/* <ICSNotification
-                    clickICSNotification={clickICSNotification}
-                    className={openICSNotification === "open" ? "" : "hidden"}
-                />
-                <PARNotification
-                    clickPARNotification={clickPARNotification}
-                    className={openPARNotification === "open" ? "" : "hidden"}
-                /> */}
-
                 {/* Notification */}
                 <div
                     ref={notifDropdown}
@@ -332,18 +322,6 @@ export default function Widgets(props) {
                                     All
                                 </div>
                             </li>
-                            {/* <li
-                                onClick={() => clickTabs("unread")}
-                                className={
-                                    toggleTabs === "unread"
-                                        ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                        : "btn-color-3 border border-border-iconLight dark:border-neutral-700 dark:bg-darkColor-800 dark:text-white hover:bg-neutral-200 rounded-full"
-                                }
-                            >
-                                <div className="select-none text-xs w-fit px-5 py-2 cursor-pointer">
-                                    Unread
-                                </div>
-                            </li> */}
                         </ul>
                         {/*tab buttons*/}
 

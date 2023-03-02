@@ -1,5 +1,6 @@
 import React from "react";
 import AppLogo from "../../../components/AppLogo";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar(props) {
     function refreshPage() {
@@ -8,6 +9,14 @@ export default function Sidebar(props) {
 
     function clickSidebar(index) {
         props.setSidebar(index);
+    }
+
+    const name = window.name
+    const nav = useNavigate();
+
+    const handleLogOut = () => {
+        localStorage.removeItem('localSession');
+        nav('/');
     }
 
     return (
@@ -133,7 +142,7 @@ export default function Sidebar(props) {
             </div>
 
             <div className="flex-none h-36 flex text-center items-center mx-6">
-                <button className="font-semibold 2xl:text-md xl:text-[15px] text-[15px] dark:text-lightColor-800 mx-auto">
+                <button onClick={handleLogOut} className="font-semibold 2xl:text-md xl:text-[15px] text-[15px] dark:text-lightColor-800 mx-auto">
                     Log out
                 </button>
 
