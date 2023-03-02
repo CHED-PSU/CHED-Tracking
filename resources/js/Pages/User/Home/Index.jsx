@@ -14,7 +14,7 @@ export default function Index(props) {
 
     const [loader, setLoader] = useState(false)
 
-    
+
 
     useEffect(()=>{
         async function getHomeData(){
@@ -127,7 +127,7 @@ export default function Index(props) {
                             </thead>
                             <tbody>
                                 {acceptedItems?.length === 0 ? <tr className="bg-white">
-                                    <td colSpan={5} className=" text-center 2xl:text-base xl:text-sm text-sm rounded-tableRow">
+                                    <td colSpan={5} className=" font-semibold text-darkColor-700 text-center 2xl:text-base xl:text-sm text-sm rounded-tableRow py-3">
                                         No Data
                                     </td>
                                 </tr> : acceptedRequestMapper(Object.values(acceptedItems))}

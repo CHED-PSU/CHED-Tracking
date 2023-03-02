@@ -15,6 +15,20 @@ import Loader from "../../../components/Loader";
 
 export default function Dashboard({ className }) {
     const [yearData, setYearData] = useState([]);
+    const [totalCost, setTotalCost] = useState(0);
+    const [totalUser, setTotalUsers] = useState("N/A");
+    const [Loading, setLoading] = useState(true);
+    const [recentIssuance, setRecentIssuance] = useState();
+
+    //pending doughnut
+    const [countPending, setCountPending] = useState(0);
+    const [countAccepted, setCountAccepted] = useState(0);
+
+    //unserviceable
+    const [sales, setSales] = useState("0");
+    const [destruction, setDestruction] = useState("0");
+    const [donation, setDonation] = useState("0");
+
     const annualSum = {
         labels: yearData?.map((data) => data.year),
         datasets: [
@@ -40,19 +54,6 @@ export default function Dashboard({ className }) {
         ],
     };
 
-    const [totalUser, setTotalUsers] = useState("N/A");
-    const [Loading, setLoading] = useState(true);
-    const [recentIssuance, setRecentIssuance] = useState();
-
-    //pending doughnut
-    const [countPending, setCountPending] = useState(0);
-    const [countAccepted, setCountAccepted] = useState(0);
-
-    //unserviceable
-    const [sales, setSales] = useState("0");
-    const [destruction, setDestruction] = useState("0");
-    const [donation, setDonation] = useState("0");
-
     useEffect(() => {
         const getAdminDashboardData = async () => {
             setLoading(true);
@@ -73,7 +74,6 @@ export default function Dashboard({ className }) {
 
         axios.get("api/totalCostPerYear").then((response) => {
             setYearData(response.data.data);
-            console.log(yearData);
         });
 
         getAdminDashboardData();
@@ -88,10 +88,6 @@ export default function Dashboard({ className }) {
                     .then((response) => {
                         setCountPending(response.data.pending);
                         setCountAccepted(response.data.accepted);
-
-                    console.log(response.data.pending)
-                    console.log(response.data.accepted)
-
                     });
 
 
@@ -103,6 +99,9 @@ export default function Dashboard({ className }) {
         };
         getPendingAcceptedRequests();
     }, []);
+
+    console.log(countAccepted)
+    console.log(countPending)
 
     const pendingReq = {
         datasets: [
@@ -133,34 +132,11 @@ export default function Dashboard({ className }) {
         });
     };
 
-    // const [totalDonation] = useState();
-
-    // const [totalDestructed] = useState(
-    //     TotalDestructedData.total.toLocaleString()
-    // );
-
-    // const [totalSold] = useState(TotalSoldData.total.toLocaleString());
-
-    // const pendingReq = {
-    //     datasets: [
-    //         {
-    //             label: "Pending Requests",
-    //             data: [countAccepted, countPending],
-    //             backgroundColor: [
-    //                 "rgba(255, 255, 255, 1)",
-    //                 "rgba(206, 0, 62, 1)",
-    //             ],
-    //             borderWidth: 0,
-    //             hoverOffset: 5,
-    //         },
-    //     ],
-    // }
-
     return (
         <>
             <div className={className + "  2xl:px-10 xl:px-5 px-5"}>
                 {/* Loader */}
-                {/* {loader ? <Loader /> : ""} */}
+                {Loader ? "" : <Loader />}
                 {/* Loader */}
 
                 <div className="flex 2xl:w-2/3 xl:w-[70%] w-[65%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5 border-r border-neutral-200 dark:border-[#434343]">
@@ -304,7 +280,7 @@ export default function Dashboard({ className }) {
                                     Php
                                 </div>
                                 <div className="w-full 2xl:text-5xl xl:text-3xl text-3xl font-bold text-white">
-                                    P
+                                    P {totalCost}
                                 </div>
                             </div>
                         </div>
