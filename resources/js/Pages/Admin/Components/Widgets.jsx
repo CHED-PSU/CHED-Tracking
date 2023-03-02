@@ -425,18 +425,6 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                                     Notifications
                                 </div>
                             </li>
-                            {/* <li
-                                onClick={() => { clickTabs("unread"), requestClick() }}
-                                className={
-                                    toggleTabs === "unread"
-                                        ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                        : "btn-color-3 border border-border-iconLight dark:border-neutral-700 dark:bg-darkColor-800 dark:text-white hover:bg-neutral-200 rounded-full"
-                                }
-                            >
-                                <div className="select-none text-xs w-fit px-5 py-2 cursor-pointer">
-                                    Requests
-                                </div>
-                            </li> */}
                         </ul>
                         {/*tab buttons*/}
 

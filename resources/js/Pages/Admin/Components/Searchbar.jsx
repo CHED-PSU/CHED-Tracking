@@ -19,7 +19,7 @@ export default function Searchbar({ className,search }) {
                             placeholder="Search"
                             autoComplete="off"
                             aria-label="Search"
-                            className="2xl:h-12 xl:h-10 h-10 2xl:pl-6 xl:pl-5 pl-5 pr-14 w-96 rounded-full outline-none ring-2 ring-white dark:ring-darkColor-900 focus:ring-sky-500 hover:ring-sky-500 dark:focus:ring-sky-500 dark:hover:ring-sky-500 border border-sc bg-[#F5F5F5] dark:bg-darkColor-800 dark:border-darkColor-700 dark:text-white"
+                            className={className + "2xl:h-12 xl:h-10 h-10 2xl:pl-6 xl:pl-5 pl-5 pr-14 w-96 rounded-full outline-none ring-2 ring-white dark:ring-darkColor-900 focus:ring-sky-500 hover:ring-sky-500 dark:focus:ring-sky-500 dark:hover:ring-sky-500 border border-sc bg-[#F5F5F5] dark:bg-darkColor-800 dark:border-darkColor-700 dark:text-white"}
                         />
                         <button
                             title="Search"

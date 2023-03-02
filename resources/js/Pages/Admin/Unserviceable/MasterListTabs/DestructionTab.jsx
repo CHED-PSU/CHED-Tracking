@@ -47,7 +47,7 @@ export default function DestructionTab({ className }) {
                     <OrgList type={'destruction-form'} clickForms={clickForms} setBtnType={setBtnType} />
                 </tbody>
             </table>
-            <div className="absolute  2xl:bottom-14 xl:bottom-14 bottom-14 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
+            <div className="absolute bottom-18 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
                 <ReactPaginate
                     previousLabel={"Prev"}
                     nextLabel={"Next"}

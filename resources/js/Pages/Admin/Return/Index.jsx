@@ -119,27 +119,27 @@ export default function Return({ className }) {
                     {/* requested by */}
                     <td>
                         <a className="text-left flex items-center w-full h-12 gap-3">
-                            <div className="flex items-center">
+                            <div className="flex flex-none items-center">
                                 <img src="./img/profile-pic.jpeg" alt="" className="rounded-full bg-gray-500 w-9 h-9 object-cover" />
                             </div>
                             <div className="flex flex-col gap-1">
-                                <h4 className="text-[17px] font-medium text-text-black">{data.article}</h4>
+                                <h4 className="text-[16px] font-medium text-text-black w-64 truncate">{data.article}</h4>
                                 <p className="text-[#878787] text-[14px]">{data.firstname + ' ' + data.surname}</p>
                             </div>
                         </a>
                     </td>
                     {/* defect */}
                     <td>
-                        <a className="text-left flex items-center w-full h-12 gap-3">
+                        <a className="text-left flex items-center w-full h-12 gap-3 pl-2">
                             <div className="flex flex-col gap-1">
-                                <h5 className="text-[14px] font-medium text-text-black w-[220px] truncate">{data.defect}</h5>
+                                <h5 className="text-[14px] font-medium text-text-black w-72 truncate">{data.defect}</h5>
                                 <p className="text-[#878787] text-[14px]">Date Accepted: {data.created_at}</p>
                             </div>
                         </a>
                     </td>
                     {/* item status */}
                     <td>
-                        <a className="text-left flex items-center w-full h-12 gap-3">
+                        <a className="text-left flex justify-center items-center w-full h-12 gap-3">
                             <h5 className="p-1 px-2 w-fit text-[14px] receivedItem rounded-full flex items-center gap-1">
                                 <i className="fa-solid fa-circle text-[7px]"></i>
                                 {data.status}
@@ -148,7 +148,7 @@ export default function Return({ className }) {
                     </td>
                     {/* actions */}
                     <td>
-                        <div className="flex gap-4 justify-end pr-6">
+                        <div className="flex gap-4 justify-center">
                             <button value = {data.id}
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn cursor-pointer"
                                 onClick={() => { clickForms("ins-form"), getReturnedItemsData(data.uri_id) }}
@@ -178,7 +178,7 @@ export default function Return({ className }) {
     }
 
     return (
-        <div className={className + " 2xl:px-10 xl:px-5 px-5"}>
+        <div className={className + "  flex justify-center"}>
 
             {openForms === "ins-form" ? <InspectionForm
                 clickForms={clickForms}
@@ -212,18 +212,18 @@ export default function Return({ className }) {
             <div className="absolute -right-14 bottom-0 w-1/3">
                 <AdminBg />
             </div>
-            <div className="relative flex items-center w-full flex-col 2xl:py-5 xl:py-3 py-3">
-            <div className="pb-4"><Searchbar /></div>
-                <div className="w-fit h-5/6 flex flex-col">
+            <div className="z-20 pt-3 flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
+            <div className="pb-3"><Searchbar /></div>
+                <div className="flex flex-col h-full w-[1100px] items-center pt-6 mb-12 py-2 px-4 border dark:border-[#434343] rounded-lg bg-white dark:bg-darkColor-800">
                     {/*table 1*/}
-                    <table>
+                    <table className="w-full">
                         <thead>
                             <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                                 <th className="h-10 w-16 font-medium text-left pl-6">No</th>
-                                <th className="h-10 w-72 font-medium text-left">Requested By</th>
-                                <th className="h-10 w-64 font-medium text-left">Defect</th>
-                                <th className="h-10 w-48 font-medium text-left">Item Status</th>
-                                <th className="h-10 w-32 font-medium text-right pr-6">Actions</th>
+                                <th className="h-10 w-80 font-medium text-left">Requested By</th>
+                                <th className="h-10 font-medium pl-2 text-left">Defect</th>
+                                <th className="h-10 w-52 font-medium text-center">Item Status</th>
+                                <th className="h-10 w-48 font-medium text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -232,21 +232,10 @@ export default function Return({ className }) {
                                     <small className="text-sm">No data available in table.</small>
                                 </td>
                             </tr> : returnItemsMapper(returnedItems)}
-                            {/*
-                                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                    <td colspan="5" className="text-center h-12 bg-white border">
-                                        <small className="text-sm">No data available in table.</small>
-                                    </td>
-                                </tr>
-                                */}
-                            {/*no data*/}
-
-                            {/*no data*/}
                         </tbody>
                     </table>
                     {/*table 1*/}
-                </div>
-                <div className="absolute bottom-10 w-full flex justify-center">
+                    <div className="absolute bottom-[61px]  w-full flex justify-center">
                     <ReactPaginate
                         previousLabel={"Prev"}
                         nextLabel={"Next"}
@@ -260,6 +249,7 @@ export default function Return({ className }) {
                     />
                 </div>
             </div>
+                </div>
         </div>
     )
 }

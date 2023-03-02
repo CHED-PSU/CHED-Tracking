@@ -59,12 +59,12 @@ export default function Logs({ className }) {
                             </div>
                         </li>
                     </ul>
-                    <div className=""><Searchbar /></div>
+                    <div className=""><Searchbar className="h-8" /></div>
                 </div>
                 {/*tab buttons*/}
 
                 {/*Tabs*/}
-                <div className="flex flex-col h-full pt-6 mb-12 py-2 px-4 border dark:border-[#434343] rounded-lg bg-white dark:bg-darkColor-800">
+                <div className="flex flex-col h-full w-[1100px] items-center pt-6 mb-12 py-2 px-4 border dark:border-[#434343] rounded-lg bg-white dark:bg-darkColor-800">
                     {/*ICS Table*/}
                     <ICSTable
                         className={toggleTabs === "ics" ? "" : "hidden"}

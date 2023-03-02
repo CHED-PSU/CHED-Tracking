@@ -55,7 +55,7 @@ export default function IndividualTable({ className }) {
     };
 
     return (
-        <div className={className + " w-fit h-full relative"}>
+        <div className={className + " w-full h-full relative"}>
             {openForms === "in-in" ? <IndividualInventory
             indivItems = {indivItems ? indivItems : ''}
             totalPrice = {totalPrice ? totalPrice : ''}
@@ -63,29 +63,31 @@ export default function IndividualTable({ className }) {
                 className={""}
             /> : ""}
 
-            <table className="flex">
+            <table className="w-full">
                 <thead>
                     <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                        <th className="h-10 2xl:w-96 xl:w-72 w-72 font-medium text-left pl-6">
+                        <th className="h-10 w-80 font-medium text-left pl-6">
                             Name
                         </th>
-                        <th className="h-10 w-56 font-medium text-left">
+                        <th className="h-10 font-medium text-center">
                             User Status
                         </th>
-                        <th className="h-10 w-72 font-medium text-left">
+                        <th className="h-10 w-80 pl-4 font-medium text-left">
                             Email & Mobile No
                         </th>
-                        <th className="h-10 w-32 font-medium text-center">
+                        <th className="h-10 font-medium text-center">
                             Actions
                         </th>
                     </tr>
+                </thead>
+                <tbody>
                     {/*item 1*/}
                     {Loading ? '' : userMapper(UserLists)}
                     {/*item 2*/}
-                </thead>
+                </tbody>
             </table>
 
-            <div className="absolute 2xl:bottom-2 xl:bottom-2 bottom-2 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
+            <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
                 <ReactPaginate
                     previousLabel={"Prev"}
                     nextLabel={"Next"}

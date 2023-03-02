@@ -23,7 +23,7 @@ export default function DonationTab({ className }) {
     };
 
     return (
-        <div className={className + " w-fit h-full relative"}>
+        <div className={className + " w-full h-full relative"}>
             {btnType === 'view-donation-form' ? <ViewDonationForm
                 clickForms={clickForms}
                 setBtnType={setBtnType}
@@ -36,7 +36,7 @@ export default function DonationTab({ className }) {
                 className={""}
             /> : ""}
 
-            <table className="">
+            <table className="w-full">
                 <thead>
                     <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                         <th className="h-10 w-16 font-medium text-left pl-6">No</th>
@@ -51,7 +51,7 @@ export default function DonationTab({ className }) {
                     <OrgList type={'donation-form'} clickForms={clickForms} setBtnType={setBtnType} />
                 </tbody>
             </table>
-            <div className="absolute  2xl:bottom-14 xl:bottom-14 bottom-14 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
+            <div className="absolute bottom-18 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
                 <ReactPaginate
                     previousLabel={"Prev"}
                     nextLabel={"Next"}
