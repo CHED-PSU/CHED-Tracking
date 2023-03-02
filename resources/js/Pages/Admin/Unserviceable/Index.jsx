@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ItemTab from "./Tables/ItemTab";
 import MasterList from "./Tables/MasterList";
 import AdminBg from "../../../Components/AdminBg";
+import Searchbar from "../Components/Searchbar";
 
 export default function Unserviceable({ className }) {
     const [toggleTabs, setToggleTabs] = useState("item");
@@ -11,7 +12,7 @@ export default function Unserviceable({ className }) {
     }
     const [itemtab, setItemTab] = useState([]);
     const [masterlist, setMasterList] = useState();
-    
+
     return (
         <div className={className + " flex justify-center relative"}>
             <div className="absolute -right-14 bottom-0 w-1/3">
@@ -19,7 +20,7 @@ export default function Unserviceable({ className }) {
             </div>
             <div className="z-20 pt-3 flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
                 {/*tab buttons*/}
-                <div className="pb-3">
+                <div className="pb-3 h-14 items-center w-full flex justify-between ">
                     <ul className="flex gap-4">
                         <li
                             onClick={() => clickTabs("item")}
@@ -45,13 +46,13 @@ export default function Unserviceable({ className }) {
                                 Master List
                             </div>
                         </li>
-                        
                     </ul>
+                    <div className=""><Searchbar className="h-8" /></div>
                 </div>
                 {/*tab buttons*/}
 
                 {/*Tabs*/}
-                <div className="flex flex-col h-full mb-12 py-2 px-4 border rounded-lg bg-white">
+                <div className="flex flex-col h-full w-[1100px] items-center mb-12 pb-2 pt-0 px-4 border rounded-lg bg-white">
                     {/*Item Table*/}
                     {toggleTabs === "item" ? <ItemTab
                         className={""}

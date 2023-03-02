@@ -9,7 +9,7 @@ export default function UserList(props) {
             {/* name */}
             <td>
                 <a className="text-left pl-6 flex items-center w-full h-12 gap-3">
-                    <div className="flex items-center">
+                    <div className="flex flex-none items-center">
                         <img
                             src="./img/profile-pic.jpeg"
                             alt=""
@@ -17,7 +17,7 @@ export default function UserList(props) {
                         />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium text-text-black">
+                        <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium w-60 text-text-black truncate">
                             {props.firstname + ' ' + props.surname}
                         </h4>
                         <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
@@ -29,22 +29,21 @@ export default function UserList(props) {
             {/* status */}
             <td>
                 <a className="text-left flex items-center w-full h-12 gap-3">
-                    <div className="flex flex-col gap-1">
-                        <h5 className="p-1 px-2 w-fit text-[14px] offlineUser rounded-full flex items-center gap-1">
-                            <i className="fa-solid fa-circle text-[7px]"></i>
-                            Offline
-                        </h5>
-                        <p className="text-[#878787] text-[14px]">
-                            {props.designation}
-                        </p>
+                    <div className="flex flex-col gap-1 items-center w-full">
+                        <div className="">
+                            <h5 className="p-1 px-2 w-fit text-[14px] offlineUser rounded-full flex items-center gap-1">
+                                <i className="fa-solid fa-circle text-[7px]"></i>
+                                Offline
+                            </h5>
+                        </div>
                     </div>
                 </a>
             </td>
             {/* email */}
             <td>
-                <a className="text-left flex items-center w-full h-12 gap-3">
+                <a className="text-left flex items-center w-full h-12 gap-3 pl-4">
                     <div className="flex flex-col gap-2">
-                        <p className="text-primary text-[14px] font-medium">
+                        <p className="text-primary text-[14px] font-medium truncate w-72">
                             willsmith@example.com
                         </p>
                         <p className="text-[#878787] text-[14px]">
@@ -57,7 +56,7 @@ export default function UserList(props) {
             <td>
                 <div
                     onClick={() => {props.clickForms(props.type), props.getData(props.id)}}
-                    className="pr-6 flex items-center justify-end w-full h-12 gap-3 cursor-pointer"
+                    className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
                     value = {0}
                 >
                     <div className="">

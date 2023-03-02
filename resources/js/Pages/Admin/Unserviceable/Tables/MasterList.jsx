@@ -17,7 +17,7 @@ export default function MasterList({ className , items }) {
 
     return (
         <div className={className + " w-fit h-full"}>
-            <div className="w-full flex justify-between items-center pb-2">
+            <div className="w-full flex justify-between items-center h-16">
                 <ul className="flex">
                     <li onClick={() => clickTabs("donation")}
                         className={

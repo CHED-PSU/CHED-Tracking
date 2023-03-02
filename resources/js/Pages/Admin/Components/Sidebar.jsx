@@ -132,7 +132,7 @@ export default function Sidebar(props) {
                 </div>
             </div>
 
-            <div className="flex-none h-20 flex text-center items-center mx-6">
+            <div className="flex-none h-36 flex text-center items-center mx-6">
                 <button className="font-semibold 2xl:text-md xl:text-[15px] text-[15px] dark:text-lightColor-800 mx-auto">
                     Log out
                 </button>

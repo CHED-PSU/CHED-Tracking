@@ -9,7 +9,7 @@ export default function PARTable({ className }) {
     const [Loading, setLoading] = useState(true);
     const [parControl, setParControl] = useState();
     const [totalPrice, setTotalPrice] = useState();
-    const [UserLists, setUserLists] = useState()
+    const [UserLists, setUserLists] = useState();
 
     function clickForms(index) {
         setOpenForms(index);
@@ -17,75 +17,93 @@ export default function PARTable({ className }) {
 
     useEffect(() => {
         const getUsers = async () => {
-            setLoading(true)
+            setLoading(true);
             try {
-                const response = await axios.get('api/getUserLists')
-                const data = response.data
-                setUserLists(data.user_lists)
+                const response = await axios.get("api/getUserLists");
+                const data = response.data;
+                setUserLists(data.user_lists);
             } catch (e) {
-                console.log(e)
+                console.log(e);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
-        }
+        };
 
-        getUsers()
-    }, [])
+        getUsers();
+    }, []);
 
     const userMapper = (items) => {
-        return items?.map(data => {
-            return <UserList firstname={data.firstname} surname={data.surname} designation={data.designation} name={data.name} id={data.id} type={'par-control'} getData={getData} clickForms={clickForms} />
-        })
-    }
+        return items?.map((data) => {
+            return (
+                <UserList
+                    firstname={data.firstname}
+                    surname={data.surname}
+                    designation={data.designation}
+                    name={data.name}
+                    id={data.id}
+                    type={"par-control"}
+                    getData={getData}
+                    clickForms={clickForms}
+                />
+            );
+        });
+    };
 
     const pageCount = 5;
     const changePage = ({ selected }) => {
-        setPageNumber(selected)
+        setPageNumber(selected);
     };
 
     async function getData(id) {
         try {
-            const response = await axios.post('api/getUserParControls', { id: id })
-            const data = response.data
-            setParControl(data.ics_controls)
-            setTotalPrice(data.total_price)
+            const response = await axios.post("api/getUserParControls", {
+                id: id,
+            });
+            const data = response.data;
+            setParControl(data.ics_controls);
+            setTotalPrice(data.total_price);
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }
 
-
     return (
-        <div className={className + " w-fit h-full relative"}>
-            {openForms === "par-control" ? <PARControl
-                parControl = {parControl ? parControl : ''}
-                totalPrice = {totalPrice ? totalPrice : ''}
-                clickForms={clickForms}
-            /> : ""}
+        <div className={className + " w-full h-full relative"}>
+            {openForms === "par-control" ? (
+                <PARControl
+                    parControl={parControl ? parControl : ""}
+                    totalPrice={totalPrice ? totalPrice : ""}
+                    clickForms={clickForms}
+                />
+            ) : (
+                ""
+            )}
 
-            <table className="flex">
+            <table className="w-full">
                 <thead>
                     <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                        <th className="h-10 2xl:w-96 xl:w-72 w-72 font-medium text-left pl-6">
+                        <th className="h-10 w-80 font-medium text-left pl-6">
                             Name
                         </th>
-                        <th className="h-10 w-56 font-medium text-left">
+                        <th className="h-10 font-medium text-center">
                             User Status
                         </th>
-                        <th className="h-10 w-72 font-medium text-left">
+                        <th className="h-10 w-80 pl-4 font-medium text-left">
                             Email & Mobile No
                         </th>
-                        <th className="h-10 w-32 font-medium text-center">
+                        <th className="h-10 font-medium text-center">
                             Actions
                         </th>
                     </tr>
-                    {/*item 1*/}
-                    {Loading ? '' : userMapper(UserLists)}
-                    {/*item 2*/}
                 </thead>
+                <tbody>
+                    {/*item 1*/}
+                    {Loading ? "" : userMapper(UserLists)}
+                    {/*item 2*/}
+                </tbody>
             </table>
 
-            <div className="absolute 2xl:bottom-2 xl:bottom-2 bottom-2 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
+            <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
                 <ReactPaginate
                     previousLabel={"Prev"}
                     nextLabel={"Next"}
@@ -98,7 +116,6 @@ export default function PARTable({ className }) {
                     activeClassName={"paginationActive"}
                 />
             </div>
-
         </div>
     );
 }
