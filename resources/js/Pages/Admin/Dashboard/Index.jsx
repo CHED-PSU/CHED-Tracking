@@ -88,6 +88,21 @@ export default function Dashboard({ className }) {
                     .then((response) => {
                         setCountPending(response.data.pending);
                         setCountAccepted(response.data.accepted);
+
+                        setPendingReq({
+                            datasets: [
+                                {
+                                    label: "Pending Requests",
+                                    data: Loading ? [response.data.accepted, response.data.pending] : '',
+                                    backgroundColor: [
+                                        "rgba(255, 255, 255, 1)",
+                                        "rgba(206, 0, 62, 1)",
+                                    ],
+                                    borderWidth: 0,
+                                    hoverOffset: 5,
+                                },
+                            ],
+                        })
                     });
 
 
@@ -103,7 +118,7 @@ export default function Dashboard({ className }) {
     console.log(countAccepted)
     console.log(countPending)
 
-    const pendingReq = {
+    const [pendingReq, setPendingReq] = useState( {
         datasets: [
             {
                 label: "Pending Requests",
@@ -116,7 +131,7 @@ export default function Dashboard({ className }) {
                 hoverOffset: 5,
             },
         ],
-    };
+    });
 
     const recentIssuanceMapper = (item) => {
         return item?.slice(0, 3).map((data) => {

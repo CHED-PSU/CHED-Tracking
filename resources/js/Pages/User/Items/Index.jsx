@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import AdminBg from "../../../components/AdminBg";
 import Searchbar from "../Components/Searchbar";
 import IndividualItems from "./IndividualItems/IndividualItems";
+import ModalQuantity from "./Modals/ModalQuantity"
 
 import ReturnRequest from "./Forms/ReturnRequest";
 import { set } from "lodash";
@@ -12,9 +13,9 @@ export default function Index({ className }) {
 
     const [checkedData, setCheckedData] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
-    const [individualData, setIndividualData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [openForm, setOpenForm] = useState(false)
+    const [loading, setLoading] = useState(true);
+    
+    const [openModal, setOpenModal] = useState(false)
     const [valueId, setValueId] = useState();
 
     const [itemsData, setItemsData] = useState([])
@@ -98,7 +99,7 @@ export default function Index({ className }) {
                     <td className="text-sm">{data.date}</td>
                     <td className="text-center py-3 rounded-tableRow">
                         <button value={data.ui_id}
-                            onClick={openFormHandler}
+                            onClick={openModalHandler}
                             className="h-9 w-24 text-sm rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-medium">
                             Return
                         </button>
@@ -152,9 +153,11 @@ export default function Index({ className }) {
 
     //for Form functions
 
-    const openFormHandler = (e) => {
+    
+    const openModalHandler = (e) => {
         setValueId(e.target.value)
-        setOpenForm(!openForm);
+        console.log('wow')
+        setOpenModal(!openModal);
     }
 
     return (
@@ -204,16 +207,17 @@ export default function Index({ className }) {
 
                             {/* no data */}
 
-                            {itemsData != undefined ? renderItems(Object.values(filteredItemsData)) : <tr className="bg-[#F5F5F5]">
+                            {loading ? <tr className="bg-[#F5F5F5]">
                                 <td colSpan="5" className="h-12 text-center rounded-full">
                                     No data available in table
-                                </td>
-                            </tr>}
+                                </td>:
+                            </tr> : renderItems(Object.values(filteredItemsData)) }
                         </tbody>
                     </table>
                 </div>
             </div>
-            {openForm ? <ReturnRequest openFormHandler={openFormHandler} valueId={valueId ? valueId : ''} /> : ""}
+            
+            {openModal ? <ModalQuantity openModalHandler ={openModalHandler} openFormHandler={openFormHandler} valueId = {valueId ? valueId : ''}/> : ''}
         </div>
     );
 }
