@@ -7,6 +7,11 @@ export default function NewproposalChart(props) {
         <Line
             data={props.chartData}
             options={{ 
+                elements: {
+                    point:{
+                        radius: 0
+                    }
+                },
                 plugins:{legend: { display: false }},
                 responsive: true,
                 maintainAspectRatio: false,
