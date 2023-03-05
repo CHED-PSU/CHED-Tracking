@@ -14,8 +14,7 @@ export default function Index({ className }) {
     const [checkedData, setCheckedData] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const [loading, setLoading] = useState(true);
-    
-    const [openModal, setOpenModal] = useState(false)
+    const [openForm, setOpenForm] = useState(false)
     const [valueId, setValueId] = useState();
 
     const [itemsData, setItemsData] = useState([])
@@ -26,6 +25,11 @@ export default function Index({ className }) {
     const value = JSON.parse(user);
 
     const [selected, setSelected] = useState([]);
+
+    const openFormHandler = (e) => {
+        setValueId(e.target.value)
+        setOpenForm(!openForm);
+    }
 
 
     useEffect(() => {
@@ -99,7 +103,7 @@ export default function Index({ className }) {
                     <td className="text-sm">{data.date}</td>
                     <td className="text-center py-3 rounded-tableRow">
                         <button value={data.ui_id}
-                            onClick={openModalHandler}
+                            onClick={openFormHandler}
                             className="h-9 w-24 text-sm rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-medium">
                             Return
                         </button>
@@ -153,12 +157,6 @@ export default function Index({ className }) {
 
     //for Form functions
 
-    
-    const openModalHandler = (e) => {
-        setValueId(e.target.value)
-        console.log('wow')
-        setOpenModal(!openModal);
-    }
 
     return (
         <div
@@ -216,8 +214,7 @@ export default function Index({ className }) {
                     </table>
                 </div>
             </div>
-            
-            {openModal ? <ModalQuantity openModalHandler ={openModalHandler} openFormHandler={openFormHandler} valueId = {valueId ? valueId : ''}/> : ''}
+            {openForm ? <ReturnRequest openFormHandler={openFormHandler} valueId={valueId ? valueId : ''} /> : ""}
         </div>
     );
 }

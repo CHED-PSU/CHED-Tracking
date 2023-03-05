@@ -96,13 +96,7 @@ export default function Widgets(props) {
         }
     }
 
-    useEffect(() => {
-
-
-        getNotificationItems();
-
-
-    }, [])
+    
 
 
     const notifMapper = (items) => {
@@ -196,7 +190,10 @@ export default function Widgets(props) {
         }
     }
 
-
+    
+    const getNotif = () => {
+        getNotificationItems();
+    }
 
     return (
         <div className={props.className}>
@@ -233,7 +230,7 @@ export default function Widgets(props) {
                 <button
                     ref={notifButton}
                     onClick={() => {
-                        setOpenNotifDropdown(!openNotifDropdown);
+                        setOpenNotifDropdown(!openNotifDropdown),getNotif();
                     }}
                     className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover rounded-full flex justify-center items-center relative"
                 >

@@ -35,7 +35,7 @@ export default function ReturnRequest(props) {
 
                 </div>
             </div>
-            {openForm ? <ReturnRequest openFormHandler={openFormHandler} valueId={valueId ? valueId : ''} /> : ""}
+            
         </div>
     );
 }
