@@ -43,13 +43,13 @@ export default function Return({ className }) {
 
     const getUsers = async () => {
         setLoading(true)
-        try{
+        try {
             await axios.get('api/getUsers').then(response => {
                 setUsers(response.data.users)
             })
-        }catch(e){
+        } catch (e) {
             console.log(e)
-        }finally{
+        } finally {
             setLoading(false)
         }
     }
@@ -149,7 +149,7 @@ export default function Return({ className }) {
                     {/* actions */}
                     <td>
                         <div className="flex gap-4 justify-center">
-                            <button value = {data.id}
+                            <button value={data.id}
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn cursor-pointer"
                                 onClick={() => { clickForms("ins-form"), getReturnedItemsData(data.uri_id) }}
                             >
@@ -158,7 +158,7 @@ export default function Return({ className }) {
 
                             <button
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn "
-                                onClick={() => {clickAssignModal("open", data.uri_id, data.id)}}
+                                onClick={() => { clickAssignModal("open", data.uri_id, data.id) }}
                             >
                                 <i className="fa-solid fa-box"></i>
                             </button>
@@ -183,16 +183,16 @@ export default function Return({ className }) {
             {openForms === "ins-form" ? <InspectionForm
                 clickForms={clickForms}
                 openForms={openForms}
-                id = {id ? id : ''}
+                id={id ? id : ''}
                 setOpenForms={setOpenForms}
                 className={""}
             /> : ""}
 
             {openAssignModal === "open" ? <AssignModal
                 clickAssignModal={clickAssignModal}
-                id = {id ? id : ''}
-                user_id = {user_id ? user_id : ''}
-                users = {users ? users : ''}
+                id={id ? id : ''}
+                user_id={user_id ? user_id : ''}
+                users={users ? users : ''}
                 className={""}
             /> : ""}
 
@@ -204,16 +204,20 @@ export default function Return({ className }) {
                 alertButtonColor={alertButtonColor}
                 alertYesButton={alertYesButton}
                 alertNoButton={alertNoButton}
-                id = {id ? id : ''}
+                id={id ? id : ''}
                 className={""}
-                success = {success}
+                success={success}
             /> : ""}
 
             <div className="absolute -right-14 bottom-0 w-1/3">
                 <AdminBg />
             </div>
-            <div className="z-20 pt-3 flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
-            <div className="pb-3"><Searchbar /></div>
+            <div className="z-20 pt-[14px] flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
+                <div className="pb-3 h-14 items-center w-full">
+                    <div className="">
+                        <Searchbar />
+                    </div>
+                </div>
                 <div className="flex flex-col h-full w-[1100px] items-center pt-6 mb-12 py-2 px-4 border dark:border-[#434343] rounded-lg bg-white dark:bg-darkColor-800">
                     {/*table 1*/}
                     <table className="w-full">
@@ -236,20 +240,20 @@ export default function Return({ className }) {
                     </table>
                     {/*table 1*/}
                     <div className="absolute bottom-[61px]  w-full flex justify-center">
-                    <ReactPaginate
-                        previousLabel={"Prev"}
-                        nextLabel={"Next"}
-                        pageCount={pageCount}
-                        onPageChange={changePage}
-                        containerClassName={"paginationButtons"}
-                        previousLinkClassName={"previousButtons"}
-                        nextLinkClassName={"nextButtons"}
-                        disabledClassName={"paginationDisabled"}
-                        activeClassName={"paginationActive"}
-                    />
+                        <ReactPaginate
+                            previousLabel={"Prev"}
+                            nextLabel={"Next"}
+                            pageCount={pageCount}
+                            onPageChange={changePage}
+                            containerClassName={"paginationButtons"}
+                            previousLinkClassName={"previousButtons"}
+                            nextLinkClassName={"nextButtons"}
+                            disabledClassName={"paginationDisabled"}
+                            activeClassName={"paginationActive"}
+                        />
+                    </div>
                 </div>
             </div>
-                </div>
         </div>
     )
 }

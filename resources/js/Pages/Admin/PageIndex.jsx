@@ -6,6 +6,7 @@ import Dashboard from "./Dashboard/Index";
 import Pending from "./Pending/Index";
 import Logs from "./Logs/Index";
 import Return from "./Return/Index";
+import Inventory from "./Inventory/Index";
 import Unserviceable from "./Unserviceable/Index";
 import Forecasting from "./Forecasting/Index";
 import Searchbar from "./Components/Searchbar";
@@ -96,6 +97,16 @@ export default function Index() {
                                 </div>
                             </div>
                         </div>
+                        {/* Inventory */}
+                        <div
+                            className={sidebar === "inventory" ? "" : "hidden"}
+                        >
+                            <div className="flex">
+                                <div className="flex h-12 items-center 2xl:text-xl xl:text-lg text-lg font-bold text-neutral-700 dark:text-neutral-200 cursor-default">
+                                    Inventory
+                                </div>
+                            </div>
+                        </div>
                         {/* Unserviceable */}
                         <div
                             className={sidebar === "unserv" ? "" : "hidden"}
@@ -151,9 +162,16 @@ export default function Index() {
                         ""
                     )}
 
-                    {/* Pending */}
+                    {/* Return */}
                     {sidebar === "return" ? (
                         <Return className={"relative flex w-full h-full"} />
+                    ) : (
+                        ""
+                    )}
+
+                    {/* Inventory */}
+                    {sidebar === "inventory" ? (
+                        <Inventory className={"relative flex w-full h-full"} />
                     ) : (
                         ""
                     )}

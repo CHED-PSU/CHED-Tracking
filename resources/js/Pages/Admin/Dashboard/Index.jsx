@@ -184,7 +184,7 @@ export default function Dashboard({ className }) {
                             <div className="flex flex-col items-center w-fit 2xl:space-y-4 xl:space-y-2 space-y-2">
                                 <div className="2xl:h-40 2xl:w-40 xl:h-24 xl:w-24 h-24 w-24 flex-none">
                                     <PendingReq
-                                        chartData={Loading ? pendingReq : ""}
+                                        chartData={pendingReq}
                                     />
                                 </div>
                                 <div className="flex 2xl:flex-row xl:flex-col flex-col justify-center flex-none text-xs 2xl:gap-6 xl:gap-1 gap-1">
