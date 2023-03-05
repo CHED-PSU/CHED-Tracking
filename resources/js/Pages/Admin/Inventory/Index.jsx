@@ -30,24 +30,24 @@ export default function Inventory({ className }) {
                 </div>
                 <div className="flex flex-col h-full w-[1100px] items-center mb-12 pb-2 pt-0 px-4 border rounded-lg bg-white">
                     <div className="w-full h-full relative">
-                        <div className="w-full flex items-center h-16">
+                        <div className="w-full flex items-center justify-between h-16">
 
-                            <div className="w-1/3">
+                            <div className="w-56">
                                 <div className="w-fit h-fit flex items-center text-xs rounded-full bg-gray-100 -space-x-2">
                                     {toggleSort === "all" ? <div onClick={() => clickSort("all")} className="w-[80px] py-2 bg-pink-500 text-white text-center rounded-full cursor-pointer">All</div> : <div onClick={() => clickSort("all")} className="w-[80px] py-2 rounded-full text-center cursor-pointer">All</div>}
                                     {toggleSort === "sorted" ? <div onClick={() => clickSort("sorted")} className="w-[80px] py-2 bg-pink-500 text-white text-center rounded-full cursor-pointer">Sorted</div> : <div onClick={() => clickSort("sorted")} className="w-[80px] py-2 rounded-full text-center cursor-pointer">Sorted</div>}
                                 </div>
                             </div>
 
-                            <div className="w-1/3 flex justify-center">
-                                <select name="" id="" className=" w-44 rounded-md text-sm border border-neutral-300 px-3 py-1 outline-none">
-                                    <option id="def" value="">Jermine</option>
+                            <div className="">
+                                <select name="" id="" className=" w-80 rounded-md text-sm border border-neutral-300 px-3 py-1 outline-none">
+                                    <option id="def" value="">Jermine Basister</option>
                                     <option id="def1" value="">Opt 1</option>
                                     <option id="def2" value="">Opt 2</option>
                                 </select>
                             </div>
 
-                            <div className="w-1/3 flex justify-end">
+                            <div className="w-56 flex justify-end">
                                 <button className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full">
                                     <i className="fa-solid fa-box-archive text-sm"></i>
                                     Return
