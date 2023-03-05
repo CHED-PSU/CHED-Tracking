@@ -255,16 +255,17 @@ class FormController extends Controller
     public function getIndividualItems(Request $req)
     {
         $items = DB::table('trackings as t')
-            ->select('ui.ui_id', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.code as code', 'it.eul', 'ui.item_status as remarks', 'it.id')
+            ->select('ui.ui_id', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.code as code as', 'it.eul', 'ui.item_status as remarks', 'it.id')
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia','ia.id','=','it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
-            ->where('t.received_by', $req->input('user_id'))
+            ->where('t.received_by', $req->input('id'))
             ->where('ui.item_status', 'owned')
             ->get();
+      
 
         $total_price = 0;
 
@@ -328,7 +329,8 @@ class FormController extends Controller
             ->select('pu.name as type', 'pi.description as brand', 'pi.code as property_no', 'pri.price as acquisition', 'uri.defect', 'u.firstname', 'u.surname', 'uri.uri_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
-            ->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')
+            ->join('iar_items as ia','ia.id','=','it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
@@ -402,7 +404,8 @@ class FormController extends Controller
     public function getUserIcsControls(Request $req)
     {
 
-        $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')->groupBy('it.trackings_id');
+        $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')->join('iar_items as ia','ia.id','=','it.item_id')
+        ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
         $result = DB::table('trackings as t')
             ->joinSub($subQuery, 'subData', function ($join) {
                 $join->on('t.id', '=', 'subData.trackings_id');
@@ -428,16 +431,17 @@ class FormController extends Controller
     public function getUserParControls(Request $req)
     {
 
-        $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(in.price * it.quantity) as total"), 'it.tracking_id')->join('iar_inventory as in', 'in.inventory_id', '=', 'it.inventory_id')->groupBy('it.tracking_id');
+        $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')->join('iar_items as ia','ia.id','=','it.item_id')
+        ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
         $result = DB::table('trackings as t')
             ->joinSub($subQuery, 'subData', function ($join) {
-                $join->on('t.id', '=', 'subData.tracking_id');
+                $join->on('t.id', '=', 'subData.trackings_id');
             })
             ->where('t.received_by', $req->input('id'))
             ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
-            ->join('users as u', 'u.id', '=', 't.issued_by')
             ->where('ui.description', 'PAR')
             ->where('ui.confirmation', 'accepted')
+            // ->groupBy('t.id')
             ->get();
 
         $totalPrice = 0;
