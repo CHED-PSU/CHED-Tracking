@@ -90,9 +90,13 @@ export default function Dashboard({ className }) {
                         setCountAccepted(response.data.accepted);
 
                         setPendingReq({
+                            labels: [
+                                'Accepted',
+                                'Yellow'
+                              ],
                             datasets: [
                                 {
-                                    label: "Pending Requests",
+                                    label: "Requests",
                                     data: Loading ? [response.data.accepted, response.data.pending] : '',
                                     backgroundColor: [
                                         "rgba(255, 255, 255, 1)",
@@ -119,9 +123,13 @@ export default function Dashboard({ className }) {
     console.log(countPending)
 
     const [pendingReq, setPendingReq] = useState( {
+        labels: [
+            'Accepted',
+            'Yellow'
+          ],
         datasets: [
             {
-                label: "Pending Requests",
+                label: "Requests",
                 data: Loading ? [countAccepted, countPending] : '',
                 backgroundColor: [
                     "rgba(255, 255, 255, 1)",

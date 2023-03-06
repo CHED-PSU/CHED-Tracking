@@ -4,6 +4,11 @@ import 'chart.js/auto';
 
 export default function PendingReq({ className, chartData }) {
     return (
-        <Doughnut className={className} data={chartData} />
+        <Doughnut
+            className={className}
+            options={{
+                plugins: { legend: { display: false } },
+            }}
+            data={chartData} />
     )
 }
