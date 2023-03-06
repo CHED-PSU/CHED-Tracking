@@ -6,6 +6,7 @@ import InspectionForm from "./Forms/InspectionForm";
 import AssignModal from "./Modals/Assign";
 import DisposeModal from "./Modals/Dispose";
 import DisposalAlert from "../Return/Alert/DisposalAlert";
+import InventoryAlert from "../Return/Alert/InventoryAlert";
 import Searchbar from "../Components/Searchbar";
 
 export default function Return({ className }) {
@@ -79,11 +80,16 @@ export default function Return({ className }) {
 
     }
 
-    function clickAssignModal(index, id, user_id) {
-
+    function clickAssignModal(index, id) {
+        setAlertIcon("question")
+        setAlertHeader("Confirmation")
+        setAlertDesc("Are you sure you want to move the item to Inventories?")
+        setAlertButtonColor('blue')
+        setAlertYesButton('Confirm')
+        setAlertNoButton('Cancel')
+        setOpenAlert(true)
         setOpenAssignModal(index);
         setId(id)
-        setUserId(user_id)
     }
 
     function clickDisposeModal(index, id) {
@@ -157,13 +163,15 @@ export default function Return({ className }) {
                             </button>
 
                             <button
+                                disabled = {data.status === 'Ready for Retur' ? false : true}
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn "
-                                onClick={() => { clickAssignModal("open", data.uri_id, data.id) }}
+                                onClick={() => { clickAssignModal("open", data.uri_id) }}
                             >
                                 <i className="fa-solid fa-box"></i>
                             </button>
 
                             <button
+                                disabled = {data.status !== 'Unserviceable' &&  data.status !== 'Ready for Retur'? false : true}
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
                                 onClick={() => clickDisposeModal("open", data.uri_id)}
                             >
@@ -188,12 +196,17 @@ export default function Return({ className }) {
                 className={""}
             /> : ""}
 
-            {openAssignModal === "open" ? <AssignModal
+            {openAssignModal === "open" ? <InventoryAlert
                 clickAssignModal={clickAssignModal}
+                alertIcon={alertIcon}
+                alertHeader={alertHeader}
+                alertDesc={alertDesc}
+                alertButtonColor={alertButtonColor}
+                alertYesButton={alertYesButton}
+                alertNoButton={alertNoButton}
                 id={id ? id : ''}
-                user_id={user_id ? user_id : ''}
-                users={users ? users : ''}
                 className={""}
+                success={success}
             /> : ""}
 
             {openDisposeModal === "open" ? <DisposalAlert

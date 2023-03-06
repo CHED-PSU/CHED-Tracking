@@ -113,12 +113,17 @@ Route::post('/login', [AuthController::class, 'login']);
             Route::post('returnedItemsChangeStatus',[ItemController::class, 'returnedItemsChangeStatus']);
             //admin User Fetcher
             Route::get('getUsers',[GeneralController::class, 'getUsers']);
-                //admin return item to previous owwner
-                    Route::post('returnToPreviousOwner',[ItemController::class, 'returnToPreviousOwner']);
-                //admin issue to another owner
-                    Route::post('assignToAnotherUser',[ItemController::class, 'assignToAnotherUser']);
+                //admin move item to inventories 
+                    Route::post('moveToInventories',[ItemController::class, 'moveToInventories']);
                 //Admin move item to unserviceable item
                     Route::post('moveItemstoUnserviceableItems',[ItemController::class, 'moveItemstoUnserviceableItems']);
+                    
+//Admin Inventories
+    //admin return item to previous owwner
+    Route::post('returnToPreviousOwner',[ItemController::class, 'returnToPreviousOwner']);
+    //admin issue to another owner
+        Route::post('assignToAnotherUser',[ItemController::class, 'assignToAnotherUser']);
+
 //Admin Unserviceable Items
     //Admin Unserviceable Items
         Route::get('getUnserviceableItems',[ItemController::class, 'getUnserviceableItems']);

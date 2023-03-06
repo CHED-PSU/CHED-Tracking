@@ -306,6 +306,11 @@ class ItemController extends Controller
             ]);
     }
 
+    //admin moveToInventories
+    public function moveToInventories(Request $req){
+        DB::table('user_returned_items')->update(['status' => 'Inventories']);
+    }
+
     //admin moveItemstoUnserviceableItems
     public function moveItemstoUnserviceableItems(Request $req)
     {
