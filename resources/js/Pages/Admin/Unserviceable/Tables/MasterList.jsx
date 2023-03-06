@@ -22,7 +22,7 @@ export default function MasterList({ className , items }) {
                     <li onClick={() => clickTabs("donation")}
                         className={
                             toggleTabs === "donation"
-                                ? "text-primary font-medium bg-blue-50 rounded-md"
+                                ? "text-pink-500 font-medium bg-pink-50 rounded-md"
                                 : "text-[#707070] hover:text-[#4b4b4b]"
                         }>
                             <div className="text-xs font-semibold cursor-pointer p-3 ">
@@ -32,7 +32,7 @@ export default function MasterList({ className , items }) {
                     <li onClick={() => clickTabs("destruction")}
                         className={
                             toggleTabs === "destruction"
-                                ? "text-primary font-medium bg-blue-50 rounded-md"
+                                ? "text-pink-500 font-medium bg-pink-50 rounded-md"
                                 : "text-[#707070] hover:text-[#4b4b4b]"
                         }>
                             <div className="text-xs font-semibold cursor-pointer p-3  ">
@@ -42,7 +42,7 @@ export default function MasterList({ className , items }) {
                     <li onClick={() => clickTabs("sales")}
                         className={
                             toggleTabs === "sales"
-                                ? "text-primary font-medium bg-blue-50 rounded-md"
+                                ? "text-pink-500 font-medium bg-pink-50 rounded-md"
                                 : "text-[#707070] hover:text-[#4b4b4b]"
                         }>
                             <div className="text-xs font-semibold cursor-pointer p-3  ">
