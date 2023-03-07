@@ -15,6 +15,9 @@ export default function Return({ className }) {
     const [openDisposeModal, setOpenDisposeModal] = useState("close");
     const [openForms, setOpenForms] = useState("");
 
+
+
+    const [pageNumber, setPageNumber] = useState();
     const [Loading, setLoading] = useState(true);
     const [returnedItems, setReturnedItems] = useState();
     const [id, setId] = useState()
@@ -64,7 +67,7 @@ export default function Return({ className }) {
     const success = () => {
         setAlertIcon("check")
         setAlertHeader("Success")
-        setAlertDesc("You've successfuly returned an item to its previous owner.")
+        setAlertDesc("You've successfully returned an item to its previous owner.")
         setAlertButtonColor('none')
         setAlertYesButton('Confirm')
         setAlertNoButton('Okay')

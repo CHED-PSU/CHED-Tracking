@@ -6,6 +6,28 @@ import axios from "axios";
 30;
 
 export default function Inventory({ className }) {
+
+    const [items, setItems] = useState();
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=> {
+
+        const getInventoryItems = async () => {
+            setLoading(true)
+            try{
+                await axios.get('api/getItemsofInventories').then(res => {
+                    setItems(res.data.inventory_items)
+                })
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+            }
+        }
+        getInventoryItems()
+    },[])
+
+    const [pageNumber, setPageNumber] = useState();
     const pageCount = 5;
     const changePage = ({ selected }) => {
         setPageNumber(selected)
@@ -39,13 +61,15 @@ export default function Inventory({ className }) {
                                 </div>
                             </div>
 
+                            {toggleSort === "sorted" ? <>
                             <div className="">
                                 <select name="" id="" className=" w-80 rounded-md text-sm border border-neutral-300 px-3 py-1 outline-none">
-                                    <option id="def" value="">Jermine Basister</option>
+                                    <option id="1" value="">Jermine Basister</option>
                                     <option id="def1" value="">Opt 1</option>
                                     <option id="def2" value="">Opt 2</option>
                                 </select>
                             </div>
+                            </> : ''}
 
                             <div className="w-56 flex justify-end">
                                 <button className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full">
