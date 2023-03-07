@@ -340,7 +340,7 @@ class ItemController extends Controller
     public function getItemsofInventories(Request $req)
     {
         $inventory_items = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
+            ->select('uri.uri_id','pi.code', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
