@@ -117,7 +117,7 @@ export default function Sidebar(props) {
                             }
                         >
                             <div className="flex w-full items-center gap-4 pl-10 cursor-pointer 2xl:h-16 xl:h-14 h-14 py-3 select-none">
-                                <i className="fa-solid fa-box-archive 2xl:text-xl xl:text-lg text-lg"></i>
+                                <i className="fa-solid fa-box-open 2xl:text-xl xl:text-lg text-lg"></i>
                                 <h4 className=" leading-3">Inventory</h4>
                             </div>
                         </li>
