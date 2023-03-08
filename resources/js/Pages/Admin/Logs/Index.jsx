@@ -26,8 +26,8 @@ export default function Logs({ className }) {
                             onClick={() => clickTabs("ics")}
                             className={
                                 toggleTabs === "ics"
-                                    ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                    : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                                    ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full"
+                                    : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] rounded-full"
                             }
                         >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
@@ -38,8 +38,8 @@ export default function Logs({ className }) {
                             onClick={() => clickTabs("par")}
                             className={
                                 toggleTabs === "par"
-                                    ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                    : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                                ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full"
+                                : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] rounded-full"
                             }
                         >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
@@ -50,8 +50,8 @@ export default function Logs({ className }) {
                             onClick={() => clickTabs("ii")}
                             className={
                                 toggleTabs === "ii"
-                                    ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                    : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                                ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full"
+                                : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] rounded-full"
                             }
                         >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">

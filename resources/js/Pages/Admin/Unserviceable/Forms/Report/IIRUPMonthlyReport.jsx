@@ -5,14 +5,13 @@ export default function IIRUPMonthlyReport(props) {
     const ref = useRef();
     const handlePrint = useReactToPrint({
         content: () => ref.current,
-        documentTitle: 'emp-data',
+        documentTitle: 'IAIRUP',
     })
-
 
     return (
 
         <div className={props.className + "fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
-            <div className="dark:bg-darkColor-800 h-full w-[90%] border-x border-[#C8C8C8] pb-10 overflow-y-auto">
+            <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                 {/* header */}
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
@@ -22,7 +21,7 @@ export default function IIRUPMonthlyReport(props) {
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
                         </button>
-                        <div className="text-left cursor-defaul">
+                        <div className="text-left cursor-default">
                             <h4 className="text-primary dark:text-white text-xl font-semibold">
                                 INVENTORY AND INSPECTION REPORT OF UNSERVICEABLE PROPERTY
                             </h4>
@@ -40,8 +39,8 @@ export default function IIRUPMonthlyReport(props) {
                 </div>
                 {/* header */}
                 {/* data table */}
-                <div className="bg-white dark:bg-darkColor-900 border border-text-gray mx-10">
-                    <div ref={ref} className="p-8">
+                <div className="bg-white dark:bg-darkColor-900 border border-text-gray mx-10 px-4">
+                    <div ref={ref} className="p-4 w-[11.69in]">
                         <div className="flex justify-end text-ss font-medium italic pb-2">Appendix 74</div>
                         <div className="text-center dark:text-white pt-8 pb-2">
                             <div className="text-sm font-semibold">
@@ -56,7 +55,7 @@ export default function IIRUPMonthlyReport(props) {
                                         Entity Name:
                                     </div>
                                     <div className="text-xs dark:text-gray-400">
-                                        Commision on Higher Education XI
+                                        Commission on Higher Education XI
                                     </div>
                                 </div>
                             </div>
@@ -91,17 +90,17 @@ export default function IIRUPMonthlyReport(props) {
                         </div>
 
                         <div className="mt-4 mb-2">
-                            
+
                             <table
                                 id="items"
-                                className="table-auto"
+                                className="table-auto "
                             >
-                                <thead>
-                                    <tr className="text-xs">
+                                <tbody id="slip-table">
+                                    <tr className="text-[0.7rem]">
                                         <th colSpan={10} className="border border-text-gray">INVENTORY</th>
                                         <th colSpan={8} className="border border-text-gray">INSPECTION and DISPOSAL</th>
                                     </tr>
-                                    <tr className="text-xs dark:border-neutral-700 font-medium dark:text-white cursor-default">
+                                    <tr className="text-[0.6rem] dark:border-neutral-700 font-medium dark:text-white cursor-default">
                                         <th rowSpan={2} className="h-10 font-medium border border-text-gray">
                                             Date Acquired
                                         </th>
@@ -111,47 +110,47 @@ export default function IIRUPMonthlyReport(props) {
                                         <th rowSpan={2} className="h-10 font-medium border border-text-gray">
                                             Property No.
                                         </th>
-                                        <th rowSpan={2} className="h-10 font-medium border border-text-gray">
+                                        <th rowSpan={2} className="h-10 px-1 font-medium border border-text-gray">
                                             Qty
                                         </th>
-                                        <th rowSpan={2} className="h-10 font-medium border border-text-gray">
+                                        <th rowSpan={2} className="h-10 px-1 font-medium border border-text-gray">
                                             Unit Cost
                                         </th>
                                         <th rowSpan={2} className="h-10 font-medium border border-text-gray">
                                             Total Cost
                                         </th>
-                                        <th rowSpan={2} className="h-10 font-medium border border-text-gray">
+                                        <th rowSpan={2} className="h-10 px-1 font-medium border border-text-gray">
                                             Accumulated Depreciation
                                         </th>
-                                        <th rowSpan={2} className="h-10 font-medium border border-text-gray">
-                                            Accumulated Impairedment Losses
+                                        <th rowSpan={2} className="h-10 px-1 font-medium border border-text-gray">
+                                            Accumulated Impairment Losses
                                         </th>
-                                        <th rowSpan={2} className="h-10 font-medium border border-text-gray">
+                                        <th rowSpan={2} className="h-10 px-1 font-medium border border-text-gray">
                                             Carrying Amount
                                         </th>
-                                        <th rowSpan={2} className="h-10 font-medium border border-text-gray">
+                                        <th rowSpan={2} className="h-10 px-1 font-medium border border-text-gray">
                                             Remarks
                                         </th>
-                                        <th colSpan={5} className="h-10 font-medium border border-text-gray">
+                                        <th colSpan={5} className="h-10 px-1 w-20 font-medium border border-text-gray">
                                             Disposal
                                         </th>
-                                        <th rowSpan={2} className="h-10 font-medium border border-text-gray">
+                                        <th rowSpan={2} className="h-10 w-20 px-1 font-medium border border-text-gray">
                                             Appraised Value
                                         </th>
-                                        <th colSpan={2} className="h-10 font-medium border border-text-gray">
+                                        <th colSpan={2} className="h-10 w-20 font-medium border border-text-gray">
                                             RECORD OF SALES
                                         </th>
                                     </tr>
-                                    <tr className="text-xs">
-                                        <th className="border border-text-gray">Sale</th>
-                                        <th className="border border-text-gray">Transfer</th>
-                                        <th className="border border-text-gray">Deduction</th>
-                                        <th className="border border-text-gray">Others (Donation)</th>
-                                        <th className="border border-text-gray">Total</th>
-                                        <th className="border border-text-gray">OR No.</th>
-                                        <th className="border border-text-gray">Amount</th>
+                                    <tr className="text-[0.7rem]">
+                                        <th className="border font-medium px-1 border-text-gray">Sale</th>
+                                        <th className="border font-medium px-1 border-text-gray">Transfer</th>
+                                        <th className="border font-medium px-1 border-text-gray">Deduction</th>
+                                        <th className="border font-medium px-1 border-text-gray">Others (Donation)</th>
+                                        <th className="border font-medium px-1 border-text-gray">Total</th>
+                                        <th className="border font-medium px-1 border-text-gray">OR No.</th>
+                                        <th className="border font-medium px-1 border-text-gray">Amount</th>
                                     </tr>
-                                    <tr className="text-xs ">
+                                    <tr className="text-[0.7rem]">
                                         <th className="h-10 font-medium border border-text-gray">(1)</th>
                                         <th className="h-10 font-medium border border-text-gray">(2)</th>
                                         <th className="h-10 font-medium border border-text-gray">(3)</th>
@@ -171,14 +170,12 @@ export default function IIRUPMonthlyReport(props) {
                                         <th className="h-10 font-medium border border-text-gray">(17)</th>
                                         <th className="h-10 font-medium border border-text-gray">(18)</th>
                                     </tr>
-                                </thead>
-                                <tbody id="slip-table">
-                                    <tr className="text-xs h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                    <tr className="text-[0.7rem] h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                         <td className="text-center border border-text-gray">
                                             2012
                                         </td>
                                         <td className=" border border-text-gray">
-                                            PRINTER: HP Deskjet 2060 Colored Printer SN: 
+                                            PRINTER: HP Deskjet 2060 Colored Printer SN:
                                         </td>
                                         <td className="text-left border border-text-gray">
                                             2012-05-11-002-CHEDRO11-SUPPLY UNIT
@@ -196,7 +193,7 @@ export default function IIRUPMonthlyReport(props) {
                                             0.00
                                         </td>
                                         <td className="text-right border border-text-gray">
-                                            
+
                                         </td>
                                         <td className="text-right border border-text-gray">
                                             0.00
@@ -213,77 +210,77 @@ export default function IIRUPMonthlyReport(props) {
                                         <td className="text-center border border-text-gray"></td>
                                         <td className="text-center border border-text-gray"></td>
                                     </tr>
-                                    <tr>
-                                        <td className="text-xs font-medium h-8 border border-text-gray text-right pr-2" colSpan={3}>TOTAL</td>
-                                        <td className="text-xs font-medium text-center border border-text-gray"></td>
-                                        <td className="text-xs font-medium text-right border border-text-gray">677,294.00</td>
-                                        <td className="text-xs font-medium text-right border border-text-gray">677,294.00</td>
-                                        <td className="text-xs font-medium text-right border border-text-gray">677,294.00</td>
-                                        <td className="text-xs font-medium text-center border border-text-gray"></td>
-                                        <td className="text-xs font-medium text-right border border-text-gray">677,294.00</td>
-                                        <td className="text-xs font-medium text-center border border-text-gray"></td>
+                                    <tr className="text-[0.7rem]">
+                                        <td className=" font-medium h-8 border border-text-gray text-right pr-2" colSpan={3}>TOTAL</td>
+                                        <td className=" font-medium text-center border border-text-gray"></td>
+                                        <td className=" font-medium text-right border border-text-gray">677,294.00</td>
+                                        <td className=" font-medium text-right border border-text-gray">677,294.00</td>
+                                        <td className=" font-medium text-right border border-text-gray">677,294.00</td>
+                                        <td className=" font-medium text-center border border-text-gray"></td>
+                                        <td className=" font-medium text-right border border-text-gray">677,294.00</td>
+                                        <td className=" font-medium text-center border border-text-gray"></td>
                                         <td colSpan={8} className="text-xs font-medium text-center border border-text-gray"></td>
-                                        
+
                                     </tr>
                                     <tr>
-                                        <td className="text-xs font-medium border border-text-gray" colSpan={10}>
+                                        <td className="text-[0.7rem] font-medium border border-text-gray" colSpan={10}>
                                             <div className="pl-5 pt-5 pb-10 font-semibold">I HEREBY request inspection and disposition, pursuant to Section  79 of PD 1445, of the property enumerated above.</div>
                                             <div className="flex justify-between items-center border border-t-0">
-                                                <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2">
+                                                <div className="flex justify-center flex-none flex-col items-center py-2">
                                                     <div className="text-left text-xs font-medium dark:text-white w-full ml-6">
                                                         Requested by:
                                                     </div>
                                                     <div className="text-center py-4">
-                                                        <div className="pt-1 text-center text-sm underline font-semibold dark:text-white">JERMINE BASISTER</div>
-                                                        <div className="dark:text-gray-400 w-80 text-xs">
+                                                        <div className="pt-1 text-center underline font-semibold dark:text-white">JERMINE BASISTER</div>
+                                                        <div className="dark:text-gray-400 w-80">
                                                             (Signature over Printed Name of Accountable Officer)
                                                         </div>
 
                                                     </div>
                                                     <div className="text-center py-4">
-                                                        <div className="pt-1 text-center text-sm underline font-semibold dark:text-white">Admin. Asst. III/Supply Officer Designate</div>
-                                                        <div className="dark:text-gray-400 w-80 text-xs">
+                                                        <div className="pt-1 text-center underline font-semibold dark:text-white">Admin. Asst. III/Supply Officer Designate</div>
+                                                        <div className="dark:text-gray-400 w-80">
                                                             (Designation of Accountable Officer)
                                                         </div>
 
                                                     </div>
                                                 </div>
-                                                <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2">
+                                                <div className="flex justify-center flex-none flex-col items-center py-2">
                                                     <div className="text-left text-xs font-medium dark:text-white w-full ml-6">
                                                         Approved by:
                                                     </div>
                                                     <div className="text-center py-4">
-                                                        <div className="pt-1 text-center text-sm underline font-semibold dark:text-white">MARICAR R. CASQUEJO, Ph. D., CESO IIIt</div>
-                                                        <div className="dark:text-gray-400 w-80 text-xs">
+                                                        <div className="pt-1 text-center underline font-semibold dark:text-white">MARICAR R. CASQUEJO, Ph. D., CESO IIIt</div>
+                                                        <div className="dark:text-gray-400 w-80">
                                                             (Signature over Printed Name of Authorized Official)
                                                         </div>
                                                     </div>
                                                     <div className="text-center py-4">
-                                                        <div className="pt-1 text-center text-sm underline font-semibold dark:text-white">Director IV</div>
-                                                        <div className="dark:text-gray-400 w-80 text-xs">
-                                                            (Designation of Authorized Official)		 
+                                                        <div className="pt-1 text-center underline font-semibold dark:text-white">Director IV</div>
+                                                        <div className="dark:text-gray-400 w-80">
+                                                            (Designation of Authorized Official)
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td colSpan={8} className="border border-text-gray">
-                                            <div className="h-64 w-[500px] p-2">
-                                                <div className="flex gap-6 h-1/2 ">
-                                                    <div className=" w-1/2"><h6 className="text-xs font-medium leading-4">I CERTIFY that I have inspected each and every article enumerated in this report, and that the disposition made thereof was, in my judgment, the best for the public interest.</h6></div>
-                                                    <div className=" w-1/2"><h6 className="text-xs font-medium leading-4">I CERTIFY that I have witnessed the disposition of the articles enumerated on this report this ____day of _____________, _____.</h6></div>
+                                            <div className="h-64 p-2">
+                                                <div className="flex text-[0.7rem] gap-6 h-1/2 ">
+                                                    <div className=" w-1/2"><h6 className="font-medium leading-4">I CERTIFY that I have inspected each and every article enumerated in this report, and that the disposition made thereof was, in my judgment, the best for the public interest.</h6></div>
+                                                    <div className=" w-1/2"><h6 className="font-medium leading-4">I CERTIFY that I have witnessed the disposition of the articles enumerated on this report this ____day of _____________, _____.</h6></div>
                                                 </div>
                                                 <div className="flex h-1/2">
                                                     <div className="text-center py-4 w-1/2">
                                                         <div className="pt-1 text-center text-sm underline font-semibold dark:text-white">Director IV</div>
                                                         <div className="dark:text-gray-400 text-xs">
-                                                            (Designation of Authorized Official)		 
+                                                            (Designation of Authorized Official)
                                                         </div>
                                                     </div>
                                                     <div className="text-center py-4 w-1/2">
                                                         <div className="pt-1 text-center text-sm underline font-semibold dark:text-white">Director IV</div>
                                                         <div className="dark:text-gray-400 text-xs">
-                                                            (Designation of Authorized Official)		 
+                                                            (Designation of Authorized Official)
                                                         </div>
                                                     </div>
                                                 </div>

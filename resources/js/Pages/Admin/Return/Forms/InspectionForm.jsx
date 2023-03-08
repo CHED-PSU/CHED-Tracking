@@ -43,7 +43,7 @@ export default function InspectionForm(props) {
                 setLoading(false)
             }
         }
-        
+
         getData()
     },[])
 
@@ -69,7 +69,7 @@ export default function InspectionForm(props) {
         documentTitle: 'emp-data',
     })
 
-    
+
 
     const natureScope = (e) => {
         setPreNature(e.target.value)
@@ -172,7 +172,7 @@ export default function InspectionForm(props) {
                             </div>
                             <div className="text-left mb-3">
                                 <div className="font-semibold text-base">DEFECT:</div>
-                                <div className="underline text-justify">{returnedItemsData ? returnedItemsData.defect : ''}</div>
+                                <div className="underline text-justify h-20">{returnedItemsData ? returnedItemsData.defect : ''}</div>
                             </div>
                             {/* personnel req */}
                             <div className="flex text-left">
@@ -206,11 +206,11 @@ export default function InspectionForm(props) {
 
                                 <div className="mt-3">
                                     <label htmlFor="natureScope" className="text-base font-semibold">Nature and Scope of work to be done: </label>
-                                    <textarea disabled value={returnedItemsInfo ? returnedItemsInfo.pre_nature : ''} name="" id="natureScope" className="border border-sc w-full rounded-lg h-24 py-2 px-3 text-base outline-none resize-none"></textarea>
+                                    <textarea disabled value={returnedItemsInfo ? returnedItemsInfo.pre_nature : ''} name="" id="natureScope" className=" bg-white w-full rounded-lg h-20 py-2 text-base outline-none resize-none"></textarea>
                                 </div>
                                 <div className="mt-2">
                                     <label htmlFor="natureScope" className="text-base font-semibold">Parts to be supplied / replaced:</label>
-                                    <textarea disabled value={returnedItemsInfo ? returnedItemsInfo.pre_parts : ''} name="" id="supplied" className="border border-sc w-full rounded-lg h-24 py-2 px-3 text-base outline-none resize-none"></textarea>
+                                    <textarea disabled value={returnedItemsInfo ? returnedItemsInfo.pre_parts : ''} name="" id="supplied" className=" bg-white   w-full rounded-lg h-20 py-2 text-base outline-none resize-none"></textarea>
                                 </div>
                             </div>
                             {/* personnel pre */}
@@ -241,12 +241,12 @@ export default function InspectionForm(props) {
                         {/* pre inspection */}
 
                         {/* post inspection */}
-                        <div className="py-5 overflow-y-auto border-t-2 border-black">
+                        <div className="pt-5 overflow-y-auto border-t-2 border-black">
                             <div className="content">
                                 <div className="text-base text-center font-semibold">POST INSPECTION</div>
                                 <div className="mt-5">
                                     <label htmlFor="natureScope" className="text-base font-semibold">Findings:</label>
-                                    <textarea disabled name="" value={returnedItemsInfo ? returnedItemsInfo.post_findings : ''} id="natureScope" className="border border-sc w-full rounded-lg h-24 py-2 px-3 text-lg outline-none resize-none"></textarea>
+                                    <textarea disabled name="" value={returnedItemsInfo ? returnedItemsInfo.post_findings : ''} id="natureScope" className=" bg-white w-full rounded-lg h-20 py-2 px-3 text-lg outline-none resize-none"></textarea>
                                 </div>
                             </div>
                             {/* personnel post */}

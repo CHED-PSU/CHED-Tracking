@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DonationTab from "../MasterListTabs/DonationTab";
 import DestructionTab from "../MasterListTabs/DestructionTab";
-import SalesTab from "../MasterListTabs/SalesTab";
 
 export default function MasterList({ className , items }) {
     const [toggleTabs, setToggleTabs] = useState("donation");
@@ -36,17 +35,7 @@ export default function MasterList({ className , items }) {
                                 : "text-[#707070] hover:text-[#4b4b4b]"
                         }>
                             <div className="text-xs font-semibold cursor-pointer p-3  ">
-                                Destruction
-                            </div>
-                    </li>
-                    <li onClick={() => clickTabs("sales")}
-                        className={
-                            toggleTabs === "sales"
-                                ? "text-pink-500 font-medium bg-pink-50 rounded-md"
-                                : "text-[#707070] hover:text-[#4b4b4b]"
-                        }>
-                            <div className="text-xs font-semibold cursor-pointer p-3  ">
-                                Sales
+                                Destruction & Sales
                             </div>
                     </li>
                 </ul>
@@ -66,11 +55,6 @@ export default function MasterList({ className , items }) {
                     />
                     {/*Destruction Table*/}
 
-                    {/*Sales Table*/}
-                    <SalesTab
-                        className={toggleTabs === "sales" ? "" : "hidden"}
-                    />
-                    {/*Sales Table*/}
                 </div>
             {/* Tabs */}
 
