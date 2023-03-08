@@ -7,21 +7,39 @@ import axios from "axios";
 
 export default function Inventory({ className }) {
     const [items, setItems] = useState();
+    const [users, setUsers] = useState();
     const [loading, setLoading] = useState(true);
+    const [personSelected, setPersonSelected] = useState(1) 
+
+    const getInventoryItems = async () => {
+        setLoading(true);
+        try {
+            await axios.get("api/getItemsofInventories").then((res) => {
+                setItems(res.data.inventory_items);
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const getInventorySorted = async () => {
+        setLoading(true)
+        try {
+            await axios.post("api/getInventorySorted", {id: personSelected}).then((res) => {
+                setItems(res.data.inventory_items);
+                setUsers(res.data.users)
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
-        const getInventoryItems = async () => {
-            setLoading(true);
-            try {
-                await axios.get("api/getItemsofInventories").then((res) => {
-                    setItems(res.data.inventory_items);
-                });
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
-        };
+        
         getInventoryItems();
     }, []);
 
@@ -34,7 +52,15 @@ export default function Inventory({ className }) {
     const [toggleSort, setToggleSort] = useState("all");
 
     function clickSort(index) {
-        setToggleSort(index);
+
+        if(index === 'all'){
+            console.log('pasok')
+            getInventoryItems()
+            setToggleSort(index);
+        }else if(index === 'sorted'){
+            getInventorySorted()
+            setToggleSort(index);
+        }
     }
 
     const itemMapper = (items) => {
@@ -99,6 +125,19 @@ export default function Inventory({ className }) {
         });
     };
 
+    const changeUser = (e) => {
+        try {
+            axios.post("api/getInventorySorted", {id: e.target.value}).then((res) => {
+                setItems(res.data.inventory_items);
+                setUsers(res.data.users)
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <div className={className + " flex justify-center relative"}>
             <div className="absolute -right-14 bottom-0 w-1/3">
@@ -152,19 +191,22 @@ export default function Inventory({ className }) {
                                 <>
                                     <div className="">
                                         <select
+                                            onChange={changeUser}
                                             name=""
                                             id=""
                                             className=" w-80 rounded-md text-sm border border-neutral-300 px-3 py-1 outline-none"
                                         >
-                                            <option id="1" value="">
+                                            <option id="1" value="1">
                                                 Jermine Basister
                                             </option>
-                                            <option id="def1" value="">
-                                                Opt 1
-                                            </option>
-                                            <option id="def2" value="">
-                                                Opt 2
-                                            </option>
+                                            
+                                            {loading ? '' : users.map(data => {
+                                                return (
+                                                    <option value={data.id}>
+                                                        {data.firstname + ' ' + data.surname}
+                                                    </option>
+                                                )
+                                            })}
                                         </select>
                                     </div>
                                 </>
@@ -205,7 +247,8 @@ export default function Inventory({ className }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {loading ? '' : itemMapper(items)}
+                            {loading ? '' : itemMapper(items)}
+                            {items?.length === 0 ? 'No data' : ''}
                             </tbody>
                         </table>
                         <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">

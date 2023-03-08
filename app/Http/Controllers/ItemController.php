@@ -353,6 +353,28 @@ class ItemController extends Controller
 
         return response()->json(['inventory_items' => $inventory_items]);
     }
+    public function getInventorySorted(Request $req)
+    {
+        $inventory_items = DB::table('user_returned_items as uri')
+            ->select('uri.uri_id','pi.code', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
+            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->join('users as u', 'u.id', '=', 'uri.user_id')
+            ->where('uri.status', 'Inventories')
+            ->where('uri.user_id', $req->input('id'))
+            ->get();
+
+        $getUsers = DB::table('users')
+        ->select('firstname','surname','id')
+        ->whereNot('firstname', 'jermine')
+        ->get();
+
+        return response()->json(['inventory_items' => $inventory_items, 'users' => $getUsers]);
+    }
 
     //admin Unserviceable Items
     public function getUnserviceableItems(Request $req)
