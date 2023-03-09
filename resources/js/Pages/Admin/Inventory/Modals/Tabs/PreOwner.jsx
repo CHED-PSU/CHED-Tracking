@@ -7,6 +7,7 @@ export default function PreOwner({ className, prevOwner,users, id, clickAssignMo
     const domain = window.location.href;
     const url = new URL(domain)
     
+    
 
     const closer =()=>{
         clickAssignModal("close")
@@ -20,9 +21,9 @@ export default function PreOwner({ className, prevOwner,users, id, clickAssignMo
                     <img src="./img/profile-pic.jpeg" alt="profile" className="rounded-full w-18 h-18 object-cover" />
                     <div className="w-full space-y-2">
                         <div className="border-b-2 border-gray-300 w-full">
-                            <h2 className="text-2xl text-text-gray-2 font-semibold">default</h2>
+                            <h2 className="text-2xl text-text-gray-2 font-semibold">{users?.length !== 0 ? users[user_id -1].firstname + ' ' + users[user_id -1].surname: ''}</h2>
                         </div>
-                        <p className="text-sm text-text-gray-2 font-medium">default</p>
+                        <p className="text-sm text-text-gray-2 font-medium">{users?.length !== 0 ? users[user_id -1].designation : ''}</p>
                     </div>
                 </div>
                 <div className="flex justify-center mt-[50px]">

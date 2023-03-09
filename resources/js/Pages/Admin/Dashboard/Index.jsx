@@ -119,8 +119,6 @@ export default function Dashboard({ className }) {
         getPendingAcceptedRequests();
     }, []);
 
-    console.log(countAccepted)
-    console.log(countPending)
 
     const [pendingReq, setPendingReq] = useState( {
         labels: [

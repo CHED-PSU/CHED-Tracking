@@ -59,7 +59,6 @@ class GeneralController extends Controller
                 $userList = DB::table('users')
                 ->select('users.firstname','users.surname','users.designation','r.name','users.id','users.designation')
                 ->join('roles as r','r.id','=','users.role_id')
-                ->where('deleted_at',null)
                 ->get();
 
                 return response()->json(['user_lists' => $userList]);

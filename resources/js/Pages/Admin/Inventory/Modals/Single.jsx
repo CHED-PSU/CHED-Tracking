@@ -1,13 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import PreOwner from "./Tabs/PreOwner";
 import OtherUser from "./Tabs/OtherUser";
+import axios from "axios";
 
-export default function Assign({ className,users, clickSingleModal, prevOwner, id, user_id }) {
+
+export default function Assign({ className, clickSingleModal, id, user_id }) {
     const [toggleTabs, setToggleTabs] = useState("pre-owner");
-    
-    
-    
+    const [loading, setLoading] = useState(true)
+    const [users, setUsers] = useState()
 
+    useEffect(() => {
+        const getUser = async () => {
+            setLoading(true)
+            try{
+                await axios.get('api/getUserLists').then(res => {
+                    setUsers(res.data.user_lists)
+                })
+            }catch(e){
+                console.log(e)
+            }finally{
+                setLoading(false)
+            }
+        }
+        getUser()
+    },[])
 
     function clickTabs(index) {
         setToggleTabs(index);
@@ -73,11 +89,11 @@ export default function Assign({ className,users, clickSingleModal, prevOwner, i
                     clickSingleModal={clickSingleModal}
                     id={id}
                     user_id={user_id}
-                    users = {users}
+                    users = {loading ? "wows" : users}
                     className={ ""}
                     />: ""}
                     {toggleTabs === "other-user" ? <OtherUser
-                    users = {users? users : ''}
+                    users = {loading ? "wows" : users}
                     id={id}
                     className={ "" }
                     />: ""}

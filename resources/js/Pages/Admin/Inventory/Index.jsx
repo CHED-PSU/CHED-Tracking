@@ -13,15 +13,21 @@ export default function Inventory({ className }) {
     const [openSingleModal, setOpenSingleModal] = useState("close");
     const [openMultiModal, setOpenMultiModal] = useState("close");
     const [items, setItems] = useState();
+    const [checkBoxItems, setCheckBoxItems] = useState();
     const [users, setUsers] = useState();
     const [loading, setLoading] = useState(true);
-    const [personSelected, setPersonSelected] = useState(1) 
 
+
+    const [selectedId, setSelectedId] = useState([]);
+    const [personSelected, setPersonSelected] = useState(1) 
+    const [id, setId] = useState();
+    const [userId, setUserId] = useState();
     const getInventoryItems = async () => {
         setLoading(true);
         try {
             await axios.get("api/getItemsofInventories").then((res) => {
                 setItems(res.data.inventory_items);
+                setCheckBoxItems(res.data.inventory_items);
             });
         } catch (e) {
             console.log(e);
@@ -29,6 +35,26 @@ export default function Inventory({ className }) {
             setLoading(false);
         }
     };
+
+    const handleChangeCheckBox = (e) => {
+        checkBoxItems.map(item => {
+            if (item.uri_id == e.target.value) {
+                if(e.target.checked === true)
+                {
+                    const value = e.target.value;
+                    const newArray = [...selectedId,value]
+                    setSelectedId(newArray);
+                }else{
+                    const originalArray = [...selectedId]
+                    const index = originalArray.indexOf(e.target.value)
+                    originalArray.splice(index,1);
+                    setSelectedId(originalArray)
+                    
+                }
+            }
+        })
+    }
+
 
     const getInventorySorted = async () => {
         setLoading(true)
@@ -73,12 +99,25 @@ export default function Inventory({ className }) {
         setOpenSortedModal(index);
     }
 
-    function clickSingleModal(index) {
+    function clickSingleModal(index, id, user_id) {
         setOpenSingleModal(index);
+        setId(id)
+        setUserId(user_id)
     }
 
     function clickMultiModal(index) {
-        setOpenMultiModal(index);
+        if(index === 'open-multi'){
+            if(selectedId?.length !== 0){
+                setOpenMultiModal(index);
+            }else{
+                alert('select items')
+            }
+        }
+        
+
+        if(index === 'close'){
+            setOpenMultiModal(index);
+        }
     }
 
     const itemMapper = (items) => {
@@ -89,6 +128,7 @@ export default function Inventory({ className }) {
                     <td>
                         <div className="flex justify-center item-center">
                             <input
+                                onClick={handleChangeCheckBox}
                                 type="checkbox"
                                 className="u_items"
                                 value={data.uri_id}
@@ -133,7 +173,7 @@ export default function Inventory({ className }) {
                     </td>
                     <td>
                         <div className="w-full flex justify-center">
-                            <button value={data.uri_id} className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full">
+                            <button onClick={()=> {clickSingleModal("open-single", data.uri_id, data.id)}} value={data.uri_id} className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full">
                                 Return
                             </button>
                         </div>
@@ -165,10 +205,13 @@ export default function Inventory({ className }) {
 
             {openSingleModal === "open-single" ? <SingleModal
                 clickSingleModal={clickSingleModal}
+                id = {id}
+                user_id = {userId}
             /> : ""}
 
             {openMultiModal === "open-multi" ? <MultiModal
                 clickMultiModal={clickMultiModal}
+                selectedId = {selectedId}
             /> : ""}
 
             <div className="absolute -right-14 bottom-0 w-1/3">
@@ -246,9 +289,9 @@ export default function Inventory({ className }) {
                             )}
 
                             <div className="w-56 flex justify-end">
-                                <button className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full">
+                                <button onClick = {()=>clickMultiModal("open-multi")} className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full">
                                     <i className="fa-solid fa-box-archive text-sm"></i>
-                                    Return
+                                    Assign
                                 </button>
                             </div>
                         </div>
@@ -282,175 +325,7 @@ export default function Inventory({ className }) {
                             {items?.length === 0 ? 'No data' : ''}
 
                                 {/* Sample row for sorted select modal */}
-                                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                    {/* checkbox */}
-                                    <td>
-                                        <div className="flex justify-center item-center">
-                                            <input type="checkbox" className="u_items" value='' />
-                                        </div>
-                                    </td>
-                                    {/* items */}
-                                    <td>
-                                        <a className="text-left flex items-center w-full h-12 gap-3">
-                                            <div className="flex flex-col gap-1">
-                                                <h4 className="text-[17px] font-medium text-text-black">
-                                                    For Sorted Item
-                                                </h4>
-                                                <p className="text-[#878787] text-[14px]">
-                                                    Previous owner: default
-                                                </p>
-
-                                            </div>
-                                        </a>
-                                    </td>
-                                    {/* description */}
-                                    <td>
-                                        <a className="text-left flex items-center w-full h-12 gap-3">
-                                            <div className="flex flex-col gap-1">
-                                                <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                                    default
-                                                </h5>
-                                                <p className="text-[#878787] text-[14px]">
-                                                    Date Accepted: default
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    {/* date */}
-                                    <td>
-                                        <a className="text-left flex items-center w-full h-12 gap-3 pl-3 pr-2">
-                                            <div className="flex flex-col gap-1">
-                                                <p className="text-[#878787] text-[14px]">
-                                                    January 5, 2021
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div className="w-full flex justify-center">
-                                            <button 
-                                                className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full"
-                                                onClick={() => { clickSortedModal("open-sorted") }}
-                                            >
-                                                Return
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                {/* Sample row for single select modal */}
-                                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                    {/* checkbox */}
-                                    <td>
-                                        <div className="flex justify-center item-center">
-                                            <input type="checkbox" className="u_items" value='' />
-                                        </div>
-                                    </td>
-                                    {/* items */}
-                                    <td>
-                                        <a className="text-left flex items-center w-full h-12 gap-3">
-                                            <div className="flex flex-col gap-1">
-                                                <h4 className="text-[17px] font-medium text-text-black">
-                                                     For Single Modal
-                                                </h4>
-                                                <p className="text-[#878787] text-[14px]">
-                                                    Previous owner: default
-                                                </p>
-
-                                            </div>
-                                        </a>
-                                    </td>
-                                    {/* description */}
-                                    <td>
-                                        <a className="text-left flex items-center w-full h-12 gap-3">
-                                            <div className="flex flex-col gap-1">
-                                                <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                                    default
-                                                </h5>
-                                                <p className="text-[#878787] text-[14px]">
-                                                    Date Accepted: default
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    {/* date */}
-                                    <td>
-                                        <a className="text-left flex items-center w-full h-12 gap-3 pl-3 pr-2">
-                                            <div className="flex flex-col gap-1">
-                                                <p className="text-[#878787] text-[14px]">
-                                                    January 5, 2021
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div className="w-full flex justify-center">
-                                            <button 
-                                                className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full"
-                                                onClick={() => { clickSingleModal("open-single") }}
-                                            >
-                                                Return
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                {/* Sample row for multi select modal */}
-                                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                    {/* checkbox */}
-                                    <td>
-                                        <div className="flex justify-center item-center">
-                                            <input type="checkbox" className="u_items" value='' />
-                                        </div>
-                                    </td>
-                                    {/* items */}
-                                    <td>
-                                        <a className="text-left flex items-center w-full h-12 gap-3">
-                                            <div className="flex flex-col gap-1">
-                                                <h4 className="text-[17px] font-medium text-text-black">
-                                                    For Multi Modal
-                                                </h4>
-                                                <p className="text-[#878787] text-[14px]">
-                                                    Previous owner: default
-                                                </p>
-
-                                            </div>
-                                        </a>
-                                    </td>
-                                    {/* description */}
-                                    <td>
-                                        <a className="text-left flex items-center w-full h-12 gap-3">
-                                            <div className="flex flex-col gap-1">
-                                                <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                                    default
-                                                </h5>
-                                                <p className="text-[#878787] text-[14px]">
-                                                    Date Accepted: default
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    {/* date */}
-                                    <td>
-                                        <a className="text-left flex items-center w-full h-12 gap-3 pl-3 pr-2">
-                                            <div className="flex flex-col gap-1">
-                                                <p className="text-[#878787] text-[14px]">
-                                                    January 5, 2021
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div className="w-full flex justify-center">
-                                            <button 
-                                                className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full"
-                                                onClick={() => { clickMultiModal("open-multi") }}
-                                            >
-                                                Return
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                
 
                             </tbody>
                         </table>
