@@ -16,14 +16,9 @@ export default function Inventory({ className }) {
     const [checkBoxItems, setCheckBoxItems] = useState();
     const [users, setUsers] = useState();
     const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
-=======
     const [personSelected, setPersonSelected] = useState(1);
->>>>>>> c6b9d077e1750df2eb61cabab4a52c4e90100553
-
 
     const [selectedId, setSelectedId] = useState([]);
-    const [personSelected, setPersonSelected] = useState(1) 
     const [id, setId] = useState();
     const [userId, setUserId] = useState();
     const getInventoryItems = async () => {
@@ -41,24 +36,21 @@ export default function Inventory({ className }) {
     };
 
     const handleChangeCheckBox = (e) => {
-        checkBoxItems.map(item => {
+        checkBoxItems.map((item) => {
             if (item.uri_id == e.target.value) {
-                if(e.target.checked === true)
-                {
+                if (e.target.checked === true) {
                     const value = e.target.value;
-                    const newArray = [...selectedId,value]
+                    const newArray = [...selectedId, value];
                     setSelectedId(newArray);
-                }else{
-                    const originalArray = [...selectedId]
-                    const index = originalArray.indexOf(e.target.value)
-                    originalArray.splice(index,1);
-                    setSelectedId(originalArray)
-                    
+                } else {
+                    const originalArray = [...selectedId];
+                    const index = originalArray.indexOf(e.target.value);
+                    originalArray.splice(index, 1);
+                    setSelectedId(originalArray);
                 }
             }
-        })
-    }
-
+        });
+    };
 
     const getInventorySorted = async () => {
         setLoading(true);
@@ -105,21 +97,20 @@ export default function Inventory({ className }) {
 
     function clickSingleModal(index, id, user_id) {
         setOpenSingleModal(index);
-        setId(id)
-        setUserId(user_id)
+        setId(id);
+        setUserId(user_id);
     }
 
     function clickMultiModal(index) {
-        if(index === 'open-multi'){
-            if(selectedId?.length !== 0){
+        if (index === "open-multi") {
+            if (selectedId?.length !== 0) {
                 setOpenMultiModal(index);
-            }else{
-                alert('select items')
+            } else {
+                alert("select items");
             }
         }
-        
 
-        if(index === 'close'){
+        if (index === "close") {
             setOpenMultiModal(index);
         }
     }
@@ -178,14 +169,10 @@ export default function Inventory({ className }) {
                     </td>
                     <td>
                         <div className="w-full flex justify-center">
-<<<<<<< HEAD
-                            <button onClick={()=> {clickSingleModal("open-single", data.uri_id, data.id)}} value={data.uri_id} className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full">
-=======
                             <button
                                 value={data.uri_id}
                                 className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full"
                             >
->>>>>>> c6b9d077e1750df2eb61cabab4a52c4e90100553
                                 Return
                             </button>
                         </div>
@@ -224,24 +211,11 @@ export default function Inventory({ className }) {
                 ""
             )}
 
-<<<<<<< HEAD
-            {openSingleModal === "open-single" ? <SingleModal
-                clickSingleModal={clickSingleModal}
-                id = {id}
-                user_id = {userId}
-            /> : ""}
-
-            {openMultiModal === "open-multi" ? <MultiModal
-                clickMultiModal={clickMultiModal}
-                selectedId = {selectedId}
-            /> : ""}
-=======
             {openMultiModal === "open-multi" ? (
                 <MultiModal clickMultiModal={clickMultiModal} />
             ) : (
                 ""
             )}
->>>>>>> c6b9d077e1750df2eb61cabab4a52c4e90100553
 
             <div className="absolute -right-14 bottom-0 w-1/3">
                 <AdminBg />
@@ -324,7 +298,12 @@ export default function Inventory({ className }) {
                             )}
 
                             <div className="w-56 flex justify-end">
-                                <button onClick = {()=>clickMultiModal("open-multi")} className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full">
+                                <button
+                                    onClick={() =>
+                                        clickMultiModal("open-multi")
+                                    }
+                                    className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                                >
                                     <i className="fa-solid fa-box-archive text-sm"></i>
                                     Assign
                                 </button>
@@ -356,14 +335,6 @@ export default function Inventory({ className }) {
                                 </tr>
                             </thead>
                             <tbody>
-<<<<<<< HEAD
-                            {loading ? '' : itemMapper(items)}
-                            {items?.length === 0 ? 'No data' : ''}
-
-                                {/* Sample row for sorted select modal */}
-                                
-
-=======
                                 {loading ? "" : itemMapper(items)}
                                 {items?.length === 0 ? (
                                     <>
@@ -379,7 +350,6 @@ export default function Inventory({ className }) {
                                 ) : (
                                     ""
                                 )}
->>>>>>> c6b9d077e1750df2eb61cabab4a52c4e90100553
                             </tbody>
                         </table>
                         <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
