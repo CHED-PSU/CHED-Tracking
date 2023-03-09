@@ -53,22 +53,21 @@ export default function Inventory({ className }) {
     };
 
     const getInventorySorted = async () => {
-        setLoading(true);
+        setLoading(true)
         try {
-            await axios
-                .post("api/getInventorySorted", { id: personSelected })
-                .then((res) => {
-                    setItems(res.data.inventory_items);
-                    setUsers(res.data.users);
-                });
+            await axios.post("api/getInventorySorted", {id: personSelected}).then((res) => {
+                setItems(res.data.inventory_items);
+                setUsers(res.data.users)
+            });
         } catch (e) {
             console.log(e);
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     useEffect(() => {
+
         getInventoryItems();
     }, []);
 
@@ -81,12 +80,13 @@ export default function Inventory({ className }) {
     const [toggleSort, setToggleSort] = useState("all");
 
     function clickSort(index) {
-        if (index === "all") {
-            console.log("pasok");
-            getInventoryItems();
+
+        if(index === 'all'){
+            console.log('pasok')
+            getInventoryItems()
             setToggleSort(index);
-        } else if (index === "sorted") {
-            getInventorySorted();
+        }else if(index === 'sorted'){
+            getInventorySorted()
             setToggleSort(index);
         }
     }
@@ -138,8 +138,7 @@ export default function Inventory({ className }) {
                                     {data.code}
                                 </h4>
                                 <p className="text-[#878787] text-[14px]">
-                                    Previous owner:{" "}
-                                    {data.firstname + " " + data.surname}
+                                    Previous owner: {data.firstname + ' ' + data.surname}
                                 </p>
                             </div>
                         </a>
@@ -162,7 +161,7 @@ export default function Inventory({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3 pl-3 pr-2">
                             <div className="flex flex-col gap-1">
                                 <p className="text-[#878787] text-[14px]">
-                                    {data.created_at}
+                                {data.created_at}
                                 </p>
                             </div>
                         </a>
@@ -184,32 +183,23 @@ export default function Inventory({ className }) {
 
     const changeUser = (e) => {
         try {
-            axios
-                .post("api/getInventorySorted", { id: e.target.value })
-                .then((res) => {
-                    setItems(res.data.inventory_items);
-                    setUsers(res.data.users);
-                });
+            axios.post("api/getInventorySorted", {id: e.target.value}).then((res) => {
+                setItems(res.data.inventory_items);
+                setUsers(res.data.users)
+            });
         } catch (e) {
             console.log(e);
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     return (
         <div className={className + " flex justify-center relative"}>
-            {openSortedModal === "open-sorted" ? (
-                <SortedModal clickSortedModal={clickSortedModal} />
-            ) : (
-                ""
-            )}
 
-            {openSingleModal === "open-single" ? (
-                <SingleModal clickSingleModal={clickSingleModal} />
-            ) : (
-                ""
-            )}
+            {openSortedModal === "open-sorted" ? <SortedModal
+                clickSortedModal={clickSortedModal}
+            /> : ""}
 
             {openMultiModal === "open-multi" ? (
                 <MultiModal clickMultiModal={clickMultiModal} />
@@ -277,19 +267,13 @@ export default function Inventory({ className }) {
                                                 Jermine Basister
                                             </option>
 
-                                            {loading
-                                                ? ""
-                                                : users.map((data) => {
-                                                      return (
-                                                          <option
-                                                              value={data.id}
-                                                          >
-                                                              {data.firstname +
-                                                                  " " +
-                                                                  data.surname}
-                                                          </option>
-                                                      );
-                                                  })}
+                                            {loading ? '' : users.map(data => {
+                                                return (
+                                                    <option value={data.id}>
+                                                        {data.firstname + ' ' + data.surname}
+                                                    </option>
+                                                )
+                                            })}
                                         </select>
                                     </div>
                                 </>
