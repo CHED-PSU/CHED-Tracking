@@ -5,6 +5,14 @@ export default function DestructionForm(props) {
     const ref = useRef();
     const handlePrint = useReactToPrint({
         content: () => ref.current,
+        pageStyle: `
+        @media print {
+            @page {
+              size: A4 portrait;
+              margin-top: 0.5in;
+              margin-bottom: 0.5in;
+            }
+          }`,
         documentTitle: 'emp-data',
     })
 
@@ -15,7 +23,7 @@ export default function DestructionForm(props) {
     return (
 
         <div className={props.className + "fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
-            <div className="dark:bg-darkColor-800 h-full w-[70%] border-x border-[#C8C8C8] overflow-y-auto">
+            <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] overflow-y-auto pb-10">
                 {/* header */}
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
@@ -43,7 +51,7 @@ export default function DestructionForm(props) {
                 {/* header */}
                 {/* data table */}
                 <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10 ">
-                    <div ref={ref} className="p-8">
+                    <div ref={ref} className="w-[8.27in] px-6 py-6">
                         <div className="flex justify-end text-ss font-medium italic pb-2">Appendix 65</div>
                         <div className="text-center dark:text-white py-2">
                             <div className="text-sm font-semibold">

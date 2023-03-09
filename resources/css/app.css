@@ -144,6 +144,10 @@
         background: linear-gradient(325.34deg, #5C6CBC -51.89%, #FFFFFF 131.82%);
     }
 
+    .avoid {
+        page-break-inside: avoid;
+    }
+
     /** Custom scroll */
     ::-webkit-scrollbar {
         width: 0.8em;

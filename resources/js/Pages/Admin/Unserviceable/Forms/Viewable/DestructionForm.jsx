@@ -6,7 +6,15 @@ export default function DestructionForm(props) {
 
     const handlePrint = useReactToPrint({
         content: () => ref.current,
-        documentTitle: 'emp-data',
+        pageStyle: `
+        @media print {
+            @page {
+              size: A4 portrait;
+              margin-top: 0.5in;
+              margin-bottom: 0.5in;
+            }
+          }`,
+        documentTitle: "WMR"
     })
 
     function clickBtn(index) {
@@ -16,7 +24,7 @@ export default function DestructionForm(props) {
     return (
 
         <div className={props.className + "fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
-            <div className="dark:bg-darkColor-800 h-full w-[70%] border-x border-[#C8C8C8] overflow-y-auto">
+            <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                 {/* header */}
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
@@ -44,8 +52,8 @@ export default function DestructionForm(props) {
                 </div>
                 {/* header */}
                 {/* data table */}
-                <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10 ">
-                    <div ref={ref} className="p-8">
+                <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10">
+                    <div ref={ref} className="w-[8.27in] p-6">
                         <div className="flex justify-end text-ss font-medium italic pb-2">Appendix 65</div>
                         <div className="text-center dark:text-white py-2">
                             <div className="text-sm font-semibold">
@@ -93,7 +101,8 @@ export default function DestructionForm(props) {
                                 id="items"
                                 className="table-auto w-full min-w-[700px]"
                             >
-                                <thead>
+                                <tbody id="slip-table">
+                                    {/* header */}
                                     <tr className="text-xs border dark:border-neutral-700 text-th dark:text-white cursor-default">
                                         <th rowSpan={4} className="h-10 w-20 font-medium border">
                                             Item
@@ -123,10 +132,9 @@ export default function DestructionForm(props) {
                                         <th className="border">Date</th>
                                         <th className="border">Amount</th>
                                     </tr>
-                                </thead>
-                                <tbody id="slip-table">
+                                    {/* header */}
 
-                                    <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                    <tr className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                         <td className="text-center px-3 border">
                                             default
                                         </td>
@@ -156,14 +164,18 @@ export default function DestructionForm(props) {
                                             default
                                         </td>
                                     </tr>
-                                    <tr>
+
+
+                                    <tr className="avoid ">
                                         <td colSpan={6} className="text-left py-3 border"><div className="ml-3 text-sm font-medium">Total</div></td>
                                         <td className="text-center px-3 border text-sm font-medium">15,610.00</td>
                                     </tr>
+
+
                                 </tbody>
                             </table>
                         </div>
-                        <div className="flex justify-between items-center border border-t-0">
+                        <div className="avoid flex justify-between items-center border border-t-0">
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2">
                                 <div className="text-left text-xs font-medium dark:text-white w-full ml-6">
                                     Certified Correct:
@@ -196,8 +208,8 @@ export default function DestructionForm(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full text-center text-sm font-medium py-3 border border-t-0">CERTIFICATE OF INSPECTION</div>
-                        <div className="w-full text-sm py-3 border border-t-0">
+                        <div className="avoid w-full text-center text-sm font-medium py-3 border border-t-0">CERTIFICATE OF INSPECTION</div>
+                        <div className="avoid w-full text-sm py-3 border border-t-0">
                             <h6 className="ml-10 text-xs font-medium">I Hereby certify that the property enumerated above was disposed of as follows:</h6>
                             <ul className="ml-28 text-xs py-4 space-y-2">
                                 <li className="flex gap-4">
@@ -220,7 +232,7 @@ export default function DestructionForm(props) {
                                 </li>
                             </ul>
                         </div>
-                        <div className="flex justify-between items-center border border-t-0">
+                        <div className="avoid flex justify-between items-center border border-t-0">
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2 border-r">
                                 <div className="text-left text-xs font-medium dark:text-white w-full ml-6">
                                     Certified Correct:

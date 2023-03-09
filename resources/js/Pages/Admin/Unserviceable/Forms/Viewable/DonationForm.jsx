@@ -5,7 +5,15 @@ export default function DonationForm(props) {
     const ref = useRef();
     const handlePrint = useReactToPrint({
         content: () => ref.current,
-        documentTitle: 'emp-data',
+        pageStyle: `
+        @media print {
+            @page {
+              size: A4 portrait;
+              margin-top: 0.5in;
+              margin-bottom: 0.5in;
+            }
+          }`,
+        documentTitle: "PTR"
     })
 
     function clickBtn(index) {
@@ -15,7 +23,7 @@ export default function DonationForm(props) {
     return (
 
         <div className={props.className + "fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
-            <div className="dark:bg-darkColor-800 h-full w-[70%] border-x border-[#C8C8C8] pb-10 overflow-y-auto">
+            <div className="dark:bg-darkColor-800 h-full border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                 {/* header */}
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
@@ -25,7 +33,7 @@ export default function DonationForm(props) {
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
                         </button>
-                        <div className="text-left cursor-defaul">
+                        <div className="text-left cursor-default">
                             <h4 className="text-primary dark:text-white text-2xl font-semibold">
                                 Donation
                             </h4>
@@ -44,7 +52,7 @@ export default function DonationForm(props) {
                 {/* header */}
                 {/* data table */}
                 <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10">
-                    <div ref={ref} className="p-8">
+                    <div ref={ref} className="w-[8.27in] p-6">
                         <div className="flex justify-end text-ss font-medium italic pb-2">Appendix 76</div>
                         <div className="text-center dark:text-white pt-8 pb-2">
                             <div className="text-sm font-semibold">
@@ -124,10 +132,10 @@ export default function DonationForm(props) {
                                 id="items"
                                 className="table-auto w-full min-w-[700px]"
                             >
-                                <thead>
+                                <tbody id="slip-table">
                                     <tr className="text-xs border dark:border-neutral-700 font-medium dark:text-white cursor-default">
                                         <th className="h-10 w-32 font-medium border">
-                                            Date Acquired
+                                                Date Acquired
                                         </th>
                                         <th className="h-10 w-32 font-medium border">
                                             Property No
@@ -142,9 +150,7 @@ export default function DonationForm(props) {
                                             Condition of PPE
                                         </th>
                                     </tr>
-                                </thead>
-                                <tbody id="slip-table">
-                                    <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                    <tr className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                         <td className="text-center px-3 border">
                                             default
                                         </td>
@@ -161,10 +167,12 @@ export default function DonationForm(props) {
                                             default
                                         </td>
                                     </tr>
-                                    <tr>
+
+
+                                    <tr className="avoid ">
                                         <td className="text-xs border text-center py-4" colSpan={5}>*nothing follows*</td>
                                     </tr>
-                                    <tr>
+                                    <tr className="avoid ">
                                         <td className="text-xs font-medium border py-4" colSpan={5}>
                                             <div>
                                                 <p className="ml-4">Reason for Transfer:</p>
@@ -172,7 +180,7 @@ export default function DonationForm(props) {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className="avoid ">
                                         <td className="border" colSpan={5}>
                                             <div className="flex py-5">
                                                 <div className="w-[130px] px-4 text-xs flex flex-col justify-center gap-2 pt-6 font-medium">

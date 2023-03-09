@@ -99,6 +99,20 @@ export default function PARTable({ className }) {
                 <tbody>
                     {/*item 1*/}
                     {Loading ? "" : userMapper(UserLists)}
+                    {UserLists?.length === 0 ? (
+                        <>
+                            <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                {/* checkbox */}
+                                <td colSpan={4}>
+                                    <div className="flex text-sm justify-center item-center">
+                                        There is no user yet.
+                                    </div>
+                                </td>
+                            </tr>
+                        </>
+                    ) : (
+                        ""
+                    )}
                     {/*item 2*/}
                 </tbody>
             </table>
