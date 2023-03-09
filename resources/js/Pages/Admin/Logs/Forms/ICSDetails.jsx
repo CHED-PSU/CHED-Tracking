@@ -8,24 +8,32 @@ export default function ICSDetails(props) {
 
     const handlePrint = useReactToPrint({
         content: () => ref.current,
-        documentTitle: 'emp-data',
+        pageStyle: `
+        @media print {
+            @page {
+              size: A4 portrait;
+              margin-top: 0.5in;
+              margin-bottom: 0.5in;
+            }
+          }`,
+        documentTitle: 'ICS',
     })
 
 
     const icsItemsMapper = (items) => {
         return items?.map(data => {
             return (
-                <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                    <td className="text-center px-3 border">
+                <tr className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                    <td className="text-center px-2 border">
                         {data.quantity}
                     </td>
-                    <td className="text-center px-3 border">
+                    <td className="text-center px-2 border">
                         {data.unit}
                     </td>
-                    <td className="text-center px-3 border">
+                    <td className="text-center px-2 border">
                         {data.quantity * data.price}
                     </td>
-                    <td className="text-left px-3 py-3 border">
+                    <td className="text-left px-2 py-3 border">
                         <div className="flex items-center">
                             <div className="font-semibold mr-3">
                                 {data.description}
@@ -35,10 +43,10 @@ export default function ICSDetails(props) {
                             </div>
                         </div>
                     </td>
-                    <td className="text-left px-3 border">
+                    <td className="text-left px-2 border">
                         {data.eul}
                     </td>
-                    <td className="text-center px-3 border"></td>
+                    <td className="text-center px-2 border"></td>
                 </tr>
             )
         })
@@ -49,7 +57,7 @@ export default function ICSDetails(props) {
         <div className={props.className}>
 
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40">
-                <div className="dark:bg-darkColor-800 h-full w-[70%] border-x border-[#C8C8C8]">
+                <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                     {/* header */}
                     <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                         <div className="w-1/2">
@@ -59,7 +67,7 @@ export default function ICSDetails(props) {
                             >
                                 <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
                             </button>
-                            <div className="text-left cursor-defaul">
+                            <div className="text-left cursor-default">
                                 <h4 className="text-primary dark:text-white text-2xl font-semibold">
                                     ICS Details
                                 </h4>
@@ -77,7 +85,8 @@ export default function ICSDetails(props) {
                     </div>
                     {/* header */}
                     {/* data table */}
-                    <div ref={ref} className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10 px-5 py-6 ">
+                    <div  className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10">
+                        <div ref={ref} className="w-[8.27in] px-6 py-6">
                         <div className="text-center dark:text-white py-2">
                             <div className="text-sm font-semibold">
                                 INVENTORY CUSTODIAN SLIP
@@ -105,7 +114,7 @@ export default function ICSDetails(props) {
                             <div className="">
                                 <div className="pt-1 flex items-center gap-2">
                                     <div className="text-xs dark:text-white">
-                                        ICS No: 
+                                        ICS No:
                                         <span id="form_identifier"></span>
                                     </div>
                                     <div className="text-xs  dark:text-gray-400 font-semibold">
@@ -119,30 +128,31 @@ export default function ICSDetails(props) {
                                 id="items"
                                 className="table-auto w-full min-w-[700px]"
                             >
-                                <thead>
+                                <tbody id="slip-table">
+                                    {/* header */}
                                     <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                        <th className="h-10 w-20 font-medium border">
+                                        <th className="h-10 px-2 font-medium border">
                                             Qty
                                         </th>
-                                        <th className="h-10 w-20 font-medium border">
+                                        <th className="h-10 px-2 font-medium border">
                                             Unit
                                         </th>
-                                        <th className="h-10 w-40 font-medium border">
+                                        <th className="h-10 px-2 font-medium border">
                                             Amount
                                         </th>
-                                        <th className="h-10 font-medium border">
+                                        <th className="h-10 px-2 font-medium border">
                                             Description
                                         </th>
-                                        <th className="h-10 w-40 font-medium border">
+                                        <th className="h-10 px-2 font-medium border">
                                             Inventory Item No.
                                         </th>
-                                        <th className="h-10 w-40 font-medium border">
+                                        <th className="h-10 px-2 font-medium border">
                                             Estimated Useful Life
                                         </th>
                                     </tr>
-                                </thead>
-                                <tbody id="slip-table">
-                                    {props.icsItems?.lenght !== 0 ? icsItemsMapper(Object.values(props.icsItems)) : ''}
+                                    {/* header */}
+
+                                    {props.icsItems?.length !== 0 ? icsItemsMapper(Object.values(props.icsItems)) : ''}
                                 </tbody>
                             </table>
                         </div>
@@ -187,6 +197,7 @@ export default function ICSDetails(props) {
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                     {/* data table */}

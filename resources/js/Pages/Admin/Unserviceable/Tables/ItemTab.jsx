@@ -13,7 +13,7 @@ export default function ItemTab({ className }) {
     const [UnserviceableItems, setUnserviceableItems] = useState();
     const [openDisposeModal, setOpenDisposeModal] = useState("close");
 
-    function clickDisposeModal(index){
+    function clickDisposeModal(index) {
         setOpenDisposeModal(index);
     }
 
@@ -35,13 +35,9 @@ export default function ItemTab({ className }) {
     }, []);
 
     const onSave = () => {
-        const checkbox = document.querySelector('.u_items');
-        const selecte = checkbox.map(checkbox => {
-
-        })
-
-        console.log(selected)
-    }
+        const checkbox = document.querySelector(".u_items");
+        const selected = checkbox.map((checkbox) => {});
+    };
 
     const itemsMapper = (items) => {
         return items?.map((data) => {
@@ -50,7 +46,11 @@ export default function ItemTab({ className }) {
                     {/* checkbox */}
                     <td>
                         <div className="flex justify-center item-center">
-                            <input type="checkbox" className="u_items" value={data.id}/>
+                            <input
+                                type="checkbox"
+                                className="u_items"
+                                value={data.id}
+                            />
                         </div>
                     </td>
                     {/* items */}
@@ -63,7 +63,6 @@ export default function ItemTab({ className }) {
                                 <p className="text-[#878787] text-[14px]">
                                     Previous owner: {data.firstname}
                                 </p>
-
                             </div>
                         </a>
                     </td>
@@ -94,7 +93,9 @@ export default function ItemTab({ className }) {
                         <div className="w-full flex justify-end pr-6">
                             <button
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
-                                onClick={() => clickDisposeModal("open", data.uri_id)}
+                                onClick={() =>
+                                    clickDisposeModal("open", data.uri_id)
+                                }
                             >
                                 <i className="fa-solid fa-file-export"></i>
                             </button>
@@ -107,11 +108,14 @@ export default function ItemTab({ className }) {
 
     return (
         <div className={className + " w-full h-full relative"}>
-
-            {openDisposeModal === "open" ? <DisposeModal
-                clickDisposeModal={clickDisposeModal}
-                className={""}
-            /> : ""}
+            {openDisposeModal === "open" ? (
+                <DisposeModal
+                    clickDisposeModal={clickDisposeModal}
+                    className={""}
+                />
+            ) : (
+                ""
+            )}
 
             <div className="w-full flex justify-end  items-center h-16">
                 <button
@@ -145,16 +149,23 @@ export default function ItemTab({ className }) {
                 </thead>
                 <tbody>
                     {/*item*/}
-                        {/* {Loading ? ' ' : itemsMapper(UnserviceableItems)} */}
-                        {itemsMapper(UnserviceableItems)}
-                    {/*
+                    {itemsMapper(UnserviceableItems)}
+                    {UnserviceableItems?.length === 0 ? (
+                        <>
                             <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                <td colspan="3" className="text-center h-12 bg-white border">
-                                    <small className="text-sm">No data available in table.</small>
+                                <td
+                                    colSpan="5"
+                                    className="text-center items-center w-full h-12"
+                                >
+                                    <small className="text-sm">
+                                        No data available in table.
+                                    </small>
                                 </td>
-                            </tr>*/}
-
-                    {/*item*/}
+                            </tr>
+                        </>
+                    ) : (
+                        ""
+                    )}
                 </tbody>
             </table>
             <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">

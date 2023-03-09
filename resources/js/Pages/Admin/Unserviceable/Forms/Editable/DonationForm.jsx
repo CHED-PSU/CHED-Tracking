@@ -6,6 +6,14 @@ export default function DonationForm(props) {
 
     const handlePrint = useReactToPrint({
         content: () => ref.current,
+        pageStyle: `
+        @media print {
+            @page {
+              size: A4 portrait;
+              margin-top: 0.5in;
+              margin-bottom: 0.5in;
+            }
+          }`,
         documentTitle: 'emp-data',
     })
 
@@ -16,7 +24,7 @@ export default function DonationForm(props) {
     return (
 
         <div className={props.className + "fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
-            <div className="dark:bg-darkColor-800 h-full w-[70%] border-x border-[#C8C8C8] pb-10 overflow-y-auto">
+            <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                 {/* header */}
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
@@ -26,7 +34,7 @@ export default function DonationForm(props) {
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
                         </button>
-                        <div className="text-left cursor-defaul">
+                        <div className="text-left cursor-default">
                             <h4 className="text-primary dark:text-white text-2xl font-semibold">
                                 Donation
                             </h4>
@@ -44,7 +52,7 @@ export default function DonationForm(props) {
                 {/* header */}
                 {/* data table */}
                 <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10">
-                    <div ref={ref} className="p-8">
+                    <div className="w-[8.27in] px-6 py-6">
                         <div className="flex justify-end text-ss font-medium italic pb-2">Appendix 76</div>
                         <div className="text-center dark:text-white pt-8 pb-2">
                             <div className="text-sm font-semibold">
@@ -83,14 +91,14 @@ export default function DonationForm(props) {
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
                                     PTR No:  <font className="font-medium">
-                                    <input type="number" name="" id="" className="border-b border-black font-semibold outline-none uppercase" placeholder="2021-001-001"/>
+                                    <input type="number" name="" id="" className="border-b w-28 border-black font-semibold outline-none uppercase" placeholder="2021-001-001"/>
                                     </font>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs font-medium ">
                                 To Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">
-                                <input type="text" name="" id="" className="border-b border-black font-semibold outline-none w-80 uppercase" placeholder="DAVAO DEL SUR STATE COLLEGE"/></font>
+                                <input type="text" name="" id="" className="border-b border-black font-semibold outline-none w-64 uppercase" placeholder="DAVAO DEL SUR STATE COLLEGE"/></font>
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
                                     Date:  <font className="font-medium">0</font>
