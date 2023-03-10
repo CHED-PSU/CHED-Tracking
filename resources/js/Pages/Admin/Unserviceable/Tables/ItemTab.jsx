@@ -4,14 +4,77 @@ import ReactPaginate from "react-paginate";
 import DisposeModal from "../Modals/Dispose";
 
 export default function ItemTab({ className }) {
+    const [pageNumber, setPageNumber] = useState([]);
     const pageCount = 5;
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
-    };
-
     const [Loading, setLoading] = useState();
     const [UnserviceableItems, setUnserviceableItems] = useState();
     const [openDisposeModal, setOpenDisposeModal] = useState("close");
+
+    //Storage for IDs that is selected
+    const [selectedIds, setSelectedIds] = useState([]);
+
+    const handleSelectAll = (event) => {
+        if (event.target.checked) {
+            // Get all the checkboxes and their values
+            const checkboxes = document.querySelectorAll(".u_items");
+            const ids = [];
+            checkboxes.forEach((checkbox) => {
+                ids.push(parseInt(checkbox.value));
+                checkbox.checked = true;
+            });
+            setSelectedIds(ids);
+        } else {
+            // Clear the selected IDs array and uncheck all the checkboxes
+            setSelectedIds([]);
+            const checkboxes = document.querySelectorAll(".u_items");
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = false;
+            });
+        }
+
+        // Update the individual checkboxes' state
+        const individualCheckboxes = document.querySelectorAll(".u_items");
+        individualCheckboxes.forEach((checkbox) => {
+            checkbox.checked = event.target.checked;
+        });
+    };
+
+    const handleSelectItem = (event) => {
+        const itemId = parseInt(event.target.value);
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            // Add the selected item ID to the array
+            setSelectedIds([...selectedIds, itemId]);
+        } else {
+            // Remove the selected item ID from the array
+            setSelectedIds(selectedIds.filter((id) => id !== itemId));
+        }
+
+        // Check if all checkboxes are checked or not
+        const checkboxes = document.querySelectorAll(".u_items");
+        const allChecked = Array.from(checkboxes).every(
+            (checkbox) => checkbox.checked
+        );
+        const selectAllCheckbox = document.querySelector("#select-all");
+
+        // Update the select all checkbox accordingly
+        if (allChecked) {
+            selectAllCheckbox.checked = true;
+        } else {
+            selectAllCheckbox.checked = false;
+        }
+    };
+
+    useEffect(() => {
+        const selectAllCheckbox = document.getElementById('select-all');
+        selectAllCheckbox.addEventListener('change', handleSelectAll);
+      }, []);
+
+    console.log(selectedIds)
+
+    const changePage = ({ selected }) => {
+        setPageNumber(selected);
+    };
 
     function clickDisposeModal(index) {
         setOpenDisposeModal(index);
@@ -42,66 +105,130 @@ export default function ItemTab({ className }) {
     const itemsMapper = (items) => {
         return items?.map((data) => {
             return (
-                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                    {/* checkbox */}
-                    <td>
-                        <div className="flex justify-center item-center">
-                            <input
-                                type="checkbox"
-                                className="u_items"
-                                value={data.id}
-                            />
-                        </div>
-                    </td>
-                    {/* items */}
-                    <td>
-                        <a className="text-left flex items-center w-full h-12 gap-3">
-                            <div className="flex flex-col gap-1">
-                                <h4 className="text-[17px] font-medium text-text-black">
-                                    {data.code}
-                                </h4>
-                                <p className="text-[#878787] text-[14px]">
-                                    Previous owner: {data.firstname}
-                                </p>
+                <>
+                    <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                        {/* checkbox */}
+                        <td>
+                            <div className="flex justify-center item-center">
+                                <input
+                                    type="checkbox"
+                                    className="u_items"
+                                    value={data.id}
+                                    onChange={handleSelectItem}
+                                />
                             </div>
-                        </a>
-                    </td>
-                    {/* description */}
-                    <td>
-                        <a className="text-left flex items-center w-full h-12 gap-3">
-                            <div className="flex flex-col gap-1">
-                                <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                    {data.description}
-                                </h5>
-                                <p className="text-[#878787] text-[14px]">
-                                    Date Accepted: {data.date_received}
-                                </p>
+                        </td>
+                        {/* items */}
+                        <td>
+                            <a className="text-left flex items-center w-full h-12 gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <h4 className="text-[17px] font-medium text-text-black">
+                                        {data.code}
+                                    </h4>
+                                    <p className="text-[#878787] text-[14px]">
+                                        Previous owner: {data.firstname}
+                                    </p>
+                                </div>
+                            </a>
+                        </td>
+                        {/* description */}
+                        <td>
+                            <a className="text-left flex items-center w-full h-12 gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
+                                        {data.description}
+                                    </h5>
+                                    <p className="text-[#878787] text-[14px]">
+                                        Date Accepted: {data.date_received}
+                                    </p>
+                                </div>
+                            </a>
+                        </td>
+                        {/* remarks */}
+                        <td>
+                            <a className="text-left flex items-center w-full h-12 gap-3 pr-2">
+                                <div className="flex flex-col gap-1">
+                                    <p className="text-[#878787] text-[14px]">
+                                        {data.remarks}
+                                    </p>
+                                </div>
+                            </a>
+                        </td>
+                        <td>
+                            <div className="w-full flex justify-end pr-6">
+                                <button
+                                    className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
+                                    onClick={() =>
+                                        clickDisposeModal("open", data.uri_id)
+                                    }
+                                >
+                                    <i className="fa-solid fa-file-export"></i>
+                                </button>
                             </div>
-                        </a>
-                    </td>
-                    {/* remarks */}
-                    <td>
-                        <a className="text-left flex items-center w-full h-12 gap-3 pr-2">
-                            <div className="flex flex-col gap-1">
-                                <p className="text-[#878787] text-[14px]">
-                                    {data.remarks}
-                                </p>
+                        </td>
+                    </tr>
+                    <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                        {/* checkbox */}
+                        <td>
+                            <div className="flex justify-center item-center">
+                                <input
+                                    type="checkbox"
+                                    className="u_items"
+                                    value={34}
+                                    onChange={handleSelectItem}
+                                />
                             </div>
-                        </a>
-                    </td>
-                    <td>
-                        <div className="w-full flex justify-end pr-6">
-                            <button
-                                className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
-                                onClick={() =>
-                                    clickDisposeModal("open", data.uri_id)
-                                }
-                            >
-                                <i className="fa-solid fa-file-export"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                        {/* items */}
+                        <td>
+                            <a className="text-left flex items-center w-full h-12 gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <h4 className="text-[17px] font-medium text-text-black">
+                                        {data.code}
+                                    </h4>
+                                    <p className="text-[#878787] text-[14px]">
+                                        Previous owner: {data.firstname}
+                                    </p>
+                                </div>
+                            </a>
+                        </td>
+                        {/* description */}
+                        <td>
+                            <a className="text-left flex items-center w-full h-12 gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
+                                        {data.description}
+                                    </h5>
+                                    <p className="text-[#878787] text-[14px]">
+                                        Date Accepted: {data.date_received}
+                                    </p>
+                                </div>
+                            </a>
+                        </td>
+                        {/* remarks */}
+                        <td>
+                            <a className="text-left flex items-center w-full h-12 gap-3 pr-2">
+                                <div className="flex flex-col gap-1">
+                                    <p className="text-[#878787] text-[14px]">
+                                        {data.remarks}
+                                    </p>
+                                </div>
+                            </a>
+                        </td>
+                        <td>
+                            <div className="w-full flex justify-end pr-6">
+                                <button
+                                    className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
+                                    onClick={() =>
+                                        clickDisposeModal("open", data.uri_id)
+                                    }
+                                >
+                                    <i className="fa-solid fa-file-export"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </>
             );
         });
     };
@@ -130,7 +257,12 @@ export default function ItemTab({ className }) {
                     <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                         <th className="h-10 w-16 font-medium text-left pl-6">
                             <div className="flex item-center">
-                                <input type="checkbox" className="" />
+                                <input
+                                    type="checkbox"
+                                    className=""
+                                    id="select-all"
+                                    onChange={handleSelectAll}
+                                />
                             </div>
                         </th>
                         <th className="h-10 w-58 font-medium text-left">
