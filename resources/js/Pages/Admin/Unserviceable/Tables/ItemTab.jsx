@@ -66,11 +66,11 @@ export default function ItemTab({ className }) {
     };
 
     useEffect(() => {
-        const selectAllCheckbox = document.getElementById('select-all');
-        selectAllCheckbox.addEventListener('change', handleSelectAll);
-      }, []);
+        const selectAllCheckbox = document.getElementById("select-all");
+        selectAllCheckbox.addEventListener("change", handleSelectAll);
+    }, []);
 
-    console.log(selectedIds)
+    console.log(selectedIds);
 
     const changePage = ({ selected }) => {
         setPageNumber(selected);
@@ -105,130 +105,67 @@ export default function ItemTab({ className }) {
     const itemsMapper = (items) => {
         return items?.map((data) => {
             return (
-                <>
-                    <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                        {/* checkbox */}
-                        <td>
-                            <div className="flex justify-center item-center">
-                                <input
-                                    type="checkbox"
-                                    className="u_items"
-                                    value={data.id}
-                                    onChange={handleSelectItem}
-                                />
+                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                    {/* checkbox */}
+                    <td>
+                        <div className="flex justify-center item-center">
+                            <input
+                                type="checkbox"
+                                className="u_items"
+                                value={data.id}
+                                onChange={handleSelectItem}
+                            />
+                        </div>
+                    </td>
+                    {/* items */}
+                    <td>
+                        <a className="text-left flex items-center w-full h-12 gap-3">
+                            <div className="flex flex-col gap-1">
+                                <h4 className="text-[17px] font-medium text-text-black">
+                                    {data.code}
+                                </h4>
+                                <p className="text-[#878787] text-[14px]">
+                                    Previous owner: {data.firstname}
+                                </p>
                             </div>
-                        </td>
-                        {/* items */}
-                        <td>
-                            <a className="text-left flex items-center w-full h-12 gap-3">
-                                <div className="flex flex-col gap-1">
-                                    <h4 className="text-[17px] font-medium text-text-black">
-                                        {data.code}
-                                    </h4>
-                                    <p className="text-[#878787] text-[14px]">
-                                        Previous owner: {data.firstname}
-                                    </p>
-                                </div>
-                            </a>
-                        </td>
-                        {/* description */}
-                        <td>
-                            <a className="text-left flex items-center w-full h-12 gap-3">
-                                <div className="flex flex-col gap-1">
-                                    <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                        {data.description}
-                                    </h5>
-                                    <p className="text-[#878787] text-[14px]">
-                                        Date Accepted: {data.date_received}
-                                    </p>
-                                </div>
-                            </a>
-                        </td>
-                        {/* remarks */}
-                        <td>
-                            <a className="text-left flex items-center w-full h-12 gap-3 pr-2">
-                                <div className="flex flex-col gap-1">
-                                    <p className="text-[#878787] text-[14px]">
-                                        {data.remarks}
-                                    </p>
-                                </div>
-                            </a>
-                        </td>
-                        <td>
-                            <div className="w-full flex justify-end pr-6">
-                                <button
-                                    className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
-                                    onClick={() =>
-                                        clickDisposeModal("open", data.uri_id)
-                                    }
-                                >
-                                    <i className="fa-solid fa-file-export"></i>
-                                </button>
+                        </a>
+                    </td>
+                    {/* description */}
+                    <td>
+                        <a className="text-left flex items-center w-full h-12 gap-3">
+                            <div className="flex flex-col gap-1">
+                                <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
+                                    {data.description}
+                                </h5>
+                                <p className="text-[#878787] text-[14px]">
+                                    Date Accepted: {data.date_received}
+                                </p>
                             </div>
-                        </td>
-                    </tr>
-                    <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                        {/* checkbox */}
-                        <td>
-                            <div className="flex justify-center item-center">
-                                <input
-                                    type="checkbox"
-                                    className="u_items"
-                                    value={34}
-                                    onChange={handleSelectItem}
-                                />
+                        </a>
+                    </td>
+                    {/* remarks */}
+                    <td>
+                        <a className="text-left flex items-center w-full h-12 gap-3 pr-2">
+                            <div className="flex flex-col gap-1">
+                                <p className="text-[#878787] text-[14px]">
+                                    {data.remarks}
+                                </p>
                             </div>
-                        </td>
-                        {/* items */}
-                        <td>
-                            <a className="text-left flex items-center w-full h-12 gap-3">
-                                <div className="flex flex-col gap-1">
-                                    <h4 className="text-[17px] font-medium text-text-black">
-                                        {data.code}
-                                    </h4>
-                                    <p className="text-[#878787] text-[14px]">
-                                        Previous owner: {data.firstname}
-                                    </p>
-                                </div>
-                            </a>
-                        </td>
-                        {/* description */}
-                        <td>
-                            <a className="text-left flex items-center w-full h-12 gap-3">
-                                <div className="flex flex-col gap-1">
-                                    <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                        {data.description}
-                                    </h5>
-                                    <p className="text-[#878787] text-[14px]">
-                                        Date Accepted: {data.date_received}
-                                    </p>
-                                </div>
-                            </a>
-                        </td>
-                        {/* remarks */}
-                        <td>
-                            <a className="text-left flex items-center w-full h-12 gap-3 pr-2">
-                                <div className="flex flex-col gap-1">
-                                    <p className="text-[#878787] text-[14px]">
-                                        {data.remarks}
-                                    </p>
-                                </div>
-                            </a>
-                        </td>
-                        <td>
-                            <div className="w-full flex justify-end pr-6">
-                                <button
-                                    className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
-                                    onClick={() =>
-                                        clickDisposeModal("open", data.uri_id)
-                                    }
-                                >
-                                    <i className="fa-solid fa-file-export"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </>
+                        </a>
+                    </td>
+                    <td>
+                        <div className="w-full flex justify-end pr-6">
+                            <button
+                                className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
+                                onClick={() =>
+                                    clickDisposeModal("open", data.uri_id)
+                                }
+                            >
+                                <i className="fa-solid fa-file-export"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             );
         });
     };
