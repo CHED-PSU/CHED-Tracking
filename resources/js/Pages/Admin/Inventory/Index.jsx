@@ -55,7 +55,7 @@ export default function Inventory({ className }) {
     const getInventorySorted = async () => {
         setLoading(true)
         try {
-            await axios.post("api/getInventorySorted", {id: personSelected}).then((res) => {
+            await axios.post("api/getInventorySorted", { id: personSelected }).then((res) => {
                 setItems(res.data.inventory_items);
                 setUsers(res.data.users)
             });
@@ -81,18 +81,28 @@ export default function Inventory({ className }) {
 
     function clickSort(index) {
 
-        if(index === 'all'){
+        if (index === 'all') {
             console.log('pasok')
             getInventoryItems()
             setToggleSort(index);
-        }else if(index === 'sorted'){
+        } else if (index === 'sorted') {
             getInventorySorted()
             setToggleSort(index);
         }
     }
 
     function clickSortedModal(index) {
-        setOpenSortedModal(index);
+        if (index === "open-sorted") {
+            if (selectedId?.length !== 0) {
+                setOpenSortedModal(index);
+            } else {
+                alert("select items");
+            }
+        }
+
+        if (index === "close") {
+            setOpenSortedModal(index);
+        }
     }
 
     function clickSingleModal(index, id, user_id) {
@@ -115,6 +125,32 @@ export default function Inventory({ className }) {
         }
     }
 
+    const handleSelectAll = (event) => {
+        if (event.target.checked) {
+            // Get all the checkboxes and their values
+            const checkboxes = document.querySelectorAll(".i_items");
+            const ids = [];
+            checkboxes.forEach((checkbox) => {
+                ids.push(parseInt(checkbox.value));
+                checkbox.checked = true;
+            });
+            setSelectedId(ids);
+        } else {
+            // Clear the selected IDs array and uncheck all the checkboxes
+            setSelectedId([]);
+            const checkboxes = document.querySelectorAll(".i_items");
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = false;
+            });
+        }
+
+        // Update the individual checkboxes' state
+        const individualCheckboxes = document.querySelectorAll(".i_items");
+        individualCheckboxes.forEach((checkbox) => {
+            checkbox.checked = event.target.checked;
+        });
+    }
+
     const itemMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -125,7 +161,7 @@ export default function Inventory({ className }) {
                             <input
                                 onClick={handleChangeCheckBox}
                                 type="checkbox"
-                                className="u_items"
+                                className="i_items"
                                 value={data.uri_id}
                             />
                         </div>
@@ -161,7 +197,7 @@ export default function Inventory({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3 pl-3 pr-2">
                             <div className="flex flex-col gap-1">
                                 <p className="text-[#878787] text-[14px]">
-                                {data.created_at}
+                                    {data.created_at}
                                 </p>
                             </div>
                         </a>
@@ -182,8 +218,9 @@ export default function Inventory({ className }) {
     };
 
     const changeUser = (e) => {
+        setPersonSelected(e.target.value)
         try {
-            axios.post("api/getInventorySorted", {id: e.target.value}).then((res) => {
+            axios.post("api/getInventorySorted", { id: e.target.value }).then((res) => {
                 setItems(res.data.inventory_items);
                 setUsers(res.data.users)
             });
@@ -199,6 +236,9 @@ export default function Inventory({ className }) {
 
             {openSortedModal === "open-sorted" ? <SortedModal
                 clickSortedModal={clickSortedModal}
+                selectedId = {selectedId}
+                personSelected = {personSelected}
+                users = {users}
             /> : ""}
 
             {openMultiModal === "open-multi" ? (
@@ -283,13 +323,12 @@ export default function Inventory({ className }) {
 
                             <div className="w-56 flex justify-end">
                                 <button
-                                    onClick={() =>
-                                        clickMultiModal("open-multi")
+                                    onClick={() => { toggleSort === 'all' ? clickMultiModal("open-multi") : clickSortedModal("open-sorted") }
                                     }
                                     className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
                                 >
                                     <i className="fa-solid fa-box-archive text-sm"></i>
-                                    Assign
+                                    {toggleSort === "all" ? 'Assign' : 'Return/Renew'}
                                 </button>
                             </div>
                         </div>
@@ -301,6 +340,7 @@ export default function Inventory({ className }) {
                                             <input
                                                 type="checkbox"
                                                 className=""
+                                                onChange={handleSelectAll}
                                             />
                                         </div>
                                     </th>

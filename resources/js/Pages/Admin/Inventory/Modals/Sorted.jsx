@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PreOwner from "./Tabs/PreOwner";
 import Renewal from "./Tabs/Renewal";
 
-export default function Assign({ className,users, clickSortedModal, prevOwner, id, user_id }) {
+export default function Assign({ className,users, clickSortedModal, personSelected, selectedId, user_id }) {
     const [toggleTabs, setToggleTabs] = useState("pre-owner");
     
     
@@ -69,12 +69,17 @@ export default function Assign({ className,users, clickSortedModal, prevOwner, i
 
                     {toggleTabs === "pre-owner" ? <PreOwner
                     clickSortedModal={clickSortedModal}
-                    id={id}
-                    user_id={user_id}
                     users = {users}
+                    user_id ={personSelected}
+                    selectedId = {selectedId}
                     className={ ""}
                     />: ""}
                     {toggleTabs === "renewal" ? <Renewal
+                    clickSortedModal={clickSortedModal}
+                    users = {users}
+                    user_id ={personSelected}
+                    selectedId = {selectedId}
+                    className={ ""}
                     />: ""}
 
                 </div>
