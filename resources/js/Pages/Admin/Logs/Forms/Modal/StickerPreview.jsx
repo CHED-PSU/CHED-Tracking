@@ -1,69 +1,18 @@
-import React, { createRef, useRef, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import InventorySticker from "./Modal/InventorySticker";
 
-export default function ICSDetails(props) {
+export default function StickerPreview(props) {
     const ref = useRef();
-    const [openSticker, setOpenSticker] = useState("close");
-
-    function clickSticker(index) {
-        setOpenSticker(index);
-    }
-
-    const handlePrint = useReactToPrint({
-        content: () => ref.current,
-        pageStyle: `
-        @media print {
-            @page {
-              size: A4 portrait;
-              margin-top: 0.5in;
-              margin-bottom: 0.5in;
-            }
-          }`,
-        documentTitle: "ICS",
-    });
-
-    const icsItemsMapper = (items) => {
-        return items?.map((data) => {
-            return (
-                <tr className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                    <td className="text-center px-2 border">{data.quantity}</td>
-                    <td className="text-center px-2 border">{data.unit}</td>
-                    <td className="text-center px-2 border">
-                        {data.quantity * data.price}
-                    </td>
-                    <td className="text-left px-2 py-3 border">
-                        <div className="font-semibold">{data.description}</div>
-                    </td>
-                    <td className="text-left px-2 py-3 border">
-                        <div>{data.property_no}</div>
-                    </td>
-                    <td className="text-left px-2 border"></td>
-                    <td className="text-center px-2 border">{data.eul}</td>
-                </tr>
-            );
-        });
-    };
 
     return (
         <div className={props.className}>
-            {openSticker === "open" ? (
-                <InventorySticker
-                    className={""}
-                    icsItems={props.icsItems}
-                    clickSticker={clickSticker}
-                />
-            ) : (
-                ""
-            )}
-
-            <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-30">
+            <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40">
                 <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                     {/* header */}
                     <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                         <div className="w-1/2">
                             <button
-                                onClick={() => props.clickSubForms("close")}
                                 className="py-3 mt-4"
                             >
                                 <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
@@ -74,20 +23,17 @@ export default function ICSDetails(props) {
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
                                     <b>Logs</b> / ICS /{" "}
-                                    {props.formDetails.ics_no}
                                 </p>
                             </div>
                         </div>
                         <div className="flex w-1/2 justify-end items-end gap-4">
                             <button
-                                onClick={() => clickSticker("open")}
                                 className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer"
                             >
                                 <i className="fa-solid fa-print mr-1"></i>
                                 Print Sticker
                             </button>
                             <button
-                                onClick={handlePrint}
                                 className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer"
                             >
                                 <i className="fa-solid fa-print mr-1"></i>
@@ -130,7 +76,6 @@ export default function ICSDetails(props) {
                                             <span id="form_identifier"></span>
                                         </div>
                                         <div className="text-xs  dark:text-gray-400 font-semibold">
-                                            {props.formDetails.ics_no}
                                         </div>
                                     </div>
                                 </div>
@@ -167,20 +112,6 @@ export default function ICSDetails(props) {
                                         </tr>
                                         {/* header */}
 
-                                        {props.icsItems?.length !== 0 ? (
-                                            icsItemsMapper(
-                                                Object.values(props.icsItems)
-                                            )
-                                        ) : (
-                                            <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                                <td
-                                                    colSpan={7}
-                                                    className="text-center py-2 px-2 border"
-                                                >
-                                                    There is no data yet.
-                                                </td>
-                                            </tr>
-                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -189,7 +120,6 @@ export default function ICSDetails(props) {
                                     <div className="w-fit">
                                         <div className="pt-4 text-left text-xs font-medium dark:text-white">
                                             Issued by:{" "}
-                                            {props.formDetails.issued}
                                         </div>
                                         <div
                                             className="pt-1 text-left text-sm underline font-semibold dark:text-white"
@@ -199,10 +129,8 @@ export default function ICSDetails(props) {
                                             Signature Over Printed Name
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.designation2}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.issued_date}
                                         </div>
                                     </div>
                                 </div>
@@ -210,7 +138,6 @@ export default function ICSDetails(props) {
                                     <div className="w-fit">
                                         <div className="pt-4 text-left text-xs font-medium dark:text-white">
                                             Received by:{" "}
-                                            {props.formDetails.received}
                                         </div>
                                         <div
                                             className="pt-1 text-left text-sm underline font-semibold dark:text-white"
@@ -220,10 +147,8 @@ export default function ICSDetails(props) {
                                             Signature Over Printed Name
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.designation1}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.received_date}
                                         </div>
                                     </div>
                                 </div>
