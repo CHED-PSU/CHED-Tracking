@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import StickerPreview from "./StickerPreview";
 
 export default function InventorySticker(props) {
     const stickerRef = useRef();
