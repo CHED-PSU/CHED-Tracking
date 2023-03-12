@@ -34,7 +34,7 @@ export default function IndividualTable({ className }) {
 
     const userMapper = (items) => {
         return items?.map(data => {
-            return <UserList firstname={data.firstname} surname={data.surname} designation={data.designation} name={data.name} id={data.id} type={'in-in'} getData={getData} clickForms={clickForms} />
+            return <UserList key={data.id} firstname={data.firstname} surname={data.surname} designation={data.designation} name={data.name} id={data.id} type={'in-in'} getData={getData} clickForms={clickForms} />
         })
     }
 
@@ -57,8 +57,8 @@ export default function IndividualTable({ className }) {
     return (
         <div className={className + " w-full h-full relative"}>
             {openForms === "in-in" ? <IndividualInventory
-            indivItems = {indivItems ? indivItems : ''}
-            totalPrice = {totalPrice ? totalPrice : ''}
+                indivItems={indivItems ? indivItems : ''}
+                totalPrice={totalPrice ? totalPrice : ''}
                 clickForms={clickForms}
                 className={""}
             /> : ""}

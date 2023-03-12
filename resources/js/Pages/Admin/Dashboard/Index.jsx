@@ -140,7 +140,7 @@ export default function Dashboard({ className }) {
     });
 
     const recentIssuanceMapper = (item) => {
-        return item?.slice(0, 3).map((data) => {
+        return item?.slice(0, 3).map((data, index) => {
             var created_at = new Date(data.created_at);
 
             let today = new Date();
@@ -149,7 +149,7 @@ export default function Dashboard({ className }) {
 
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
 
-            return <RequistionItems data={data} date={days} />;
+            return <RequistionItems key={index} data={data} date={days} />;
         });
     };
 
