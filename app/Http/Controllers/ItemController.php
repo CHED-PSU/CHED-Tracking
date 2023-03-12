@@ -376,6 +376,21 @@ class ItemController extends Controller
         return response()->json(['inventory_items' => $inventory_items, 'users' => $getUsers]);
     }
 
+        //admin sorted multi return to prev owner
+            public function multiReturnToPrevOwner(Request $req){
+            //    $getData = DB::table('user_returned_items as uri')
+            //     ->join('user_items as ui', 'ui.ui_id','=','uri.ui_id')
+            //     ->where('uri.uri_id',$req->input('selectedId'))
+            //     ->update([
+            //         'uri.status' => 'returned_to_owner',
+            //         'ui.item_status' => 'owned'
+            //     ]);
+
+                return response()->json([
+                    'success' => 'success'
+                ]);
+            }
+
     //admin Unserviceable Items
     public function getUnserviceableItems(Request $req)
     {
