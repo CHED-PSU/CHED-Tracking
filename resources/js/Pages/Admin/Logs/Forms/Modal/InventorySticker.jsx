@@ -11,8 +11,6 @@ export default function InventorySticker(props) {
         setOpenPreview(index);
     }
 
-    console.log(openPreview)
-
     const handlePrint = useReactToPrint({
         content: () => stickerRef.current,
         pageStyle: `
@@ -26,6 +24,70 @@ export default function InventorySticker(props) {
         documentTitle: "Inventory Sticker",
     });
 
+    //Select all
+
+    //Storage for IDs that is selected
+    const [selectedIds, setSelectedIds] = useState([]);
+
+    const handleSelectAll = (event) => {
+        if (event.target.checked) {
+            // Get all the checkboxes and their values
+            const checkboxes = document.querySelectorAll(".u_items");
+            const ids = [];
+            checkboxes.forEach((checkbox) => {
+                ids.push(parseInt(checkbox.value));
+                checkbox.checked = true;
+            });
+            setSelectedIds(ids);
+        } else {
+            // Clear the selected IDs array and uncheck all the checkboxes
+            setSelectedIds([]);
+            const checkboxes = document.querySelectorAll(".u_items");
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = false;
+            });
+        }
+
+        // Update the individual checkboxes' state
+        const individualCheckboxes = document.querySelectorAll(".u_items");
+        individualCheckboxes.forEach((checkbox) => {
+            checkbox.checked = event.target.checked;
+        });
+    };
+
+    const handleSelectItem = (event) => {
+        const itemId = parseInt(event.target.value);
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            // Add the selected item ID to the array
+            setSelectedIds([...selectedIds, itemId]);
+        } else {
+            // Remove the selected item ID from the array
+            setSelectedIds(selectedIds.filter((id) => id !== itemId));
+        }
+
+        // Check if all checkboxes are checked or not
+        const checkboxes = document.querySelectorAll(".u_items");
+        const allChecked = Array.from(checkboxes).every(
+            (checkbox) => checkbox.checked
+        );
+        const selectAllCheckbox = document.querySelector("#select-all");
+
+        // Update the select all checkbox accordingly
+        if (allChecked) {
+            selectAllCheckbox.checked = true;
+        } else {
+            selectAllCheckbox.checked = false;
+        }
+    };
+
+    useEffect(() => {
+        const selectAllCheckbox = document.getElementById("select-all");
+        selectAllCheckbox.addEventListener("change", handleSelectAll);
+    }, []);
+
+    console.log(selectedIds);
+
     const icsItemsMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -34,8 +96,9 @@ export default function InventorySticker(props) {
                         <div className="flex justify-center item-center">
                             <input
                                 type="checkbox"
-                                className=""
-                                id="select-all"
+                                className="u_items"
+                                value={data.id}
+                                onChange={handleSelectItem}
                             />
                         </div>
                     </td>
@@ -61,8 +124,10 @@ export default function InventorySticker(props) {
                     </td>
                 </tr>
             );
+            console.log(data.id)
         });
     };
+
 
     return (
         <div className={props.className}>
@@ -127,9 +192,10 @@ export default function InventorySticker(props) {
                                 <th className="h-10 w-14 font-medium flex justify-center">
                                     <div className="flex item-center">
                                         <input
-                                            type="checkbox"
-                                            className=""
-                                            id="select-all"
+                                    type="checkbox"
+                                    className=""
+                                    id="select-all"
+                                    onChange={handleSelectAll}
                                         />
                                     </div>
                                 </th>
