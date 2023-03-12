@@ -24,9 +24,9 @@ export default function ICSDetails(props) {
     });
 
     const icsItemsMapper = (items) => {
-        return items?.map((data) => {
+        return items?.map((data, index) => {
             return (
-                <tr className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                <tr key={index} className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                     <td className="text-center px-2 border">{data.quantity}</td>
                     <td className="text-center px-2 border">{data.unit}</td>
                     <td className="text-center px-2 border">

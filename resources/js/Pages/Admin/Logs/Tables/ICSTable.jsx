@@ -57,6 +57,7 @@ export default function ICSTable({ className }) {
         return items?.map((data) => {
             return (
                 <UserList
+                    key={data.id}
                     firstname={data.firstname}
                     surname={data.surname}
                     designation={data.designation}

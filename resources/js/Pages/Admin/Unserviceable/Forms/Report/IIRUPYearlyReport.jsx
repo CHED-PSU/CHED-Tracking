@@ -59,8 +59,8 @@ export default function IIRUPYearlyReport(props) {
                 {/* header */}
 
                 {/* data table */}
-                <div className="bg-white dark:bg-darkColor-900 border border-text-gray mx-10">
-                    <div ref={ref} className="p-4 w-[11.69in]">
+                <div className="bg-white dark:bg-darkColor-900 border border-text-gray mx-10 px-6 py-6">
+                    <div ref={ref} className="w-[11.69in]">
                         <div className="flex justify-end text-ss font-medium italic pb-2">
                             Appendix 74
                         </div>
@@ -299,200 +299,44 @@ export default function IIRUPYearlyReport(props) {
                                     </tr>
 
                                     {/* Table Content */}
-                                    <tr className="text-[0.7rem] avoid h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td className="text-center border border-text-gray">
+                                    <tr className="text-[11px] avoid h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                        <td className="px-1 text-center border border-text-gray">
                                             2012
                                         </td>
-                                        <td className=" border border-text-gray">
+                                        <td className=" px-1 border border-text-gray">
                                             PRINTER: HP Deskjet 2060 Colored
                                             Printer SN:
                                         </td>
-                                        <td className="text-left border border-text-gray">
+                                        <td className="px-1 text-left border border-text-gray">
                                             2012-05-11-002-CHEDRO11-SUPPLY UNIT
                                         </td>
-                                        <td className="text-center border border-text-gray">
+                                        <td className="px-1 text-center border border-text-gray">
                                             1
                                         </td>
-                                        <td className="text-right border border-text-gray">
+                                        <td className="px-1 text-right border border-text-gray">
                                             0.00
                                         </td>
-                                        <td className="text-right border border-text-gray">
+                                        <td className="px-1 text-right border border-text-gray">
                                             0.00
                                         </td>
-                                        <td className="text-right border border-text-gray">
+                                        <td className="px-1 text-right border border-text-gray">
                                             0.00
                                         </td>
-                                        <td className="text-right border border-text-gray"></td>
-                                        <td className="text-right border border-text-gray">
+                                        <td className="px-1 text-right border border-text-gray"></td>
+                                        <td className="px-1 text-right border border-text-gray">
                                             0.00
                                         </td>
-                                        <td className="text-center border border-text-gray">
+                                        <td className="px-1 text-center border border-text-gray">
                                             UNSERVICEABLE
                                         </td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                    </tr>
-                                    <tr className="text-[0.7rem] avoid h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td className="text-center border border-text-gray">
-                                            2012
-                                        </td>
-                                        <td className=" border border-text-gray">
-                                            PRINTER: HP Deskjet 2060 Colored
-                                            Printer SN:
-                                        </td>
-                                        <td className="text-left border border-text-gray">
-                                            2012-05-11-002-CHEDRO11-SUPPLY UNIT
-                                        </td>
-                                        <td className="text-center border border-text-gray">
-                                            1
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray"></td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-center border border-text-gray">
-                                            UNSERVICEABLE
-                                        </td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                    </tr>
-                                    <tr className="text-[0.7rem] avoid h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td className="text-center border border-text-gray">
-                                            2012
-                                        </td>
-                                        <td className=" border border-text-gray">
-                                            PRINTER: HP Deskjet 2060 Colored
-                                            Printer SN:
-                                        </td>
-                                        <td className="text-left border border-text-gray">
-                                            2012-05-11-002-CHEDRO11-SUPPLY UNIT
-                                        </td>
-                                        <td className="text-center border border-text-gray">
-                                            1
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray"></td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-center border border-text-gray">
-                                            UNSERVICEABLE
-                                        </td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                    </tr>
-                                    <tr className="text-[0.7rem] avoid h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td className="text-center border border-text-gray">
-                                            2012
-                                        </td>
-                                        <td className=" border border-text-gray">
-                                            PRINTER: HP Deskjet 2060 Colored
-                                            Printer SN:
-                                        </td>
-                                        <td className="text-left border border-text-gray">
-                                            2012-05-11-002-CHEDRO11-SUPPLY UNIT
-                                        </td>
-                                        <td className="text-center border border-text-gray">
-                                            1
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray"></td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-center border border-text-gray">
-                                            UNSERVICEABLE
-                                        </td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                    </tr>
-                                    <tr className="text-[0.7rem] avoid h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td className="text-center border border-text-gray">
-                                            2012
-                                        </td>
-                                        <td className=" border border-text-gray">
-                                            PRINTER: HP Deskjet 2060 Colored
-                                            Printer SN:
-                                        </td>
-                                        <td className="text-left border border-text-gray">
-                                            2012-05-11-002-CHEDRO11-SUPPLY UNIT
-                                        </td>
-                                        <td className="text-center border border-text-gray">
-                                            1
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-right border border-text-gray"></td>
-                                        <td className="text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="text-center border border-text-gray">
-                                            UNSERVICEABLE
-                                        </td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
-                                        <td className="text-center border border-text-gray"></td>
+                                        <td className="px-1 text-center border border-text-gray"></td>
+                                        <td className="px-1 text-center border border-text-gray"></td>
+                                        <td className="px-1 text-center border border-text-gray"></td>
+                                        <td className="px-1 text-center border border-text-gray"></td>
+                                        <td className="px-1 text-center border border-text-gray"></td>
+                                        <td className="px-1 text-center border border-text-gray"></td>
+                                        <td className="px-1 text-center border border-text-gray"></td>
+                                        <td className="px-1 text-center border border-text-gray"></td>
                                     </tr>
 
                                     {/* Total */}

@@ -14,31 +14,31 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
 
    const predictHandler = (e) => {
       e.preventDefault()
-      axios.post('api/forecastSpecific',{value: predictRef.current.value}).then(response => {
+      axios.post('api/forecastSpecific', { value: predictRef.current.value }).then(response => {
          setProjectedValue(response.data.predicted)
       })
    }
 
- 
+
 
    useEffect(() => {
 
       fetch('http://' + url.hostname + ':8000/api/totalCostPerYear', {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then(response => response.json())
-            .then((data) => {
-               settotalCostPerYear(data.data)
-            })
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+         },
+      })
+         .then(response => response.json())
+         .then((data) => {
+            settotalCostPerYear(data.data)
+         })
    }, [])
 
    const dataMapper = (items) => {
       return items?.map(data => {
          return (
-            <tr className="bg-white h-12">
+            <tr key={data.id} className="bg-white h-12">
                <td className="w-80 pl-16 text-left 2xl:text-base xl:text-sm text-sm rounded-tableRow">
                   {data.id}
                </td>
@@ -74,10 +74,10 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
             hoverOffset: 10,
             tension: 0.2,
          },
-         
+
       ],
    }
-   
+
    return (
       <div className={className + " flex"}>
          <div>
@@ -104,8 +104,22 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
                            </tr>
                         </thead>
                         <tbody className="block h-[250px] w-fit overflow-scroll space-y-3">
-                        {totalCostPerYear?.length != 0 ? dataMapper(totalCostPerYear) : ""}
-
+                           {totalCostPerYear?.length != 0 ? dataMapper(totalCostPerYear)
+                              :
+                              <tr className="bg-white h-12">
+                                 <td className="w-80 pl-16 text-left 2xl:text-base xl:text-sm text-sm rounded-tableRow">
+                                 </td>
+                                 <td className="w-96 2xl:text-base xl:text-sm text-sm font-semibold text-text-black">
+                                    No data yet.
+                                 </td>
+                                 <td className="w-40 text-sm rounded-tableRow">
+                                    <div className="flex gap-2 items-center text-c-inspecting font-medium">
+                                       <h5 className="2xl:text-sm xl:text-[13px] text-[13px]">
+                                       </h5>
+                                    </div>
+                                 </td>
+                              </tr>
+                           }
                         </tbody>
                      </table>
                   </div>

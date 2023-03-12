@@ -24,11 +24,11 @@ export default function IndividualInventory(props) {
     };
 
     const itemsMapper = (items) => {
-        return items?.map((data) => {
+        return items?.map((data, index) => {
             const date = new Date(data.created_At);
             return (
-                <tr className="avoid text-xs text-darkColor-700 h-12 border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                    <td className="text-center px-2 border">1</td>
+                <tr key={index} className="avoid text-xs text-darkColor-700 h-12 border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                    <td className="text-center px-2 border">{index+1}</td>
                     <td className="text-center px-2 border">{data.article}</td>
                     <td className="text-left px-2 border">
                         {data.description}

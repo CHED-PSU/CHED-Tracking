@@ -118,11 +118,11 @@ export default function Return({ className }) {
     const returnItemsMapper = (items) => {
         return items?.map(data => {
             return (
-                <tr className="relative h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                <tr key={data.uri_id} className="relative h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                     {/* no */}
                     <td>
                         <a className="text-left pl-6 text-[14px]">
-                            0
+                            {data.uri_id}
                         </a>
                     </td>
                     {/* requested by */}

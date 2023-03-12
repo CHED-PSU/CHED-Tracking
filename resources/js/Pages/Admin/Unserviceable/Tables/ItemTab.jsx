@@ -105,7 +105,7 @@ export default function ItemTab({ className }) {
     const itemsMapper = (items) => {
         return items?.map((data) => {
             return (
-                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                <tr key={data.id} className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                     {/* checkbox */}
                     <td>
                         <div className="flex justify-center item-center">
