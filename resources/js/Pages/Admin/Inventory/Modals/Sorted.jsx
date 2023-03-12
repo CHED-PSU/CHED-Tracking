@@ -9,7 +9,7 @@ export default function Assign({
     personSelected,
     selectedId,
     user_id,
-    successSorted,
+    getInventorySorted,
 }) {
     const [toggleTabs, setToggleTabs] = useState("pre-owner");
 
@@ -91,7 +91,7 @@ export default function Assign({
                             user_id={personSelected}
                             selectedId={selectedId}
                             className={""}
-                            successSorted ={successSorted}
+                            getInventorySorted={getInventorySorted}
                         />
                     ) : (
                         ""
@@ -103,6 +103,7 @@ export default function Assign({
                             user_id={personSelected}
                             selectedId={selectedId}
                             className={""}
+                            getInventorySorted={getInventorySorted}
                         />
                     ) : (
                         ""

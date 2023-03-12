@@ -245,6 +245,7 @@ export default function Inventory({ className }) {
                 selectedId = {selectedId}
                 personSelected = {personSelected}
                 users = {users}
+                getInventorySorted = {getInventorySorted}
             /> : ""}
 
             {openMultiModal === "open-multi" ? (
@@ -305,6 +306,7 @@ export default function Inventory({ className }) {
                                     <div className="">
                                         <select
                                             onChange={changeUser}
+                                            value={personSelected ? personSelected : ''}
                                             name=""
                                             id=""
                                             className=" w-80 rounded-md text-sm border border-neutral-300 px-3 py-1 outline-none"

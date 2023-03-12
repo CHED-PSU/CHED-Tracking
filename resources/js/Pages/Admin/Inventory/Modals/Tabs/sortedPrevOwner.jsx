@@ -8,6 +8,7 @@ export default function PreOwner({
     users,
     clickSortedModal,
     user_id,
+    getInventorySorted
 }) {
     const domain = window.location.href;
     const url = new URL(domain);
@@ -31,11 +32,24 @@ export default function PreOwner({
         setAlertYesButton("Confirm");
         setAlertFunction(true);
         setOpenAlert(index);
+
+        if(index === false){
+            getInventorySorted()
+            clickSortedModal('close')
+        }
     };
 
     console.log();
 
-
+    const confirmation = (index) => {
+        setAlertIcon("check");
+        setAlertHeader("Success");
+        setAlertDesc("");
+        setAlertButtonColor("none");
+        setAlertNoButton("okay");
+        setAlertYesButton("Confirm");
+        setAlertFunction(true);
+    }
 
     return (
         <div className={className}>
@@ -84,6 +98,7 @@ export default function PreOwner({
                     selectedId ={selectedId}
                     user_id = {user_id}
                     setAlert = {setAlert}
+                    confirmation = { confirmation}
                 />
             ) : (
                 ""

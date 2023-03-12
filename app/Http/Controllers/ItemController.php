@@ -340,7 +340,7 @@ class ItemController extends Controller
     public function getItemsofInventories(Request $req)
     {
         $inventory_items = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id','pi.code', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
+            ->select('uri.uri_id', 'pi.code', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -356,7 +356,7 @@ class ItemController extends Controller
     public function getInventorySorted(Request $req)
     {
         $inventory_items = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id','pi.code', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
+            ->select('uri.uri_id', 'pi.code', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -369,27 +369,30 @@ class ItemController extends Controller
             ->get();
 
         $getUsers = DB::table('users')
-        ->select('firstname','surname','id')
-        ->whereNot('firstname', 'jermine')
-        ->get();
+            ->select('firstname', 'surname', 'id')
+            ->whereNot('firstname', 'jermine')
+            ->get();
 
         return response()->json(['inventory_items' => $inventory_items, 'users' => $getUsers]);
     }
 
-        //admin sorted multi return to prev owner
-            public function multiReturnToPrevOwner(Request $req){
-            //    $getData = DB::table('user_returned_items as uri')
-            //     ->join('user_items as ui', 'ui.ui_id','=','uri.ui_id')
-            //     ->where('uri.uri_id',$req->input('selectedId'))
-            //     ->update([
-            //         'uri.status' => 'returned_to_owner',
-            //         'ui.item_status' => 'owned'
-            //     ]);
-
-                return response()->json([
-                    'success' => 'success'
+    //admin sorted multi return to prev owner
+    public function multiReturnToPrevOwner(Request $req)
+    {
+        foreach ($req->input('selectedId') as $data) {
+            DB::table('user_returned_items as uri')
+                ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+                ->where('uri.uri_id', $data)
+                ->update([
+                    'uri.status' => 'returned to owner',
+                    'ui.item_status' => 'owned'
                 ]);
-            }
+        }
+
+        return response()->json([
+            'success' => 'success'
+        ]);
+    }
 
     //admin Unserviceable Items
     public function getUnserviceableItems(Request $req)
