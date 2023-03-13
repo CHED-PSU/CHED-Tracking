@@ -143,7 +143,7 @@ export default function Index() {
 
                     {/* Dashboard */}
                     {sidebar === "dashboard" ? (
-                        <Dashboard className={"relative flex w-full h-full"} />
+                        <Dashboard className={"relative flex w-full h-full transition duration-150 ease-in-out"} />
                     ) : (
                         ""
                     )}
