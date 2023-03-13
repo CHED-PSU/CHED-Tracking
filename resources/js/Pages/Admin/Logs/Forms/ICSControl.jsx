@@ -112,7 +112,19 @@ export default function ICSControl(props) {
                                     </tr>
                                 </thead>
                                 <tbody id="logs-ics-slips-table">
-                                    {props.icsControl?.lenght !== 0 ? icsItemsMapper(Object.values(props.icsControl)) : ''}
+                                    {props.icsControl?.lenght !== 0 ? icsItemsMapper(Object.values(props.icsControl))
+                                        :
+                                        <tr className="h-16 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                            <td
+                                                colSpan="5"
+                                                className="text-center items-center w-full h-12"
+                                            >
+                                                <small className="text-sm">
+                                                    No data available in table.
+                                                </small>
+                                            </td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
 
