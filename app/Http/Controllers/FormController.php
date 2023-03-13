@@ -405,8 +405,11 @@ class FormController extends Controller
     public function getUserIcsControls(Request $req)
     {
 
-        $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')->join('iar_items as ia','ia.id','=','it.item_id')
-        ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
+        $subQuery = DB::table('inventory_tracking as it')
+            ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
+            ->join('iar_items as ia','ia.id','=','it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
+
         $result = DB::table('trackings as t')
             ->joinSub($subQuery, 'subData', function ($join) {
                 $join->on('t.id', '=', 'subData.trackings_id');
@@ -418,7 +421,14 @@ class FormController extends Controller
             // ->groupBy('t.id')
             ->get();
 
-
+        $getFormDetails = DB::table('trackings as t')
+            ->select('t.tracking_id', 'u1.firstname as issuerf', 'u1.surname as issuerS', 'u2.firstname as receiverf', 'u2.surname as receiverS', 'u1.designation as receiverD', 'u2.designation as issuerD', 't.created_at as issuerDate', 'ui.created_at as receiverDate')
+            ->join('users as u1', 'u1.id', '=', 't.issued_by')
+            ->join('users as u2', 'u2.id', '=', 't.received_by')
+            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
+            ->where('t.received_by', $req->input('id'))
+            ->first();
 
         $totalPrice = 0;
 
@@ -426,7 +436,7 @@ class FormController extends Controller
             $totalPrice += $item->total;
         }
 
-        return response()->json(['ics_controls' => $result, 'total_price' => $totalPrice]);
+        return response()->json(['ics_controls' => $result, 'total_price' => $totalPrice, 'ics_details' => $getFormDetails]);
     }
     //get User ICS Controls
     public function getUserParControls(Request $req)

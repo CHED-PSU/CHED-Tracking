@@ -27,6 +27,14 @@ export default function ICSControl(props) {
         setPageNumber(selected)
     };
 
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString('default', { month: 'short' });
+        const day = date.getDate().toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
     const icsItemsMapper = (items) => {
         return items?.map(data => {
             return (
@@ -35,7 +43,7 @@ export default function ICSControl(props) {
                     <td className="text-left px-3">
                         <div className="flex flex-col gap-1">
                             <h5 className="text-base text-text-black font-semibold"></h5>
-                            <h6 className="text-text-gray text-2base">Date Acquired: {data.created_at}</h6>
+                            <h6 className="text-text-gray text-2base">Date Acquired: {formatDateDisplay(props.icsDetails.issuerDate)}</h6>
                         </div>
                     </td>
                     <td className="text-left px-3">
@@ -44,7 +52,7 @@ export default function ICSControl(props) {
                             <h6 className="text-text-gray text-2base">Php</h6>
                         </div>
                     </td>
-                    <td className="text-left px-3 text-2base">{data.firstname + ' ' + data.surname}</td>
+                    <td className="text-left px-3 text-2base">{props.icsDetails.issuerf + " " + props.icsDetails.issuerS}</td>
                     <td className="text-right">
                         <div
                             onClick={() => { clickSubForms("ics-details"), getICSdetails(data.trackings_id) }}
