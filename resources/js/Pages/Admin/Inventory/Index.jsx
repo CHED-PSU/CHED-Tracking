@@ -79,10 +79,16 @@ export default function Inventory({ className }) {
 
     const [toggleSort, setToggleSort] = useState("all");
 
+    useEffect(()=>{
+        if(toggleSort === 'all'){
+            setPersonSelected(1)
+        }
+
+    },[toggleSort])
+
     function clickSort(index) {
 
         if (index === 'all') {
-            console.log('pasok')
             getInventoryItems()
             setToggleSort(index);
         } else if (index === 'sorted') {

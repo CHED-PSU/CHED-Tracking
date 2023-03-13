@@ -115,7 +115,7 @@ Route::post('/login', [AuthController::class, 'login']);
             Route::get('getUsers',[GeneralController::class, 'getUsers']);
                 //admin move item to inventories
                     Route::post('moveToInventories',[ItemController::class, 'moveToInventories']);
-                    
+
                 //Admin move item to unserviceable item
                     Route::post('moveItemstoUnserviceableItems',[ItemController::class, 'moveItemstoUnserviceableItems']);
 
@@ -127,6 +127,9 @@ Route::post('/login', [AuthController::class, 'login']);
     Route::post('returnToPreviousOwner',[ItemController::class, 'returnToPreviousOwner']);
     //admin issue to another owner
         Route::post('assignToAnotherUser',[ItemController::class, 'assignToAnotherUser']);
+
+        //Sorted Multi Return to prev owner
+        Route::post('multiReturnToPrevOwner',[ItemController::class, 'multiReturnToPrevOwner']);
 
 //Admin Unserviceable Items
     //Admin Unserviceable Items
