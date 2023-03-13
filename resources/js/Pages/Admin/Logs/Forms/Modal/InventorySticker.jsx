@@ -89,15 +89,15 @@ export default function InventorySticker(props) {
     console.log(selectedIds);
 
     const icsItemsMapper = (items) => {
-        return items?.map((data) => {
+        return items?.map((data, index) => {
             return (
-                <tr key={data.uri_id} className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                <tr key={data.id} className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                     <td className="h-full">
                         <div className="flex justify-center item-center">
                             <input
                                 type="checkbox"
                                 className="u_items"
-                                value={data.uri_id}
+                                value={data.id}
                                 onChange={handleSelectItem}
                             />
                         </div>

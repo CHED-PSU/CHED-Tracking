@@ -154,7 +154,7 @@ export default function Inventory({ className }) {
     const itemMapper = (items) => {
         return items?.map((data) => {
             return (
-                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                <tr key={data.uri_id} className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                     {/* checkbox */}
                     <td>
                         <div className="flex justify-center item-center">
