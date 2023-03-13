@@ -162,7 +162,7 @@ class FormController extends Controller
     public function getIcsDetails(Request $req)
     {
         $getItems = DB::table('trackings as t')
-            ->select('pri.quantity', 'pu.name as unit', 'pri.price', 'pi.description', 'pi.code as property_no', 'it.eul')
+            ->select('pri.quantity', 'pu.name as unit', 'pri.price', 'pi.description', 'pi.code as property_no', 'it.eul', 'it.id')
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
