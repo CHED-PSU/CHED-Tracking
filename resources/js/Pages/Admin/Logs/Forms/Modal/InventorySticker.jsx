@@ -131,61 +131,61 @@ export default function InventorySticker(props) {
         return (
             <>
                 {[...Array(times)].map((_, index) => (
-                    <div key={index} className="flex-none border-2 border-black w-[4.4in] avoid">
+                    <div key={index} className="flex-none border-2 border-black w-[3in] avoid">
                         <div className="flex items-center bg-amber-400 py-2">
-                            <MiniLogo className="w-20 h-20" />
+                            <MiniLogo className="w-12 h-12" />
                             <div className="w-full ">
-                                <div className="w-[280px] text-xs font-medium text-center">
+                                <div className="w-[185px] text-[8px] font-medium text-center">
                                     <h6>Republic of the Philippines</h6>
                                     <h6>OFFICE OF THE PRESIDENT</h6>
-                                    <h5 className="text-sm font-semibold">COMMISSION ON HIGHER EDUCATION</h5>
+                                    <h5 className="text-[9px] font-semibold">COMMISSION ON HIGHER EDUCATION</h5>
                                     <h6>REGIONAL OFFICE XI</h6>
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-black text-white font-bold text-center">PROPERTY INVENTORY STICKER</div>
+                        <div className="bg-black text-white font-bold text-center text-ss">PROPERTY INVENTORY STICKER</div>
                         <div className="bg-neutral-300 px-1">
-                            <div className="text-xs font-medium py-1">Sticker No. LDP-001</div>
-                            <table className="text-[8px]">
+                            <div className="text-[7px] font-medium py-1">Sticker No. LDP-001</div>
+                            <table className="text-[6px]">
                                 <tbody>
                                     <tr>
-                                        <td className="h-5">ARTICLE</td>
-                                        <td className="text-xs w-80 font-semibold">: TABLE</td>
+                                        <td className="h-2 w-20">ARTICLE</td>
+                                        <td className="text-[8px] w-80 font-semibold">: TABLE</td>
                                     </tr>
                                     <tr>
-                                        <td className="h-5">DESCRIPTION</td>
-                                        <td className="text-xs font-medium">: P-SHAPE TABLE WOODGRAIN FINISH 180X80</td>
+                                        <td className="h-2">DESCRIPTION</td>
+                                        <td className="text-[9px] font-medium flex">:&nbsp;<p className="w-52 truncate">P-SHAPE TABLE WOODGRAIN FINISH 180X80</p> </td>
                                     </tr>
                                     <tr>
-                                        <td className="h-5">SERIAL NO.</td>
-                                        <td className="text-xs font-medium">: -</td>
+                                        <td className="h-2">SERIAL NO.</td>
+                                        <td className="text-[8px] font-medium">: -</td>
                                     </tr>
                                     <tr>
-                                        <td className="h-5">PROPERTY CODE</td>
-                                        <td className="text-xs font-medium">: CHED11-TP-001</td>
+                                        <td className="h-2">PROPERTY CODE</td>
+                                        <td className="text-[8px] font-medium">: CHED11-TP-001</td>
                                     </tr>
                                     <tr>
-                                        <td className="h-5">DATE ACQUIRED</td>
-                                        <td className="text-xs font-medium">: JUNE 2015</td>
+                                        <td className="h-2">DATE ACQUIRED</td>
+                                        <td className="text-[8px] font-medium">: JUNE 2015</td>
                                     </tr>
                                     <tr>
-                                        <td className="h-5">AMOUNT</td>
-                                        <td className="text-xs font-medium">: *</td>
+                                        <td className="h-2">AMOUNT</td>
+                                        <td className="text-[8px] font-medium">: *</td>
                                     </tr>
                                     <tr>
-                                        <td className="h-5">ISSUED TO</td>
-                                        <td className="text-xs font-medium">: LUIS D. PEREZ</td>
+                                        <td className="h-2">ISSUED TO</td>
+                                        <td className="text-[8px] font-medium">: LUIS D. PEREZ</td>
                                     </tr>
                                     <tr>
-                                        <td className="h-5">INSPECTED BY</td>
-                                        <td className="text-xs font-medium">: </td>
+                                        <td className="h-2">INSPECTED BY</td>
+                                        <td className="text-[8px] font-medium">: </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <table className="w-full">
                             <thead>
-                                <tr className="text-xs h-6 border-y-2 border-black">
+                                <tr className="text-ss h-6 border-y-2 border-black">
                                     <th className="bg-black text-white">Year</th>
                                     <th className="bg-amber-400">2021</th>
                                     <th className="bg-black text-white">2022</th>
@@ -196,7 +196,7 @@ export default function InventorySticker(props) {
                             </thead>
                             <tbody>
                                 <tr className="border-y border-black">
-                                    <td className="text-xs text-center border-r border-black font-semibold">COA</td>
+                                    <td className=" text-[8px] text-center border-r border-black font-semibold">COA</td>
                                     <td className="border-r border-black"></td>
                                     <td className="border-r border-black"></td>
                                     <td className="border-r border-black"></td>
@@ -204,17 +204,17 @@ export default function InventorySticker(props) {
                                     <td></td>
                                 </tr>
                                 <tr className="border-y border-black">
-                                    <td className="border-r border-black text-xs text-center font-semibold">CHEDROXI</td>
-                                    <td className="border-r border-black text-[8px] font-medium">JBASISTER</td>
-                                    <td className="border-r border-black text-[8px] font-medium">JBASISTER</td>
-                                    <td className="border-r border-black text-[8px] font-medium">JBASISTER</td>
-                                    <td className="border-r border-black text-[8px] font-medium">JBASISTER</td>
-                                    <td className="text-[8px]">JBASISTER</td>
+                                    <td className="border-r border-black text-[8px] text-center font-semibold">CHEDROXI</td>
+                                    <td className="border-r border-black text-[6px] font-medium">JBASISTER</td>
+                                    <td className="border-r border-black text-[6px] font-medium">JBASISTER</td>
+                                    <td className="border-r border-black text-[6px] font-medium">JBASISTER</td>
+                                    <td className="border-r border-black text-[6px] font-medium">JBASISTER</td>
+                                    <td className="text-[6px]">JBASISTER</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div className="text-ss text-black font-semibold bg-amber-400 py-1 px-1">NOTE: PLEASE DO NOT REMOVE</div>
-                        <div className="bg-black text-white text-[8px] text-center py-1">UNAUTHORIZED REMOVAL OR TAMPERING WILL BE SUBJECTED TO DISCIPLINARY ACTION.</div>
+                        <div className="text-[7px] text-black font-semibold bg-amber-400 py-1 px-1">NOTE: PLEASE DO NOT REMOVE</div>
+                        <div className="bg-black text-white text-[5px] text-center py-1">UNAUTHORIZED REMOVAL OR TAMPERING WILL BE SUBJECTED TO DISCIPLINARY ACTION.</div>
                     </div>
                 ))}
             </>
