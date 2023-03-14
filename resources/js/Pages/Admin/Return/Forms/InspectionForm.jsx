@@ -50,10 +50,13 @@ export default function InspectionForm(props) {
                 await axios
                     .post("api/getAdminReturnedItemsData", { id: props.id })
                     .then((response) => {
+                        setStatus(response.data.adminReturnedItemsData.status)
                         setReturnedItemsData(
                             response.data.adminReturnedItemsData
                         );
                         setUsers(Object.values(response.data.users));
+                        setPreNature(response.data.adminReturnedItemsInfo.pre_nature)
+                        setPreParts(response.data.adminReturnedItemsInfo.pre_parts)
                         setReturnedItemsInfo(
                             response.data.adminReturnedItemsInfo
                         );
@@ -163,6 +166,8 @@ export default function InspectionForm(props) {
             data: data,
         });
     };
+
+    console.log(status)
 
     return (
         <div className={props.className}>
@@ -515,7 +520,7 @@ export default function InspectionForm(props) {
                                 </option>
                                 <option
                                     id="Ready for Return"
-                                    value="Ready for Retur"
+                                    value="Ready for Return"
                                 >
                                     Ready for Return
                                 </option>
