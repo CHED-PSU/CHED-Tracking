@@ -8,7 +8,7 @@ export default function Renewal({
     users,
     clickSortedModal,
     user_id,
-    getInventorySorted
+    getInventorySorted,
 }) {
     const domain = window.location.href;
     const url = new URL(domain);
@@ -83,7 +83,10 @@ export default function Renewal({
                     </div>
                 </div>
                 <div className="flex justify-center mt-[50px]">
-                    <button className="w-28 h-10 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold">
+                    <button
+                        onClick={() => setAlert(true)}
+                        className="w-28 h-10 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
+                    >
                         Confirm
                     </button>
                 </div>
@@ -97,10 +100,10 @@ export default function Renewal({
                     alertYesButton={alertYesButton}
                     alertNoButton={alertNoButton}
                     alertFunction={alertFunction}
-                    selectedId ={selectedId}
-                    user_id = {user_id}
-                    setAlert = {setAlert}
-                    confirmation = { confirmation}
+                    selectedId={selectedId}
+                    user_id={user_id}
+                    setAlert={setAlert}
+                    confirmation={confirmation}
                 />
             ) : (
                 ""

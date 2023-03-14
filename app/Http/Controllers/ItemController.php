@@ -394,6 +394,82 @@ class ItemController extends Controller
         ]);
     }
 
+    public function multiReturnAndRenew(Request $req)
+    {
+        $num = DB::table('trackings')
+            ->where('created_at', date('F Y'))
+            ->count();
+
+        $total = 0;
+
+        foreach ($req->input('selectedId') as $data) {
+            DB::table('user_returned_items as uri')
+                ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+                ->where('uri.uri_id', $data)
+                ->update([
+                    'uri.status' => 'Renewed',
+                ]);
+
+            $price = DB::table('user_returned_items as uri')
+                ->select('pri.price')
+                ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+                ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+                ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+                ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+                ->where('uri.uri_id', $data)
+                ->first();
+
+            $total += $price->price;
+        }
+
+        if ($total > 40000) {
+            $form = 'PAR';
+        } else {
+            $form = 'ICS';
+        }
+
+        $data = [
+            'tracking_id' => $form . '-' . date('Y') . '-' . date('m') . '-' . $num + 1,
+            'issued_by'   => $req->input('issued_by'),
+            'received_by' => $req->input('user_id')
+        ];
+
+        $tracking_id = DB::table('trackings')
+            ->insertGetId($data);
+
+        foreach ($req->input('selectedId') as $data) {
+
+            $getItemId =  DB::table('user_returned_items as uri')
+                ->select('it.item_id')
+                ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+                ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+                ->where('uri.uri_id', $data)
+                ->first();
+
+            DB::table('inventory_tracking')
+                ->insert([
+                    'trackings_id' => $tracking_id,
+                    'item_id'      => $getItemId->item_id,
+                    'eul'          => 'none'
+                ]);
+        }
+
+        DB::table('users_notification')
+        ->insert([
+            'trackings_id' => $tracking_id,
+            'user_id'      => $req->input('issued_by'),
+            'to_user_id'   => $req->input('user_id'),
+            'ns_id'        => 2,
+            'np_id'        => 1,
+            'confirmation' => 'TBD',
+            'description'  => $form
+        ]);
+
+        return response()->json([
+            'success' => 'success'
+        ]);
+    }
+
     //admin Unserviceable Items
     public function getUnserviceableItems(Request $req)
     {

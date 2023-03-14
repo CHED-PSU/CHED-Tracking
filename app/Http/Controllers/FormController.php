@@ -67,6 +67,7 @@ class FormController extends Controller
             $temp_date = [
                 'inventory_tracking_id'          => $item->id,
                 'item_status'           => 'owned',
+                'quantity'              => 1
             ];
 
             array_push($user_item_data, $temp_date);

@@ -130,7 +130,8 @@ Route::post('/login', [AuthController::class, 'login']);
 
         //Sorted Multi Return to prev owner
         Route::post('multiReturnToPrevOwner',[ItemController::class, 'multiReturnToPrevOwner']);
-
+        //Sorted Multi Return or Renew
+        Route::post('multiReturnAndRenew',[ItemController::class, 'multiReturnAndRenew']);
 //Admin Unserviceable Items
     //Admin Unserviceable Items
         Route::get('getUnserviceableItems',[ItemController::class, 'getUnserviceableItems']);

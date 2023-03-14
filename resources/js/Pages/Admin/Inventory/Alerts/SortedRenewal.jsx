@@ -7,9 +7,11 @@ export default function ConditionalAlert(props) {
 
     let modalBody = useRef();
 
+    const user = localStorage.getItem("localSession");
+    const value = JSON.parse(user);
 
     const acceptHandler = () => {
-        axios.post('api/multiReturnToPrevOwner',{selectedId:props.selectedId, user_id:props.user_id}).then(res => {
+        axios.post('api/multiReturnAndRenew',{selectedId:props.selectedId, user_id:props.user_id, issued_by:value.id}).then(res => {
             if(res.data.success === 'success'){
                 socket.emit('Admin_accept', {message: 'admin' + '  has accepted the item'})
                 props.confirmation()
