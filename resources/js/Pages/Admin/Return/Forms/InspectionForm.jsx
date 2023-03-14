@@ -97,6 +97,8 @@ export default function InspectionForm(props) {
         getData();
     }, []);
 
+    console.log(users);
+
     const userNamesMapper = (user, userIds, typeOfOutput) => {
         if (!user) {
             return []; // return an empty array if `user` is undefined
@@ -690,7 +692,9 @@ export default function InspectionForm(props) {
                                     id="pre_inspectedByDropdown"
                                     className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                                 >
-                                    <option value="none">None</option>
+                                    <option key={0} value="none">
+                                        None
+                                    </option>
                                     {users ? userMapper(users) : ""}
                                 </select>
                             </div>
@@ -713,9 +717,10 @@ export default function InspectionForm(props) {
                                     id="pre_approvedByDropdown"
                                     className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                                 >
-                                    <option value="none">None</option>
+                                    <option key={0} value="none">
+                                        None
+                                    </option>
                                     {users ? userMapper(users) : ""}
-                                    {defaultxt}
                                 </select>
                             </div>
 
@@ -781,9 +786,10 @@ export default function InspectionForm(props) {
                                         id="post_inspectedByDropdown"
                                         className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                                     >
-                                        <option value="none">None</option>
+                                        <option key={0} value="none">
+                                            None
+                                        </option>
                                         {users ? userMapper(users) : ""}
-                                        {defaultxt}
                                     </select>
                                 </div>
 
