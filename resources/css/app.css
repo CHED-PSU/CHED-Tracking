@@ -56,18 +56,11 @@
 
     /** Page active */
     .activePage {
-        @apply text-primary font-semibold dark:text-white dark:border-white rounded-r-full mr-2;
-    }
-
-    .activePage {
-        background: linear-gradient(
-            270deg,
-            #E5E7FF 0%, #E4E9F8 0.01%, rgba(255, 255, 255, 0.67) 100%, rgba(255, 255, 255, 0.67) 100%);
-        color: theme("colors.blue.800");
+        @apply text-primary dark:text-[#476aca] dark:border-white rounded-full bg-primary dark:bg-[#476aca] bg-opacity-5 dark:bg-opacity-10 transition duration-300 ease-in-out;
     }
 
     .hoverPage {
-        @apply font-semibold bg-gray-50 dark:bg-neutral-700 dark:text-white transition ease-in-out rounded-r-full mr-2;
+        @apply bg-gray-100 text-darkColor-900 dark:bg-[#313131] dark:text-white transition duration-200 ease-in-out rounded-full ;
     }
 
     /** table style */

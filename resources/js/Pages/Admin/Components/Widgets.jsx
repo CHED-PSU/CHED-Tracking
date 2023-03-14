@@ -303,7 +303,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
             {/* Buttons */}
             <div className="w-fit flex items-center 2xl:space-x-4 xl:space-x-3 space-x-3">
                 {/* Dark Mode Button */}
-                <button onClick={toggleDarkMode} className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-darkColor-700 dark:hover:bg-amber-300 rounded-full flex justify-center items-center">
+                <button onClick={toggleDarkMode} className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-darkColor-700 dark:hover:bg-amber-300 rounded-full flex justify-center items-center transition duration-300 ease-in-out">
                     <div className="2xl:w-full 2xl:p-2 xl:w-5 w-5 rounded-full hover:fill-[#FFD23B] dark:fill-[#FFD23B] dark:hover:fill-white">
                         <svg
                             className="inline-block dark:hidden"
@@ -334,7 +334,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                     onClick={() => {
                         setOpenNotifDropdown(!openNotifDropdown), setRead(false), notifClick()
                     }}
-                    className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover rounded-full flex justify-center items-center relative"
+                    className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover rounded-full flex justify-center items-center relative transition duration-300 ease-in-out"
                 >
                     <div className="2xl:w-6 xl:w-5 w-5 dark:fill-icon-light">
                         <svg
@@ -366,7 +366,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                     onClick={() => {
                         setOpenProfileDropdown(!openProfileDropdown);
                     }}
-                    className="outline-none flex 2xl:h-12 xl:h-10 h-10 w-fit border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-bg-iconDark hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover active:bg-bg-iconLightActive dark:active:bg-bg-iconDarkActive dark:text-lightColor-900 rounded-full justify-between"
+                    className="outline-none flex 2xl:h-12 xl:h-10 h-10 w-fit border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-bg-iconDark hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover active:bg-bg-iconLightActive dark:active:bg-bg-iconDarkActive dark:text-lightColor-900 rounded-full justify-between transition duration-300 ease-in-out"
                 >
                     <div className="flex w-full justify-between pl-4 pr-2 xl:items-center items-center xl:h-full h-full rounded-xl gap-2">
                         <div className=" text-left">

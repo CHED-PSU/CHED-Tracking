@@ -33,12 +33,12 @@ export default function InspectionForm(props) {
     const [returnedUsersInfo, setReturnedUsersInfo] = useState();
     const [users, setUsers] = useState();
 
-    const [preNature, setPreNature] = useState();
-    const [preParts, setPreParts] = useState();
+    const [preNature, setPreNature] = useState("Not yet specified.");
+    const [preParts, setPreParts] = useState("Not yet specified.");
     const [PreDate, setPreDate] = useState();
-    const [PreInspection, setPreInspection] = useState();
+    const [PreInspection, setPreInspection] = useState("none");
     const [PreApproved, setPreApproved] = useState();
-    const [postfindings, setPostFindings] = useState();
+    const [postfindings, setPostFindings] = useState("Not yet inspected.");
     const [postApproved, setPostApproved] = useState();
     const [PostDate, setPostDate] = useState();
     const [status, setStatus] = useState();
@@ -50,24 +50,41 @@ export default function InspectionForm(props) {
                 await axios
                     .post("api/getAdminReturnedItemsData", { id: props.id })
                     .then((response) => {
+                        setStatus(response.data.adminReturnedItemsData.status);
                         setReturnedItemsData(
                             response.data.adminReturnedItemsData
                         );
                         setUsers(Object.values(response.data.users));
+                        setPreNature(
+                            response.data.adminReturnedItemsInfo.pre_nature
+                        );
+                        setPreParts(
+                            response.data.adminReturnedItemsInfo.pre_parts
+                        );
                         setReturnedItemsInfo(
                             response.data.adminReturnedItemsInfo
                         );
                         setReturnedUsersInfo(
                             response.data.return_items_users_info
                         );
+
+                        setPreDate(
+                            response.data.adminReturnedItemsInfo.updated_at
+                        );
+                        setPostDate(
+                            response.data.adminReturnedItemsInfo.updated_at
+                        );
+                        setPostFindings(
+                            response.data.adminReturnedItemsInfo.post_findings
+                        );
                         setPreInspection(
-                            response.data.return_items_users_info.pre_inspected
+                            response.data.adminReturnedItemsInfo.pre_inspected
                         );
                         setPreApproved(
-                            response.data.return_items_users_info.pre_approved
+                            response.data.adminReturnedItemsInfo.pre_approved
                         );
                         setPostApproved(
-                            response.data.return_items_users_info.post_approve
+                            response.data.adminReturnedItemsInfo.post_approve
                         );
                     });
             } catch (e) {
@@ -80,19 +97,44 @@ export default function InspectionForm(props) {
         getData();
     }, []);
 
+    console.log(users);
+
+    const userNamesMapper = (user, userIds, typeOfOutput) => {
+        if (!user) {
+            return []; // return an empty array if `user` is undefined
+        }
+
+        return user
+            .filter((data) => data.id === userIds)
+            .map((data) => {
+                if (typeOfOutput === "name") {
+                    return `${data.firstname} ${data.surname}`;
+                } else if (typeOfOutput === "designation") {
+                    return `${data.designation}`;
+                } else {
+                    return ""; // return empty string if `typeOfOutput` is not recognized
+                }
+            });
+    };
+
+    useEffect(() => {
+        if (users) {
+            const userNames = userNamesMapper(users, PreInspection);
+            console.log(userNames);
+        }
+    }, [users, PreInspection]);
+
     const userMapper = (user) => {
         return user.map((data) => {
             return (
                 <>
-                    <option value={data.id}>
+                    <option key={data.id} value={data.id}>
                         {data.firstname + " " + data.surname}
                     </option>
                 </>
             );
         });
     };
-
-    console.log(returnedItemsInfo);
 
     const natureScope = (e) => {
         setPreNature(e.target.value);
@@ -164,13 +206,23 @@ export default function InspectionForm(props) {
         });
     };
 
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
     return (
         <div className={props.className}>
             <div className="fixed inset-0 bg-[#FAFAFA] w-full h-full flex z-30">
                 {/* form */}
                 <div className="dark:bg-darkColor-800 w-[75%] flex justify-center p-10 overflow-y-auto">
                     <div className="bg-white dark:bg-darkColor-900 border w-fit h-fit border-[#C8C8C8] p-[0.5in]">
-                        <div ref={ref} className="avoid w-[8.27in] space-y-5">
+                        <div
+                            ref={ref}
+                            className="avoid w-[8.27in] px-6 space-y-5"
+                        >
                             {/* header */}
                             <div className="text-center">
                                 <div className="text-sm font-medium">
@@ -192,7 +244,9 @@ export default function InspectionForm(props) {
                                     <div className="w-1/3">
                                         Date:{" "}
                                         {returnedItemsData
-                                            ? returnedItemsData.created_at
+                                            ? formatDateDisplay(
+                                                  returnedItemsData.created_at
+                                              )
                                             : ""}
                                         <span id="request_date"></span>
                                     </div>
@@ -258,8 +312,8 @@ export default function InspectionForm(props) {
                                 </div>
                                 {/* personnel req */}
                                 <div className="flex text-left">
-                                    <div className="w-1/3">
-                                        <div className="font-semibold mb-8">
+                                    <div className="w-1/3 flex-none pr-6">
+                                        <div className="font-semibold mb-6">
                                             Request by:
                                         </div>
                                         <div>
@@ -279,18 +333,20 @@ export default function InspectionForm(props) {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="w-1/3 flex flex-col items-center text-center justify-end">
+                                    <div className="w-1/3 flex-none flex flex-col items-center text-center justify-end">
                                         <div>
                                             {returnedItemsData
-                                                ? returnedItemsData.created_at
+                                                ? formatDateDisplay(
+                                                      returnedItemsData.created_at
+                                                  )
                                                 : ""}
                                         </div>
-                                        <div className="font-base mb-4 border-t-2 border-darkColor-700 w-52">
+                                        <div className="font-base border-t-2 border-darkColor-700 w-52">
                                             Date
                                         </div>
                                     </div>
-                                    <div className="w-1/3 pl-8">
-                                        <div className="font-semibold mb-10">
+                                    <div className="w-1/3 flex-none pl-6">
+                                        <div className="font-semibold mb-6">
                                             Received by:
                                         </div>
                                         <div>
@@ -305,7 +361,9 @@ export default function InspectionForm(props) {
                                                 Date:{" "}
                                                 <font className="font-semibold">
                                                     {returnedItemsData
-                                                        ? returnedItemsData.created_at
+                                                        ? formatDateDisplay(
+                                                              returnedItemsData.created_at
+                                                          )
                                                         : ""}
                                                 </font>
                                             </p>
@@ -332,11 +390,7 @@ export default function InspectionForm(props) {
                                         </label>
                                         <textarea
                                             disabled
-                                            value={
-                                                returnedItemsInfo
-                                                    ? returnedItemsInfo.pre_nature
-                                                    : ""
-                                            }
+                                            value={preNature}
                                             name=""
                                             id="natureScope"
                                             className=" bg-white w-full rounded-lg underline h-14 text-base outline-none resize-none"
@@ -351,11 +405,7 @@ export default function InspectionForm(props) {
                                         </label>
                                         <textarea
                                             disabled
-                                            value={
-                                                returnedItemsInfo
-                                                    ? returnedItemsInfo.pre_parts
-                                                    : ""
-                                            }
+                                            value={preParts}
                                             name=""
                                             id="supplied"
                                             className=" bg-white w-full rounded-lg underline h-14 text-base outline-none resize-none"
@@ -365,32 +415,70 @@ export default function InspectionForm(props) {
 
                                 {/* personnel pre */}
                                 <div className="flex mt-2">
-                                    <div className="w-1/3">
-                                        <div className="font-semibold mb-10">
+                                    <div className="w-1/3 flex-none pr-6">
+                                        <div className="font-semibold mb-6">
                                             Inspected by:
                                         </div>
                                         <div>
-                                            <h5 className="font-semibold">
-                                                {PreInspection}
-                                            </h5>
-                                            <p>{defaultxt}</p>
+                                            {PreInspection != null ? (
+                                                <>
+                                                    <h5 className="font-semibold">
+                                                        {userNamesMapper(
+                                                            users,
+                                                            PreInspection,
+                                                            "name"
+                                                        )}
+                                                    </h5>
+                                                    <p>
+                                                        {userNamesMapper(
+                                                            users,
+                                                            PreInspection,
+                                                            "designation"
+                                                        )}
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                "Not inspected yet."
+                                            )}
                                         </div>
                                     </div>
-                                    <div className="w-1/3 flex flex-col items-center text-center justify-end">
-                                        <div>{defaultxt}</div>
-                                        <div className="font-base mb-4 border-t-2 border-darkColor-700 w-52">
+                                    <div className="w-1/3 flex-none flex flex-col items-center text-center justify-end">
+                                        <div>
+                                            {returnedItemsInfo
+                                                ? formatDateDisplay(
+                                                      returnedItemsInfo.updated_at
+                                                  )
+                                                : ""}
+                                        </div>
+                                        <div className="font-base border-t-2 border-darkColor-700 w-52">
                                             Date
                                         </div>
                                     </div>
-                                    <div className="w-1/3 pl-8">
-                                        <div className="font-semibold mb-10">
+                                    <div className="w-1/3 flex-none pl-6">
+                                        <div className="font-semibold mb-6">
                                             Approved by:{" "}
                                         </div>
                                         <div>
-                                            <h5 className="font-semibold">
-                                                {PreApproved}
-                                            </h5>
-                                            <p>{defaultxt}</p>
+                                            {PreApproved != null ? (
+                                                <>
+                                                    <h5 className="font-semibold">
+                                                        {userNamesMapper(
+                                                            users,
+                                                            PreApproved,
+                                                            "name"
+                                                        )}
+                                                    </h5>
+                                                    <p>
+                                                        {userNamesMapper(
+                                                            users,
+                                                            PreApproved,
+                                                            "designation"
+                                                        )}
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                "Not approved yet."
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -414,13 +502,9 @@ export default function InspectionForm(props) {
                                         <textarea
                                             disabled
                                             name=""
-                                            value={
-                                                returnedItemsInfo
-                                                    ? returnedItemsInfo.post_findings
-                                                    : ""
-                                            }
+                                            value={postfindings}
                                             id="natureScope"
-                                            className=" bg-white w-full rounded-lg underline h-14 py-2 px-3 text-lg outline-none resize-none"
+                                            className=" bg-white w-full rounded-lg underline h-14 text-lg outline-none resize-none"
                                         ></textarea>
                                     </div>
                                 </div>
@@ -430,28 +514,58 @@ export default function InspectionForm(props) {
                                     <div className="w-2/3 flex flex-col items-center text-center justify-end">
                                         <div>
                                             {returnedItemsInfo
-                                                ? returnedItemsInfo.created_at
-                                                : ""}
+                                                ? formatDateDisplay(
+                                                      returnedItemsInfo.updated_at
+                                                  )
+                                                : "Not yet inspected."}
                                         </div>
                                         <div className="font-base mb-4 border-t-2 border-darkColor-700 w-52">
                                             Date
                                         </div>
                                     </div>
                                     <div className="w-2/3 pl-16">
-                                        <div className="font-semibold mb-4">
+                                        <div className="font-semibold mb-6">
                                             Pre-inspected by:{" "}
                                         </div>
                                         <div className="mb-6">
                                             <h5 className="font-semibold">
-                                                {PreInspection}
+                                                {PreInspection != null
+                                                    ? userNamesMapper(
+                                                          users,
+                                                          PreInspection,
+                                                          "name"
+                                                      )
+                                                    : "Not yet inspected."}
                                             </h5>
-                                            <p>{defaultxt}</p>
+                                            <p>
+                                                {PreInspection != null
+                                                    ? userNamesMapper(
+                                                          users,
+                                                          PreInspection,
+                                                          "designation"
+                                                      )
+                                                    : "Please update the form."}
+                                            </p>
                                         </div>
                                         <div>
                                             <h5 className="font-semibold">
-                                                {postApproved}
+                                                {postApproved != null
+                                                    ? userNamesMapper(
+                                                          users,
+                                                          postApproved,
+                                                          "name"
+                                                      )
+                                                    : "Not yet inspected."}
                                             </h5>
-                                            <p>{defaultxt}</p>
+                                            <p>
+                                                {postApproved != null
+                                                    ? userNamesMapper(
+                                                          users,
+                                                          postApproved,
+                                                          "designation"
+                                                      )
+                                                    : "Please update the form."}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -515,7 +629,7 @@ export default function InspectionForm(props) {
                                 </option>
                                 <option
                                     id="Ready for Return"
-                                    value="Ready for Retur"
+                                    value="Ready for Return"
                                 >
                                     Ready for Return
                                 </option>
@@ -543,7 +657,7 @@ export default function InspectionForm(props) {
                                 name=""
                                 id="pre_natureScope"
                                 onChange={natureScope}
-                                className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"
+                                className="border border-sc w-full rounded-lg h-24 py-2 px-3 text-base outline-none"
                             ></textarea>
                         </div>
 
@@ -559,7 +673,7 @@ export default function InspectionForm(props) {
                                 name=""
                                 id="pre_parts"
                                 onChange={prePartsChange}
-                                className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"
+                                className="border border-sc w-full rounded-lg h-24 py-2 px-3 text-base outline-none"
                             ></textarea>
                         </div>
 
@@ -578,7 +692,9 @@ export default function InspectionForm(props) {
                                     id="pre_inspectedByDropdown"
                                     className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                                 >
-                                    <option value="none">None</option>
+                                    <option key={0} value="none">
+                                        None
+                                    </option>
                                     {users ? userMapper(users) : ""}
                                 </select>
                             </div>
@@ -601,9 +717,10 @@ export default function InspectionForm(props) {
                                     id="pre_approvedByDropdown"
                                     className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                                 >
-                                    <option value="none">None</option>
+                                    <option key={0} value="none">
+                                        None
+                                    </option>
                                     {users ? userMapper(users) : ""}
-                                    {defaultxt}
                                 </select>
                             </div>
 
@@ -615,11 +732,7 @@ export default function InspectionForm(props) {
                                     Date
                                 </label>
                                 <input
-                                    value={
-                                        returnedItemsInfo
-                                            ? returnedItemsInfo.updated_at
-                                            : ""
-                                    }
+                                    value={PreDate}
                                     type="date"
                                     name=""
                                     onChange={preDate}
@@ -650,15 +763,11 @@ export default function InspectionForm(props) {
                                     Findings:
                                 </label>
                                 <textarea
-                                    value={
-                                        returnedItemsInfo
-                                            ? returnedItemsInfo.post_findings
-                                            : ""
-                                    }
+                                    value={postfindings}
                                     name=""
                                     id="post_findings"
                                     onChange={postFindings}
-                                    className="border border-sc w-full rounded-lg h-24 py-2 px-4 text-base outline-none"
+                                    className="border border-sc w-full rounded-lg h-24 py-2 px-3 text-base outline-none"
                                 ></textarea>
                             </div>
 
@@ -671,19 +780,16 @@ export default function InspectionForm(props) {
                                         Approved By
                                     </label>
                                     <select
-                                        value={
-                                            returnedItemsInfo
-                                                ? returnedItemsInfo.post_approved
-                                                : ""
-                                        }
+                                        value={postApproved}
                                         onChange={PostApproved}
                                         name=""
                                         id="post_inspectedByDropdown"
                                         className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                                     >
-                                        <option value="none">None</option>
+                                        <option key={0} value="none">
+                                            None
+                                        </option>
                                         {users ? userMapper(users) : ""}
-                                        {defaultxt}
                                     </select>
                                 </div>
 
@@ -695,6 +801,7 @@ export default function InspectionForm(props) {
                                         Date
                                     </label>
                                     <input
+                                        value={PostDate}
                                         type="date"
                                         name=""
                                         onChange={postDate}

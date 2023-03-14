@@ -251,7 +251,7 @@ export default function Dashboard({ className }) {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col flex-auto 2xl:space-y-2 xl:space-y-1 space-y-1 text-[#434343] dark:text-white 2xl:pt-1">
+                    <div className="flex flex-col flex-auto 2xl:space-y-2 xl:space-y-1 space-y-1 text-[#434343] dark:text-white">
                         <div className="font-semibold">Annual Summary</div>
                         <div className="rounded-2xl border border-[#DDDDDD] dark:border-[#434343] h-full w-full bg-white dark:bg-darkColor-800 space-y-3">
                             <div className="relative w-full h-full 2xl:py-6 xl:py-4 py-4 2xl:px-8 xl:px-5 px-5">
@@ -261,7 +261,7 @@ export default function Dashboard({ className }) {
                     </div>
                 </div>
 
-                <div className="flex flex-col 2xl:w-1/3 xl:w-[30%] w-[35%] h-full 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pl-10 xl:pl-5 pl-5">
+                <div className="flex flex-col 2xl:w-1/3 xl:w-[30%] w-[35%] h-full 2xl:space-y-7 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pl-10 xl:pl-5 pl-5">
                     <div className="h-96 rounded-xl 2xl:space-y-3 xl:space-y-2 space-y-2">
                         <div className="flex justify-between content-center">
                             <div className="font-semibold 2xl:text-lg xl:text-base text-[#434343] dark:text-white">
@@ -270,14 +270,14 @@ export default function Dashboard({ className }) {
                         </div>
                         {Loading ? (
                             <div className="flex items-center justify-center cursor-default">
-                                <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 rounded-full w-[300px] h-[300px]">
+                                <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 dark:bg-darkColor-900 rounded-full w-[300px] h-[300px]">
                                     <img
                                         src="./img/no_data.png"
                                         alt="no data"
                                         className="w-52"
                                         draggable="false"
                                     />
-                                    <strong className="text-text-gray-2 text-sm">
+                                    <strong className="text-text-gray-2 dark:text-lightColor-800 text-sm">
                                         You haven't been issued yet
                                     </strong>
                                 </div>
@@ -289,10 +289,10 @@ export default function Dashboard({ className }) {
                     </div>
 
                     <div className="2xl:space-y-1">
-                        <div className="text-[#011284] dark:text-[#476aca] 2xl:text-sm xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
+                        <div className="text-[#011284] dark:text-[#476aca] 2xl:text-xs xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
                             Predicted Total Cost for this year.
                         </div>
-                        <div className="font-bold text-[#434343] dark:text-white 2xl:text-2xl xl:text-lg text-lg xl:pb-1">
+                        <div className="font-bold text-[#434343] dark:text-white 2xl:text-xl xl:text-lg text-lg 2xl:pb-2 xl:pb-1">
                             Total Cost
                         </div>
                         <div className="flex 2xl:h-64 xl:h-40 h-40 py-4 px-7 rounded-2xl bg-card-3 bg-cover bg-center">

@@ -143,15 +143,15 @@ export default function Pending({ className }) {
                     {/* Display pagination */}
                     <ul className="h-5/6 flex flex-col w-full items-center space-y-3 z-30">
                         {Loading ? <div className="flex items-center justify-center cursor-default">
-                                    <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 rounded-full w-[300px] h-[300px]">
+                                    <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 dark:bg-darkColor-900 rounded-full w-[300px] h-[300px]">
                                         <img src="./img/no_data.png" alt="no data" className="w-52" draggable="false" />
-                                        <strong className="text-text-gray-2 text-sm">You haven't been issued yet</strong>
+                                        <strong className="text-text-gray-2 dark:text-lightColor-800 text-sm">You haven't been issued yet</strong>
                                     </div>
                                 </div> : pendingItemsMapper(pendingItems)}
                         {pendingItems?.length === 0 ? <><div className="flex items-center justify-center cursor-default">
-                                    <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 rounded-full w-[300px] h-[300px]">
+                                    <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 dark:bg-darkColor-900 rounded-full w-[300px] h-[300px]">
                                         <img src="./img/no_data.png" alt="no data" className="w-52" draggable="false" />
-                                        <strong className="text-text-gray-2 text-sm">You haven't been issued yet</strong>
+                                        <strong className="text-text-gray-2 dark:text-lightColor-800 text-sm">You haven't been issued yet</strong>
                                     </div>
                                 </div></> : ''}
                     </ul>

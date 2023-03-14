@@ -9,6 +9,7 @@ export default function ICSTable({ className }) {
     const [Loading, setLoading] = useState(true);
     const [UserLists, setUserLists] = useState();
     const [IcsControl, setIcsControl] = useState();
+    const [IcsDetails, setIcsDetails] = useState();
     const [totalPrice, setTotalPrice] = useState();
 
     const user = localStorage.getItem("localSession");
@@ -42,6 +43,7 @@ export default function ICSTable({ className }) {
             });
             const data = response.data;
             setIcsControl(data.ics_controls);
+            setIcsDetails(data.ics_details);
             setTotalPrice(data.total_price);
         } catch (e) {
             console.log(e);
@@ -76,6 +78,7 @@ export default function ICSTable({ className }) {
             {openForms === "ics-control" ? (
                 <ICSControl
                     icsControl={IcsControl ? IcsControl : ""}
+                    icsDetails={IcsDetails ? IcsDetails : ""}
                     totalPrice={totalPrice ? totalPrice : ""}
                     clickForms={clickForms}
                     className={""}

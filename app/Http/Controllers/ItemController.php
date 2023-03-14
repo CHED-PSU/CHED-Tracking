@@ -484,6 +484,17 @@ class ItemController extends Controller
             ->where('ut.status', 'stand_by')
             ->get();
 
-        return response()->json(['unserviceableItems' => $items]);
+        $status = DB::table('unserviceable_items as ut')
+            ->select('u.firstname', 'u.surname', 'pi.code', 'pi.description', 't.created_at', 'ut.remarks', 'ut.id')
+            ->join('inventory_tracking as it', 'it.id', '=', 'ut.inventory_tracking_id')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->join('trackings as t', 't.id', '=', 'it.trackings_id')
+            ->join('users as u', 'u.id', '=', 't.received_by')
+            ->where('ut.status', $req->input('status'))
+            ->first();
+
+        return response()->json(['unserviceableItems' => $items, 'unserviceableStatus' => $status]);
     }
 }

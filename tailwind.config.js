@@ -7,7 +7,7 @@ module.exports = {
           colors: {
               "active-page": "#5E37FF",
               "app-bg": "#F0F2F5",
-              "primary": "#011284",
+              "primary": "#0049AF",
               "lightPri": "#4F6DFF",
               "purple-bg": "#C2CDFF",
 
@@ -74,6 +74,8 @@ module.exports = {
               dark: "0 0px 12px rgba(0, 0, 0, 0.1)",
               card1: "0px 5px 10px rgba(71, 93, 241, 0.7)",
               card2: "0px 5px 10px rgba(252, 97, 145, 0.75)",
+              pageIn: "0 0 10px rgba(0, 73, 175, 0.75)",
+              pageInD: "0 0 10px rgba(71, 106, 202, 0.6)"
           },
           backgroundImage: {
               "card-1": "url('../../public/img/card_1.png')",

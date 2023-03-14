@@ -33,10 +33,10 @@ export default function ICSDetails(props) {
                         {data.quantity * data.price}
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div className="font-semibold">{data.description}</div>
+                        <div className="font-semibold">{data.article}</div>
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div>{data.property_no}</div>
+                        <div>{data.description}</div>
                     </td>
                     <td className="text-left px-2 border"></td>
                     <td className="text-center px-2 border">{data.eul}</td>
@@ -50,6 +50,7 @@ export default function ICSDetails(props) {
             {openSticker === "open" ? (
                 <InventorySticker
                     className={""}
+                    formDetails={props.formDetails}
                     icsItems={props.icsItems}
                     clickSticker={clickSticker}
                 />
