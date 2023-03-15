@@ -20,7 +20,7 @@ export default function InventorySticker(props) {
     }
 
     function clickAlert(index) {
-        setOpenAlert(true)
+        setOpenAlert(true);
         setAlertIcon("exclamation");
         setAlertHeader("No selected items.");
         setAlertDesc("Please select an item on the checkbox.");
@@ -78,7 +78,9 @@ export default function InventorySticker(props) {
             setSelectedMultipleIds([...selectedMultipleIds, itemId]);
         } else {
             // Remove the selected item ID from the array
-            setSelectedMultipleIds(selectedMultipleIds.filter((id) => id !== itemId));
+            setSelectedMultipleIds(
+                selectedMultipleIds.filter((id) => id !== itemId)
+            );
         }
 
         // Check if all checkboxes are checked or not
@@ -108,56 +110,66 @@ export default function InventorySticker(props) {
         setSelectSingleIds([itemId]);
     };
 
-
     console.log(selectedMultipleIds);
     console.log(selectSingleIds);
 
     const icsItemsMapper = (items) => {
         return items?.map((data) => {
             return (
-                <tr key={data.id} className="avoid text-xs h-fit
-                 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                    <td className="h-full">
-                        <div className="flex justify-center item-center">
-                            <input
-                                type="checkbox"
-                                className="u_items"
-                                value={data.id}
-                                onChange={handleSelectItem}
-                            />
-                        </div>
-                    </td>
-                    <td className="text-center px-3 border">{data.quantity}</td>
-                    <td className="text-center px-3 border">{data.unit}</td>
-                    <td className="text-center px-3 border">
-                        {data.quantity * data.price}
-                    </td>
-                    <td className="text-left px-3 py-3 border">
-                        <div className="font-semibold">{data.article}</div>
-                    </td>
-                    <td className="text-left px-3 py-3 border">
-                        <div>{data.description}</div>
-                    </td>
-                    <td className="text-left px-3 border"></td>
-                    <td className="flex justify-center items-center px-2 h-14">
-                        <button
-                            className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
-                            onClick={() => { handleSelectSingleItem(data.id); clickPreview("open"); }}
-                        >
-                            <i className="fa-regular fa-note-sticky"></i>
-                        </button>
-                    </td>
-                </tr>
+                <>
+                    <tr
+                        key={data.id}
+                        className="avoid text-xs h-fit
+                 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
+                    >
+                        <td className="h-full">
+                            <div className="flex justify-center item-center">
+                                <input
+                                    type="checkbox"
+                                    className="u_items"
+                                    value={data.id}
+                                    onChange={handleSelectItem}
+                                />
+                            </div>
+                        </td>
+                        <td className="text-center px-3 border">
+                            {data.quantity}
+                        </td>
+                        <td className="text-center px-3 border">{data.unit}</td>
+                        <td className="text-center px-3 border">
+                            {data.quantity * data.price}
+                        </td>
+                        <td className="text-left px-3 py-3 border">
+                            <div className="font-semibold">{data.article}</div>
+                        </td>
+                        <td className="text-left px-3 py-3 border">
+                            <div>{data.description}</div>
+                        </td>
+                        <td className="flex justify-center items-center px-2 h-14">
+                            <button
+                                className="flex justify-center items-center gap-2 w-fit h-8 py-4 px-3 text-[14px] text-text-black rounded-full default-btn"
+                                onClick={() => {
+                                    handleSelectSingleItem(data.id);
+                                    clickPreview("open");
+                                }}
+                            >
+                                <i className="fa-solid fa-print"></i>
+                                <p className="text-xs font-semibold">Print Item</p>
+                            </button>
+                        </td>
+                    </tr>
+                </>
             );
         });
     };
 
-    const selectedIds = selectSingleIds != "" ? selectSingleIds : selectedMultipleIds;
+    const selectedIds =
+        selectSingleIds != "" ? selectSingleIds : selectedMultipleIds;
 
     function formatDateDisplay(dateString) {
         const date = new Date(dateString);
-        const month = date.toLocaleString('default', { month: 'short' });
-        const day = date.getDate().toString().padStart(2, '0');
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
         const year = date.getFullYear();
         return `${month} ${day}, ${year}`;
     }
@@ -166,54 +178,85 @@ export default function InventorySticker(props) {
         return items?.map((data) => {
             if (selectedItems.includes(data.id)) {
                 return (
-                    <div key={data.id} className="flex-none border-2 border-black w-[2.9in] avoid">
+                    <div
+                        key={data.id}
+                        className="flex-none border-2 border-black w-[2.9in] avoid"
+                    >
                         <div className="flex items-center bg-amber-400 py-2">
                             <MiniLogo className="w-14 h-14" />
                             <div className="w-full">
                                 <div className="w-[180px] text-[8px] font-medium text-center">
                                     <h6>Republic of the Philippines</h6>
                                     <h6>OFFICE OF THE PRESIDENT</h6>
-                                    <h5 className="text-[9px] font-semibold">COMMISSION ON HIGHER EDUCATION</h5>
+                                    <h5 className="text-[9px] font-semibold">
+                                        COMMISSION ON HIGHER EDUCATION
+                                    </h5>
                                     <h6>REGIONAL OFFICE XI</h6>
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-black text-white text-ss font-bold text-center">PROPERTY INVENTORY STICKER</div>
+                        <div className="bg-black text-white text-ss font-bold text-center">
+                            PROPERTY INVENTORY STICKER
+                        </div>
                         <div className="bg-neutral-300 px-1">
-                            <div className="text-[7px] font-medium py-1">Sticker No. LDP-001</div>
+                            <div className="text-[7px] font-medium py-1">
+                                Sticker No. LDP-001
+                            </div>
                             <table className="text-[5px]">
                                 <tbody>
                                     <tr>
                                         <td className="h-3 w-16">ARTICLE</td>
-                                        <td className="text-[8px] font-semibold">: {data.article}</td>
+                                        <td className="text-[8px] font-semibold">
+                                            : {data.article}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="h-3">DESCRIPTION</td>
-                                        <td className="text-[8px] font-medium flex">:&nbsp;<p className="w-[185px] truncate">{data.description}</p></td>
+                                        <td className="text-[8px] font-medium flex">
+                                            :&nbsp;
+                                            <p className="w-[185px] truncate">
+                                                {data.description}
+                                            </p>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="h-3">SERIAL NO.</td>
-                                        <td className="text-[8px] font-medium">: {data.property_no}</td>
+                                        <td className="text-[8px] font-medium">
+                                            : {data.property_no}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="h-3">PROPERTY CODE</td>
-                                        <td className="text-[8px] font-medium">: {props.formDetails.ics_no}</td>
+                                        <td className="text-[8px] font-medium">
+                                            : {props.formDetails.ics_no}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="h-3">DATE ACQUIRED</td>
-                                        <td className="text-[8px] font-medium">: {formatDateDisplay(props.formDetails.issued_date)}</td>
+                                        <td className="text-[8px] font-medium">
+                                            :{" "}
+                                            {formatDateDisplay(
+                                                props.formDetails.issued_date
+                                            )}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="h-3">AMOUNT</td>
-                                        <td className="text-[8px] font-medium">: {data.price}</td>
+                                        <td className="text-[8px] font-medium">
+                                            : {data.price}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="h-3">ISSUED TO</td>
-                                        <td className="text-[8px] font-medium">: {props.formDetails.received}</td>
+                                        <td className="text-[8px] font-medium">
+                                            : {props.formDetails.received}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="h-3">INSPECTED BY</td>
-                                        <td className="text-[8px] font-medium">: {props.formDetails.issued}</td>
+                                        <td className="text-[8px] font-medium">
+                                            : {props.formDetails.issued}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -221,17 +264,25 @@ export default function InventorySticker(props) {
                         <table className="w-full">
                             <thead>
                                 <tr className="text-[8px] border-y-2 border-black">
-                                    <th className="bg-black text-white">Year</th>
+                                    <th className="bg-black text-white">
+                                        Year
+                                    </th>
                                     <th className="bg-amber-400">2021</th>
-                                    <th className="bg-black text-white">2022</th>
+                                    <th className="bg-black text-white">
+                                        2022
+                                    </th>
                                     <th className="bg-amber-400">2023</th>
-                                    <th className="bg-black text-white">2024</th>
+                                    <th className="bg-black text-white">
+                                        2024
+                                    </th>
                                     <th className="bg-amber-400">2025</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr className="border-y border-black">
-                                    <td className="text-[8px] text-center border-r border-black font-semibold w-20">COA</td>
+                                    <td className="text-[8px] text-center border-r border-black font-semibold w-20">
+                                        COA
+                                    </td>
                                     <td className="border-r border-black"></td>
                                     <td className="border-r border-black"></td>
                                     <td className="border-r border-black"></td>
@@ -239,28 +290,42 @@ export default function InventorySticker(props) {
                                     <td></td>
                                 </tr>
                                 <tr className="border-y border-black">
-                                    <td className="border-r border-black text-[8px] text-center font-semibold">CHEDROXI</td>
-                                    <td className="border-r border-black text-[6px] font-medium">JBASISTER</td>
-                                    <td className="border-r border-black text-[6px] font-medium">JBASISTER</td>
-                                    <td className="border-r border-black text-[6px] font-medium">JBASISTER</td>
-                                    <td className="border-r border-black text-[6px] font-medium">JBASISTER</td>
+                                    <td className="border-r border-black text-[8px] text-center font-semibold">
+                                        CHEDROXI
+                                    </td>
+                                    <td className="border-r border-black text-[6px] font-medium">
+                                        JBASISTER
+                                    </td>
+                                    <td className="border-r border-black text-[6px] font-medium">
+                                        JBASISTER
+                                    </td>
+                                    <td className="border-r border-black text-[6px] font-medium">
+                                        JBASISTER
+                                    </td>
+                                    <td className="border-r border-black text-[6px] font-medium">
+                                        JBASISTER
+                                    </td>
                                     <td className="text-[6px]">JBASISTER</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div className="text-[7px] text-black font-semibold bg-amber-400 py-1 px-1">NOTE: PLEASE DO NOT REMOVE</div>
-                        <div className="bg-black text-white text-[5px] text-center py-1">UNAUTHORIZED REMOVAL OR TAMPERING WILL BE SUBJECTED TO DISCIPLINARY ACTION.</div>
+                        <div className="text-[7px] text-black font-semibold bg-amber-400 py-1 px-1">
+                            NOTE: PLEASE DO NOT REMOVE
+                        </div>
+                        <div className="bg-black text-white text-[5px] text-center py-1">
+                            UNAUTHORIZED REMOVAL OR TAMPERING WILL BE SUBJECTED
+                            TO DISCIPLINARY ACTION.
+                        </div>
                     </div>
                 );
             } else {
                 return null;
             }
         });
-    }
+    };
 
     return (
         <div className={props.className}>
-
             {openAlert ? (
                 <Alert
                     alertIcon={alertIcon}
@@ -304,21 +369,23 @@ export default function InventorySticker(props) {
                                     Print
                                 </button>
                             </div>
-
                         </div>
 
                         <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10 p-8 flex justify-center w-[8in]">
-                            <div ref={stickerRef} className="relative max-w-[6.15in] h-fit flex flex-wrap gap-8">
-
-                                {props.icsItems?.length !== 0 ? (
-                                    stickerMapper(Object.values(props.icsItems), selectedIds)
-                                ) : ("")}
-
+                            <div
+                                ref={stickerRef}
+                                className="relative max-w-[6.15in] h-fit flex flex-wrap gap-8"
+                            >
+                                {props.icsItems?.length !== 0
+                                    ? stickerMapper(
+                                          Object.values(props.icsItems),
+                                          selectedIds
+                                      )
+                                    : ""}
                             </div>
                         </div>
                     </div>
                 </div>
-
             ) : (
                 ""
             )}
@@ -326,7 +393,7 @@ export default function InventorySticker(props) {
             <div className="z-40 w-full h-full bg-neutral-800 bg-opacity-75 fixed top-0 right-0 flex justify-center items-center">
                 <div
                     ref={modalBody}
-                    className="bg-white w-fit p-8 space-y-4 rounded-2xl flex flex-col items-left"
+                    className="bg-white w-fit p-8 space-y-4 rounded-xl flex flex-col items-left"
                 >
                     <div
                         onClick={() => props.clickSticker("close")}
@@ -334,11 +401,18 @@ export default function InventorySticker(props) {
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </div>
+                    <div className="text-center cursor-default flex flex-col gap-1 pb-2">
+                        <h4 className="text-primary dark:text-white text-2xl font-semibold">
+                            Print Sticker
+                        </h4>
+                        <p className="text-sm text-text-gray dark:text-neutral-300">
+                            You may print an <b>Inventory Sticker</b> here.
+                        </p>
+                    </div>
                     <div className="w-full flex justify-end  items-center">
-
                         <button
                             id="multipleSelectionButton"
-                            className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
+                            className="flex justify-center items-center gap-2 px-3 w-fit h-10 py-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => {
                                 if (selectedMultipleIds.length > 0) {
                                     clickPreview("open");
@@ -348,61 +422,63 @@ export default function InventorySticker(props) {
                                 handleSelectSingleItem("");
                             }}
                         >
-                            <i className="fa-regular fa-note-sticky"></i>
+                            <i className="fa-solid fa-print"></i>
+                            <p className="font-semibold">Print Selected</p>
                         </button>
                     </div>
-                    <table className="w-full">
-                        <thead>
-                            <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                <th className="h-10 w-14 font-medium flex justify-center">
-                                    <div className="flex item-center">
-                                        <input
-                                            type="checkbox"
-                                            className=""
-                                            id="select-all"
-                                            onChange={handleSelectAll}
-                                        />
-                                    </div>
-                                </th>
-                                <th className="h-10 w-14 px-3 font-medium border">
-                                    Qty
-                                </th>
-                                <th className="h-10 w-16 px-3 font-medium border">
-                                    Unit
-                                </th>
-                                <th className="h-10 px-3 font-medium border">
-                                    Amount
-                                </th>
-                                <th
-                                    colSpan={2}
-                                    className="h-10 px-3 font-medium border"
-                                >
-                                    Description
-                                </th>
-                                <th className="h-10 px-3 font-medium border">
-                                    Inventory Item No.
-                                </th>
-                                <th className="h-10 w-32 font-medium text-center">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/*item*/}
-                            {props.icsItems?.length !== 0 ? (
-                                icsItemsMapper(Object.values(props.icsItems))
-                            ) : (
-                                <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                    <td
-                                        colSpan={7}
-                                        className="text-center py-2 px-2 border"
+                    <div className="max-h-[500px] overflow-y-auto">
+                        <table className="w-full">
+                            <thead>
+                                <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                    <th className="h-10 w-14 font-medium flex justify-center">
+                                        <div className="flex item-center">
+                                            <input
+                                                type="checkbox"
+                                                className=""
+                                                id="select-all"
+                                                onChange={handleSelectAll}
+                                            />
+                                        </div>
+                                    </th>
+                                    <th className="h-10 w-14 px-3 font-medium border">
+                                        Qty
+                                    </th>
+                                    <th className="h-10 w-16 px-3 font-medium border">
+                                        Unit
+                                    </th>
+                                    <th className="h-10 px-3 font-medium border">
+                                        Amount
+                                    </th>
+                                    <th
+                                        colSpan={2}
+                                        className="h-10 px-3 font-medium border"
                                     >
-                                        There is no data yet.
-                                    </td>
+                                        Description
+                                    </th>
+                                    <th className="h-10 w-32 font-medium text-center">
+                                        Actions
+                                    </th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {/*item*/}
+                                {props.icsItems?.length !== 0 ? (
+                                    icsItemsMapper(
+                                        Object.values(props.icsItems)
+                                    )
+                                ) : (
+                                    <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                        <td
+                                            colSpan={7}
+                                            className="text-center py-2 px-2 border"
+                                        >
+                                            There is no data yet.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

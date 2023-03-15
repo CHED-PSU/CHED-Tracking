@@ -83,9 +83,6 @@ export default function GuestIndex() {
         }
 
         //
-
-
-
         // navigate("/dashboard")
     }
 
@@ -97,6 +94,7 @@ export default function GuestIndex() {
                         Username/Email Address
                     </label>
                     <input
+                        maxLength={12}
                         type="text"
                         name="username"
                         id="username"
@@ -116,6 +114,7 @@ export default function GuestIndex() {
                         Password
                     </label>
                     <input
+                        maxLength={12}
                         type="password"
                         name="password"
                         id="password"

@@ -117,13 +117,6 @@ export default function InspectionForm(props) {
             });
     };
 
-    useEffect(() => {
-        if (users) {
-            const userNames = userNamesMapper(users, PreInspection);
-            console.log(userNames);
-        }
-    }, [users, PreInspection]);
-
     const userMapper = (user) => {
         return user.map((data) => {
             return (
@@ -221,14 +214,14 @@ export default function InspectionForm(props) {
                     <div className="bg-white dark:bg-darkColor-900 border w-fit h-fit border-[#C8C8C8] p-[0.5in]">
                         <div
                             ref={ref}
-                            className="avoid w-[8.27in] px-6 space-y-5"
+                            className="avoid w-[8.27in] h-[11.69in] px-10 py-3 space-y-5"
                         >
                             {/* header */}
                             <div className="text-center">
-                                <div className="text-sm font-medium">
+                                <div className="text-xs font-medium">
                                     Commission on Higher Education
                                 </div>
-                                <div className="text-sm font-medium">
+                                <div className="text-xs font-medium">
                                     Regional Office XI
                                 </div>
                                 <div className="text-sm font-semibold">
@@ -254,11 +247,19 @@ export default function InspectionForm(props) {
                                 <div className="text-base font-semibold mt-3 mb-3">
                                     REQUEST FOR INSPECTION and REPAIR
                                 </div>
-                                <div className="text-left text-sm flex justify-between font-medium mb-4">
+                                <div className="text-left text-xs font-medium">Description of Property </div>
+                                <div className="text-left text-xs flex justify-between font-medium mb-2">
                                     <div className="">
-                                        <div>Description of Property </div>
                                         <div>
                                             Type No:{" "}
+                                            <font className="font-semibold">
+                                                {returnedItemsData
+                                                    ? returnedItemsData.abbr
+                                                    : ""}
+                                            </font>
+                                        </div>
+                                        <div>
+                                            Serial No.:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
                                                     ? returnedItemsData.abbr
@@ -300,11 +301,11 @@ export default function InspectionForm(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="text-left mb-3">
-                                    <div className="font-semibold text-base">
+                                <div className="text-left mb-2">
+                                    <div className="font-semibold text-sm">
                                         DEFECT:
                                     </div>
-                                    <div className="underline text-justify h-14">
+                                    <div className="underline text-sm text-justify h-16">
                                         {returnedItemsData
                                             ? returnedItemsData.defect
                                             : ""}
@@ -313,10 +314,10 @@ export default function InspectionForm(props) {
                                 {/* personnel req */}
                                 <div className="flex text-left">
                                     <div className="w-1/3 flex-none pr-6">
-                                        <div className="font-semibold mb-6">
+                                        <div className="font-semibold text-sm mb-6">
                                             Request by:
                                         </div>
-                                        <div>
+                                        <div className="text-sm">
                                             <h5 className="font-semibold">
                                                 {returnedItemsData
                                                     ? returnedItemsData.reqF +
@@ -333,7 +334,7 @@ export default function InspectionForm(props) {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="w-1/3 flex-none flex flex-col items-center text-center justify-end">
+                                    <div className="w-1/3 flex-none flex flex-col text-sm items-center text-center justify-end">
                                         <div>
                                             {returnedItemsData
                                                 ? formatDateDisplay(
@@ -345,7 +346,7 @@ export default function InspectionForm(props) {
                                             Date
                                         </div>
                                     </div>
-                                    <div className="w-1/3 flex-none pl-6">
+                                    <div className="w-1/3 flex-none pl-6 text-sm">
                                         <div className="font-semibold mb-6">
                                             Received by:
                                         </div>
@@ -377,14 +378,14 @@ export default function InspectionForm(props) {
                             {/* pre inspection */}
                             <div className="pt-5 overflow-y-auto border-t-2 border-black">
                                 <div className="content">
-                                    <div className="text-base text-center font-semibold">
+                                    <div className="text-base text-center font-semibold mb-2">
                                         PRE INSPECTION
                                     </div>
 
-                                    <div className="mt-2">
+                                    <div className=" mb-2">
                                         <label
                                             htmlFor="natureScope"
-                                            className="text-base font-semibold"
+                                            className="text-sm font-semibold"
                                         >
                                             Nature and Scope of work to be done:{" "}
                                         </label>
@@ -393,13 +394,13 @@ export default function InspectionForm(props) {
                                             value={preNature}
                                             name=""
                                             id="natureScope"
-                                            className=" bg-white w-full rounded-lg underline h-14 text-base outline-none resize-none"
+                                            className=" bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
                                         ></textarea>
                                     </div>
-                                    <div className="mt-2">
+                                    <div className=" mb-2">
                                         <label
                                             htmlFor="natureScope"
-                                            className="text-base font-semibold"
+                                            className="text-sm font-semibold"
                                         >
                                             Parts to be supplied / replaced:
                                         </label>
@@ -408,14 +409,14 @@ export default function InspectionForm(props) {
                                             value={preParts}
                                             name=""
                                             id="supplied"
-                                            className=" bg-white w-full rounded-lg underline h-14 text-base outline-none resize-none"
+                                            className=" bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
                                         ></textarea>
                                     </div>
                                 </div>
 
                                 {/* personnel pre */}
-                                <div className="flex mt-2">
-                                    <div className="w-1/3 flex-none pr-6">
+                                <div className="flex">
+                                    <div className="w-1/3 flex-none pr-6 text-sm">
                                         <div className="font-semibold mb-6">
                                             Inspected by:
                                         </div>
@@ -442,7 +443,7 @@ export default function InspectionForm(props) {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="w-1/3 flex-none flex flex-col items-center text-center justify-end">
+                                    <div className="w-1/3 flex-none flex flex-col items-center text-sm text-center justify-end">
                                         <div>
                                             {returnedItemsInfo
                                                 ? formatDateDisplay(
@@ -454,7 +455,7 @@ export default function InspectionForm(props) {
                                             Date
                                         </div>
                                     </div>
-                                    <div className="w-1/3 flex-none pl-6">
+                                    <div className="w-1/3 flex-none pl-6 text-sm">
                                         <div className="font-semibold mb-6">
                                             Approved by:{" "}
                                         </div>
@@ -495,7 +496,7 @@ export default function InspectionForm(props) {
                                     <div className="mt-2">
                                         <label
                                             htmlFor="natureScope"
-                                            className="text-base font-semibold"
+                                            className="text-sm font-semibold"
                                         >
                                             Findings:
                                         </label>
@@ -504,14 +505,14 @@ export default function InspectionForm(props) {
                                             name=""
                                             value={postfindings}
                                             id="natureScope"
-                                            className=" bg-white w-full rounded-lg underline h-14 text-lg outline-none resize-none"
+                                            className=" bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
                                         ></textarea>
                                     </div>
                                 </div>
 
                                 {/* personnel post */}
                                 <div className="flex mt-2">
-                                    <div className="w-2/3 flex flex-col items-center text-center justify-end">
+                                    <div className="w-2/3 flex flex-col items-center text-sm text-center justify-end">
                                         <div>
                                             {returnedItemsInfo
                                                 ? formatDateDisplay(
@@ -523,7 +524,7 @@ export default function InspectionForm(props) {
                                             Date
                                         </div>
                                     </div>
-                                    <div className="w-2/3 pl-16">
+                                    <div className="w-2/3 pl-16 text-sm">
                                         <div className="font-semibold mb-6">
                                             Pre-inspected by:{" "}
                                         </div>
@@ -653,6 +654,7 @@ export default function InspectionForm(props) {
                                 Nature and Scope of work to be done:
                             </label>
                             <textarea
+                                maxLength={255}
                                 value={preNature}
                                 name=""
                                 id="pre_natureScope"
@@ -669,6 +671,7 @@ export default function InspectionForm(props) {
                                 Parts to be supplied / replaced:
                             </label>
                             <textarea
+                                maxLength={255}
                                 value={preParts}
                                 name=""
                                 id="pre_parts"
@@ -763,6 +766,7 @@ export default function InspectionForm(props) {
                                     Findings:
                                 </label>
                                 <textarea
+                                    maxLength={255}
                                     value={postfindings}
                                     name=""
                                     id="post_findings"

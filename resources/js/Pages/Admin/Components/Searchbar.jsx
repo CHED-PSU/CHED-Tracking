@@ -13,6 +13,7 @@ export default function Searchbar({ className,search }) {
                 <form action="">
                     <div className="relative h-full flex flex-auto justify-center items-center">
                         <input
+                            maxLength={255}
                             onChange={(e)=> search(e.target.value)}
                             type="text"
                             name="search"

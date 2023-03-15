@@ -112,9 +112,6 @@ export default function Return({ className }) {
         setPageNumber(selected)
     };
 
-
-
-
     const returnItemsMapper = (items) => {
         return items?.map(data => {
             return (
@@ -151,7 +148,7 @@ export default function Return({ className }) {
                         <a className="text-left flex justify-center items-center w-full h-12 gap-3">
                             <h5 className="p-1 px-2 w-fit text-[14px] receivedItem rounded-full flex items-center gap-1">
                                 <i className="fa-solid fa-circle text-[7px]"></i>
-                                {data.status}
+                                {data.status.charAt(0).toUpperCase() + data.status.slice(1)}
                             </h5>
                         </a>
                     </td>
@@ -166,7 +163,7 @@ export default function Return({ className }) {
                             </button>
 
                             <button
-                                disabled = {data.status === 'Ready for Retur' ? false : true}
+                                disabled = {data.status === 'Ready for Return' ? false : true}
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn "
                                 onClick={() => { clickAssignModal("open", data.uri_id) }}
                             >
@@ -174,7 +171,7 @@ export default function Return({ className }) {
                             </button>
 
                             <button
-                                disabled = {data.status !== 'Unserviceable' &&  data.status !== 'Ready for Retur'? false : true}
+                                disabled = {data.status !== 'Unserviceable' &&  data.status !== 'Ready for Return'? false : true}
                                 className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn"
                                 onClick={() => clickDisposeModal("open", data.uri_id)}
                             >
