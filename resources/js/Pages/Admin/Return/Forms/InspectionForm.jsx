@@ -33,15 +33,15 @@ export default function InspectionForm(props) {
     const [returnedUsersInfo, setReturnedUsersInfo] = useState();
     const [users, setUsers] = useState();
 
-    const [preNature, setPreNature] = useState("Not yet specified.");
-    const [preParts, setPreParts] = useState("Not yet specified.");
-    const [PreDate, setPreDate] = useState();
-    const [PreInspection, setPreInspection] = useState("none");
-    const [PreApproved, setPreApproved] = useState();
+    const [preNature, setPreNature] = useState("Not yet inspected.");
+    const [preParts, setPreParts] = useState("Not yet inspected.");
+    const [PreDate, setPreDate] = useState("");
+    const [PreInspection, setPreInspection] = useState("Not yet inspected.");
+    const [PreApproved, setPreApproved] = useState("Not yet approved.");
     const [postfindings, setPostFindings] = useState("Not yet inspected.");
-    const [postApproved, setPostApproved] = useState();
-    const [PostDate, setPostDate] = useState();
-    const [status, setStatus] = useState();
+    const [postApproved, setPostApproved] = useState("Not yet approved.");
+    const [PostDate, setPostDate] = useState("");
+    const [status, setStatus] = useState("");
 
     useEffect(() => {
         const getData = async () => {
@@ -97,45 +97,47 @@ export default function InspectionForm(props) {
         getData();
     }, []);
 
-    console.log(users);
-
-    const userNamesMapper = (user, userIds, typeOfOutput) => {
-        if (!user) {
-            return []; // return an empty array if `user` is undefined
-        }
-
-        return user
-            .filter((data) => data.id === userIds)
-            .map((data) => {
-                if (typeOfOutput === "name") {
-                    return `${data.firstname} ${data.surname}`;
-                } else if (typeOfOutput === "designation") {
-                    return `${data.designation}`;
-                } else {
-                    return ""; // return empty string if `typeOfOutput` is not recognized
-                }
-            });
-    };
-
     const userMapper = (user) => {
         return user.map((data) => {
             return (
-                <>
-                    <option key={data.id} value={data.id}>
-                        {data.firstname + " " + data.surname}
-                    </option>
-                </>
+                <option key={data.id} value={data.id}>
+                    {data.firstname + " " + data.surname}
+                </option>
             );
         });
     };
 
-    const natureScope = (e) => {
-        setPreNature(e.target.value);
+    const useUserInfo = (userIds, users) => {
+        const userInfo = users?.find((user) => user.id === userIds);
+        return userInfo
+            ? [
+                  `${userInfo.firstname} ${userInfo.surname}`,
+                  userInfo.designation,
+              ]
+            : ["Not yet inspected.", ""];
     };
 
-    const prePartsChange = (e) => {
-        setPreParts(e.target.value);
-    };
+    const [PreInspectionInfo, setPreInspectionInfo] = useState(
+        useUserInfo(PreInspection, users)
+    );
+    const [PreApprovedInfo, setPreApprovedInfo] = useState(
+        useUserInfo(PreApproved, users)
+    );
+    const [PostApprovedInfo, setPostApprovedInfo] = useState(
+        useUserInfo(postApproved, users)
+    );
+
+    useEffect(() => {
+        setPreInspectionInfo(useUserInfo(PreInspection, users));
+    }, [PreInspection, users]);
+
+    useEffect(() => {
+        setPreApprovedInfo(useUserInfo(PreApproved, users));
+    }, [PreApproved, users]);
+
+    useEffect(() => {
+        setPostApprovedInfo(useUserInfo(postApproved, users));
+    }, [postApproved, users]);
 
     const preInspection = (e) => {
         setPreInspection(e.target.value);
@@ -147,6 +149,14 @@ export default function InspectionForm(props) {
 
     const PostApproved = (e) => {
         setPostApproved(e.target.value);
+    };
+
+    const natureScope = (e) => {
+        setPreNature(e.target.value);
+    };
+
+    const prePartsChange = (e) => {
+        setPreParts(e.target.value);
     };
 
     const preDate = (e) => {
@@ -247,7 +257,9 @@ export default function InspectionForm(props) {
                                 <div className="text-base font-semibold mt-3 mb-3">
                                     REQUEST FOR INSPECTION and REPAIR
                                 </div>
-                                <div className="text-left text-xs font-medium">Description of Property </div>
+                                <div className="text-left text-xs font-medium">
+                                    Description of Property{" "}
+                                </div>
                                 <div className="text-left text-xs flex justify-between font-medium mb-2">
                                     <div className="">
                                         <div>
@@ -391,7 +403,11 @@ export default function InspectionForm(props) {
                                         </label>
                                         <textarea
                                             disabled
-                                            value={preNature}
+                                            value={
+                                                preNature == null
+                                                    ? "Not yet inspected."
+                                                    : preNature
+                                            }
                                             name=""
                                             id="natureScope"
                                             className=" bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
@@ -406,7 +422,11 @@ export default function InspectionForm(props) {
                                         </label>
                                         <textarea
                                             disabled
-                                            value={preParts}
+                                            value={
+                                                preParts == null
+                                                    ? "Not yet inspected."
+                                                    : preParts
+                                            }
                                             name=""
                                             id="supplied"
                                             className=" bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
@@ -424,18 +444,10 @@ export default function InspectionForm(props) {
                                             {PreInspection != null ? (
                                                 <>
                                                     <h5 className="font-semibold">
-                                                        {userNamesMapper(
-                                                            users,
-                                                            PreInspection,
-                                                            "name"
-                                                        )}
+                                                        {PreInspectionInfo[0]}
                                                     </h5>
                                                     <p>
-                                                        {userNamesMapper(
-                                                            users,
-                                                            PreInspection,
-                                                            "designation"
-                                                        )}
+                                                        {PreInspectionInfo[1]}
                                                     </p>
                                                 </>
                                             ) : (
@@ -463,19 +475,9 @@ export default function InspectionForm(props) {
                                             {PreApproved != null ? (
                                                 <>
                                                     <h5 className="font-semibold">
-                                                        {userNamesMapper(
-                                                            users,
-                                                            PreApproved,
-                                                            "name"
-                                                        )}
+                                                        {PreApprovedInfo[0]}
                                                     </h5>
-                                                    <p>
-                                                        {userNamesMapper(
-                                                            users,
-                                                            PreApproved,
-                                                            "designation"
-                                                        )}
-                                                    </p>
+                                                    <p>{PreApprovedInfo[1]}</p>
                                                 </>
                                             ) : (
                                                 "Not approved yet."
@@ -503,7 +505,11 @@ export default function InspectionForm(props) {
                                         <textarea
                                             disabled
                                             name=""
-                                            value={postfindings}
+                                            value={
+                                                postfindings == null
+                                                    ? "Not yet inspected."
+                                                    : postfindings
+                                            }
                                             id="natureScope"
                                             className=" bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
                                         ></textarea>
@@ -530,43 +536,15 @@ export default function InspectionForm(props) {
                                         </div>
                                         <div className="mb-6">
                                             <h5 className="font-semibold">
-                                                {PreInspection != null
-                                                    ? userNamesMapper(
-                                                          users,
-                                                          PreInspection,
-                                                          "name"
-                                                      )
-                                                    : "Not yet inspected."}
+                                                {PreApprovedInfo[0]}
                                             </h5>
-                                            <p>
-                                                {PreInspection != null
-                                                    ? userNamesMapper(
-                                                          users,
-                                                          PreInspection,
-                                                          "designation"
-                                                      )
-                                                    : "Please update the form."}
-                                            </p>
+                                            <p>{PreApprovedInfo[1]}</p>
                                         </div>
                                         <div>
                                             <h5 className="font-semibold">
-                                                {postApproved != null
-                                                    ? userNamesMapper(
-                                                          users,
-                                                          postApproved,
-                                                          "name"
-                                                      )
-                                                    : "Not yet inspected."}
+                                                {PostApprovedInfo[0]}
                                             </h5>
-                                            <p>
-                                                {postApproved != null
-                                                    ? userNamesMapper(
-                                                          users,
-                                                          postApproved,
-                                                          "designation"
-                                                      )
-                                                    : "Please update the form."}
-                                            </p>
+                                            <p>{PostApprovedInfo[1]}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -612,11 +590,11 @@ export default function InspectionForm(props) {
                             <select
                                 onChange={changeStatus}
                                 name=""
-                                value={status}
+                                value={status == null ? "None" : status}
                                 id="Status"
                                 className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                             >
-                                <option id="" value="" disabled>
+                                <option id="" value="None" disabled>
                                     None
                                 </option>
                                 <option id="Received" value="Received">
@@ -655,7 +633,11 @@ export default function InspectionForm(props) {
                             </label>
                             <textarea
                                 maxLength={255}
-                                value={preNature}
+                                value={
+                                    preNature == null
+                                        ? "Not yet inspected."
+                                        : preNature
+                                }
                                 name=""
                                 id="pre_natureScope"
                                 onChange={natureScope}
@@ -672,7 +654,11 @@ export default function InspectionForm(props) {
                             </label>
                             <textarea
                                 maxLength={255}
-                                value={preParts}
+                                value={
+                                    preParts == null
+                                        ? "Not yet inspected."
+                                        : preParts
+                                }
                                 name=""
                                 id="pre_parts"
                                 onChange={prePartsChange}
@@ -689,13 +675,17 @@ export default function InspectionForm(props) {
                                     Inspected By
                                 </label>
                                 <select
-                                    value={PreInspection}
+                                    value={
+                                        PreInspection == null
+                                            ? "None"
+                                            : PreInspection
+                                    }
                                     onChange={preInspection}
                                     name=""
                                     id="pre_inspectedByDropdown"
                                     className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                                 >
-                                    <option key={0} value="none">
+                                    <option key={0} value="None" disabled>
                                         None
                                     </option>
                                     {users ? userMapper(users) : ""}
@@ -711,16 +701,16 @@ export default function InspectionForm(props) {
                                 </label>
                                 <select
                                     value={
-                                        returnedItemsInfo
-                                            ? returnedItemsInfo.pre_approved
-                                            : ""
+                                        PreApproved == null
+                                            ? "None"
+                                            : PreApproved
                                     }
                                     onChange={preApproved}
                                     name=""
                                     id="pre_approvedByDropdown"
                                     className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                                 >
-                                    <option key={0} value="none">
+                                    <option key={0} value="None" disabled>
                                         None
                                     </option>
                                     {users ? userMapper(users) : ""}
@@ -767,7 +757,11 @@ export default function InspectionForm(props) {
                                 </label>
                                 <textarea
                                     maxLength={255}
-                                    value={postfindings}
+                                    value={
+                                        postfindings == null
+                                            ? "Not yet inspected."
+                                            : postfindings
+                                    }
                                     name=""
                                     id="post_findings"
                                     onChange={postFindings}
@@ -784,13 +778,17 @@ export default function InspectionForm(props) {
                                         Approved By
                                     </label>
                                     <select
-                                        value={postApproved}
+                                        value={
+                                            postApproved == null
+                                                ? "None"
+                                                : postApproved
+                                        }
                                         onChange={PostApproved}
                                         name=""
                                         id="post_inspectedByDropdown"
                                         className="w-full rounded-md border border-neutral-500 py-3 px-3 outline-none"
                                     >
-                                        <option key={0} value="none">
+                                        <option key={0} value="None" disabled>
                                             None
                                         </option>
                                         {users ? userMapper(users) : ""}
