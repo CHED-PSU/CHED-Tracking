@@ -96,6 +96,7 @@ Route::post('/login', [AuthController::class, 'login']);
 //Admin Logs Area
     // Admin Users Data Fetcher
         Route::get('getUserLists',[GeneralController::class, 'getUserLists']);
+        Route::post('getUsersById',[GeneralController::class, 'getUsersById']);
             //get User Ics Controls
                 Route::post('getUserIcsControls',[FormController::class, 'getUserIcsControls']);
             //get User PAR Controls
