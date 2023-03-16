@@ -5,12 +5,50 @@ import ICSNotification from "./Notification/ICSNotification";
 import PARNotification from "./Notification/PARNotification";
 import Profilesett from "./ProfileSettings/ProfileSettings";
 import io from "socket.io-client";
-const socket = io.connect("http://127.0.0.1:8001")
-
+const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
     const [openProfSett, setOpenProfSett] = useState("close");
-    const [read, setRead] = useState()
+    const [read, setRead] = useState();
+
+    // Modal for Notification and Profile
+    const [openNotifDropdown, setOpenNotifDropdown] = useState(false);
+    const [openProfileDropdown, setOpenProfileDropdown] = useState(false);
+    const user = localStorage.getItem("localSession");
+    const value = JSON.parse(user);
+    const [Loading, setLoading] = useState(true);
+    const [adminId, setAdminId] = useState(value.id);
+    const [userRole, setUserRole] = useState(value.role);
+    const [adminNotification, setAdminNotifcation] = useState();
+    const [adminRequest, setAdminRequest] = useState();
+    const [fullName, setFullName] = useState();
+
+    async function getUsersById(id) {
+        try {
+            const response = await axios.post("api/getUsersById", { id: id });
+            const data = response.data.users;
+            const middleInitial = data.middlename
+                ? data.middlename.substring(0, 1) + "."
+                : "";
+            const fullNameArr = [
+                data.prefix || "",
+                data.firstname || "",
+                middleInitial,
+                data.surname || "",
+                data.suffix || "",
+            ];
+            setFullName(fullNameArr.filter(Boolean).join(" "));
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        if (adminId) {
+            getUsersById(adminId);
+        }
+    }, [adminId]);
+
     function clickProfSett(index) {
         setOpenProfSett(index);
     }
@@ -22,73 +60,63 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
     }
 
     useEffect(() => {
-        socket.on('Admin_Notif', data => {
-            setRead(true)
-        })
-
-    }, [socket])
-
-    // Modal for Notification and Profile
-    const [openNotifDropdown, setOpenNotifDropdown] = useState(false);
-    const [openProfileDropdown, setOpenProfileDropdown] = useState(false);
-    const user = localStorage.getItem('localSession');
-    const value = JSON.parse(user);
-    const [Loading, setLoading] = useState(true)
-    const [adminName, setAdminName] = useState(value.name);
-    const [adminId, setAdminId] = useState(value.id);
-    const [userRole, setUserRole] = useState(value.role);
-    const [adminNotification, setAdminNotifcation] = useState();
-    const [adminRequest, setAdminRequest] = useState();
-
-
+        socket.on("Admin_Notif", (data) => {
+            setRead(true);
+        });
+    }, [socket]);
 
     const notifClick = async () => {
-        setLoading(true)
+        setLoading(true);
         try {
-            const response = await axios.get('api/getAdminNotification');
+            const response = await axios.get("api/getAdminNotification");
             const data = response.data;
-            setAdminNotifcation(data.admin_notification)
-
+            setAdminNotifcation(data.admin_notification);
         } catch (e) {
-            console.log(e)
+            console.log(e);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     const requestClick = async () => {
-        setLoading(true)
+        setLoading(true);
         try {
-            const response = await axios.get('api/getAdminRequest');
+            const response = await axios.get("api/getAdminRequest");
             const data = response.data;
-            setAdminRequest(data.admin_requests)
-
+            setAdminRequest(data.admin_requests);
         } catch (e) {
-            console.log(e)
+            console.log(e);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
-
+    };
 
     let notifButton = useRef();
     let notifDropdown = useRef();
     let profileButton = useRef();
     let profileDropdown = useRef();
 
-    const name = window.name
+    const name = window.name;
 
     const nav = useNavigate();
 
     const handleLogOut = () => {
-        localStorage.removeItem('localSession');
-        nav('/');
-    }
+        localStorage.removeItem("localSession");
+        nav("/");
+    };
 
     useEffect(() => {
         const handler = (event) => {
-            if (!notifButton.current.contains(event.target) && openICSNotification === "close" && openPARNotification === "close") {
-                if (!notifDropdown.current.contains(event.target) && openICSNotification === "close" && openPARNotification === "close") {
+            if (
+                !notifButton.current.contains(event.target) &&
+                openICSNotification === "close" &&
+                openPARNotification === "close"
+            ) {
+                if (
+                    !notifDropdown.current.contains(event.target) &&
+                    openICSNotification === "close" &&
+                    openPARNotification === "close"
+                ) {
                     setOpenNotifDropdown(false);
                 }
             }
@@ -108,7 +136,6 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
     // Modals for Notifications
     const [openICSNotification, setOpenICSNotification] = useState("close");
     const [openPARNotification, setOpenPARNotification] = useState("close");
-    const [notifcationsItems, setNotificationItems] = useState([]);
 
     function clickICSNotification(index) {
         setOpenICSNotification(index);
@@ -119,7 +146,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
     }
 
     const requestMapper = (items) => {
-        return items?.map(data => {
+        return items?.map((data) => {
             var created_at = new Date(data.created_at);
 
             let today = new Date();
@@ -139,31 +166,34 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                                 <span className="font-semibold">
                                     {data.firstname}
                                 </span>{" "}
-                                <span className="">
-                                    {" "}
-                                    {data.description}
-                                </span>
+                                <span className=""> {data.description}</span>
                             </div>
                             <div className="text-xs text-blue-400">
-                                {days === 1 || days === 0 ? "a day ago" : days + " days ago"}
+                                {days === 1 || days === 0
+                                    ? "a day ago"
+                                    : days + " days ago"}
                             </div>
                         </div>
                     </div>
 
                     {/* Ping Notif */}
-                    {data.status_id === 2 ? <div className="h-auto flex relative">
-                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-                        </span>
-                    </div> : ""}
+                    {data.status_id === 2 ? (
+                        <div className="h-auto flex relative">
+                            <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                            </span>
+                        </div>
+                    ) : (
+                        ""
+                    )}
                 </li>
-            )
-        })
-    }
+            );
+        });
+    };
 
     const notificationMapper = (items) => {
-        return items?.map(data => {
+        return items?.map((data) => {
             var created_at = new Date(data.created_at);
 
             let today = new Date();
@@ -173,7 +203,7 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
 
             return (
-                <li className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700">
+                <li key={data.id} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700">
                     <div className="flex h-full items-center justify-between gap-3 px-3">
                         <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
                             {data.firstname.charAt(0)}
@@ -181,30 +211,33 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                         <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
                             <div className="text-sm 2xl:leading-0 xl:leading-4">
                                 <span className="font-semibold">
-                                    {data.firstname}
+                                    {(data.prefix == null ? "" : (data.prefix + " ")) + data.firstname + " " + data.surname + (data.suffix == null ? "" : (" " + data.suffix))}
                                 </span>{" "}
-                                <span className="">
-                                    {" "}
-                                    {data.description}
-                                </span>
+                                <span className=""> {data.description}</span>
                             </div>
                             <div className="text-xs text-blue-400">
-                                {days === 1 || days === 0 ? "a day ago" : days + " days ago"}
+                                {days === 1 || days === 0
+                                    ? "a day ago"
+                                    : days + " days ago"}
                             </div>
                         </div>
                     </div>
 
                     {/* Ping Notif */}
-                    {data.ns_id === 2 ? <div className="h-auto flex relative">
-                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-                        </span>
-                    </div> : ""}
+                    {data.ns_id === 2 ? (
+                        <div className="h-auto flex relative">
+                            <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                            </span>
+                        </div>
+                    ) : (
+                        ""
+                    )}
                 </li>
-            )
-        })
-    }
+            );
+        });
+    };
 
     return (
         <div className={className}>
@@ -218,7 +251,10 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
             {/* Buttons */}
             <div className="w-fit flex items-center 2xl:space-x-4 xl:space-x-3 space-x-3">
                 {/* Dark Mode Button */}
-                <button onClick={toggleDarkMode} className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-darkColor-700 dark:hover:bg-amber-300 rounded-full flex justify-center items-center transition duration-300 ease-in-out">
+                <button
+                    onClick={toggleDarkMode}
+                    className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-darkColor-700 dark:hover:bg-amber-300 rounded-full flex justify-center items-center transition duration-300 ease-in-out"
+                >
                     <div className="2xl:w-full 2xl:p-2 xl:w-5 w-5 rounded-full hover:fill-[#FFD23B] dark:fill-[#FFD23B] dark:hover:fill-white">
                         <svg
                             className="inline-block dark:hidden"
@@ -247,7 +283,9 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                 <button
                     ref={notifButton}
                     onClick={() => {
-                        setOpenNotifDropdown(!openNotifDropdown), setRead(false), notifClick()
+                        setOpenNotifDropdown(!openNotifDropdown),
+                            setRead(false),
+                            notifClick();
                     }}
                     className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover rounded-full flex justify-center items-center relative transition duration-300 ease-in-out"
                 >
@@ -269,10 +307,14 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                         </svg>
                     </div>
                     {/* Ping Notification */}
-                    {read  ? <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 bg-blue-500 justify-center items-center text-white font-semibold text-ss"></span>
-                    </span> : ''}
+                    {read ? (
+                        <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 bg-blue-500 justify-center items-center text-white font-semibold text-ss"></span>
+                        </span>
+                    ) : (
+                        ""
+                    )}
                 </button>
 
                 {/* Profile Button */}
@@ -285,15 +327,13 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                 >
                     <div className="flex w-full justify-between pl-4 pr-2 xl:items-center items-center xl:h-full h-full rounded-xl gap-2">
                         <div className=" text-left">
-                            <h4 className="text-xs font-bold">
-                                {adminName}
-                            </h4>
+                            <h4 className="text-xs font-bold">{fullName}</h4>
                             <p className="text-ss 2xl:block xl:hidden hidden">
                                 {userRole}
                             </p>
                         </div>
                         <span className="bg-blue-900 dark:bg-blue-600 2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full">
-                            {adminName.substring(0, 1)}
+                            {fullName == null ? "" : fullName.substring(0, 1)}
                         </span>
                     </div>
                 </button>
@@ -348,9 +388,15 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                             className={toggleTabs === "all" ? "flex" : "hidden"}
                         >
                             <ul className="min-h-fit 2xl:max-h-[520px] xl:max-h-[380px] max-h-[380px] pr-1 overflow-auto flex-row space-y-2 2xl:w-[350px] xl:w-[300px] w-[300px]">
-                                {Loading ? <li className="py-5 text-center cursor-default">
-                                    <small>You don't have notification yet</small>
-                                </li> : notificationMapper(adminNotification)}
+                                {Loading ? (
+                                    <li className="py-5 text-center cursor-default">
+                                        <small>
+                                            You don't have notification yet
+                                        </small>
+                                    </li>
+                                ) : (
+                                    notificationMapper(adminNotification)
+                                )}
                             </ul>
                         </div>
 
@@ -361,9 +407,15 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                             }
                         >
                             <ul className="min-h-fit 2xl:max-h-[520px] xl:max-h-[380px] max-h-[380px] pr-1 overflow-auto flex-row space-y-2 2xl:w-[350px] xl:w-[300px] w-[300px]">
-                                {Loading ? <li className="py-5 text-center cursor-default">
-                                    <small>You don't have notification yet</small>
-                                </li> : requestMapper(adminRequest)}
+                                {Loading ? (
+                                    <li className="py-5 text-center cursor-default">
+                                        <small>
+                                            You don't have notification yet
+                                        </small>
+                                    </li>
+                                ) : (
+                                    requestMapper(adminRequest)
+                                )}
                             </ul>
                         </div>
                     </div>
@@ -379,19 +431,25 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                         <ul className="flex-row space-y-2">
                             <li
                                 onClick={() => clickProfSett("prof-sett")}
-                                className="2xl:w-[250px] xl:w-[220px] w-[220px] flex items-center py-3 gap-1 border-sh dark:border-neutral-700 border-b cursor-pointer">
+                                className="2xl:w-[250px] xl:w-[220px] w-[220px] flex items-center py-3 gap-1 border-sh dark:border-neutral-700 border-b cursor-pointer"
+                            >
                                 <div className="flex justify-between 2xl:gap-4 xl:gap-3 gap-3 px-3">
                                     <div className="flex-none flex justify-center items-center 2xl:text-2xl xl:text-xl text-xl 2xl:h-12 2xl:w-12 xl:h-8 xl:w-8 h-8 w-8 rounded-profile bg-primary dark:bg-active-icon">
-                                        {adminName.substring(0, 1)}
+                                        {fullName == null
+                                            ? ""
+                                            : fullName.substring(0, 1)}
                                     </div>
                                     <div className="flex items-center">
                                         <h2 className="2xl:text-sm xl:text-xs text-xs font-semibold dark:text-neutral-200">
-                                            {adminName}
+                                            {fullName}
                                         </h2>
                                     </div>
                                 </div>
                             </li>
-                            <li onClick={handleLogOut} className="flex text-left dark:text-neutral-200 gap-3 2xl:py-3 xl:py-2 py-2 2xl:px-3 xl:px-2 px-2 rounded-md items-center hover:bg-slate-100 dark:hover:bg-darkColor-700 cursor-pointer">
+                            <li
+                                onClick={handleLogOut}
+                                className="flex text-left dark:text-neutral-200 gap-3 2xl:py-3 xl:py-2 py-2 2xl:px-3 xl:px-2 px-2 rounded-md items-center hover:bg-slate-100 dark:hover:bg-darkColor-700 cursor-pointer"
+                            >
                                 <div className="flex justify-between gap-3 2xl:px-3 xl:px-2 px-2">
                                     <div className="flex-col">
                                         <h2 className="text-sm font-semibold">

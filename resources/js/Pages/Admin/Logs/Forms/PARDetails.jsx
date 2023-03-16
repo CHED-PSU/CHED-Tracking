@@ -14,7 +14,7 @@ export default function PARDetails(props) {
               margin-bottom: 0.5in;
             }
           }`,
-       documentTitle: "PAR",
+        documentTitle: "PAR",
     });
 
     const parItemsMapper = (items) => {
@@ -59,7 +59,7 @@ export default function PARDetails(props) {
                                     PAR Details
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
-                                    <b>Logs</b> / PAR /{" "}
+                                    <b>Logs</b> / PAR / {props.userName} /{" "}
                                     {props.formDetails.ics_no}
                                 </p>
                             </div>
@@ -141,11 +141,20 @@ export default function PARDetails(props) {
                                         </tr>
                                     </thead>
                                     <tbody id="slip-table">
-                                        {props.icsItems?.lenght !== 0
-                                            ? parItemsMapper(
-                                                  Object.values(props.parItems)
-                                              )
-                                            : ""}
+                                        {props.icsItems?.length !== 0 ? (
+                                            parItemsMapper(
+                                                Object.values(props.parItems)
+                                            )
+                                        ) : (
+                                            <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                                <td
+                                                    colSpan={6}
+                                                    className="text-center py-2 px-2 border"
+                                                >
+                                                    There is no data yet.
+                                                </td>
+                                            </tr>
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

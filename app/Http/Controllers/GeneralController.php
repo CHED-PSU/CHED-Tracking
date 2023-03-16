@@ -29,7 +29,7 @@ class GeneralController extends Controller
             ->count();
 
         $recentIssuance = DB::table('trackings as t')
-            ->select('t.tracking_id', 'u1.firstname as ufirstname', 'u1.surname as uSurname', 't.created_at', 'u2.firstname as rfirstname', 'u2.surname as rSurname')
+            ->select('t.tracking_id', 'u1.firstname as ufirstname', 'u1.surname as uSurname','u1.suffix as uSuffix', 't.created_at', 'u2.firstname as rfirstname', 'u2.surname as rSurname', 'u2.suffix as rSuffix',)
             ->join('users as u1', 'u1.id', '=', 't.issued_by')
             ->join('users as u2', 'u2.id', '=', 't.received_by')
             ->get();
@@ -60,7 +60,7 @@ class GeneralController extends Controller
     public function getUserLists()
     {
         $userList = DB::table('users')
-            ->select('users.firstname', 'users.surname', 'users.designation', 'r.name', 'users.id', 'users.designation')
+            ->select('users.prefix', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'r.name', 'users.id')
             ->join('roles as r', 'r.id', '=', 'users.role_id')
             ->get();
 

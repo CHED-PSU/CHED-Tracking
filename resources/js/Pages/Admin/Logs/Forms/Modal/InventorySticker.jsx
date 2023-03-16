@@ -29,6 +29,12 @@ export default function InventorySticker(props) {
         setOpenAlert(index);
     }
 
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
     const handlePrint = useReactToPrint({
         content: () => stickerRef.current,
         pageStyle: `
@@ -137,7 +143,7 @@ export default function InventorySticker(props) {
                         </td>
                         <td className="text-center px-3 border">{data.unit}</td>
                         <td className="text-center px-3 border">
-                            {data.quantity * data.price}
+                            {formattedAmount(data.quantity * data.price)}
                         </td>
                         <td className="text-left px-3 py-3 border">
                             <div className="font-semibold">{data.article}</div>
