@@ -10,6 +10,11 @@ export default function PARTable({ className }) {
     const [parControl, setParControl] = useState();
     const [totalPrice, setTotalPrice] = useState();
     const [UserLists, setUserLists] = useState();
+    const [userName, setUserName] = useState();
+
+    function passUserName(index) {
+        setUserName(index);
+    }
 
     function clickForms(index) {
         setOpenForms(index);
@@ -39,6 +44,10 @@ export default function PARTable({ className }) {
                     key={data.id}
                     firstname={data.firstname}
                     surname={data.surname}
+                    middlename={data.middlename}
+                    suffix={data.suffix}
+                    prefix={data.prefix}
+                    passUserName={passUserName}
                     designation={data.designation}
                     name={data.name}
                     id={data.id}
@@ -74,6 +83,7 @@ export default function PARTable({ className }) {
                 <PARControl
                     parControl={parControl ? parControl : ""}
                     totalPrice={totalPrice ? totalPrice : ""}
+                    userName={userName}
                     clickForms={clickForms}
                 />
             ) : (
@@ -90,7 +100,7 @@ export default function PARTable({ className }) {
                             User Status
                         </th>
                         <th className="h-10 w-80 pl-4 font-medium text-left">
-                            Email & Mobile No
+                            Position
                         </th>
                         <th className="h-10 font-medium text-center">
                             Actions

@@ -70,8 +70,7 @@ export default function IndividualInventory(props) {
                                     Individual Inventory
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
-                                    <b>Logs</b> / Individual Inventory / Will
-                                    Smith
+                                    <b>Logs</b> / Individual Inventory / {props.userName}
                                 </p>
                             </div>
                         </div>

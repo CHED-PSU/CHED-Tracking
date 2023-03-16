@@ -118,7 +118,8 @@ class ItemController extends Controller
     public function getPendingitems(Request $req)
     {
         $getPendingItems = DB::table('user_returned_items as uri')
-            ->select('pi.code as article', 'pi.description', 'uri.uri_id', 'pri.price', 'uri.created_at', 'uri.defect', 't.tracking_id')
+            ->select('u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'pi.code as code', 'subCat.name as article', 'pi.description', 'uri.uri_id', 'pri.price', 'uri.created_at', 'uri.defect', 't.tracking_id')
+            ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -126,6 +127,7 @@ class ItemController extends Controller
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('trackings as t', 't.id', '=', 'it.trackings_id')
+            ->join('product_subcategories as subCat', 'subCat.id', '=', 'pi.product_subcategory_id')
             ->where('uri.confirmation', 'pending')
             ->get();
 
@@ -154,13 +156,15 @@ class ItemController extends Controller
     public function getAdminReturnedItemsData(Request $req)
     {
         $getAdminReturnedItemsData = DB::table('user_returned_items as uri')
-            ->select('uri.status', 'req.designation as reqD', 'rec.designation as recD', 'pu.name as abbr', 'pri.price', 'pi.description as article', 'pi.code as property_no', 'uri.defect', 'req.firstname as reqF', 'req.surname as reqS', 'rec.firstname as recF', 'rec.surname as recS', 'uri.created_at', 'uri.uri_id')
+            ->select('uri.status', 'rii.pre_nature as nature', 'rii.updated_at as lastRepair', 'req.designation as reqD', 'rec.designation as recD', 'ps.name as article', 'pu.name as abbr', 'pri.price', 'pi.description as description', 'pi.code as property_no', 'uri.defect', 'req.firstname as reqF', 'req.middlename as reqM', 'req.surname as reqS', 'req.suffix as reqSuf', 'rec.firstname as recF', 'rec.middlename as recM', 'rec.surname as recS', 'rec.suffix as recSuf', 'uri.created_at', 'uri.uri_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->join('product_subcategories as ps', 'ps.id', '=', 'pi.product_subcategory_id')
+            ->join('returned_items_info as rii', 'rii.uri_id', '=', 'uri.uri_id')
             ->join('users as req', 'req.id', '=', 'uri.user_id')
             ->join('users as rec', 'rec.id', '=', 'uri.received_by')
             ->where('uri.uri_id', $req->input('id'))
@@ -176,14 +180,44 @@ class ItemController extends Controller
 
         if ($getAdminReturnedItemsInfo->pre_inspected != null && $getAdminReturnedItemsInfo->pre_approved != null && $getAdminReturnedItemsInfo->post_approve != null) {
             $data = [
-                'pre_inspected' => $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->firstname . ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname,
-                'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname . ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname,
-                'post_approve' => $getUsers[$getAdminReturnedItemsInfo->post_approve]->firstname . ' ' . $getUsers[$getAdminReturnedItemsInfo->post_approve]->surname,
+                'pre_inspected' => $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->firstname .
+                    ' ' .
+                    ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename ?
+                        $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename[0] . '. ' : '') .
+                    $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname .
+                    ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix ?
+                        ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix : ''),
+                'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname .
+                    ' ' .
+                    ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename ?
+                        $getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename[0] . '. ' : '') .
+                    $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname .
+                    ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix ?
+                        ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix : ''),
+                'post_approve' => $getUsers[$getAdminReturnedItemsInfo->post_approved]->firstname .
+                    ' ' .
+                    ($getUsers[$getAdminReturnedItemsInfo->post_approved]->middlename ?
+                        $getUsers[$getAdminReturnedItemsInfo->post_approved]->middlename[0] . '. ' : '') .
+                    $getUsers[$getAdminReturnedItemsInfo->post_approved]->surname .
+                    ($getUsers[$getAdminReturnedItemsInfo->post_approved]->suffix ?
+                        ' ' . $getUsers[$getAdminReturnedItemsInfo->post_approved]->suffix : ''),
             ];
         } else if ($getAdminReturnedItemsInfo->pre_inspected != null && $getAdminReturnedItemsInfo->pre_approved != null && $getAdminReturnedItemsInfo->post_approve == null) {
             $data = [
-                'pre_inspected' => $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->firstname . ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname,
-                'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname . ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname,
+                'pre_inspected' => $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->firstname .
+                    ' ' .
+                    ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename ?
+                        $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename[0] . '. ' : '') .
+                    $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname .
+                    ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix ?
+                        ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix : ''),
+                'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname .
+                    ' ' .
+                    ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename ?
+                        $getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename[0] . '. ' : '') .
+                    $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname .
+                    ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix ?
+                        ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix : ''),
                 'post_approve' => null
             ];
         } else {
@@ -193,9 +227,6 @@ class ItemController extends Controller
                 'post_approve' => null
             ];
         }
-
-
-
         return response()->json(['adminReturnedItemsData' => $getAdminReturnedItemsData, 'adminReturnedItemsInfo' => $getAdminReturnedItemsInfo, 'users' => $getUsers, 'return_items_users_info' => $data]);
     }
     //return items pre save
@@ -467,15 +498,15 @@ class ItemController extends Controller
         }
 
         DB::table('users_notification')
-        ->insert([
-            'trackings_id' => $tracking_id,
-            'user_id'      => $req->input('issued_by'),
-            'to_user_id'   => $req->input('user_id'),
-            'ns_id'        => 2,
-            'np_id'        => 1,
-            'confirmation' => 'TBD',
-            'description'  => $form
-        ]);
+            ->insert([
+                'trackings_id' => $tracking_id,
+                'user_id'      => $req->input('issued_by'),
+                'to_user_id'   => $req->input('user_id'),
+                'ns_id'        => 2,
+                'np_id'        => 1,
+                'confirmation' => 'TBD',
+                'description'  => $form
+            ]);
 
         return response()->json([
             'success' => 'success'

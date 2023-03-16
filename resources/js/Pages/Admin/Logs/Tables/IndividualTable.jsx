@@ -10,6 +10,11 @@ export default function IndividualTable({ className }) {
     const [UserLists, setUserLists] = useState();
     const [indivItems, setIndivItems] = useState();
     const [totalPrice, setTotalPrice] = useState();
+    const [userName, setUserName] = useState();
+
+    function passUserName(index) {
+        setUserName(index);
+    }
 
     function clickForms(index) {
         setOpenForms(index);
@@ -17,51 +22,74 @@ export default function IndividualTable({ className }) {
 
     useEffect(() => {
         const getUsers = async () => {
-            setLoading(true)
+            setLoading(true);
             try {
-                const response = await axios.get('api/getUserLists')
-                const data = response.data
-                setUserLists(data.user_lists)
+                const response = await axios.get("api/getUserLists");
+                const data = response.data;
+                setUserLists(data.user_lists);
             } catch (e) {
-                console.log(e)
+                console.log(e);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
-        }
+        };
 
-        getUsers()
-    }, [])
+        getUsers();
+    }, []);
 
     const userMapper = (items) => {
-        return items?.map(data => {
-            return <UserList key={data.id} firstname={data.firstname} surname={data.surname} designation={data.designation} name={data.name} id={data.id} type={'in-in'} getData={getData} clickForms={clickForms} />
-        })
-    }
+        return items?.map((data) => {
+            return (
+                <UserList
+                    key={data.id}
+                    firstname={data.firstname}
+                    surname={data.surname}
+                    middlename={data.middlename}
+                    suffix={data.suffix}
+                    prefix={data.prefix}
+                    passUserName={passUserName}
+                    designation={data.designation}
+                    name={data.name}
+                    id={data.id}
+                    type={"in-in"}
+                    getData={getData}
+                    clickForms={clickForms}
+                />
+            );
+        });
+    };
 
     async function getData(id) {
         try {
-            const response = await axios.post('api/getIndividualItems', { id: id })
-            const data = response.data
-            setIndivItems(data.allIndivItems)
-            setTotalPrice(data.total_price)
+            const response = await axios.post("api/getIndividualItems", {
+                id: id,
+            });
+            const data = response.data;
+            setIndivItems(data.allIndivItems);
+            setTotalPrice(data.total_price);
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }
 
     const pageCount = 5;
     const changePage = ({ selected }) => {
-        setPageNumber(selected)
+        setPageNumber(selected);
     };
 
     return (
         <div className={className + " w-full h-full relative"}>
-            {openForms === "in-in" ? <IndividualInventory
-                indivItems={indivItems ? indivItems : ''}
-                totalPrice={totalPrice ? totalPrice : ''}
-                clickForms={clickForms}
-                className={""}
-            /> : ""}
+            {openForms === "in-in" ? (
+                <IndividualInventory
+                    indivItems={indivItems ? indivItems : ""}
+                    totalPrice={totalPrice ? totalPrice : ""}
+                    userName={userName}
+                    clickForms={clickForms}
+                    className={""}
+                />
+            ) : (
+                ""
+            )}
 
             <table className="w-full">
                 <thead>
@@ -73,7 +101,7 @@ export default function IndividualTable({ className }) {
                             User Status
                         </th>
                         <th className="h-10 w-80 pl-4 font-medium text-left">
-                            Email & Mobile No
+                            Position
                         </th>
                         <th className="h-10 font-medium text-center">
                             Actions
@@ -82,7 +110,7 @@ export default function IndividualTable({ className }) {
                 </thead>
                 <tbody>
                     {/*item 1*/}
-                    {Loading ? '' : userMapper(UserLists)}
+                    {Loading ? "" : userMapper(UserLists)}
                     {UserLists?.length === 0 ? (
                         <>
                             <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -114,7 +142,6 @@ export default function IndividualTable({ className }) {
                     activeClassName={"paginationActive"}
                 />
             </div>
-
         </div>
     );
 }

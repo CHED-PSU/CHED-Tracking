@@ -27,6 +27,12 @@ export default function InspectionForm(props) {
         setOpenSubForms(index);
     }
 
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
     const [Loading, setLoading] = useState();
     const [returnedItemsData, setReturnedItemsData] = useState();
     const [returnedItemsInfo, setReturnedItemsInfo] = useState();
@@ -93,7 +99,6 @@ export default function InspectionForm(props) {
                 setLoading(false);
             }
         };
-
         getData();
     }, []);
 
@@ -101,7 +106,7 @@ export default function InspectionForm(props) {
         return user.map((data) => {
             return (
                 <option key={data.id} value={data.id}>
-                    {data.firstname + " " + data.surname}
+                    {data.firstname + " " + (data.middlename == null ? "" : data.middlename.charAt(0) + ". ") + data.surname}
                 </option>
             );
         });
@@ -111,8 +116,8 @@ export default function InspectionForm(props) {
         const userInfo = users?.find((user) => user.id === userIds);
         return userInfo
             ? [
-                  `${userInfo.firstname} ${userInfo.surname}`,
-                  userInfo.designation,
+                  `${userInfo.firstname} ${userInfo.middlename == null ? "" : userInfo.middlename.charAt(0) + ". "}${userInfo.surname}`,
+                  (userInfo.designation == null ? 'N/A' : userInfo.designation),
               ]
             : ["Not yet inspected.", ""];
     };
@@ -263,10 +268,10 @@ export default function InspectionForm(props) {
                                 <div className="text-left text-xs flex justify-between font-medium mb-2">
                                     <div className="">
                                         <div>
-                                            Type No:{" "}
+                                            Type:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? returnedItemsData.abbr
+                                                    ? returnedItemsData.article
                                                     : ""}
                                             </font>
                                         </div>
@@ -282,18 +287,26 @@ export default function InspectionForm(props) {
                                             Acquisition Cost:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? returnedItemsData.price
+                                                    ? "P " + formattedAmount(returnedItemsData.price)
                                                     : ""}
                                             </font>
                                         </div>
-                                        <div>Nature of last repair: N/A</div>
+                                        <div>
+                                            Nature of last repair:{" "}
+                                            {returnedItemsData
+                                                ? returnedItemsData.nature ==
+                                                  null
+                                                    ? "N/A"
+                                                    : returnedItemsData.nature
+                                                : ""}
+                                        </div>
                                     </div>
                                     <div className=" w-72">
                                         <div>
                                             Brand/Model:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? returnedItemsData.article
+                                                    ? returnedItemsData.description
                                                     : ""}
                                             </font>
                                         </div>
@@ -308,7 +321,12 @@ export default function InspectionForm(props) {
                                         <div>
                                             Date of repair{" "}
                                             <font className="font-semibold">
-                                                N/A
+                                                {returnedItemsData
+                                                    ? (returnedItemsData.nature ==
+                                                      null
+                                                        ? "N/A"
+                                                        : returnedItemsData.lastRepair)
+                                                    : ""}
                                             </font>
                                         </div>
                                     </div>
@@ -332,9 +350,7 @@ export default function InspectionForm(props) {
                                         <div className="text-sm">
                                             <h5 className="font-semibold">
                                                 {returnedItemsData
-                                                    ? returnedItemsData.reqF +
-                                                      " " +
-                                                      returnedItemsData.reqS
+                                                    ? (returnedItemsData.reqF + " " + (returnedItemsData.reqM == null ? "" : ((returnedItemsData.reqM.charAt(0) + ".") + " ")) + " " + returnedItemsData.reqS + (returnedItemsData.reqSuf == null ? "" : (" " + returnedItemsData.reqSuf)))
                                                     : ""}
                                             </h5>
                                             <p>
@@ -364,10 +380,8 @@ export default function InspectionForm(props) {
                                         </div>
                                         <div>
                                             <h5 className="font-semibold">
-                                                {returnedItemsData
-                                                    ? returnedItemsData.recF +
-                                                      " " +
-                                                      returnedItemsData.recS
+                                            {returnedItemsData
+                                                    ? (returnedItemsData.recF + " " + (returnedItemsData.recM == null ? "" : ((returnedItemsData.recM.charAt(0) + ".") + " ")) + " " + returnedItemsData.recS + (returnedItemsData.recSuf == null ? "" : (" " + returnedItemsData.recSuf)))
                                                     : ""}
                                             </h5>
                                             <p>

@@ -5,7 +5,7 @@ export default function UserList(props) {
     const data = props.data;
 
     return (
-        <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+        <tr className="h-18 text-xs border dark:border-neutral-700 bg-white hover:bg-primary hover:bg-opacity-5 text-th dark:bg-darkColor-800 dark:text-white dark:hover:bg-darkColor-700 cursor-default transition duration-150 ease-in-out">
             {/* name */}
             <td>
                 <a className="text-left pl-6 flex items-center w-full h-12 gap-3">
@@ -17,8 +17,8 @@ export default function UserList(props) {
                         />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium w-60 text-text-black truncate">
-                            {props.firstname + ' ' + props.surname}
+                        <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium w-60 text-text-black dark:text-white leading-5 truncate">
+                            {(props.prefix == null ? "" : (props.prefix + " ")) + props.firstname + " " + (props.middlename == null ? "" : ((props.middlename.charAt(0) + ".") + " ")) + " " + props.surname + (props.suffix == null ? "" : (" " + props.suffix))}
                         </h4>
                         <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
                             {props.name}
@@ -31,7 +31,7 @@ export default function UserList(props) {
                 <a className="text-left flex items-center w-full h-12 gap-3">
                     <div className="flex flex-col gap-1 items-center w-full">
                         <div className="">
-                            <h5 className="p-1 px-2 w-fit text-[14px] offlineUser rounded-full flex items-center gap-1">
+                            <h5 className="p-1 px-2 w-fit text-[14px] dark:text-neutral-400 dark:bg-[#434343] offlineUser rounded-full flex items-center gap-1">
                                 <i className="fa-solid fa-circle text-[7px]"></i>
                                 Offline
                             </h5>
@@ -43,11 +43,8 @@ export default function UserList(props) {
             <td>
                 <a className="text-left flex items-center w-full h-12 gap-3 pl-4">
                     <div className="flex flex-col gap-2">
-                        <p className="text-primary text-[14px] font-medium truncate w-72">
-                            willsmith@example.com
-                        </p>
-                        <p className="text-[#878787] text-[14px]">
-                            (+63) 9123254678
+                        <p className=" text-[14px] font-medium truncate w-72">
+                            {props.designation == null ? "N/A" : props.designation}
                         </p>
                     </div>
                 </a>
@@ -55,7 +52,7 @@ export default function UserList(props) {
             {/* mobile no */}
             <td>
                 <div
-                    onClick={() => {props.clickForms(props.type), props.getData(props.id)}}
+                    onClick={() => {props.clickForms(props.type), props.getData(props.id), props.passUserName((props.prefix == null ? "" : (props.prefix + " ")) + props.firstname + " " + (props.middlename == null ? "" : ((props.middlename.charAt(0) + ".") + " ")) + " " + props.surname + (props.suffix == null ? "" : (" " + props.suffix)))}}
                     className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
                     value = {0}
                 >

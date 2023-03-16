@@ -10,6 +10,12 @@ export default function ICSDetails(props) {
         setOpenSticker(index);
     }
 
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
     const handlePrint = useReactToPrint({
         content: () => ref.current,
         pageStyle: `
@@ -30,7 +36,7 @@ export default function ICSDetails(props) {
                     <td className="text-center px-2 border">{data.quantity}</td>
                     <td className="text-center px-2 border">{data.unit}</td>
                     <td className="text-center px-2 border">
-                        {data.quantity * data.price}
+                    {formattedAmount(data.quantity * data.price)}
                     </td>
                     <td className="text-left px-2 py-3 border">
                         <div className="font-semibold">{data.article}</div>
@@ -44,6 +50,14 @@ export default function ICSDetails(props) {
             );
         });
     };
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
 
     return (
         <div className={props.className}>
@@ -74,7 +88,7 @@ export default function ICSDetails(props) {
                                     ICS Details
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
-                                    <b>Logs</b> / ICS /{" "}
+                                    <b>Logs</b> / ICS / {props.userName} / {" "}
                                     {props.formDetails.ics_no}
                                 </p>
                             </div>
@@ -190,7 +204,7 @@ export default function ICSDetails(props) {
                                     <div className="w-fit">
                                         <div className="pt-4 text-left text-xs font-medium dark:text-white">
                                             Issued by:{" "}
-                                            {props.formDetails.issued}
+                                            {props.formDetails.issuerF + " " + (props.formDetails.issuerM == null ? "" : ((props.formDetails.issuerM.charAt(0) + ".") + " ")) + " " + props.formDetails.issuerS + (props.formDetails.issuerSuf == null ? "" : (" " + props.formDetails.issuerSuf))}
                                         </div>
                                         <div
                                             className="pt-1 text-left text-sm underline font-semibold dark:text-white"
@@ -200,10 +214,13 @@ export default function ICSDetails(props) {
                                             Signature Over Printed Name
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.designation2}
+                                            {props.formDetails.designation1}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.issued_date}
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formatDateDisplay(props.formDetails.issued_date)}
                                         </div>
                                     </div>
                                 </div>
@@ -211,7 +228,7 @@ export default function ICSDetails(props) {
                                     <div className="w-fit">
                                         <div className="pt-4 text-left text-xs font-medium dark:text-white">
                                             Received by:{" "}
-                                            {props.formDetails.received}
+                                            {props.formDetails.receiverF + " " + (props.formDetails.receiverM == null ? "" : ((props.formDetails.receiverM.charAt(0) + ".") + " ")) + " " + props.formDetails.receiverS + (props.formDetails.receiverSuf == null ? "" : (" " + props.formDetails.receiverSuf))}
                                         </div>
                                         <div
                                             className="pt-1 text-left text-sm underline font-semibold dark:text-white"
@@ -221,10 +238,13 @@ export default function ICSDetails(props) {
                                             Signature Over Printed Name
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.designation1}
+                                            {props.formDetails.designation2}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.received_date}
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formatDateDisplay(props.formDetails.received_date)}
                                         </div>
                                     </div>
                                 </div>

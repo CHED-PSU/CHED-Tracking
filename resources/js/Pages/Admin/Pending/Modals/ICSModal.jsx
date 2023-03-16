@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import Alert from '../Alert/Alert';
+import Alert from "../Alert/Alert";
 
 export default function ICSModal(props) {
     let modalBody = useRef();
@@ -17,44 +17,48 @@ export default function ICSModal(props) {
     const [alertFunction, setAlertFunction] = useState();
 
     const setAlert = (index) => {
-        setOpenAlert(index)
-    }
+        setOpenAlert(index);
+    };
 
     const closer = (data) => {
-            props.clickICSModal("close")
-    }
+        props.clickICSModal("close");
+    };
 
     const confirmation = (index) => {
-        if (index === 'accept') {
+        if (index === "accept") {
             setAlertIcon("check");
             setAlertHeader("Done");
             setAlertDesc("You've successfuly accepted a pending request.");
             setAlertButtonColor("none");
             setAlertNoButton("okay");
-            setOpenAlert(true)
-            setAlertFunction(true)
-            props.LoadPendingData()
-           
-        }else{
+            setOpenAlert(true);
+            setAlertFunction(true);
+            props.LoadPendingData();
+        } else {
             setAlertIcon("check");
             setAlertHeader("Done");
             setAlertDesc("You've successfuly declined a pending request.");
             setAlertButtonColor("none");
             setAlertNoButton("okay");
-            setOpenAlert(true)
-            setAlertFunction(true)
-            props.LoadPendingData()
+            setOpenAlert(true);
+            setAlertFunction(true);
+            props.LoadPendingData();
         }
 
-        if(index === false){
-            if(alertFunction === true){
-                closer()
-                setOpenAlert(false)
-            }else{
-                setOpenAlert(false)
+        if (index === false) {
+            if (alertFunction === true) {
+                closer();
+                setOpenAlert(false);
+            } else {
+                setOpenAlert(false);
             }
         }
+    };
 
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
     }
 
     const clickAccept = () => {
@@ -64,45 +68,54 @@ export default function ICSModal(props) {
         setAlertButtonColor("blue");
         setAlertYesButton("Accept");
         setAlertNoButton("Cancel");
-        setOpenAlert(true)
-    }
+        setOpenAlert(true);
+    };
 
     const clickDecline = () => {
-        console.log('pasok')
+        console.log("pasok");
         setAlertIcon("question");
         setAlertHeader("Confirmation");
         setAlertDesc("Are you sure you want to decline it?");
         setAlertButtonColor("red");
         setAlertYesButton("Decline");
         setAlertNoButton("Cancel");
-        setOpenAlert(true)
-    }
+        setOpenAlert(true);
+    };
 
     useEffect(() => {
         const getPendingitems = async () => {
-            setLoading(true)
+            setLoading(true);
             try {
-                const response = await axios.post('api/getReturnedItemsData', { id: props.id })
-                const data = response.data
-                setReturnedItemsData(data.returnedItemsData)
-
+                const response = await axios.post("api/getReturnedItemsData", {
+                    id: props.id,
+                });
+                const data = response.data;
+                setReturnedItemsData(data.returnedItemsData);
             } catch (e) {
-                console.log(e)
+                console.log(e);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
-        }
-        getPendingitems()
-    }, [])
+        };
+        getPendingitems();
+    }, []);
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
     return (
         <div>
-
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-30">
                 <div
                     ref={modalBody}
                     className="w-1/3 bg-white dark:bg-darkColor-800 shadow-lg rounded-2xl px-12 py-8 space-y-4 z-20"
                 >
-                    <div className="text-center dark:text-white">
+                    <div className="text-center dark:text-white pb-3">
                         <div className="w-full text-left">
                             <button
                                 onClick={() => props.clickICSModal("close")}
@@ -115,52 +128,76 @@ export default function ICSModal(props) {
                             Commission on Higher Education
                         </div>
                         <div className="text-xs">Regional Office XI</div>
-                        <div className="text-xs">SUPPLY & PROCUREMENT UNIT</div>
+                        <div className="text-sm font-medium">
+                            SUPPLY & PROCUREMENT UNIT
+                        </div>
                     </div>
                     <div className="dark:text-white">
-                        <div className="text-xs">Description of Property</div>
+                        <div className="text-sm">Description of Property</div>
                         <div className="text-sm flex justify-between">
                             <div className="">
                                 <div className="">
                                     Type :{" "}
-                                    <font className="dark:text-gray-400">
-                                        {Loading ? 'N/A' : returnedItemsData[0].type}
+                                    <font className="dark:text-gray-400 font-medium text-sm">
+                                        {Loading
+                                            ? "N/A"
+                                            : returnedItemsData[0].article}
                                     </font>
                                 </div>
                                 <div className="">
                                     Serial No:{" "}
                                     <font className="dark:text-gray-400">
-                                        0
+                                        {""}
                                     </font>
                                 </div>
                                 <div className="">
                                     Acquisition:{" "}
-                                    <font className="dark:text-gray-400">
-                                        P {Loading ? 'N/A' : returnedItemsData[0].acquisition}
+                                    <font className="dark:text-gray-400 font-medium text-sm">
+                                        P{" "}
+                                        {Loading
+                                            ? "N/A"
+                                            : formattedAmount(returnedItemsData[0].acquisition)}
                                     </font>
                                 </div>
                                 <div className="">
                                     Nature of last repair:{" "}
+                                    {Loading
+                                        ? "N/A"
+                                        : returnedItemsData[0].nature == null
+                                        ? "Not yet repaired."
+                                        : returnedItemsData[0].nature}
                                     <font className="dark:text-gray-400"></font>
                                 </div>
                             </div>
                             <div className="">
                                 <div className="">
                                     Brand/Model:{" "}
-                                    <font className="dark:text-gray-400">
-                                        {Loading ? 'N/A' : returnedItemsData[0].brand}
+                                    <font className="dark:text-gray-400 font-medium text-sm">
+                                        {Loading
+                                            ? "N/A"
+                                            : returnedItemsData[0].brand}
                                     </font>
                                 </div>
                                 <div className="">
                                     Property No:{" "}
                                     <font className="dark:text-gray-400">
-                                        {Loading ? 'N/A' : returnedItemsData[0].property_no}
+                                        {Loading
+                                            ? "N/A"
+                                            : returnedItemsData[0].property_no}
                                     </font>
                                 </div>
                                 <div className="">
                                     Date of last repair:{" "}
                                     <font className="dark:text-gray-400">
-                                        N/A
+                                        {Loading
+                                            ? "N/A"
+                                            : returnedItemsData[0].lastRepair ==
+                                              null
+                                            ? "Not yet repaired."
+                                            : formatDateDisplay(
+                                                  returnedItemsData[0]
+                                                      .lastRepair
+                                              )}
                                     </font>
                                 </div>
                             </div>
@@ -168,14 +205,32 @@ export default function ICSModal(props) {
                     </div>
                     <div className="dark:text-white">
                         <div className="text-sm">DEFECT:</div>
-                        <div className="text-xs dark:text-gray-400">
-                            {Loading ? 'N/A' : returnedItemsData[0].defect}
+                        <div className="text-sm dark:text-gray-400 max-h-20 mb-4">
+                            {Loading ? "N/A" : returnedItemsData[0].defect}
                         </div>
                     </div>
                     <div className="text-sm">
                         <div className="dark:text-white">Request by:</div>
                         <div className="dark:text-gray-400">
-                            {Loading ? 'N/A' : returnedItemsData[0].firstname + ' ' + returnedItemsData[0].surname}
+                            {Loading
+                                ? "N/A"
+                                : (returnedItemsData[0].prefix == null
+                                      ? ""
+                                      : returnedItemsData[0].prefix + " ") +
+                                  returnedItemsData[0].firstname +
+                                  " " +
+                                  (returnedItemsData[0].middlename == null
+                                      ? ""
+                                      : returnedItemsData[0].middlename.charAt(
+                                            0
+                                        ) +
+                                        "." +
+                                        " ") +
+                                  " " +
+                                  returnedItemsData[0].surname +
+                                  (returnedItemsData[0].suffix == null
+                                      ? ""
+                                      : " " + returnedItemsData[0].suffix)}
                         </div>
                     </div>
                     <div className="text-xs dark:text-gray-300">
@@ -183,13 +238,15 @@ export default function ICSModal(props) {
                     </div>
                     <div className="">
                         {/* Hide this buttons if the form is already accepted */}
-                        <div  className="flex flex-col space-y-3">
-                            <button onClick={clickAccept}
+                        <div className="flex flex-col space-y-3">
+                            <button
+                                onClick={clickAccept}
                                 className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
                             >
                                 Accept
                             </button>
-                            <button onClick = {() => clickDecline()}
+                            <button
+                                onClick={() => clickDecline()}
                                 className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
                             >
                                 Decline
@@ -203,8 +260,8 @@ export default function ICSModal(props) {
                     </div>
                 </div>
             </div>
-            {
-                openAlert ? <Alert
+            {openAlert ? (
+                <Alert
                     id={props.id}
                     alertIcon={alertIcon}
                     alertHeader={alertHeader}
@@ -214,10 +271,11 @@ export default function ICSModal(props) {
                     alertNoButton={alertNoButton}
                     alertFunction={alertFunction}
                     confirmation={confirmation}
-                    closer = {closer}
-                     /> : ''
-            }
-
+                    closer={closer}
+                />
+            ) : (
+                ""
+            )}
         </div>
     );
 }

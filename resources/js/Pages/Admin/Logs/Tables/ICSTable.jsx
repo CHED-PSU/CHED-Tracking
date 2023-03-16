@@ -11,6 +11,7 @@ export default function ICSTable({ className }) {
     const [IcsControl, setIcsControl] = useState();
     const [IcsDetails, setIcsDetails] = useState();
     const [totalPrice, setTotalPrice] = useState();
+    const [userName, setUserName] = useState();
 
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
@@ -34,6 +35,10 @@ export default function ICSTable({ className }) {
 
     function clickForms(index) {
         setOpenForms(index);
+    }
+
+    function passUserName(index) {
+        setUserName(index);
     }
 
     async function getData(id) {
@@ -62,7 +67,11 @@ export default function ICSTable({ className }) {
                     key={data.id}
                     firstname={data.firstname}
                     surname={data.surname}
+                    middlename={data.middlename}
+                    suffix={data.suffix}
+                    prefix={data.prefix}
                     designation={data.designation}
+                    passUserName={passUserName}
                     name={data.name}
                     id={data.id}
                     type={"ics-control"}
@@ -80,6 +89,7 @@ export default function ICSTable({ className }) {
                     icsControl={IcsControl ? IcsControl : ""}
                     icsDetails={IcsDetails ? IcsDetails : ""}
                     totalPrice={totalPrice ? totalPrice : ""}
+                    userName={userName}
                     clickForms={clickForms}
                     className={""}
                 />
@@ -89,7 +99,7 @@ export default function ICSTable({ className }) {
 
             <table className="w-full">
                 <thead className="">
-                    <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                    <tr className="text-xs border dark:border-neutral-700 bg-primary bg-opacity-5 text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                         <th className="h-10 w-80 font-medium text-left pl-6">
                             Name
                         </th>
@@ -97,7 +107,7 @@ export default function ICSTable({ className }) {
                             User Status
                         </th>
                         <th className="h-10 w-80 pl-4 font-medium text-left">
-                            Email & Mobile No
+                            Position
                         </th>
                         <th className="h-10 font-medium text-center">
                             Actions
