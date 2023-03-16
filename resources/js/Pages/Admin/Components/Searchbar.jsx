@@ -20,7 +20,7 @@ export default function Searchbar({ className,search }) {
                             placeholder="Search"
                             autoComplete="off"
                             aria-label="Search"
-                            className={className + "2xl:h-12 xl:h-10 h-10 2xl:pl-6 xl:pl-5 pl-5 pr-14 w-96 rounded-full outline-none ring-2 ring-white dark:ring-darkColor-900 focus:ring-primary hover:ring-primary/70 dark:focus:ring-[#476aca] dark:hover:ring-[#476aca]/70 border border-sc bg-[#F5F5F5] dark:bg-darkColor-800 dark:border-darkColor-700 dark:text-white"}
+                            className={className + "2xl:h-12 xl:h-10 h-10 2xl:pl-6 xl:pl-5 pl-5 pr-14 w-96 rounded-full outline-none ring-2 ring-white dark:ring-darkColor-900 focus:ring-primary hover:ring-primary/70 dark:focus:ring-[#476aca] dark:hover:ring-[#476aca]/70 border border-sc bg-[#F5F5F5] dark:bg-darkColor-800 dark:border-darkColor-700 dark:text-white transition duration-500 ease-in-out"}
                         />
                         <button
                             title="Search"

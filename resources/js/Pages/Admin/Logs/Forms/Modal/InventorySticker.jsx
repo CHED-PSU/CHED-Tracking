@@ -154,7 +154,9 @@ export default function InventorySticker(props) {
                                 }}
                             >
                                 <i className="fa-solid fa-print"></i>
-                                <p className="text-xs font-semibold">Print Item</p>
+                                <p className="text-xs font-semibold">
+                                    Print Item
+                                </p>
                             </button>
                         </td>
                     </tr>
@@ -166,158 +168,203 @@ export default function InventorySticker(props) {
     const selectedIds =
         selectSingleIds != "" ? selectSingleIds : selectedMultipleIds;
 
-    function formatDateDisplay(dateString) {
+    function formatDateDisplay(
+        dateString,
+        increment = 0,
+        showFullDate = false
+    ) {
         const date = new Date(dateString);
+        const year = date.getFullYear() + increment;
         const month = date.toLocaleString("default", { month: "short" });
         const day = date.getDate().toString().padStart(2, "0");
-        const year = date.getFullYear();
-        return `${month} ${day}, ${year}`;
+        if (showFullDate) {
+            return `${month} ${day}, ${year}`;
+        } else {
+            return `${year}`;
+        }
     }
 
     const stickerMapper = (items, selectedItems) => {
         return items?.map((data) => {
             if (selectedItems.includes(data.id)) {
-                return (
-                    <div
-                        key={data.id}
-                        className="flex-none border-2 border-black w-[2.9in] avoid"
-                    >
-                        <div className="flex items-center bg-amber-400 py-2">
-                            <MiniLogo className="w-14 h-14" />
-                            <div className="w-full">
-                                <div className="w-[180px] text-[8px] font-medium text-center">
-                                    <h6>Republic of the Philippines</h6>
-                                    <h6>OFFICE OF THE PRESIDENT</h6>
-                                    <h5 className="text-[9px] font-semibold">
-                                        COMMISSION ON HIGHER EDUCATION
-                                    </h5>
-                                    <h6>REGIONAL OFFICE XI</h6>
+                const stickers = [];
+                for (let i = 0; i < data.quantity; i++) {
+                    stickers.push(
+                        <div
+                            key={data.id}
+                            className="flex-none border-2 border-black w-[2.9in] avoid"
+                        >
+                            <div className="flex items-center bg-amber-400 py-2">
+                                <MiniLogo className="w-14 h-14" />
+                                <div className="w-full">
+                                    <div className="w-[180px] text-[8px] font-medium text-center">
+                                        <h6>Republic of the Philippines</h6>
+                                        <h6>OFFICE OF THE PRESIDENT</h6>
+                                        <h5 className="text-[9px] font-semibold">
+                                            COMMISSION ON HIGHER EDUCATION
+                                        </h5>
+                                        <h6>REGIONAL OFFICE XI</h6>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="bg-black text-white text-ss font-bold text-center">
-                            PROPERTY INVENTORY STICKER
-                        </div>
-                        <div className="bg-neutral-300 px-1">
-                            <div className="text-[7px] font-medium py-1">
-                                Sticker No. LDP-001
+                            <div className="bg-black text-white text-ss font-bold text-center">
+                                PROPERTY INVENTORY STICKER
                             </div>
-                            <table className="text-[5px]">
-                                <tbody>
-                                    <tr>
-                                        <td className="h-3 w-16">ARTICLE</td>
-                                        <td className="text-[8px] font-semibold">
-                                            : {data.article}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="h-3">DESCRIPTION</td>
-                                        <td className="text-[8px] font-medium flex">
-                                            :&nbsp;
-                                            <p className="w-[185px] truncate">
-                                                {data.description}
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="h-3">SERIAL NO.</td>
-                                        <td className="text-[8px] font-medium">
-                                            : {data.property_no}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="h-3">PROPERTY CODE</td>
-                                        <td className="text-[8px] font-medium">
-                                            : {props.formDetails.ics_no}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="h-3">DATE ACQUIRED</td>
-                                        <td className="text-[8px] font-medium">
-                                            :{" "}
+                            <div className="bg-neutral-300 px-1">
+                                <div className="text-[7px] font-medium py-1">
+                                    Sticker No. LDP-001
+                                </div>
+                                <table className="text-[5px]">
+                                    <tbody>
+                                        <tr>
+                                            <td className="h-3 w-16">
+                                                ARTICLE
+                                            </td>
+                                            <td className="text-[8px] font-semibold">
+                                                : {data.article}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="h-3">DESCRIPTION</td>
+                                            <td className="text-[8px] font-medium flex">
+                                                :&nbsp;
+                                                <p className="w-[185px] truncate">
+                                                    {data.description}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="h-3">SERIAL NO.</td>
+                                            <td className="text-[8px] font-medium">
+                                                : {data.property_no}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="h-3">
+                                                PROPERTY CODE
+                                            </td>
+                                            <td className="text-[8px] font-medium">
+                                                : {props.formDetails.ics_no}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="h-3">
+                                                DATE ACQUIRED
+                                            </td>
+                                            <td className="text-[8px] font-medium">
+                                                :{" "}
+                                                {formatDateDisplay(
+                                                    props.formDetails
+                                                        .issued_date,
+                                                    0,
+                                                    true
+                                                )}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="h-3">AMOUNT</td>
+                                            <td className="text-[8px] font-medium">
+                                                : {data.price}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="h-3">ISSUED TO</td>
+                                            <td className="text-[8px] font-medium">
+                                                : {props.formDetails.received}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="h-3">
+                                                INSPECTED BY
+                                            </td>
+                                            <td className="text-[8px] font-medium">
+                                                : {props.formDetails.issued}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <table className="w-full">
+                                <thead>
+                                    <tr className="text-[8px] border-y-2 border-black">
+                                        <th className="bg-black text-white">
+                                            Year
+                                        </th>
+                                        <th className="bg-amber-400">
                                             {formatDateDisplay(
-                                                props.formDetails.issued_date
+                                                props.formDetails.issued_date,
+                                                0
                                             )}
-                                        </td>
+                                        </th>
+                                        <th className="bg-black text-white">
+                                            {formatDateDisplay(
+                                                props.formDetails.issued_date,
+                                                1
+                                            )}
+                                        </th>
+                                        <th className="bg-amber-400">
+                                            {" "}
+                                            {formatDateDisplay(
+                                                props.formDetails.issued_date,
+                                                2
+                                            )}
+                                        </th>
+                                        <th className="bg-black text-white">
+                                            {formatDateDisplay(
+                                                props.formDetails.issued_date,
+                                                3
+                                            )}
+                                        </th>
+                                        <th className="bg-amber-400">
+                                            {formatDateDisplay(
+                                                props.formDetails.issued_date,
+                                                4
+                                            )}
+                                        </th>
                                     </tr>
-                                    <tr>
-                                        <td className="h-3">AMOUNT</td>
-                                        <td className="text-[8px] font-medium">
-                                            : {data.price}
+                                </thead>
+                                <tbody>
+                                    <tr className="border-y border-black">
+                                        <td className="text-[8px] text-center border-r border-black font-semibold w-16">
+                                            COA
                                         </td>
+                                        <td className="border-r border-black"></td>
+                                        <td className="border-r border-black"></td>
+                                        <td className="border-r border-black"></td>
+                                        <td className="border-r border-black"></td>
+                                        <td></td>
                                     </tr>
-                                    <tr>
-                                        <td className="h-3">ISSUED TO</td>
-                                        <td className="text-[8px] font-medium">
-                                            : {props.formDetails.received}
+                                    <tr className="border-y border-black">
+                                        <td className="border-r border-black text-[8px] text-center font-semibold">
+                                            CHEDROXI
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="h-3">INSPECTED BY</td>
-                                        <td className="text-[8px] font-medium">
-                                            : {props.formDetails.issued}
+                                        <td className="border-r border-black text-[6px] font-medium">
+                                            {""}
                                         </td>
+                                        <td className="border-r border-black text-[6px] font-medium">
+                                            {""}
+                                        </td>
+                                        <td className="border-r border-black text-[6px] font-medium">
+                                            {""}
+                                        </td>
+                                        <td className="border-r border-black text-[6px] font-medium">
+                                            {""}
+                                        </td>
+                                        <td className="text-[6px]">{""}</td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div className="text-[7px] text-black font-semibold bg-amber-400 py-1 px-1">
+                                NOTE: PLEASE DO NOT REMOVE
+                            </div>
+                            <div className="bg-black text-white text-[5px] text-center py-1">
+                                UNAUTHORIZED REMOVAL OR TAMPERING WILL BE
+                                SUBJECTED TO DISCIPLINARY ACTION.
+                            </div>
                         </div>
-                        <table className="w-full">
-                            <thead>
-                                <tr className="text-[8px] border-y-2 border-black">
-                                    <th className="bg-black text-white">
-                                        Year
-                                    </th>
-                                    <th className="bg-amber-400">2021</th>
-                                    <th className="bg-black text-white">
-                                        2022
-                                    </th>
-                                    <th className="bg-amber-400">2023</th>
-                                    <th className="bg-black text-white">
-                                        2024
-                                    </th>
-                                    <th className="bg-amber-400">2025</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr className="border-y border-black">
-                                    <td className="text-[8px] text-center border-r border-black font-semibold w-20">
-                                        COA
-                                    </td>
-                                    <td className="border-r border-black"></td>
-                                    <td className="border-r border-black"></td>
-                                    <td className="border-r border-black"></td>
-                                    <td className="border-r border-black"></td>
-                                    <td></td>
-                                </tr>
-                                <tr className="border-y border-black">
-                                    <td className="border-r border-black text-[8px] text-center font-semibold">
-                                        CHEDROXI
-                                    </td>
-                                    <td className="border-r border-black text-[6px] font-medium">
-                                        JBASISTER
-                                    </td>
-                                    <td className="border-r border-black text-[6px] font-medium">
-                                        JBASISTER
-                                    </td>
-                                    <td className="border-r border-black text-[6px] font-medium">
-                                        JBASISTER
-                                    </td>
-                                    <td className="border-r border-black text-[6px] font-medium">
-                                        JBASISTER
-                                    </td>
-                                    <td className="text-[6px]">JBASISTER</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div className="text-[7px] text-black font-semibold bg-amber-400 py-1 px-1">
-                            NOTE: PLEASE DO NOT REMOVE
-                        </div>
-                        <div className="bg-black text-white text-[5px] text-center py-1">
-                            UNAUTHORIZED REMOVAL OR TAMPERING WILL BE SUBJECTED
-                            TO DISCIPLINARY ACTION.
-                        </div>
-                    </div>
-                );
+                    );
+                }
+                return stickers;
             } else {
                 return null;
             }

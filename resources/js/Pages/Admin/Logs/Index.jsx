@@ -26,7 +26,7 @@ export default function Logs({ className }) {
                             onClick={() => clickTabs("ics")}
                             className={
                                 toggleTabs === "ics"
-                                    ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full"
+                                    ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full transition duration-500 ease-in-out"
                                     : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] rounded-full"
                             }
                         >
@@ -38,7 +38,7 @@ export default function Logs({ className }) {
                             onClick={() => clickTabs("par")}
                             className={
                                 toggleTabs === "par"
-                                ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full"
+                                ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full transition duration-500 ease-in-out"
                                 : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] rounded-full"
                             }
                         >
@@ -50,7 +50,7 @@ export default function Logs({ className }) {
                             onClick={() => clickTabs("ii")}
                             className={
                                 toggleTabs === "ii"
-                                ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full"
+                                ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full transition duration-500 ease-in-out"
                                 : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] rounded-full"
                             }
                         >

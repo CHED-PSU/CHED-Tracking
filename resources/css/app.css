@@ -12,10 +12,10 @@
         background: linear-gradient(90deg, #0d34ff 0%, #2374e1 99.99%);
     }
     .btn-color-3 {
-        @apply  font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB];
+        @apply select-none dark:bg-neutral-700 dark:hover:bg-neutral-600 font-semibold text-[#707070] dark:text-white bg-[#F5F5F5] border border-[#BBBBBB] dark:border-neutral-500;
     }
     .btn-color-4 {
-        @apply bg-primary dark:bg-lightColor-800 border border-border-iconLight dark:border-lightColor-500;
+        @apply select-none bg-primary dark:bg-lightColor-800 border border-border-iconLight dark:border-lightColor-500;
     }
     .btn-color-5 {
         @apply bg-red-600 hover:bg-red-700 dark:bg-lightColor-800 dark:border-lightColor-500;
@@ -122,10 +122,10 @@
         @apply flex gap-10 justify-center items-center py-3 font-semibold w-[550px];
     }
     .paginationButtons a {
-        @apply w-8 h-8 flex items-center justify-center;
+        @apply w-8 h-8 flex items-center justify-center select-none;
     }
     .paginationActive {
-        @apply bg-primary text-white rounded-full;
+        @apply bg-primary dark:bg-[#476aca] text-white rounded-full select-none;
     }
     .nextButtons, .previousButtons, .paginationDisabled {
         @apply hover:text-text-gray-2;

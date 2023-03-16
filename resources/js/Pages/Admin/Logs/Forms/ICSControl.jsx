@@ -77,7 +77,7 @@ export default function ICSControl(props) {
                 className={""}
             /> : ""}
             {/* {loader ? <Loader /> : ""} */}
-            <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-20">
+            <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-20 dark:bg-darkColor-900">
                 <div className=" h-full w-3/5 border-x border-[#C8C8C8]">
                     {/* header */}
                     <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">

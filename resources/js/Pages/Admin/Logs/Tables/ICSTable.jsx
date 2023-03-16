@@ -89,7 +89,7 @@ export default function ICSTable({ className }) {
 
             <table className="w-full">
                 <thead className="">
-                    <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                    <tr className="text-xs border dark:border-neutral-700 bg-primary bg-opacity-5 text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                         <th className="h-10 w-80 font-medium text-left pl-6">
                             Name
                         </th>
