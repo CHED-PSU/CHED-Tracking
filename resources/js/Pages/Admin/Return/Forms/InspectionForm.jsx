@@ -106,7 +106,7 @@ export default function InspectionForm(props) {
         return user.map((data) => {
             return (
                 <option key={data.id} value={data.id}>
-                    {data.firstname + " " + (data.middlename == null ? "" : data.middlename.charAt(0) + ". ") + data.surname}
+                    {data.firstname + " " + (data.middlename == null ? "" : data.middlename.charAt(0) + ". ") + data.surname + (data.suffix == null ? '' : " " + data.suffix)}
                 </option>
             );
         });
@@ -116,7 +116,7 @@ export default function InspectionForm(props) {
         const userInfo = users?.find((user) => user.id === userIds);
         return userInfo
             ? [
-                  `${userInfo.firstname} ${userInfo.middlename == null ? "" : userInfo.middlename.charAt(0) + ". "}${userInfo.surname}`,
+                  `${userInfo.firstname} ${userInfo.middlename == null ? "" : userInfo.middlename.charAt(0) + ". "}${userInfo.surname}${userInfo.suffix == null ? '' : ' ' + userInfo.suffix}`,
                   (userInfo.designation == null ? 'N/A' : userInfo.designation),
               ]
             : ["Not yet inspected.", ""];
