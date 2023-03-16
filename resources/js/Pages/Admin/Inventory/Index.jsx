@@ -27,6 +27,7 @@ export default function Inventory({ className }) {
             await axios.get("api/getItemsofInventories").then((res) => {
                 setItems(res.data.inventory_items);
                 setCheckBoxItems(res.data.inventory_items);
+                setUsers(res.data.users);
             });
         } catch (e) {
             console.log(e);
@@ -53,21 +54,22 @@ export default function Inventory({ className }) {
     };
 
     const getInventorySorted = async () => {
-        setLoading(true)
+        setLoading(true);
         try {
-            await axios.post("api/getInventorySorted", { id: personSelected }).then((res) => {
-                setItems(res.data.inventory_items);
-                setUsers(res.data.users)
-            });
+            await axios
+                .post("api/getInventorySorted", { id: personSelected })
+                .then((res) => {
+                    setItems(res.data.inventory_items);
+                    setUsers(res.data.users);
+                });
         } catch (e) {
             console.log(e);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
-
         getInventoryItems();
     }, []);
 
@@ -79,20 +81,18 @@ export default function Inventory({ className }) {
 
     const [toggleSort, setToggleSort] = useState("all");
 
-    useEffect(()=>{
-        if(toggleSort === 'all'){
-            setPersonSelected(1)
+    useEffect(() => {
+        if (toggleSort === "all") {
+            setPersonSelected(1);
         }
-
-    },[toggleSort])
+    }, [toggleSort]);
 
     function clickSort(index) {
-
-        if (index === 'all') {
-            getInventoryItems()
+        if (index === "all") {
+            getInventoryItems();
             setToggleSort(index);
-        } else if (index === 'sorted') {
-            getInventorySorted()
+        } else if (index === "sorted") {
+            getInventorySorted();
             setToggleSort(index);
         }
     }
@@ -111,10 +111,8 @@ export default function Inventory({ className }) {
         }
     }
 
-    function clickSingleModal(index, id, user_id) {
+    function clickSingleModal(index) {
         setOpenSingleModal(index);
-        setId(id);
-        setUserId(user_id);
     }
 
     function clickMultiModal(index) {
@@ -130,6 +128,16 @@ export default function Inventory({ className }) {
             setOpenMultiModal(index);
         }
     }
+
+    const unselect = () => {
+        setSelectedId([]);
+        const checkbox = document.querySelector(".select_all");
+        checkbox.checked = false;
+        const checkboxes = document.querySelectorAll(".i_items");
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
+    };
 
     const handleSelectAll = (event) => {
         if (event.target.checked) {
@@ -155,12 +163,15 @@ export default function Inventory({ className }) {
         individualCheckboxes.forEach((checkbox) => {
             checkbox.checked = event.target.checked;
         });
-    }
+    };
 
     const itemMapper = (items) => {
         return items?.map((data) => {
             return (
-                <tr key={data.uri_id} className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                <tr
+                    key={data.uri_id}
+                    className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default"
+                >
                     {/* checkbox */}
                     <td>
                         <div className="flex justify-center item-center">
@@ -180,7 +191,8 @@ export default function Inventory({ className }) {
                                     {data.code}
                                 </h4>
                                 <p className="text-[#878787] text-[14px]">
-                                    Previous owner: {data.firstname + ' ' + data.surname}
+                                    Previous owner:{" "}
+                                    {data.firstname + " " + data.surname}
                                 </p>
                             </div>
                         </a>
@@ -211,6 +223,11 @@ export default function Inventory({ className }) {
                     <td>
                         <div className="w-full flex justify-center">
                             <button
+                                onClick={() => {
+                                    setOpenSingleModal("open-single"),
+                                        setPersonSelected(data.id),
+                                        setSelectedId(data.uri_id)
+                                }}
                                 value={data.uri_id}
                                 className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full"
                             >
@@ -224,32 +241,54 @@ export default function Inventory({ className }) {
     };
 
     const changeUser = (e) => {
-        setPersonSelected(e.target.value)
+        setPersonSelected(e.target.value);
         try {
-            axios.post("api/getInventorySorted", { id: e.target.value }).then((res) => {
-                setItems(res.data.inventory_items);
-                setUsers(res.data.users)
-            });
+            axios
+                .post("api/getInventorySorted", { id: e.target.value })
+                .then((res) => {
+                    setItems(res.data.inventory_items);
+                    setUsers(res.data.users);
+                });
         } catch (e) {
             console.log(e);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <div className={className + " flex justify-center relative"}>
+            {openSortedModal === "open-sorted" ? (
+                <SortedModal
+                    clickSortedModal={clickSortedModal}
+                    selectedId={selectedId}
+                    personSelected={personSelected}
+                    users={users}
+                    getInventorySorted={getInventorySorted}
+                />
+            ) : (
+                ""
+            )}
 
-            {openSortedModal === "open-sorted" ? <SortedModal
-                clickSortedModal={clickSortedModal}
-                selectedId = {selectedId}
-                personSelected = {personSelected}
-                users = {users}
-                getInventorySorted = {getInventorySorted}
-            /> : ""}
+            {openSingleModal === "open-single" ? (
+                <SingleModal
+                    clickSingleModal={clickSingleModal}
+                    functionReloader = {toggleSort === 'sorted' ? getInventorySorted : getInventoryItems}
+                    selectedId={selectedId ? selectedId : ''}
+                    personSelected={personSelected}
+                    users={users}
+                />
+            ) : (
+                ""
+            )}
 
             {openMultiModal === "open-multi" ? (
-                <MultiModal clickMultiModal={clickMultiModal} />
+                <MultiModal
+                    clickMultiModal={clickMultiModal}
+                    getInventoryItems={getInventoryItems}
+                    selectedId={selectedId}
+                    unselect={unselect}
+                />
             ) : (
                 ""
             )}
@@ -306,7 +345,11 @@ export default function Inventory({ className }) {
                                     <div className="">
                                         <select
                                             onChange={changeUser}
-                                            value={personSelected ? personSelected : ''}
+                                            value={
+                                                personSelected
+                                                    ? personSelected
+                                                    : ""
+                                            }
                                             name=""
                                             id=""
                                             className=" w-80 rounded-md text-sm border border-neutral-300 px-3 py-1 outline-none"
@@ -315,13 +358,19 @@ export default function Inventory({ className }) {
                                                 Jermine Basister
                                             </option>
 
-                                            {loading ? '' : users.map(data => {
-                                                return (
-                                                    <option value={data.id}>
-                                                        {data.firstname + ' ' + data.surname}
-                                                    </option>
-                                                )
-                                            })}
+                                            {loading
+                                                ? ""
+                                                : users.map((data) => {
+                                                      return (
+                                                          <option
+                                                              value={data.id}
+                                                          >
+                                                              {data.firstname +
+                                                                  " " +
+                                                                  data.surname}
+                                                          </option>
+                                                      );
+                                                  })}
                                         </select>
                                     </div>
                                 </>
@@ -331,12 +380,17 @@ export default function Inventory({ className }) {
 
                             <div className="w-56 flex justify-end">
                                 <button
-                                    onClick={() => { toggleSort === 'all' ? clickMultiModal("open-multi") : clickSortedModal("open-sorted") }
-                                    }
+                                    onClick={() => {
+                                        toggleSort === "all"
+                                            ? clickMultiModal("open-multi")
+                                            : clickSortedModal("open-sorted");
+                                    }}
                                     className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
                                 >
                                     <i className="fa-solid fa-box-archive text-sm"></i>
-                                    {toggleSort === "all" ? 'Assign' : 'Return/Renew'}
+                                    {toggleSort === "all"
+                                        ? "Assign"
+                                        : "Return/Renew"}
                                 </button>
                             </div>
                         </div>
@@ -347,7 +401,7 @@ export default function Inventory({ className }) {
                                         <div className="flex item-center">
                                             <input
                                                 type="checkbox"
-                                                className=""
+                                                className="select_all"
                                                 onChange={handleSelectAll}
                                             />
                                         </div>

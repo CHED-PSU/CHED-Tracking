@@ -4,35 +4,20 @@ import OtherUser from "./Tabs/OtherUser";
 import axios from "axios";
 
 
-export default function Assign({ className, clickSingleModal, id, user_id }) {
+export default function Assign({ className, users, clickSingleModal, selectedId, personSelected, functionReloader }) {
     const [toggleTabs, setToggleTabs] = useState("pre-owner");
     const [loading, setLoading] = useState(true)
-    const [users, setUsers] = useState()
-
-    useEffect(() => {
-        const getUser = async () => {
-            setLoading(true)
-            try{
-                await axios.get('api/getUserLists').then(res => {
-                    setUsers(res.data.user_lists)
-                })
-            }catch(e){
-                console.log(e)
-            }finally{
-                setLoading(false)
-            }
-        }
-        getUser()
-    },[])
 
     function clickTabs(index) {
         setToggleTabs(index);
     }
 
+    console.log(selectedId)
+
     let modalBody = useRef();
 
     useEffect(() => {
-        
+
 
         const handler = (event) => {
             if (!modalBody.current.contains(event.target)) {
@@ -87,14 +72,15 @@ export default function Assign({ className, clickSingleModal, id, user_id }) {
 
                     {toggleTabs === "pre-owner" ? <PreOwner
                     clickSingleModal={clickSingleModal}
-                    id={id}
-                    user_id={user_id}
-                    users = {loading ? "wows" : users}
+                    selectedId={selectedId}
+                    personSelected={personSelected}
+                    users = {users}
+                    functionReloader = {functionReloader}
                     className={ ""}
                     />: ""}
                     {toggleTabs === "other-user" ? <OtherUser
-                    users = {loading ? "wows" : users}
-                    id={id}
+                    users = {users}
+                    selectedID={selectedId}
                     className={ "" }
                     />: ""}
 
