@@ -1,14 +1,15 @@
 import React from "react";
+import DisplayUserInfo from "../../../../Components/DisplayUserInfo";
 
 export default function RequistionItems(props) {
 
     return (
         <div className="flex flex-row w-full 2xl:p-3 xl:p-3 p-3 2xl:gap-4 xl:gap-3 gap-3 cursor-pointer rounded-lg text-[#6C6C6C] border border-[#DDDDDD] dark:border-[#434343] bg-white dark:bg-darkColor-800">
             <div className="w-fit h-full flex flex-none items-center">
-                <img
-                    src="./img/profile-pic.jpeg"
-                    alt=""
-                    className="rounded-full bg-gray-500 2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 object-cover"
+                <DisplayUserInfo
+                    user_id={props.data.rID}
+                    displayPhoto={true}
+                    className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10"
                 />
             </div>
             <div className="flex flex-col w-full 2xl:space-y-1 truncate">

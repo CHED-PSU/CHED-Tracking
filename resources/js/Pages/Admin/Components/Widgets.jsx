@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ICSNotification from "./Notification/ICSNotification";
 import PARNotification from "./Notification/PARNotification";
 import Profilesett from "./ProfileSettings/ProfileSettings";
+import DisplayUserInfo from "../../../Components/DisplayUserInfo";
 import io from "socket.io-client";
 const socket = io.connect("http://127.0.0.1:8001");
 
@@ -21,33 +22,6 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
     const [userRole, setUserRole] = useState(value.role);
     const [adminNotification, setAdminNotifcation] = useState();
     const [adminRequest, setAdminRequest] = useState();
-    const [fullName, setFullName] = useState();
-
-    async function getUsersById(id) {
-        try {
-            const response = await axios.post("api/getUsersById", { id: id });
-            const data = response.data.users;
-            const middleInitial = data.middlename
-                ? data.middlename.substring(0, 1) + "."
-                : "";
-            const fullNameArr = [
-                data.prefix || "",
-                data.firstname || "",
-                middleInitial,
-                data.surname || "",
-                data.suffix || "",
-            ];
-            setFullName(fullNameArr.filter(Boolean).join(" "));
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    useEffect(() => {
-        if (adminId) {
-            getUsersById(adminId);
-        }
-    }, [adminId]);
 
     function clickProfSett(index) {
         setOpenProfSett(index);
@@ -203,7 +177,10 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
 
             return (
-                <li key={data.id} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700">
+                <li
+                    key={data.id}
+                    className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700"
+                >
                     <div className="flex h-full items-center justify-between gap-3 px-3">
                         <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
                             {data.firstname.charAt(0)}
@@ -211,7 +188,15 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                         <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
                             <div className="text-sm 2xl:leading-0 xl:leading-4">
                                 <span className="font-semibold">
-                                    {(data.prefix == null ? "" : (data.prefix + " ")) + data.firstname + " " + data.surname + (data.suffix == null ? "" : (" " + data.suffix))}
+                                    {(data.prefix == null
+                                        ? ""
+                                        : data.prefix + " ") +
+                                        data.firstname +
+                                        " " +
+                                        data.surname +
+                                        (data.suffix == null
+                                            ? ""
+                                            : " " + data.suffix)}
                                 </span>{" "}
                                 <span className=""> {data.description}</span>
                             </div>
@@ -327,14 +312,23 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                 >
                     <div className="flex w-full justify-between pl-4 pr-2 xl:items-center items-center xl:h-full h-full rounded-xl gap-2">
                         <div className=" text-left">
-                            <h4 className="text-xs font-bold">{fullName}</h4>
+                            <h4 className="text-xs font-bold">
+                                <DisplayUserInfo
+                                    withPrefix={true}
+                                    user_id={adminId}
+                                    displayPhoto={false}
+                                />
+                            </h4>
                             <p className="text-ss 2xl:block xl:hidden hidden">
                                 {userRole}
                             </p>
                         </div>
-                        <span className="bg-blue-900 dark:bg-blue-600 2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full">
-                            {fullName == null ? "" : fullName.substring(0, 1)}
-                        </span>
+                        <DisplayUserInfo
+                            withPrefix={true}
+                            user_id={adminId}
+                            displayPhoto={true}
+                            className="2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7"
+                        />
                     </div>
                 </button>
             </div>
@@ -434,14 +428,20 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                                 className="2xl:w-[250px] xl:w-[220px] w-[220px] flex items-center py-3 gap-1 border-sh dark:border-neutral-700 border-b cursor-pointer"
                             >
                                 <div className="flex justify-between 2xl:gap-4 xl:gap-3 gap-3 px-3">
-                                    <div className="flex-none flex justify-center items-center 2xl:text-2xl xl:text-xl text-xl 2xl:h-12 2xl:w-12 xl:h-8 xl:w-8 h-8 w-8 rounded-profile bg-primary dark:bg-active-icon">
-                                        {fullName == null
-                                            ? ""
-                                            : fullName.substring(0, 1)}
-                                    </div>
+                                    <DisplayUserInfo
+                                        withPrefix={true}
+                                        user_id={adminId}
+                                        displayPhoto={true}
+                                        className="2xl:h-12 2xl:w-12 xl:h-8 xl:w-8 h-8 w-8"
+                                    />
+
                                     <div className="flex items-center">
                                         <h2 className="2xl:text-sm xl:text-xs text-xs font-semibold dark:text-neutral-200">
-                                            {fullName}
+                                            <DisplayUserInfo
+                                                withPrefix={true}
+                                                user_id={adminId}
+                                                displayPhoto={false}
+                                            />
                                         </h2>
                                     </div>
                                 </div>

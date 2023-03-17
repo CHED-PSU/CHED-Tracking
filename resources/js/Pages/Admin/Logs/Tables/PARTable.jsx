@@ -11,6 +11,11 @@ export default function PARTable({ className }) {
     const [totalPrice, setTotalPrice] = useState();
     const [UserLists, setUserLists] = useState();
     const [userName, setUserName] = useState();
+    const [designation, setDesignation] = useState();
+
+    function passDesignation(index) {
+        setDesignation(index);
+    }
 
     function passUserName(index) {
         setUserName(index);
@@ -48,6 +53,7 @@ export default function PARTable({ className }) {
                     suffix={data.suffix}
                     prefix={data.prefix}
                     passUserName={passUserName}
+                    passDesignation={passDesignation}
                     designation={data.designation}
                     name={data.name}
                     id={data.id}
@@ -83,6 +89,7 @@ export default function PARTable({ className }) {
                 <PARControl
                     parControl={parControl ? parControl : ""}
                     totalPrice={totalPrice ? totalPrice : ""}
+                    designation={designation}
                     userName={userName}
                     clickForms={clickForms}
                 />

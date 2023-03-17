@@ -102,6 +102,55 @@ export default function ItemTab({ className }) {
         const selected = checkbox.map((checkbox) => {});
     };
 
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
+    function generateArticle(data, isArticle) {
+        const firstCommaIndex = data.indexOf(",");
+        let article, description;
+
+        if (firstCommaIndex === -1) {
+            // No comma found
+            if (isArticle == true) {
+                return data;
+            } else {
+                return "";
+            }
+        } else {
+            // Comma found
+            article = data.substring(0, firstCommaIndex);
+            description = data.substring(firstCommaIndex + 1) ?? "";
+
+            if (isArticle == true) {
+                return article;
+            } else {
+                return description;
+            }
+        }
+    }
+
     const itemsMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -120,12 +169,12 @@ export default function ItemTab({ className }) {
                     {/* items */}
                     <td>
                         <a className="text-left flex items-center w-full h-12 gap-3">
-                            <div className="flex flex-col gap-1">
-                                <h4 className="text-[17px] font-medium text-text-black">
-                                    {data.code}
+                            <div className="flex flex-col pr-2 gap-1">
+                                <h4 className="text-[15px] font-medium text-text-black">
+                                    {generateArticle(data.description, true)}
                                 </h4>
                                 <p className="text-[#878787] text-[14px]">
-                                    Previous owner: {data.firstname}
+                                    Previous owner: {displayName(data, true)}
                                 </p>
                             </div>
                         </a>
@@ -135,10 +184,10 @@ export default function ItemTab({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3">
                             <div className="flex flex-col gap-1">
                                 <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                    {data.description}
+                                    {generateArticle(data.description, false)}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
-                                    Date Accepted: {data.date_received}
+                                    Item Code: {data.code}
                                 </p>
                             </div>
                         </a>

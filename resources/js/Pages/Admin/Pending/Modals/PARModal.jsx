@@ -56,25 +56,17 @@ export default function PARModal({ className, clickPARModal }) {
                             </thead>
                             <tbody id="many_items_table">
                                 <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white hover:drop-shadow-dark dark:hover:drop-shadow-light">
-                                    <td className="text-center px-2">1</td>
-                                    <td className="text-center px-2">Unit</td>
-                                    <td className=" px-1 py-2">
-                                        Lorem ipsum, dolor sit amet consectetur
-                                        adipisicing elit. Maxime debitis earum,
-                                        nobis et itaque doloremque eveniet
-                                        natus.
+                                    <td className="text-center px-2"></td>
+                                    <td className="text-center px-2"></td>
+                                    <td className=" px-1 py-2"></td>
+                                    <td className="text-center px-2">
                                     </td>
                                     <td className="text-center px-2">
-                                        November 1, 2021
                                     </td>
                                     <td className="text-center px-2">
-                                        Rent-to-own
                                     </td>
-                                    <td className="text-center px-2">
-                                        2021-05-03-L037-CHEDROXI-TECHNICAL UNIT
-                                    </td>
-                                    <td className="text-center px-2">John Doe</td>
-                                    <td className="text-center px-2">98, 799.00</td>
+                                    <td className="text-center px-2"></td>
+                                    <td className="text-center px-2"></td>
                                 </tr>
                             </tbody>
                         </table>

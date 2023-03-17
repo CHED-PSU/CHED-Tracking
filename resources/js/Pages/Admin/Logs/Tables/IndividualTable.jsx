@@ -11,6 +11,11 @@ export default function IndividualTable({ className }) {
     const [indivItems, setIndivItems] = useState();
     const [totalPrice, setTotalPrice] = useState();
     const [userName, setUserName] = useState();
+    const [designation, setDesignation] = useState();
+
+    function passDesignation(index) {
+        setDesignation(index);
+    }
 
     function passUserName(index) {
         setUserName(index);
@@ -49,6 +54,7 @@ export default function IndividualTable({ className }) {
                     prefix={data.prefix}
                     passUserName={passUserName}
                     designation={data.designation}
+                    passDesignation={passDesignation}
                     name={data.name}
                     id={data.id}
                     type={"in-in"}
@@ -86,6 +92,7 @@ export default function IndividualTable({ className }) {
                     userName={userName}
                     clickForms={clickForms}
                     className={""}
+                    designation={designation}
                 />
             ) : (
                 ""

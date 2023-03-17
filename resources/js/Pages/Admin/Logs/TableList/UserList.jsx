@@ -4,6 +4,31 @@ import react from "react";
 export default function UserList(props) {
     const data = props.data;
 
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
     return (
         <tr className="h-18 text-xs border dark:border-neutral-700 bg-white hover:bg-primary hover:bg-opacity-5 text-th dark:bg-darkColor-800 dark:text-white dark:hover:bg-darkColor-700 cursor-default transition duration-150 ease-in-out">
             {/* name */}
@@ -18,7 +43,7 @@ export default function UserList(props) {
                     </div>
                     <div className="flex flex-col gap-1">
                         <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium w-60 text-text-black dark:text-white leading-5 truncate">
-                            {(props.prefix == null ? "" : (props.prefix + " ")) + props.firstname + " " + (props.middlename == null ? "" : ((props.middlename.charAt(0) + ".") + " ")) + " " + props.surname + (props.suffix == null ? "" : (" " + props.suffix))}
+                            {displayName(props, true)}
                         </h4>
                         <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
                             {props.name}
@@ -52,7 +77,7 @@ export default function UserList(props) {
             {/* mobile no */}
             <td>
                 <div
-                    onClick={() => {props.clickForms(props.type), props.getData(props.id), props.passUserName((props.prefix == null ? "" : (props.prefix + " ")) + props.firstname + " " + (props.middlename == null ? "" : ((props.middlename.charAt(0) + ".") + " ")) + " " + props.surname + (props.suffix == null ? "" : (" " + props.suffix)))}}
+                    onClick={() => {props.clickForms(props.type), props.passDesignation(props.designation), props.getData(props.id), props.passUserName((props.prefix == null ? "" : (props.prefix + " ")) + props.firstname + " " + (props.middlename == null ? "" : ((props.middlename.charAt(0) + ".") + " ")) + " " + props.surname + (props.suffix == null ? "" : (" " + props.suffix)))}}
                     className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
                     value = {0}
                 >

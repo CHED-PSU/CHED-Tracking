@@ -123,6 +123,55 @@ export default function Return({ className }) {
         setPageNumber(selected);
     };
 
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
+    function generateArticle(data, isArticle) {
+        const firstCommaIndex = data.indexOf(",");
+        let article, description;
+
+        if (firstCommaIndex === -1) {
+            // No comma found
+            if (isArticle == true) {
+                return data;
+            } else {
+                return "";
+            }
+        } else {
+            // Comma found
+            article = data.substring(0, firstCommaIndex);
+            description = data.substring(firstCommaIndex + 1) ?? "";
+
+            if (isArticle == true) {
+                return article;
+            } else {
+                return description;
+            }
+        }
+    }
+
     const returnItemsMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -151,7 +200,7 @@ export default function Return({ className }) {
                                     {data.article}
                                 </h4>
                                 <p className="text-[#878787] text-[14px]">
-                                    {data.firstname + " " + data.surname}
+                                    {displayName(data, true)}
                                 </p>
                             </div>
                         </a>

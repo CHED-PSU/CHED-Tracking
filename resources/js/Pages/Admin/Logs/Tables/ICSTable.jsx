@@ -12,6 +12,11 @@ export default function ICSTable({ className }) {
     const [IcsDetails, setIcsDetails] = useState();
     const [totalPrice, setTotalPrice] = useState();
     const [userName, setUserName] = useState();
+    const [designation, setDesignation] = useState();
+
+    function passDesignation(index) {
+        setDesignation(index);
+    }
 
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
@@ -72,6 +77,7 @@ export default function ICSTable({ className }) {
                     prefix={data.prefix}
                     designation={data.designation}
                     passUserName={passUserName}
+                    passDesignation={passDesignation}
                     name={data.name}
                     id={data.id}
                     type={"ics-control"}
@@ -89,6 +95,7 @@ export default function ICSTable({ className }) {
                     icsControl={IcsControl ? IcsControl : ""}
                     icsDetails={IcsDetails ? IcsDetails : ""}
                     totalPrice={totalPrice ? totalPrice : ""}
+                    designation={designation}
                     userName={userName}
                     clickForms={clickForms}
                     className={""}

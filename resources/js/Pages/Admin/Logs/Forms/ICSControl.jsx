@@ -10,8 +10,6 @@ export default function ICSControl(props) {
     const [icsItems, setIcsItems] = useState();
     const [formDetails, setFormDetails] = useState();
 
-
-
     function clickSubForms(index) {
         setOpenSubForms(index);
     }
@@ -42,6 +40,31 @@ export default function ICSControl(props) {
         return `${month} ${day}, ${year}`;
     }
 
+    function displayName(data, prefix) {
+        const middleInitial = data.issuerM
+            ? data.issuerM.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.issuerPre || "",
+            data.issuerf || "",
+            middleInitial,
+            data.issuerS || "",
+            data.issuerSuf || "",
+        ];
+        const fullNameArr = [
+            data.issuerf || "",
+            middleInitial,
+            data.issuerS || "",
+            data.issuerSuf || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
     const icsItemsMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -70,7 +93,7 @@ export default function ICSControl(props) {
                         </div>
                     </td>
                     <td className="text-left px-3 text-2base">
-                            {(props.icsDetails.issuerPre == null ? "" : (props.icsDetails.issuerPre + " ")) + props.icsDetails.issuerf + " " + (props.icsDetails.issuerM == null ? "" : ((props.icsDetails.issuerM.charAt(0) + ".") + " ")) + " " + props.icsDetails.issuerS + (props.icsDetails.issuerSuf == null ? "" : (" " + props.icsDetails.issuerSuf))}
+                        {displayName(props.icsDetails, true)}
                     </td>
                     <td className="text-right">
                         <div

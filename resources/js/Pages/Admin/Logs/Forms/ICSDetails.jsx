@@ -29,20 +29,49 @@ export default function ICSDetails(props) {
         documentTitle: "ICS",
     });
 
+    function generateArticle(data, isArticle) {
+        const firstCommaIndex = data.indexOf(",");
+        let article, description;
+
+        if (firstCommaIndex === -1) {
+            // No comma found
+            if (isArticle == true) {
+                return data;
+            } else {
+                return '';
+            }
+        } else {
+            // Comma found
+            article = data.substring(0, firstCommaIndex);
+            description = data.substring(firstCommaIndex + 1) ?? "";
+
+            if (isArticle == true) {
+                return article;
+            } else {
+                return description;
+            }
+        }
+    }
+
     const icsItemsMapper = (items) => {
         return items?.map((data, index) => {
             return (
-                <tr key={index} className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                <tr
+                    key={index}
+                    className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
+                >
                     <td className="text-center px-2 border">{data.quantity}</td>
                     <td className="text-center px-2 border">{data.unit}</td>
                     <td className="text-center px-2 border">
-                    {formattedAmount(data.quantity * data.price)}
+                        {formattedAmount(data.quantity * data.price)}
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div className="font-semibold">{data.article}</div>
+                        <div className="font-semibold">
+                            {generateArticle(data.description, true)}
+                        </div>
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div>{data.description}</div>
+                        <div className="min-w-[100px]">{generateArticle(data.description, false)}</div>
                     </td>
                     <td className="text-left px-2 border"></td>
                     <td className="text-center px-2 border">{data.eul}</td>
@@ -88,7 +117,7 @@ export default function ICSDetails(props) {
                                     ICS Details
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
-                                    <b>Logs</b> / ICS / {props.userName} / {" "}
+                                    <b>Logs</b> / ICS / {props.userName} /{" "}
                                     {props.formDetails.ics_no}
                                 </p>
                             </div>
@@ -204,7 +233,24 @@ export default function ICSDetails(props) {
                                     <div className="w-fit">
                                         <div className="pt-4 text-left text-xs font-medium dark:text-white">
                                             Issued by:{" "}
-                                            {props.formDetails.issuerF + " " + (props.formDetails.issuerM == null ? "" : ((props.formDetails.issuerM.charAt(0) + ".") + " ")) + " " + props.formDetails.issuerS + (props.formDetails.issuerSuf == null ? "" : (" " + props.formDetails.issuerSuf))}
+                                            {props.formDetails.issuerF +
+                                                " " +
+                                                (props.formDetails.issuerM ==
+                                                null
+                                                    ? ""
+                                                    : props.formDetails.issuerM.charAt(
+                                                          0
+                                                      ) +
+                                                      "." +
+                                                      " ") +
+                                                " " +
+                                                props.formDetails.issuerS +
+                                                (props.formDetails.issuerSuf ==
+                                                null
+                                                    ? ""
+                                                    : " " +
+                                                      props.formDetails
+                                                          .issuerSuf)}
                                         </div>
                                         <div
                                             className="pt-1 text-left text-sm underline font-semibold dark:text-white"
@@ -220,7 +266,9 @@ export default function ICSDetails(props) {
                                             Position/Office
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {formatDateDisplay(props.formDetails.issued_date)}
+                                            {formatDateDisplay(
+                                                props.formDetails.issued_date
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -228,7 +276,24 @@ export default function ICSDetails(props) {
                                     <div className="w-fit">
                                         <div className="pt-4 text-left text-xs font-medium dark:text-white">
                                             Received by:{" "}
-                                            {props.formDetails.receiverF + " " + (props.formDetails.receiverM == null ? "" : ((props.formDetails.receiverM.charAt(0) + ".") + " ")) + " " + props.formDetails.receiverS + (props.formDetails.receiverSuf == null ? "" : (" " + props.formDetails.receiverSuf))}
+                                            {props.formDetails.receiverF +
+                                                " " +
+                                                (props.formDetails.receiverM ==
+                                                null
+                                                    ? ""
+                                                    : props.formDetails.receiverM.charAt(
+                                                          0
+                                                      ) +
+                                                      "." +
+                                                      " ") +
+                                                " " +
+                                                props.formDetails.receiverS +
+                                                (props.formDetails
+                                                    .receiverSuf == null
+                                                    ? ""
+                                                    : " " +
+                                                      props.formDetails
+                                                          .receiverSuf)}
                                         </div>
                                         <div
                                             className="pt-1 text-left text-sm underline font-semibold dark:text-white"
@@ -244,7 +309,9 @@ export default function ICSDetails(props) {
                                             Position/Office
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {formatDateDisplay(props.formDetails.received_date)}
+                                            {formatDateDisplay(
+                                                props.formDetails.received_date
+                                            )}
                                         </div>
                                     </div>
                                 </div>

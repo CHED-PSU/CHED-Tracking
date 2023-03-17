@@ -20,6 +20,15 @@ export default function Pending({ className }) {
     function clickPARModal(index) {
         setOpenPARModal(index);
     }
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
     const [Loading, setLoading] = useState(true);
     const [pendingItems, setPendingItems] = useState();
 
@@ -62,40 +71,107 @@ export default function Pending({ className }) {
         setPageNumber(selected);
     };
 
+    function displayPhoto(profilePhoto, name) {
+        if (profilePhoto == null) {
+            return (
+                <span
+                    className={
+                        "w-12 h-12 bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center text-base text-white font-semibold rounded-full"
+                    }
+                >
+                    {name.substring(0, 1)}
+                </span>
+            );
+        } else {
+            return (
+                <img
+                    draggable="false"
+                    src="./img/profile-pic.jpeg"
+                    className={
+                        "w-12 h-12 rounded-full flex-none bg-gray-500 object-cover"
+                    }
+                />
+            );
+        }
+    }
+
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
+    function generateArticle(data, isArticle) {
+        const firstCommaIndex = data.indexOf(",");
+        let article, description;
+
+        if (firstCommaIndex === -1) {
+            // No comma found
+            if (isArticle == true) {
+                return data;
+            } else {
+                return "";
+            }
+        } else {
+            // Comma found
+            article = data.substring(0, firstCommaIndex);
+            description = data.substring(firstCommaIndex + 1) ?? "";
+
+            if (isArticle == true) {
+                return article;
+            } else {
+                return description;
+            }
+        }
+    }
+
     const pendingItemsMapper = (items) => {
         return items?.map((data) => {
             return (
-                <li className="min-w-1/2 mx-auto">
+                <li key={data.uri_id} className="min-w-1/2 mx-auto">
                     <div className="card flex w-full 2xl:px-6 xl:px-4 px-4 2xl:py-4 xl:py-3 py-3 gap-6 rounded-lg bg-white border border-[#DDDDDD] dark:border-darkColor-700">
-                        <div
-                            className="flex flex-row w-full gap-5 cursor-default"
-                        >
+                        <div className="flex flex-row w-full gap-5 cursor-default">
                             <div className="flex flex-none py-1">
-                                <img
-                                    src="./img/profile-pic.jpeg"
-                                    alt=""
-                                    className="rounded-full bg-gray-500 w-12 h-12 object-cover"
-                                />
+                                {displayPhoto(data.img, data.firstname)}
                             </div>
                             <div className="w-[500px] truncate flex flex-col">
                                 <div className=" dark:text-white gap-1 items-center">
                                     <h4 className="2xl:text-base xl:text-base text-base font-semibold 2xl:mb-0 xl:-mb-1 -mb-1">
-                                        {data.article}
+                                        {generateArticle(data.description, true)}
                                     </h4>
                                     <p className="text-sm text-[#434343]">
-                                        Requested by: {(data.prefix == null ? "" : (data.prefix + " ")) + data.firstname + " " + (data.middlename == null ? "" : ((data.middlename.charAt(0) + ".") + " ")) + " " + data.surname + (data.suffix == null ? "" : (" " + data.suffix))}
+                                        Requested by: {displayName(data, true)}
                                     </p>
                                 </div>
 
                                 <div className="text-xs dark:text-gray-300 2xl:mt-2 mt-1">
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
-                                        Description: {data.description}
+                                        Description: {generateArticle(data.description, false)}
                                     </div>
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
                                         Defect: {data.defect}
                                     </div>
                                     <h4 className="text-[#888888]">
-                                        Date: {data.created_at}
+                                        Date: {formatDateDisplay(data.created_at)}
                                     </h4>
                                 </div>
                             </div>

@@ -23,15 +23,44 @@ export default function IndividualInventory(props) {
         });
     };
 
+    function generateArticle(data, isArticle) {
+        const firstCommaIndex = data.indexOf(",");
+        let article, description;
+
+        if (firstCommaIndex === -1) {
+            // No comma found
+            if (isArticle == true) {
+                return data;
+            } else {
+                return "";
+            }
+        } else {
+            // Comma found
+            article = data.substring(0, firstCommaIndex);
+            description = data.substring(firstCommaIndex + 1) ?? "";
+
+            if (isArticle == true) {
+                return article;
+            } else {
+                return description;
+            }
+        }
+    }
+
     const itemsMapper = (items) => {
         return items?.map((data, index) => {
             const date = new Date(data.created_At);
             return (
-                <tr key={index} className="avoid text-xs text-darkColor-700 h-12 border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                    <td className="text-center px-2 border">{index+1}</td>
-                    <td className="text-center px-2 border">{data.article}</td>
+                <tr
+                    key={index}
+                    className="avoid text-xs text-darkColor-700 h-12 border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
+                >
+                    <td className="text-center px-2 border">{index + 1}</td>
+                    <td className="text-center px-2 border">
+                        {generateArticle(data.description)}
+                    </td>
                     <td className="text-left px-2 border">
-                        {data.description}
+                        {generateArticle(data.description)}
                     </td>
                     <td className="text-center px-2 border">{data.qty}</td>
                     <td className="text-center px-2 border"></td>
@@ -70,7 +99,8 @@ export default function IndividualInventory(props) {
                                     Individual Inventory
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
-                                    <b>Logs</b> / Individual Inventory / {props.userName}
+                                    <b>Logs</b> / Individual Inventory /{" "}
+                                    {props.userName}
                                 </p>
                             </div>
                         </div>
@@ -101,10 +131,10 @@ export default function IndividualInventory(props) {
                                 </div>
                                 <div className="">
                                     <p className="text-xs text-slate-600 dark:text-neutral-300 underline">
-                                        ENGR. LUIS D. PEREZ
+                                        {props.userName.toUpperCase()}
                                     </p>
                                     <p className="text-xs text-slate-600 dark:text-neutral-300">
-                                        CEPS, TECHNICAL DIVISION
+                                        {props.designation}
                                     </p>
                                 </div>
                             </div>
@@ -201,13 +231,18 @@ export default function IndividualInventory(props) {
                                             </tr>
 
                                             {/* index 1 */}
-                                            {props.indivItems?.lenght !== 0
-                                                ? itemsMapper(
-                                                      Object.values(
-                                                          props.indivItems
-                                                      )
-                                                  )
-                                                : ""}
+                                            {props.indivItems?.length !== 0 ? (
+                                                itemsMapper(Object.values(props.indivItems))
+                                            ) : (
+                                                <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                                    <td
+                                                        colSpan={100}
+                                                        className="text-center py-2 px-2 border"
+                                                    >
+                                                        There is no data yet.
+                                                    </td>
+                                                </tr>
+                                            )}
                                         </tbody>
                                     </table>
                                     {/*  /items */}

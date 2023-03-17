@@ -116,57 +116,76 @@ export default function InventorySticker(props) {
         setSelectSingleIds([itemId]);
     };
 
-    console.log(selectedMultipleIds);
-    console.log(selectSingleIds);
+    function generateArticle(data, isArticle) {
+        const firstCommaIndex = data.indexOf(",");
+        let article, description;
+
+        if (firstCommaIndex === -1) {
+            // No comma found
+            if (isArticle == true) {
+                return data;
+            } else {
+                return "";
+            }
+        } else {
+            // Comma found
+            article = data.substring(0, firstCommaIndex);
+            description = data.substring(firstCommaIndex + 1) ?? "";
+
+            if (isArticle == true) {
+                return article;
+            } else {
+                return description;
+            }
+        }
+    }
 
     const icsItemsMapper = (items) => {
         return items?.map((data) => {
             return (
-                <>
-                    <tr
-                        key={data.id}
-                        className="avoid text-xs h-fit
+                <tr
+                    key={data.id}
+                    className="avoid text-xs h-fit
                  cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
-                    >
-                        <td className="h-full">
-                            <div className="flex justify-center item-center">
-                                <input
-                                    type="checkbox"
-                                    className="u_items"
-                                    value={data.id}
-                                    onChange={handleSelectItem}
-                                />
-                            </div>
-                        </td>
-                        <td className="text-center px-3 border">
-                            {data.quantity}
-                        </td>
-                        <td className="text-center px-3 border">{data.unit}</td>
-                        <td className="text-center px-3 border">
-                            {formattedAmount(data.quantity * data.price)}
-                        </td>
-                        <td className="text-left px-3 py-3 border">
-                            <div className="font-semibold">{data.article}</div>
-                        </td>
-                        <td className="text-left px-3 py-3 border">
-                            <div>{data.description}</div>
-                        </td>
-                        <td className="flex justify-center items-center px-2 h-14">
-                            <button
-                                className="flex justify-center items-center gap-2 w-fit h-8 py-4 px-3 text-[14px] text-text-black rounded-full default-btn"
-                                onClick={() => {
-                                    handleSelectSingleItem(data.id);
-                                    clickPreview("open");
-                                }}
-                            >
-                                <i className="fa-solid fa-print"></i>
-                                <p className="text-xs font-semibold">
-                                    Print Item
-                                </p>
-                            </button>
-                        </td>
-                    </tr>
-                </>
+                >
+                    <td className="h-full">
+                        <div className="flex justify-center item-center">
+                            <input
+                                type="checkbox"
+                                className="u_items"
+                                value={data.id}
+                                onChange={handleSelectItem}
+                            />
+                        </div>
+                    </td>
+                    <td className="text-center px-3 border">{data.quantity}</td>
+                    <td className="text-center px-3 border">{data.unit}</td>
+                    <td className="text-center px-3 border">
+                        {formattedAmount(data.quantity * data.price)}
+                    </td>
+                    <td className="text-left px-3 py-3 border">
+                        <div className="font-semibold">
+                            {generateArticle(data.description, true)}
+                        </div>
+                    </td>
+                    <td className="text-left px-3 py-3 border">
+                        <div className="min-w-[100px]">
+                            {generateArticle(data.description, false)}
+                        </div>
+                    </td>
+                    <td className="flex justify-center items-center px-2 h-14">
+                        <button
+                            className="flex justify-center items-center gap-2 w-fit h-8 py-4 px-3 text-[14px] text-text-black rounded-full default-btn"
+                            onClick={() => {
+                                handleSelectSingleItem(data.id);
+                                clickPreview("open");
+                            }}
+                        >
+                            <i className="fa-solid fa-print"></i>
+                            <p className="text-xs font-semibold">Print Item</p>
+                        </button>
+                    </td>
+                </tr>
             );
         });
     };
@@ -190,6 +209,31 @@ export default function InventorySticker(props) {
         }
     }
 
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
     const stickerMapper = (items, selectedItems) => {
         return items?.map((data) => {
             if (selectedItems.includes(data.id)) {
@@ -197,7 +241,7 @@ export default function InventorySticker(props) {
                 for (let i = 0; i < data.quantity; i++) {
                     stickers.push(
                         <div
-                            key={data.id}
+                            key={i}
                             className="flex-none border-2 border-black w-[2.9in] avoid"
                         >
                             <div className="flex items-center bg-amber-400 py-2">
@@ -218,7 +262,7 @@ export default function InventorySticker(props) {
                             </div>
                             <div className="bg-neutral-300 px-1">
                                 <div className="text-[7px] font-medium py-1">
-                                    Sticker No. LDP-001
+                                    Sticker No. LDP-
                                 </div>
                                 <table className="text-[5px]">
                                     <tbody>
@@ -227,7 +271,11 @@ export default function InventorySticker(props) {
                                                 ARTICLE
                                             </td>
                                             <td className="text-[8px] font-semibold">
-                                                : {data.article}
+                                                :{" "}
+                                                {generateArticle(
+                                                    data.description,
+                                                    true
+                                                )}
                                             </td>
                                         </tr>
                                         <tr>
@@ -235,7 +283,10 @@ export default function InventorySticker(props) {
                                             <td className="text-[8px] font-medium flex">
                                                 :&nbsp;
                                                 <p className="w-[185px] truncate">
-                                                    {data.description}
+                                                    {generateArticle(
+                                                        data.description,
+                                                        false
+                                                    )}
                                                 </p>
                                             </td>
                                         </tr>
@@ -276,7 +327,26 @@ export default function InventorySticker(props) {
                                         <tr>
                                             <td className="h-3">ISSUED TO</td>
                                             <td className="text-[8px] font-medium">
-                                                : {props.formDetails.received}
+                                                :{" "}
+                                                {props.formDetails.receiverF +
+                                                    " " +
+                                                    (props.formDetails
+                                                        .receiverM == null
+                                                        ? ""
+                                                        : props.formDetails.receiverM.charAt(
+                                                              0
+                                                          ) +
+                                                          "." +
+                                                          " ") +
+                                                    " " +
+                                                    props.formDetails
+                                                        .receiverS +
+                                                    (props.formDetails
+                                                        .receiverSuf == null
+                                                        ? ""
+                                                        : " " +
+                                                          props.formDetails
+                                                              .receiverSuf)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -284,7 +354,25 @@ export default function InventorySticker(props) {
                                                 INSPECTED BY
                                             </td>
                                             <td className="text-[8px] font-medium">
-                                                : {props.formDetails.issued}
+                                                :{" "}
+                                                {props.formDetails.issuerF +
+                                                    " " +
+                                                    (props.formDetails
+                                                        .issuerM == null
+                                                        ? ""
+                                                        : props.formDetails.issuerM.charAt(
+                                                              0
+                                                          ) +
+                                                          "." +
+                                                          " ") +
+                                                    " " +
+                                                    props.formDetails.issuerS +
+                                                    (props.formDetails
+                                                        .issuerSuf == null
+                                                        ? ""
+                                                        : " " +
+                                                          props.formDetails
+                                                              .issuerSuf)}
                                             </td>
                                         </tr>
                                     </tbody>

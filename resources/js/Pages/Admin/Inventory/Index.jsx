@@ -165,6 +165,39 @@ export default function Inventory({ className }) {
         });
     };
 
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
     const itemMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -188,11 +221,10 @@ export default function Inventory({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3">
                             <div className="flex flex-col gap-1">
                                 <h4 className="text-[17px] font-medium text-text-black">
-                                    {data.code}
+                                    {generateArticle(data.article, true)}
                                 </h4>
                                 <p className="text-[#878787] text-[14px]">
-                                    Previous owner:{" "}
-                                    {data.firstname + " " + data.surname}
+                                    Previous owner: {displayName(data, true)}
                                 </p>
                             </div>
                         </a>
@@ -202,10 +234,10 @@ export default function Inventory({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3">
                             <div className="flex flex-col gap-1">
                                 <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                    {data.article}
+                                    {generateArticle(data.article, false)}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
-                                    Date Accepted: {data.created_at}
+                                    Item Code: {data.code}
                                 </p>
                             </div>
                         </a>
@@ -215,7 +247,7 @@ export default function Inventory({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3 pl-3 pr-2">
                             <div className="flex flex-col gap-1">
                                 <p className="text-[#878787] text-[14px]">
-                                    {data.created_at}
+                                    {formatDateDisplay(data.created_at)}
                                 </p>
                             </div>
                         </a>
@@ -226,7 +258,7 @@ export default function Inventory({ className }) {
                                 onClick={() => {
                                     setOpenSingleModal("open-single"),
                                         setPersonSelected(data.id),
-                                        setSelectedId(data.uri_id)
+                                        setSelectedId(data.uri_id);
                                 }}
                                 value={data.uri_id}
                                 className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full"
@@ -256,6 +288,30 @@ export default function Inventory({ className }) {
         }
     };
 
+    function generateArticle(data, isArticle) {
+        const firstCommaIndex = data.indexOf(",");
+        let article, description;
+
+        if (firstCommaIndex === -1) {
+            // No comma found
+            if (isArticle == true) {
+                return data;
+            } else {
+                return "";
+            }
+        } else {
+            // Comma found
+            article = data.substring(0, firstCommaIndex);
+            description = data.substring(firstCommaIndex + 1) ?? "";
+
+            if (isArticle == true) {
+                return article;
+            } else {
+                return description;
+            }
+        }
+    }
+
     return (
         <div className={className + " flex justify-center relative"}>
             {openSortedModal === "open-sorted" ? (
@@ -273,8 +329,12 @@ export default function Inventory({ className }) {
             {openSingleModal === "open-single" ? (
                 <SingleModal
                     clickSingleModal={clickSingleModal}
-                    functionReloader = {toggleSort === 'sorted' ? getInventorySorted : getInventoryItems}
-                    selectedId={selectedId ? selectedId : ''}
+                    functionReloader={
+                        toggleSort === "sorted"
+                            ? getInventorySorted
+                            : getInventoryItems
+                    }
+                    selectedId={selectedId ? selectedId : ""}
                     personSelected={personSelected}
                     users={users}
                 />
@@ -355,7 +415,7 @@ export default function Inventory({ className }) {
                                             className=" w-80 rounded-md text-sm border border-neutral-300 px-3 py-1 outline-none"
                                         >
                                             <option id="1" value="1">
-                                                Jermine Basister
+                                                Jermine R. Basister
                                             </option>
 
                                             {loading
@@ -363,11 +423,13 @@ export default function Inventory({ className }) {
                                                 : users.map((data) => {
                                                       return (
                                                           <option
+                                                              key={data.id}
                                                               value={data.id}
                                                           >
-                                                              {data.firstname +
-                                                                  " " +
-                                                                  data.surname}
+                                                              {displayName(
+                                                                  data,
+                                                                  false
+                                                              )}
                                                           </option>
                                                       );
                                                   })}

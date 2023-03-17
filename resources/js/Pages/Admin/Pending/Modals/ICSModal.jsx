@@ -108,6 +108,55 @@ export default function ICSModal(props) {
         return `${month} ${day}, ${year}`;
     }
 
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
+    function generateArticle(data, isArticle) {
+        const firstCommaIndex = data.indexOf(",");
+        let article, description;
+
+        if (firstCommaIndex === -1) {
+            // No comma found
+            if (isArticle == true) {
+                return data;
+            } else {
+                return "";
+            }
+        } else {
+            // Comma found
+            article = data.substring(0, firstCommaIndex);
+            description = data.substring(firstCommaIndex + 1) ?? "";
+
+            if (isArticle == true) {
+                return article;
+            } else {
+                return description;
+            }
+        }
+    }
+
     return (
         <div>
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-30">
@@ -141,7 +190,7 @@ export default function ICSModal(props) {
                                     <font className="dark:text-gray-400 font-medium text-sm">
                                         {Loading
                                             ? "N/A"
-                                            : returnedItemsData[0].article}
+                                            : generateArticle(returnedItemsData[0].brand, true)}
                                     </font>
                                 </div>
                                 <div className="">
@@ -156,7 +205,10 @@ export default function ICSModal(props) {
                                         P{" "}
                                         {Loading
                                             ? "N/A"
-                                            : formattedAmount(returnedItemsData[0].acquisition)}
+                                            : formattedAmount(
+                                                  returnedItemsData[0]
+                                                      .acquisition
+                                              )}
                                     </font>
                                 </div>
                                 <div className="">
@@ -175,7 +227,7 @@ export default function ICSModal(props) {
                                     <font className="dark:text-gray-400 font-medium text-sm">
                                         {Loading
                                             ? "N/A"
-                                            : returnedItemsData[0].brand}
+                                            : generateArticle(returnedItemsData[0].brand, false)}
                                     </font>
                                 </div>
                                 <div className="">
@@ -214,23 +266,7 @@ export default function ICSModal(props) {
                         <div className="dark:text-gray-400">
                             {Loading
                                 ? "N/A"
-                                : (returnedItemsData[0].prefix == null
-                                      ? ""
-                                      : returnedItemsData[0].prefix + " ") +
-                                  returnedItemsData[0].firstname +
-                                  " " +
-                                  (returnedItemsData[0].middlename == null
-                                      ? ""
-                                      : returnedItemsData[0].middlename.charAt(
-                                            0
-                                        ) +
-                                        "." +
-                                        " ") +
-                                  " " +
-                                  returnedItemsData[0].surname +
-                                  (returnedItemsData[0].suffix == null
-                                      ? ""
-                                      : " " + returnedItemsData[0].suffix)}
+                                : displayName(returnedItemsData[0], false)}
                         </div>
                     </div>
                     <div className="text-xs dark:text-gray-300">
@@ -238,16 +274,16 @@ export default function ICSModal(props) {
                     </div>
                     <div className="">
                         {/* Hide this buttons if the form is already accepted */}
-                        <div className="flex flex-col space-y-3">
+                        <div className="flex pt-5 gap-4 justify-center">
                             <button
                                 onClick={clickAccept}
-                                className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
+                                className="2xl:h-12 xl:h-9 h-9 w-fit px-8 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
                             >
                                 Accept
                             </button>
                             <button
                                 onClick={() => clickDecline()}
-                                className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
+                                className="2xl:h-12 xl:h-9 h-9 w-fit px-8 p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
                             >
                                 Decline
                             </button>

@@ -118,7 +118,7 @@ class ItemController extends Controller
     public function getPendingitems(Request $req)
     {
         $getPendingItems = DB::table('user_returned_items as uri')
-            ->select('u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'pi.code as code', 'subCat.name as article', 'pi.description', 'uri.uri_id', 'pri.price', 'uri.created_at', 'uri.defect', 't.tracking_id')
+            ->select('u.img','u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'pi.code as code', 'subCat.name as article', 'pi.description', 'uri.uri_id', 'pri.price', 'uri.created_at', 'uri.defect', 't.tracking_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
@@ -138,7 +138,7 @@ class ItemController extends Controller
     public function getReturnedItems()
     {
         $returnedItems = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
+            ->select('uri.uri_id', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -379,7 +379,7 @@ class ItemController extends Controller
     public function getItemsofInventories(Request $req)
     {
         $inventory_items = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id', 'pi.code', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
+            ->select('uri.uri_id', 'pi.code', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -391,7 +391,7 @@ class ItemController extends Controller
             ->get();
 
             $getUsers = DB::table('users')
-            ->select('firstname', 'surname', 'id')
+            ->select('prefix', 'firstname', 'middlename', 'surname', 'suffix', 'id')
             ->get();
 
         return response()->json(['inventory_items' => $inventory_items , 'users' => $getUsers]);
@@ -541,7 +541,7 @@ class ItemController extends Controller
             $total += $price->price;
         }
 
-        if ($total > 40000) {
+        if ($total > 50000) {
             $form = 'PAR';
         } else {
             $form = 'ICS';
@@ -593,7 +593,7 @@ class ItemController extends Controller
     public function getUnserviceableItems(Request $req)
     {
         $items = DB::table('unserviceable_items as ut')
-            ->select('u.firstname', 'u.surname', 'pi.code', 'pi.description', 't.created_at', 'ut.remarks', 'ut.id')
+            ->select('u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'pi.code', 'pi.description', 't.created_at', 'ut.remarks', 'ut.id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ut.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')

@@ -265,13 +265,14 @@ class FormController extends Controller
     public function getIndividualItems(Request $req)
     {
         $items = DB::table('trackings as t')
-            ->select('ui.ui_id', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.code as code as', 'it.eul', 'ui.item_status as remarks', 'it.id')
+            ->select('ui.ui_id', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.code as code as', 'it.eul', 'ui.item_status as remarks', 'it.id')
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia','ia.id','=','it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
+            ->join('users as u', 'u.id', '=', 't.received_by')
             ->where('t.received_by', $req->input('id'))
             ->where('ui.item_status', 'owned')
             ->get();
@@ -311,7 +312,7 @@ class FormController extends Controller
     public function getAdminNotification(Request $req)
     {
         $getAdminNotification = DB::table('admin_notification as an')
-            ->select('an.id', 'u.prefix', 'u.firstname', 'u.surname', 'u.suffix', 'an.created_at', 'an.description', 'an.ns_id')
+            ->select('an.id', 'an.user_id', 'u.prefix', 'u.firstname', 'u.surname', 'u.suffix', 'an.created_at', 'an.description', 'an.ns_id')
             ->join('users as u', 'u.id', '=', 'an.user_id')
             ->orderBy('an.created_at', 'DESC')
             ->get();
@@ -346,9 +347,6 @@ class FormController extends Controller
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.uri_id', $req->input('id'))
             ->get();
-
-
-
         return response()->json(['returnedItemsData' => $getreturnedItemsdata]);
     }
     //accept pending request
