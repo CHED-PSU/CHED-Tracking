@@ -118,6 +118,14 @@ export default function Return({ className }) {
         setId(id);
     }
 
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
     const pageCount = 5;
     const changePage = ({ selected }) => {
         setPageNumber(selected);
@@ -213,7 +221,7 @@ export default function Return({ className }) {
                                     {data.defect}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
-                                    Date Accepted: {data.created_at}
+                                    Date Accepted: {formatDateDisplay(data.created_at)}
                                 </p>
                             </div>
                         </a>

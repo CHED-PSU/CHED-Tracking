@@ -138,10 +138,10 @@ export default function Newproposal({ className, data, xAxis, yAxis, predictedyA
                </div>
             </form>
             <div className="2xl:pt-6 2xl:space-y-1">
-               <div className="w-72 text-[#011284] 2xl:text-sm xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
+               <div className="w-72 text-[#011284] 2xl:text-xs xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
                   Estimated total disposal cost for the year 2022
                </div>
-               <div className="font-bold text-[#434343] 2xl:text-xl xl:text-lg text-lg xl:pb-1">
+               <div className="font-bold text-[#434343] 2xl:text-lg xl:text-lg text-lg xl:pb-1">
                   Disposal/Total Cost 2022
                </div>
                <div className="flex 2xl:h-46 xl:h-40 h-40 py-4 px-7 rounded-2xl bg-card-8 bg-cover bg-center">

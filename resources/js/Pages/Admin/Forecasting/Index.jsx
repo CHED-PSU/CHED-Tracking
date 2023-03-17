@@ -58,7 +58,7 @@ export default function Forecasting({ className }) {
                 {/*tab buttons*/}
                 <div className="pb-3">
                     <ul className="flex gap-4">
-                        
+
                         <li
                             onClick={() => clickTabs("newproposal")}
                             className={

@@ -56,7 +56,7 @@ export default function UserList(props) {
                 <a className="text-left flex items-center w-full h-12 gap-3">
                     <div className="flex flex-col gap-1 items-center w-full">
                         <div className="">
-                            <h5 className="p-1 px-2 w-fit text-[14px] dark:text-neutral-400 dark:bg-[#434343] offlineUser rounded-full flex items-center gap-1">
+                            <h5 className="p-1 px-2 w-fit text-[14px] text-red-500 dark:text-neutral-400 dark:bg-[#434343] offlineUser rounded-full flex items-center gap-1">
                                 <i className="fa-solid fa-circle text-[7px]"></i>
                                 Offline
                             </h5>
@@ -66,7 +66,7 @@ export default function UserList(props) {
             </td>
             {/* email */}
             <td>
-                <a className="text-left flex items-center w-full h-12 gap-3 pl-4">
+                <a className="text-center flex items-center w-full h-12 gap-3 pl-4">
                     <div className="flex flex-col gap-2">
                         <p className=" text-[14px] font-medium truncate w-72">
                             {props.designation == null ? "N/A" : props.designation}

@@ -53,16 +53,20 @@ export default function PreOwner({
 
     return (
         <div className={className}>
-            <div className="pb-16">
+            <div className="">
                 <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default">
+                {/* Dummy data
                     <img
                         src="./img/profile-pic.jpeg"
                         alt="profile"
                         className="rounded-full w-18 h-18 object-cover"
-                    />
+                    /> */}
+                    <span className="bg-red-500 w-18 h-14 rounded-full"></span>
+
+
                     <div className="w-full space-y-2">
                         <div className="border-b-2 border-gray-300 w-full">
-                            <h2 className="text-2xl text-text-gray-2 font-semibold">
+                            <h2 className="pl-[10px] text-xl text-text-gray-2 font-semibold">
                                 {users?.length !== 0
                                     ? users[user_id - 1].firstname +
                                       " " +
@@ -70,10 +74,10 @@ export default function PreOwner({
                                     : ""}
                             </h2>
                         </div>
-                        <p className="text-sm text-text-gray-2 font-medium">
+                        <p className="pl-[10px] text-sm text-red-500 font-medium">
                             {users?.length !== 0
                                 ? users[user_id - 1].designation
-                                : ""}
+                                : ""}CEPS
                         </p>
                     </div>
                 </div>

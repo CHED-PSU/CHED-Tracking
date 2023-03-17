@@ -120,7 +120,7 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
                     </div>
 
                     <div className={className}>
-                        <div className="pb-16 space-y-3">
+                        <div className="space-y-3">
                             <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default">
                                 <img
                                     src="./img/profile-pic.jpeg"
@@ -128,7 +128,7 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
                                     className="rounded-full w-18 h-18 object-cover"
                                 />
                                 <div className="w-full space-y-2">
-                                    <div className="border-b-2 font-semibold pl-[10px] text-xl bg-gray-300 h-8 rounded-md w-full">
+                                    <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-xl h-8 w-full">
                                         {loading
                                             ? ""
                                             : users[selectedPerson - 1]
@@ -136,7 +136,7 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
                                               " " +
                                               users[selectedPerson - 1].surname}
                                     </div>
-                                    <div className="border-b-2 font-medium pl-[10px] text-lg bg-gray-200 h-8 rounded-md w-56">
+                                    <div className="font-medium pl-[10px] text-sm h-8 rounded-md w-56">
                                         {loading
                                             ? ""
                                             : users[selectedPerson - 1]

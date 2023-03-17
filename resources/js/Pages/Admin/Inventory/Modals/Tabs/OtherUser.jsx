@@ -24,12 +24,12 @@ export default function Other({ className, users, id }) {
 
     return (
         <div className={className}>
-            <div className="pb-16 space-y-3">
+            <div className="space-y-3">
                 <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default">
                     <img src="./img/profile-pic.jpeg" alt="profile" className="rounded-full w-18 h-18 object-cover" />
                     <div className="w-full space-y-2">
-                        <div className="border-b-2 font-semibold pl-[10px] text-xl bg-gray-300 h-8 rounded-md w-full">{users[selectedPerson -1].firstname + ' ' + users[selectedPerson-1].surname}</div>
-                        <div className="border-b-2 font-medium pl-[10px] text-lg bg-gray-200 h-8 rounded-md w-56">{users[selectedPerson-1].designation}</div>
+                        <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-xl h-8 w-full">{users[selectedPerson -1].firstname + ' ' + users[selectedPerson-1].surname}</div>
+                        <div className="pl-[10px] text-sm text-red-500 font-medium">{users[selectedPerson-1].designation}Admin Assistant III</div>
                     </div>
                 </div>
                 <form action="">
