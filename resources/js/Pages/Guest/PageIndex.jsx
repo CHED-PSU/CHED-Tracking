@@ -57,6 +57,12 @@ export default function GuestIndex() {
                 .then(response => {
                     const item = {
                         name: response.data.name,
+                        prefix: response.data.prefix,
+                        firstname: response.data.firstname,
+                        middlename: response.data.middlename,
+                        surname: response.data.surname,
+                        suffix: response.data.suffix,
+                        img: response.data.img,
                         role: response.data.role,
                         Authenticated: response.data.Authenticated,
                         Path: response.data.destinations,
