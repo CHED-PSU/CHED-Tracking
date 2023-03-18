@@ -14,7 +14,7 @@ class FormController extends Controller
     public function getNotificationItems(Request $request)
     {
         $NotificationItems = DB::table('users_notification as un')
-            ->select('un.description', 'u.firstname', 'u.surname', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id')
+            ->select('un.description', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id')
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->join('users as u', 't.issued_by', '=', 'u.id')
             ->where('t.received_by', $request->input('id'))
