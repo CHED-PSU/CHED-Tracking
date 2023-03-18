@@ -187,6 +187,7 @@ class ItemController extends Controller
                     $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname .
                     ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix ?
                         ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix : ''),
+                        
                 'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname .
                     ' ' .
                     ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename ?
@@ -194,6 +195,7 @@ class ItemController extends Controller
                     $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname .
                     ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix ?
                         ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix : ''),
+
                 'post_approve' => $getUsers[$getAdminReturnedItemsInfo->post_approved]->firstname .
                     ' ' .
                     ($getUsers[$getAdminReturnedItemsInfo->post_approved]->middlename ?
