@@ -2,18 +2,17 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import DisposeModal from "../Modals/Dispose";
-import DonationForm from '../Forms/DonationFormPre';
-import DestructionSalesForm from '../Forms/DestructionFormPre';
+import DonationForm from "../Forms/DonationFormPre";
+import DestructionSalesForm from "../Forms/DestructionFormPre";
 
 export default function ItemTab({ className }) {
-    const [pageNumber, setPageNumber] = useState([]);
-    const pageCount = 5;
     const [Loading, setLoading] = useState();
     const [UnserviceableItems, setUnserviceableItems] = useState();
     const [openDisposeModal, setOpenDisposeModal] = useState("close");
 
-    const [openDonationForm, setOpenDonationForm] = useState(false)
-    const [openDestructionSalesForm, setOpenDestructionSalesForm] = useState(false)
+    const [openDonationForm, setOpenDonationForm] = useState(false);
+    const [openDestructionSalesForm, setOpenDestructionSalesForm] =
+        useState(false);
 
     //Storage for IDs that is selected
     const [selectedIds, setSelectedIds] = useState([]);
@@ -226,11 +225,27 @@ export default function ItemTab({ className }) {
     };
 
     const confirmHandler = (index) => {
-        if(index === 'Donation'){
-            setOpenDonationForm(true)
-            clickDisposeModal('close')
+        if (index === "Donation") {
+            setOpenDonationForm(true);
+            clickDisposeModal("close");
         }
-    }
+    };
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 8;
+
+    const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    };
+
+    const slicedData = UnserviceableItems?.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+    );
+
+    const pageCount = Math.ceil(
+        (UnserviceableItems?.length || 0) / itemsPerPage
+    );
 
     return (
         <div className={className + " w-full h-full relative"}>
@@ -238,7 +253,7 @@ export default function ItemTab({ className }) {
                 <DisposeModal
                     clickDisposeModal={clickDisposeModal}
                     selectedIds={selectedIds}
-                    confirmHandler = {confirmHandler}
+                    confirmHandler={confirmHandler}
                     className={""}
                 />
             ) : (
@@ -246,7 +261,10 @@ export default function ItemTab({ className }) {
             )}
 
             {openDonationForm ? (
-                <DonationForm selectedIds = {selectedIds} setOpenDonationForm={setOpenDonationForm} />
+                <DonationForm
+                    selectedIds={selectedIds}
+                    setOpenDonationForm={setOpenDonationForm}
+                />
             ) : (
                 ""
             )}
@@ -289,7 +307,7 @@ export default function ItemTab({ className }) {
                 </thead>
                 <tbody>
                     {/*item*/}
-                    {itemsMapper(UnserviceableItems)}
+                    {itemsMapper(slicedData)}
                     {UnserviceableItems?.length === 0 ? (
                         <>
                             <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -308,19 +326,23 @@ export default function ItemTab({ className }) {
                     )}
                 </tbody>
             </table>
-            <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
-                <ReactPaginate
-                    previousLabel={"Prev"}
-                    nextLabel={"Next"}
-                    pageCount={pageCount}
-                    onPageChange={changePage}
-                    containerClassName={"paginationButtons"}
-                    previousLinkClassName={"previousButtons"}
-                    nextLinkClassName={"nextButtons"}
-                    disabledClassName={"paginationDisabled"}
-                    activeClassName={"paginationActive"}
-                />
-            </div>
+            {UnserviceableItems?.length === 0 ? (
+                ""
+            ) : (
+                <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
+                    <ReactPaginate
+                        previousLabel={"Prev"}
+                        nextLabel={"Next"}
+                        pageCount={pageCount}
+                        onPageChange={handlePageClick}
+                        containerClassName={"paginationButtons"}
+                        previousLinkClassName={"previousButtons"}
+                        nextLinkClassName={"nextButtons"}
+                        disabledClassName={"paginationDisabled"}
+                        activeClassName={"paginationActive"}
+                    />
+                </div>
+            )}
         </div>
     );
 }
