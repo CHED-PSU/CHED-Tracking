@@ -622,4 +622,31 @@ class ItemController extends Controller
 
         return response()->json(['unserviceableItems' => $items, 'unserviceableStatus' => $status]);
     }
+
+    //admin Donation Items fetcher
+    public function getUnserviceableItemsDetails(Request $req)
+    {
+        $array = [];
+        foreach ($req->input('item_ids') as $item) {
+
+
+            $itemsDetails = DB::table('unserviceable_items as uit')
+                ->select('rii.created_at as date_acquired', 'pi.code as property_no', 'pi.description', 'pi.price', 'rii.post_findings as ppe')
+                ->join('inventory_tracking as it', 'uit.inventory_tracking_id', '=', 'it.id')
+                ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
+                ->join('user_returned_items as uri', 'uri.ui_id', '=', 'ui.ui_id')
+                ->join('returned_items_info as rii', 'rii.uri_id', '=', 'uri.uri_id')
+                ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+                ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+                ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+                ->where('uit.id', $item)
+                ->first();
+
+
+
+            array_push($array, $itemsDetails);
+        }
+
+        return response()->json(['items' => $array]);
+    }
 }
