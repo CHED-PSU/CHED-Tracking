@@ -90,14 +90,16 @@ export default function Dashboard({ className }) {
                         setCountAccepted(response.data.accepted);
 
                         setPendingReq({
-                            labels: [
-                                'Accepted',
-                                'Yellow'
-                              ],
+                            labels: ["Accepted", "Yellow"],
                             datasets: [
                                 {
                                     label: "Requests",
-                                    data: Loading ? [response.data.accepted, response.data.pending] : '',
+                                    data: Loading
+                                        ? [
+                                              response.data.accepted,
+                                              response.data.pending,
+                                          ]
+                                        : "",
                                     backgroundColor: [
                                         "rgba(255, 255, 255, 1)",
                                         "rgba(206, 0, 62, 1)",
@@ -106,10 +108,8 @@ export default function Dashboard({ className }) {
                                     hoverOffset: 5,
                                 },
                             ],
-                        })
+                        });
                     });
-
-
             } catch (e) {
                 console.log(e);
             } finally {
@@ -119,16 +119,12 @@ export default function Dashboard({ className }) {
         getPendingAcceptedRequests();
     }, []);
 
-
-    const [pendingReq, setPendingReq] = useState( {
-        labels: [
-            'Accepted',
-            'Yellow'
-          ],
+    const [pendingReq, setPendingReq] = useState({
+        labels: ["Accepted", "Yellow"],
         datasets: [
             {
                 label: "Requests",
-                data: Loading ? [countAccepted, countPending] : '',
+                data: Loading ? [countAccepted, countPending] : "",
                 backgroundColor: [
                     "rgba(255, 255, 255, 1)",
                     "rgba(206, 0, 62, 1)",
@@ -189,9 +185,7 @@ export default function Dashboard({ className }) {
                             </div>
                             <div className="flex flex-col items-center w-fit 2xl:space-y-4 xl:space-y-2 space-y-2">
                                 <div className="2xl:h-40 2xl:w-40 xl:h-24 xl:w-24 h-24 w-24 flex-none">
-                                    <PendingReq
-                                        chartData={pendingReq}
-                                    />
+                                    <PendingReq chartData={pendingReq} />
                                 </div>
                                 <div className="flex 2xl:flex-row xl:flex-col flex-col justify-center flex-none text-xs 2xl:gap-6 xl:gap-1 gap-1">
                                     <div className="flex 2xl:gap-3 xl:gap-2 gap-2 items-center">
@@ -255,7 +249,10 @@ export default function Dashboard({ className }) {
                         <div className="font-semibold">Annual Summary</div>
                         <div className="rounded-2xl border border-[#DDDDDD] dark:border-[#434343] h-full w-full bg-white dark:bg-darkColor-800 space-y-3">
                             <div className="relative w-full h-full 2xl:py-6 xl:py-4 py-4 2xl:px-8 xl:px-5 px-5">
-                                <AnnualSum chartData={annualSum} className="dark:text-white"/>
+                                <AnnualSum
+                                    chartData={annualSum}
+                                    className="dark:text-white"
+                                />
                             </div>
                         </div>
                     </div>
@@ -282,8 +279,22 @@ export default function Dashboard({ className }) {
                                     </strong>
                                 </div>
                             </div>
-                        ) : (
+                        ) : recentIssuance?.length > 0 ? (
                             recentIssuanceMapper(recentIssuance)
+                        ) : (
+                            <div className="flex items-center justify-center cursor-default">
+                                <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 dark:bg-darkColor-900 rounded-full w-[300px] h-[300px]">
+                                    <img
+                                        src="./img/no_data.png"
+                                        alt="no data"
+                                        className="w-52"
+                                        draggable="false"
+                                    />
+                                    <strong className="text-text-gray-2 dark:text-lightColor-800 text-sm">
+                                        You haven't been issued yet
+                                    </strong>
+                                </div>
+                            </div>
                         )}
                         {/* no data */}
                     </div>
