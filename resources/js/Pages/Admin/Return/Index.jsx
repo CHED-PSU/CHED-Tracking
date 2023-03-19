@@ -396,12 +396,23 @@ export default function Return({ className }) {
                                         className="text-center h-12 bg-white border"
                                     >
                                         <small className="text-sm">
-                                            No data available in table.
+                                            Loading data.
                                         </small>
                                     </td>
                                 </tr>
                             ) : (
-                                returnItemsMapper(returnedItems)
+
+                                returnedItems?.length > 0 ?
+                                returnItemsMapper(returnedItems) : <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                <td
+                                    colSpan="5"
+                                    className="text-center h-12 bg-white border"
+                                >
+                                    <small className="text-sm">
+                                        No returned items yet.
+                                    </small>
+                                </td>
+                            </tr>
                             )}
                         </tbody>
                     </table>
