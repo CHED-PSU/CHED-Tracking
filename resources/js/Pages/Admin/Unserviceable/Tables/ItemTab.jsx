@@ -246,7 +246,7 @@ export default function ItemTab({ className }) {
             )}
 
             {openDonationForm ? (
-                <DonationForm setOpenDonationForm={setOpenDonationForm} />
+                <DonationForm selectedIds = {selectedIds} setOpenDonationForm={setOpenDonationForm} />
             ) : (
                 ""
             )}

@@ -137,6 +137,8 @@ Route::post('multiReturnAndRenew', [ItemController::class, 'multiReturnAndRenew'
 Route::post('mutliAssignToOtherUser', [ItemController::class, 'mutliAssignToOtherUser']);
 //Admin Unserviceable Items
 Route::get('getUnserviceableItems', [ItemController::class, 'getUnserviceableItems']);
+    //Donation fetcher details of items
+        Route::post('getUnserviceableItemsDetails',[ItemController::class, 'getUnserviceableItemsDetails']);
 
 //Admin forecasting Items
 Route::get('forecast', [ForecastingController::class, 'forecast']);

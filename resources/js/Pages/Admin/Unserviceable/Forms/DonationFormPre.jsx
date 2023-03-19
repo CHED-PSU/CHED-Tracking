@@ -1,8 +1,33 @@
-import React, { createRef, useRef } from "react";
+import axios from "axios";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 
-export default function DonationForm({className, setOpenDonationForm}) {
+export default function DonationForm(props) {
     const ref = useRef();
+
+    const [loading, setLoading] = useState(true);
+    const [items, setItems] = useState();
+
+    const getItems = async () => {
+        setLoading(true);
+        try {
+            await axios
+                .post("api/getUnserviceableItemsDetails", {
+                    item_ids: props.selectedIds,
+                })
+                .then((res) => {
+                    setItems(res.data.items);
+                });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getItems();
+    }, []);
 
     const handlePrint = useReactToPrint({
         content: () => ref.current,
@@ -14,18 +39,44 @@ export default function DonationForm({className, setOpenDonationForm}) {
               margin-bottom: 0.5in;
             }
           }`,
-        documentTitle: 'emp-data',
-    })
+        documentTitle: "emp-data",
+    });
+
+    const itemsMapper = (items) => {
+        return items?.map((data) => {
+            return (
+                <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                    <td className="text-center px-3 border">
+                        {data.date_acquired}
+                    </td>
+                    <td className="text-center px-3 border">
+                        {data.property_no}
+                    </td>
+                    <td className="text-left px-3 border">
+                        {data.description}
+                    </td>
+                    <td className="text-center px-3 py-3 border">
+                        {data.price}
+                    </td>
+                    <td className="text-left px-3 border">{data.ppe}</td>
+                </tr>
+            );
+        });
+    };
 
     return (
-
-        <div className={className + " fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
+        <div
+            className={
+                props.className +
+                " fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"
+            }
+        >
             <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                 {/* header */}
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                     <div className="w-1/2">
                         <button
-                            onClick={() => setOpenDonationForm(false)}
+                            onClick={() => props.setOpenDonationForm(false)}
                             className="py-3 mt-4"
                         >
                             <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
@@ -49,7 +100,9 @@ export default function DonationForm({className, setOpenDonationForm}) {
                 {/* data table */}
                 <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10">
                     <div className="w-[8.27in] px-6 py-6">
-                        <div className="flex justify-end text-ss font-medium italic pb-2">Appendix 76</div>
+                        <div className="flex justify-end text-ss font-medium italic pb-2">
+                            Appendix 76
+                        </div>
                         <div className="text-center dark:text-white pt-8 pb-2">
                             <div className="text-sm font-semibold">
                                 PROPERTY TRANSFER REPORT
@@ -81,49 +134,116 @@ export default function DonationForm({className, setOpenDonationForm}) {
                         <div className="mt-4 mb-2">
                             <div className="flex justify-between text-sm">
                                 <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs font-medium">
-                                    From Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">
-                                        <input type="text" name="" id="" className="border-b border-black font-semibold outline-none uppercase"/>
-                                        </font>
+                                    From Accountable Officer/Agency/Fund
+                                    Cluster:{" "}
+                                    <font className="font-medium text-black">
+                                        <input
+                                            type="text"
+                                            name=""
+                                            id=""
+                                            className="border-b border-black font-semibold outline-none uppercase"
+                                        />
+                                    </font>
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
-                                    PTR No:  <font className="font-medium">
-                                    <input type="number" name="" id="" className="border-b w-28 border-black font-semibold outline-none uppercase"/>
+                                    PTR No:{" "}
+                                    <font className="font-medium">
+                                        <input
+                                            type="number"
+                                            name=""
+                                            id=""
+                                            className="border-b w-28 border-black font-semibold outline-none uppercase"
+                                        />
                                     </font>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs font-medium ">
-                                To Accountable Officer/Agency/Fund Cluster: <font className="font-medium text-black">
-                                <input type="text" name="" id="" className="border-b border-black font-semibold outline-none w-64 uppercase"/></font>
+                                    To Accountable Officer/Agency/Fund Cluster:{" "}
+                                    <font className="font-medium text-black">
+                                        <input
+                                            type="text"
+                                            name=""
+                                            id=""
+                                            className="border-b border-black font-semibold outline-none w-64 uppercase"
+                                        />
+                                    </font>
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
-                                    Date:  <font className="font-medium">0</font>
+                                    Date: <font className="font-medium">0</font>
                                 </div>
                             </div>
                             <div className="border border-b-0 py-4 space-y-3">
                                 <div>
-                                    <p className="ml-4 text-xs">Transfer Type: (check only one)</p>
+                                    <p className="ml-4 text-xs">
+                                        Transfer Type: (check only one)
+                                    </p>
                                 </div>
                                 <div className="flex gap-7 ml-40">
                                     <div className="">
                                         <div className="flex gap-1 pb-2">
-                                            <input type="radio" name="transferType" id="donation" value="Donation"/>
-                                            <label for="donation" className="text-black font-medium text-xs">Donation</label>
+                                            <input
+                                                type="radio"
+                                                name="transferType"
+                                                id="donation"
+                                                value="Donation"
+                                            />
+                                            <label
+                                                for="donation"
+                                                className="text-black font-medium text-xs"
+                                            >
+                                                Donation
+                                            </label>
                                         </div>
                                         <div className="flex gap-1">
-                                            <input type="radio" name="transferType" id="relocate" value="Relocate"/>
-                                            <label for="relocate" className="text-black font-medium text-xs">Relocate</label>
+                                            <input
+                                                type="radio"
+                                                name="transferType"
+                                                id="relocate"
+                                                value="Relocate"
+                                            />
+                                            <label
+                                                for="relocate"
+                                                className="text-black font-medium text-xs"
+                                            >
+                                                Relocate
+                                            </label>
                                         </div>
                                     </div>
                                     <div>
                                         <div className="flex gap-1 pb-2">
-                                            <input type="radio" name="transferType" id="reassignment" value="Donation"/>
-                                            <label for="reassignment" className="text-black font-medium text-xs">Reassignment</label>
+                                            <input
+                                                type="radio"
+                                                name="transferType"
+                                                id="reassignment"
+                                                value="Donation"
+                                            />
+                                            <label
+                                                for="reassignment"
+                                                className="text-black font-medium text-xs"
+                                            >
+                                                Reassignment
+                                            </label>
                                         </div>
                                         <div className="flex gap-1 items-center w-full">
-                                            <input type="radio" name="transferType" id="others" value="Relocate"/>
-                                            <label for="others" className="text-black font-medium text-xs">Others (Specify)</label>
-                                            <input type="text" name="" id="" className="border-b border-black font-medium outline-none w-80"/>
+                                            <input
+                                                type="radio"
+                                                name="transferType"
+                                                id="others"
+                                                value="Relocate"
+                                            />
+                                            <label
+                                                for="others"
+                                                className="text-black font-medium text-xs"
+                                            >
+                                                Others (Specify)
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name=""
+                                                id=""
+                                                className="border-b border-black font-medium outline-none w-80"
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -153,31 +273,27 @@ export default function DonationForm({className, setOpenDonationForm}) {
                                     </tr>
                                 </thead>
                                 <tbody id="slip-table">
-                                    <tr className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td className="text-center px-3 border">
-                                            default
-                                        </td>
-                                        <td className="text-center px-3 border">
-                                            default
-                                        </td>
-                                        <td className="text-left px-3 border">
-                                            default
-                                        </td>
-                                        <td className="text-center px-3 py-3 border">
-                                            default
-                                        </td>
-                                        <td className="text-left px-3 border">
-                                            default
+                                    {loading ? "" : itemsMapper(items)}
+                                    <tr>
+                                        <td
+                                            className="text-xs border text-center py-4"
+                                            colSpan={5}
+                                        >
+                                            *nothing follows*
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td className="text-xs border text-center py-4" colSpan={5}>*nothing follows*</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="text-xs border py-4" colSpan={5}>
+                                        <td
+                                            className="text-xs border py-4"
+                                            colSpan={5}
+                                        >
                                             <div>
-                                                <p className="ml-4">Reason for Transfer:</p>
-                                                <h5 className="text-center text-black font-medium py-10">FOR DONATION.</h5>
+                                                <p className="ml-4">
+                                                    Reason for Transfer:
+                                                </p>
+                                                <h5 className="text-center text-black font-medium py-10">
+                                                    FOR DONATION.
+                                                </h5>
                                             </div>
                                         </td>
                                     </tr>
@@ -193,36 +309,91 @@ export default function DonationForm({className, setOpenDonationForm}) {
                                                 <div className="flex w-5/6">
                                                     {/* Approved by */}
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
-                                                        <h5 className="pb-6 text-sm font-medium">Approved by:</h5>
+                                                        <h5 className="pb-6 text-sm font-medium">
+                                                            Approved by:
+                                                        </h5>
                                                         <div className="flex flex-col justify-between">
-                                                                <select name="" id="Status" className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer">
-                                                                    <option value="none">None</option>
-                                                                </select>
+                                                            {/* <select
+                                                                name=""
+                                                                id="Status"
+                                                                className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer"
+                                                            >
+                                                                <option value="none">
+                                                                    None
+                                                                </option>
+                                                            </select> */}
+                                                            <input
+                                                                type="text"
+                                                                name=""
+                                                                id=""
+                                                                className="border-b w-100 border-black font-semibold outline-none uppercase"
+                                                            />
                                                         </div>
-                                                        <h6 className="text-xs">Director IV</h6>
-                                                        <h6 className="text-sm">March 25, 2022</h6>
+                                                        <h6 className="text-xs">
+                                                            Director IV
+                                                        </h6>
+                                                        <h6 className="text-sm">
+                                                            March 25, 2022
+                                                        </h6>
                                                     </div>
                                                     {/* Released/Issued by */}
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
-                                                        <h5 className="pb-6 text-sm font-medium">Released/Issue by:</h5>
+                                                        <h5 className="pb-6 text-sm font-medium">
+                                                            Released/Issue by:
+                                                        </h5>
                                                         <div className="flex flex-col justify-between">
-                                                                <select name="" id="Status" className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer">
-                                                                    <option value="none">None</option>
-                                                                </select>
+                                                            {/* <select
+                                                                name=""
+                                                                id="Status"
+                                                                className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer"
+                                                            >
+                                                                <option value="none">
+                                                                    None
+                                                                </option>
+                                                            </select> */}
+                                                            <input
+                                                                type="text"
+                                                                name=""
+                                                                id=""
+                                                                className="border-b w-28 border-black font-semibold outline-none uppercase"
+                                                            />
                                                         </div>
-                                                        <h6 className="text-xs">Admin.Assist.IV/Property Officer Designate</h6>
-                                                        <h6 className="text-sm">March 25, 2022</h6>
+                                                        <h6 className="text-xs">
+                                                            Admin.Assist.IV/Property
+                                                            Officer Designate
+                                                        </h6>
+                                                        <h6 className="text-sm">
+                                                            March 25, 2022
+                                                        </h6>
                                                     </div>
                                                     {/* Received by */}
                                                     <div className="flex flex-col gap-1 w-1/3 px-4">
-                                                        <h5 className="pb-6 text-sm font-medium">Received by:</h5>
+                                                        <h5 className="pb-6 text-sm font-medium">
+                                                            Received by:
+                                                        </h5>
                                                         <div className="flex flex-col justify-between">
-                                                                <select name="" id="Status" className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer">
-                                                                    <option value="none">None</option>
-                                                                </select>
+                                                            {/* <select
+                                                                name=""
+                                                                id="Status"
+                                                                className="w-full rounded-md border border-neutral-500 px-2 outline-none cursor-pointer"
+                                                            >
+                                                                <option value="none">
+                                                                    None
+                                                                </option>
+                                                            </select> */}
+                                                            <input
+                                                                type="text"
+                                                                name=""
+                                                                id=""
+                                                                className="border-b w-28 border-black font-semibold outline-none uppercase"
+                                                            />
                                                         </div>
-                                                        <h6 className="text-xs">College President</h6>
-                                                        <h6 className="text-sm">March 25, 2022</h6>
+                                                        <h6 className="text-xs">
+                                                            College President
+                                                        </h6>
+                                                        <h6 className="text-sm">
+                                                            March 25, 2022
+                                                        </h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -231,12 +402,10 @@ export default function DonationForm({className, setOpenDonationForm}) {
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
                 {/* data table */}
             </div>
         </div>
-
     );
 }
