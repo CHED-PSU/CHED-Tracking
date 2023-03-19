@@ -93,7 +93,7 @@ class ItemController extends Controller
                 'user_id' => $req->input('user_id'),
                 'defect' => $req->input('data')['defect'],
                 'status' => $req->input('data')['reason'],
-                'confirmation' => 'Pending'
+                'confirmation' => 'pending'
             ]);
 
         DB::table('user_items as ui')
@@ -106,7 +106,7 @@ class ItemController extends Controller
             'user_id'      => $req->input('user_id'),
             'ns_id' => 2,
             'np_id' => 4,
-            'confirmation' => 'Pending',
+            'confirmation' => 'pending',
             'description'  => 'has requested to return an item'
         ]);
 
@@ -187,6 +187,7 @@ class ItemController extends Controller
                     $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname .
                     ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix ?
                         ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix : ''),
+                        
                 'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname .
                     ' ' .
                     ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename ?
@@ -194,6 +195,7 @@ class ItemController extends Controller
                     $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname .
                     ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix ?
                         ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix : ''),
+
                 'post_approve' => $getUsers[$getAdminReturnedItemsInfo->post_approved]->firstname .
                     ' ' .
                     ($getUsers[$getAdminReturnedItemsInfo->post_approved]->middlename ?

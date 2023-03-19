@@ -3,43 +3,89 @@ import ICSIssuedNotification from "./notification components/ICSIssuedNotificati
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import io from "socket.io-client";
-const socket = io.connect("http://127.0.0.1:8001")
+const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Widgets(props) {
-
     const [toggleTabs, setToggleTabs] = useState("all");
-    const [read, setRead] = useState()
+    const [read, setRead] = useState();
+    const user = localStorage.getItem("localSession");
+    const value = JSON.parse(user);
+    const [name, setName] = useState("default");
+    const [role, setRole] = useState("default");
+
     function clickTabs(index) {
         setToggleTabs(index);
     }
 
+    function displayPhoto(profilePhoto, name, className) {
+        if (profilePhoto == null) {
+            return (
+                <span
+                    className={
+                        className +
+                        " bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full"
+                    }
+                >
+                    {name.substring(0, 1)}
+                </span>
+            );
+        } else {
+            return (
+                <img
+                    draggable="false"
+                    src="./img/profile-pic.jpeg"
+                    className={
+                        className + " rounded-full bg-gray-500 object-cover"
+                    }
+                />
+            );
+        }
+    }
 
-    const user = localStorage.getItem('localSession');
-    const value = JSON.parse(user);
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
 
-    const [name, setName] = useState('default');
-    const [role, setRole] = useState('default');
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
 
     useEffect(() => {
-        socket.on('user_notif', data => {
-            console.log('pasok')
-            setRead(true)
-        })
-
-    }, [socket])
+        socket.on("user_notif", (data) => {
+            console.log("pasok");
+            setRead(true);
+        });
+    }, [socket]);
 
     useEffect(() => {
-        setName(value.name)
-        setRole(value.role)
-    })
+        setName(value.name);
+        setRole(value.role);
+    });
 
     //for Logout
     const nav = useNavigate();
 
     const handleLogOut = () => {
-        localStorage.removeItem('localSession')
-        nav('/');
-    }
+        localStorage.removeItem("localSession");
+        nav("/");
+    };
 
     // Modal for Notification and Profile
     const [openNotifDropdown, setOpenNotifDropdown] = useState(false);
@@ -68,41 +114,36 @@ export default function Widgets(props) {
         return () => {
             document.removeEventListener("mousedown", handler);
         };
-
     });
 
     // Modal for Notification Item
-    const [openNotifSpecList, setOpenNotifSpecList] = useState(false)
-    const [listId, setListId] = useState()
+    const [openNotifSpecList, setOpenNotifSpecList] = useState(false);
+    const [listId, setListId] = useState();
 
     const notifSpecList = (id) => {
-        setListId(id)
-        setOpenNotifSpecList(!openNotifSpecList)
-        setOpenNotifDropdown(!openNotifDropdown)
-
-    }
+        setListId(id);
+        setOpenNotifSpecList(!openNotifSpecList);
+        setOpenNotifDropdown(!openNotifDropdown);
+    };
 
     //for Notification mapping
     const [notificationItems, setNotificationItems] = useState([]);
 
     async function getNotificationItems() {
         try {
-            const res = await axios.post('/api/getNotificationItems', {
-                id: value.id
+            const res = await axios.post("/api/getNotificationItems", {
+                id: value.id,
             });
-            setNotificationItems(res.data)
+            setNotificationItems(res.data);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
-    
-
-
     const notifMapper = (items) => {
         if (items.length > 0) {
-            return items.map(nfItems => {
-                return nfItems.map(data => {
+            return items.map((nfItems) => {
+                return nfItems.map((data) => {
                     var created_at = new Date(data.created_at);
                     let today = new Date();
 
@@ -111,25 +152,32 @@ export default function Widgets(props) {
                     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
                     if (data.np_id === 1) {
                         if (data.ns_id === 2) {
-                            console.log('pasok')
                             return (
-                                <li onClick={() => notifSpecList(data.id)} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
+                                <li
+                                    onClick={() => notifSpecList(data.id)}
+                                    className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer"
+                                >
                                     <div className="flex h-full items-center justify-between gap-3 px-3">
-                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-                                            {data.firstname.charAt(0)}
-                                        </div>
+                                        {displayPhoto(
+                                            data.img,
+                                            data.firstname,
+                                            "2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9"
+                                        )}
                                         <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
                                             <div className="text-sm 2xl:leading-0 xl:leading-4">
                                                 <span className="font-semibold">
-                                                    {data.firstname}
+                                                    {displayName(data, true)}
                                                 </span>{" "}
                                                 <span className="">
                                                     {" "}
-                                                    has issued you an {data.description} form.
+                                                    has issued you an{" "}
+                                                    {data.description} form.
                                                 </span>
                                             </div>
                                             <div className="text-xs text-blue-400">
-                                                {days === 1 || days === 0 ? "a day ago" : days + " days ago"}
+                                                {days === 1 || days === 0
+                                                    ? "a day ago"
+                                                    : days + " days ago"}
                                             </div>
                                         </div>
                                     </div>
@@ -141,67 +189,67 @@ export default function Widgets(props) {
                                             <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
                                         </span>
                                     </div>
-
                                 </li>
-                            )
+                            );
                         } else {
                             return (
-                                <li onClick={() => notifSpecList(data.id)} className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer">
+                                <li
+                                    onClick={() => notifSpecList(data.id)}
+                                    className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer"
+                                >
                                     <div className="flex h-full items-center justify-between gap-3 px-3">
-                                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-                                            {data.firstname.charAt(0)}
-                                        </div>
+                                        {displayPhoto(
+                                            data.img,
+                                            data.firstname,
+                                            "2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9"
+                                        )}
                                         <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
                                             <div className="text-sm 2xl:leading-0 xl:leading-4">
                                                 <span className="font-semibold">
-                                                    {data.firstname}
+                                                    {displayName(data, true)}
                                                 </span>{" "}
                                                 <span className="">
                                                     {" "}
-                                                    has issued you an {data.description} form.
+                                                    has issued you an{" "}
+                                                    {data.description} form.
                                                 </span>
                                             </div>
                                             <div className="text-xs text-blue-400">
-                                                {days === 1 || days === 0 ? "a day ago" : days + " days ago"}
+                                                {days === 1 || days === 0
+                                                    ? "a day ago"
+                                                    : days + " days ago"}
                                             </div>
                                         </div>
                                     </div>
-
                                     {/* Ping Notif */}
-
-
                                 </li>
-                            )
+                            );
                         }
-
                     }
-                }
-
-                )
-            })
-
+                });
+            });
         } else {
-
             return (
                 <li className="py-5 text-center cursor-default">
                     <small>You don't have notification yet</small>
                 </li>
-            )
+            );
         }
-    }
+    };
 
-    
     const getNotif = () => {
         getNotificationItems();
-    }
+    };
 
     return (
         <div className={props.className}>
-
             {/* Buttons */}
             <div className="w-fit flex items-center 2xl:space-x-4 xl:space-x-3 space-x-3">
                 {/* Dark Mode Button */}
-                <button onClick={props.toggleDarkMode} className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-darkColor-700 dark:hover:bg-amber-300 rounded-full flex justify-center items-center">
+                <button
+                    onClick={props.toggleDarkMode}
+                    className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-darkColor-700 dark:hover:bg-amber-300 rounded-full flex justify-center items-center"
+                >
                     <div className="2xl:w-full 2xl:p-2 xl:w-5 w-5 rounded-full hover:fill-[#FFD23B] dark:fill-[#FFD23B] dark:hover:fill-white">
                         <svg
                             className="inline-block dark:hidden"
@@ -230,17 +278,21 @@ export default function Widgets(props) {
                 <button
                     ref={notifButton}
                     onClick={() => {
-                        setOpenNotifDropdown(!openNotifDropdown),getNotif();
+                        setOpenNotifDropdown(!openNotifDropdown), getNotif();
                     }}
                     className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover rounded-full flex justify-center items-center relative"
                 >
                     <div className="2xl:w-6 xl:w-5 w-5 dark:fill-icon-light">
-                        {props.unread != 0 ? <div className="h-auto flex left-6 top-2 absolute">
-                            <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                                <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-                            </span>
-                        </div> : ""}
+                        {props.unread != 0 ? (
+                            <div className="h-auto flex left-6 top-2 absolute">
+                                <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                    <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                                </span>
+                            </div>
+                        ) : (
+                            ""
+                        )}
                         <svg
                             version="1.0"
                             xmlns="http://www.w3.org/2000/svg"
@@ -256,12 +308,15 @@ export default function Widgets(props) {
                                 fill="#666"
                             />
                         </svg>
-
                     </div>
-                    {read ? <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 bg-blue-500 justify-center items-center text-white font-semibold text-ss"></span>
-                    </span> : ''}
+                    {read ? (
+                        <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 bg-blue-500 justify-center items-center text-white font-semibold text-ss"></span>
+                        </span>
+                    ) : (
+                        ""
+                    )}
                 </button>
 
                 {/* Profile Button */}
@@ -275,66 +330,69 @@ export default function Widgets(props) {
                     <div className="flex w-full justify-between pl-4 pr-2 xl:items-center items-center xl:h-full h-full rounded-xl gap-2">
                         <div className=" text-left">
                             <h4 className="text-xs font-bold">
-                                {name}
+                                {displayName(value, false)}
                             </h4>
                             <p className="text-ss 2xl:block xl:hidden hidden">
                                 {role}
                             </p>
                         </div>
-                        <span className="bg-blue-900 dark:bg-blue-600 2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full">
-                            {name.substring(0, 1)}
-                        </span>
+                        {displayPhoto(
+                            value.img,
+                            value.firstname,
+                            "2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7"
+                        )}
                     </div>
                 </button>
-
             </div>
 
             {/* Dropdowns */}
             <div className="absolute w-fit h-fit flex justify-end 2xl:top-20 xl:top-16 top-16 2xl:right-10 xl:right-5 right-5 z-50">
                 {/* Notification */}
-                <div
-                    ref={notifDropdown}
-                >
-                    {openNotifDropdown ? <div className="relative w-fit min-h-fit 2xl:max-h-[660px] xl:max-h-[500px] max-h-[500px] bg-white border border-neutral-200 dark:border-neutral-700 dark:bg-darkColor-800 rounded-xl 2xl:py-4 xl:py-3 py-3 2xl:pl-5 2xl:pr-4 xl:px-4 px-4 2xl:space-y-3 xl:space-y-2 space-y-2 shadow-lg">
-                        <div className="text-left cursor-default 2xl:pt-1">
-                            <h2 className="2xl:text-xl xl:text-lg text-lg font-semibold dark:text-neutral-200">
-                                Notification
-                            </h2>
-                            <p className="text-xs 2xl:mt-0 xl:-mt-1 -mt-1 text-slate-600 dark:text-neutral-300">
-                                You've got 9 unread notifications.
-                            </p>
-                        </div>
+                <div ref={notifDropdown}>
+                    {openNotifDropdown ? (
+                        <div className="relative w-fit min-h-fit 2xl:max-h-[660px] xl:max-h-[500px] max-h-[500px] bg-white border border-neutral-200 dark:border-neutral-700 dark:bg-darkColor-800 rounded-xl 2xl:py-4 xl:py-3 py-3 2xl:pl-5 2xl:pr-4 xl:px-4 px-4 2xl:space-y-3 xl:space-y-2 space-y-2 shadow-lg">
+                            <div className="text-left cursor-default 2xl:pt-1">
+                                <h2 className="2xl:text-xl xl:text-lg text-lg font-semibold dark:text-neutral-200">
+                                    Notification
+                                </h2>
+                                <p className="text-xs 2xl:mt-0 xl:-mt-1 -mt-1 text-slate-600 dark:text-neutral-300">
+                                    You've got 9 unread notifications.
+                                </p>
+                            </div>
 
-                        {/*tab buttons*/}
-                        <ul className="flex gap-2">
-                            <li
-                                onClick={() => clickTabs("all")}
+                            {/*tab buttons*/}
+                            <ul className="flex gap-2">
+                                <li
+                                    onClick={() => clickTabs("all")}
+                                    className={
+                                        toggleTabs === "all"
+                                            ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
+                                            : "btn-color-3 border border-border-iconLight dark:border-neutral-700 dark:bg-darkColor-800 dark:text-white hover:bg-neutral-200 rounded-full"
+                                    }
+                                >
+                                    <div className="select-none text-xs w-fit px-5 py-2 cursor-pointer">
+                                        All
+                                    </div>
+                                </li>
+                            </ul>
+                            {/*tab buttons*/}
+
+                            {/* All Tabs */}
+                            <div
                                 className={
-                                    toggleTabs === "all"
-                                        ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                        : "btn-color-3 border border-border-iconLight dark:border-neutral-700 dark:bg-darkColor-800 dark:text-white hover:bg-neutral-200 rounded-full"
+                                    toggleTabs === "all" ? "flex" : "hidden"
                                 }
                             >
-                                <div className="select-none text-xs w-fit px-5 py-2 cursor-pointer">
-                                    All
-                                </div>
-                            </li>
-                        </ul>
-                        {/*tab buttons*/}
-
-                        {/* All Tabs */}
-                        <div
-                            className={
-                                toggleTabs === "all" ? "flex" : "hidden"
-                            }
-                        >
-                            <ul className="min-h-fit 2xl:max-h-[520px] xl:max-h-[380px] max-h-[380px] pr-1 overflow-auto flex-row space-y-2 2xl:w-[350px] xl:w-[300px] w-[300px]">
-                                {notifMapper(Object.values(notificationItems))}
-
-                            </ul>
+                                <ul className="min-h-fit 2xl:max-h-[520px] xl:max-h-[380px] max-h-[380px] pr-1 overflow-auto flex-row space-y-2 2xl:w-[350px] xl:w-[300px] w-[300px]">
+                                    {notifMapper(
+                                        Object.values(notificationItems)
+                                    )}
+                                </ul>
+                            </div>
                         </div>
-                    </div> :
-                        ""}
+                    ) : (
+                        ""
+                    )}
                 </div>
                 {/* Notification */}
 
@@ -347,17 +405,22 @@ export default function Widgets(props) {
                         <ul className="flex-row space-y-2">
                             <li className="2xl:w-[250px] xl:w-[220px] w-[220px] flex items-center py-3 gap-1 border-sh dark:border-neutral-700 border-b rounded-md">
                                 <div className="flex justify-between gap-4 px-3">
-                                    <div className="flex-none flex justify-center items-center 2xl:h-12 2xl:w-12 xl:h-10 xl:w-10 h-10 w-10 rounded-profile bg-primary dark:bg-active-icon">
-                                        {name.substring(0, 1)}
-                                    </div>
+                                    {displayPhoto(
+                                        value.img,
+                                        value.firstname,
+                                        "2xl:h-12 2xl:w-12 xl:h-10 xl:w-10 h-10 w-10"
+                                    )}
                                     <div className="flex items-center">
                                         <h2 className="2xl:text-md xl:text-sm text-sm font-semibold dark:text-white">
-                                            {name}
+                                            {displayName(value, false)}
                                         </h2>
                                     </div>
                                 </div>
                             </li>
-                            <li onClick={handleLogOut} className="flex text-left dark:text-white gap-3 2xl:py-3 xl:py-2 py-2 2xl:px-3 xl:px-2 px-2 rounded-md items-center hover:bg-slate-100 dark:hover:bg-darkColor-700 cursor-pointer">
+                            <li
+                                onClick={handleLogOut}
+                                className="flex text-left dark:text-white gap-3 2xl:py-3 xl:py-2 py-2 2xl:px-3 xl:px-2 px-2 rounded-md items-center hover:bg-slate-100 dark:hover:bg-darkColor-700 cursor-pointer"
+                            >
                                 <div className="flex justify-between gap-3 2xl:px-3 xl:px-2 px-2">
                                     <div className="flex-col">
                                         <h2 className="text-sm font-semibold">
@@ -365,14 +428,20 @@ export default function Widgets(props) {
                                         </h2>
                                     </div>
                                 </div>
-
                             </li>
                         </ul>
                     </div>
                 </div>
                 {/* Profile */}
             </div>
-            {openNotifSpecList ? <ICSIssuedNotification listId={listId != null ? listId : null} setOpenNotifSpecList={setOpenNotifSpecList} /> : ""}
+            {openNotifSpecList ? (
+                <ICSIssuedNotification
+                    listId={listId != null ? listId : null}
+                    setOpenNotifSpecList={setOpenNotifSpecList}
+                />
+            ) : (
+                ""
+            )}
         </div>
     );
 }

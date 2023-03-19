@@ -23,6 +23,55 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
     const [adminNotification, setAdminNotifcation] = useState();
     const [adminRequest, setAdminRequest] = useState();
 
+    function displayPhoto(profilePhoto, name, className) {
+        if (profilePhoto == null) {
+            return (
+                <span
+                    className={className +
+                        " bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full"
+                    }
+                >
+                    {name.substring(0, 1)}
+                </span>
+            );
+        } else {
+            return (
+                <img
+                    draggable="false"
+                    src="./img/profile-pic.jpeg"
+                    className={className +
+                        " rounded-full bg-gray-500 object-cover"
+                    }
+                />
+            );
+        }
+    }
+
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
     function clickProfSett(index) {
         setOpenProfSett(index);
     }
@@ -182,21 +231,11 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                     className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700"
                 >
                     <div className="flex h-full items-center justify-between gap-3 px-3">
-                        <div className="flex-none rounded-full 2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9 2xl:text-base xl:text-sm text-sm text-white text-center flex justify-center items-center bg-primary dark:bg-active-icon">
-                            {data.firstname.charAt(0)}
-                        </div>
+                        {displayPhoto(data.img, data.firstname, '2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9')}
                         <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
                             <div className="text-sm 2xl:leading-0 xl:leading-4">
                                 <span className="font-semibold">
-                                    {(data.prefix == null
-                                        ? ""
-                                        : data.prefix + " ") +
-                                        data.firstname +
-                                        " " +
-                                        data.surname +
-                                        (data.suffix == null
-                                            ? ""
-                                            : " " + data.suffix)}
+                                    {displayName(data, true)}
                                 </span>{" "}
                                 <span className=""> {data.description}</span>
                             </div>
@@ -313,22 +352,13 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                     <div className="flex w-full justify-between pl-4 pr-2 xl:items-center items-center xl:h-full h-full rounded-xl gap-2">
                         <div className=" text-left">
                             <h4 className="text-xs font-bold">
-                                <DisplayUserInfo
-                                    withPrefix={true}
-                                    user_id={adminId}
-                                    displayPhoto={false}
-                                />
+                                {displayName(value, false)}
                             </h4>
                             <p className="text-ss 2xl:block xl:hidden hidden">
                                 {userRole}
                             </p>
                         </div>
-                        <DisplayUserInfo
-                            withPrefix={true}
-                            user_id={adminId}
-                            displayPhoto={true}
-                            className="2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7"
-                        />
+                        {displayPhoto(value.img, value.firstname, '2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7')}
                     </div>
                 </button>
             </div>
@@ -428,20 +458,10 @@ export default function Widgets({ className, clickTabsSide, toggleDarkMode }) {
                                 className="2xl:w-[250px] xl:w-[220px] w-[220px] flex items-center py-3 gap-1 border-sh dark:border-neutral-700 border-b cursor-pointer"
                             >
                                 <div className="flex justify-between 2xl:gap-4 xl:gap-3 gap-3 px-3">
-                                    <DisplayUserInfo
-                                        withPrefix={true}
-                                        user_id={adminId}
-                                        displayPhoto={true}
-                                        className="2xl:h-12 2xl:w-12 xl:h-8 xl:w-8 h-8 w-8"
-                                    />
-
+                                    {displayPhoto(value.img, value.firstname, '2xl:h-12 2xl:w-12 xl:h-8 xl:w-8 h-8 w-8')}
                                     <div className="flex items-center">
                                         <h2 className="2xl:text-sm xl:text-xs text-xs font-semibold dark:text-neutral-200">
-                                            <DisplayUserInfo
-                                                withPrefix={true}
-                                                user_id={adminId}
-                                                displayPhoto={false}
-                                            />
+                                            {displayName(value, true)}
                                         </h2>
                                     </div>
                                 </div>

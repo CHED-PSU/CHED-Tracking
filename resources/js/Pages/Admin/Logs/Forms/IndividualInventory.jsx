@@ -47,6 +47,14 @@ export default function IndividualInventory(props) {
         }
     }
 
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
     const itemsMapper = (items) => {
         return items?.map((data, index) => {
             const date = new Date(data.created_At);
@@ -66,14 +74,10 @@ export default function IndividualInventory(props) {
                     <td className="text-center px-2 border"></td>
                     <td className="text-center px-2 border">{data.code}</td>
                     <td className="text-center px-2 border">
-                        {data.qty * data.amount}
+                    {formattedAmount(data.qty * data.amount)}
                     </td>
                     <td className="text-center px-2 border">
-                        {date.getMonth() +
-                            "/" +
-                            date.getDay() +
-                            "/" +
-                            date.getFullYear()}
+                        {formatDateDisplay(data.date)}
                     </td>
                     <td className="text-center px-2 border">{data.remarks}</td>
                     <td className="text-center px-2 border"></td>
@@ -81,6 +85,13 @@ export default function IndividualInventory(props) {
             );
         });
     };
+
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
     return (
         <div className={props.className}>
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-30">
@@ -250,7 +261,7 @@ export default function IndividualInventory(props) {
                             </div>
                             {/* table container */}
                             <div className="avoid w-full flex justify-end gap-1 text-sm mt-4">
-                                Total Amount: <span>{props.totalPrice}</span>
+                                Total Amount: <span>₱ {formattedAmount(props.totalPrice)}</span>
                             </div>
                         </div>
                     </div>

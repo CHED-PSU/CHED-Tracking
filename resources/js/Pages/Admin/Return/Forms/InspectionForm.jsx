@@ -1,10 +1,33 @@
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 import React, { useEffect, useState, useRef } from "react";
+import SaveAlert from "../Alert/SaveAlert";
 
 export default function InspectionForm(props) {
     const ref = useRef();
-    const defaultxt = "dummy value";
+    const [saveAlert, setSaveAlert] = useState("close");
+    const [saveType, setSaveType] = useState();
+    const [Loading, setLoading] = useState();
+    const [returnedItemsData, setReturnedItemsData] = useState();
+    const [returnedItemsInfo, setReturnedItemsInfo] = useState();
+    const [returnedUsersInfo, setReturnedUsersInfo] = useState();
+    const [users, setUsers] = useState();
+    const [preNature, setPreNature] = useState("Not yet inspected.");
+    const [preParts, setPreParts] = useState("Not yet inspected.");
+    const [PreDate, setPreDate] = useState("");
+    const [PreInspection, setPreInspection] = useState("Not yet inspected.");
+    const [PreApproved, setPreApproved] = useState("Not yet approved.");
+    const [postfindings, setPostFindings] = useState("Not yet inspected.");
+    const [postApproved, setPostApproved] = useState("Not yet approved.");
+    const [PostDate, setPostDate] = useState("");
+    const [status, setStatus] = useState("");
+    const currentYear = new Date().getFullYear();
+    const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
+    const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
+    const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
+    const [alertButtonColor, setAlertButtonColor] = useState("blue"); // none, blue, or red
+    const [alertYesButton, setAlertYesButton] = useState("Yes");
+    const [alertNoButton, setAlertNoButton] = useState("No");
 
     const closerHandler = () => {
         props.clickForms("close");
@@ -23,8 +46,22 @@ export default function InspectionForm(props) {
         documentTitle: "",
     });
 
-    function clickSubForms(index) {
-        setOpenSubForms(index);
+    function clickSave(index, type) {
+        if (type == "back") {
+            setAlertIcon("question");
+            setAlertHeader("Discard Changes");
+            setAlertDesc("Are you sure you want to go back without saving changes?");
+            setAlertNoButton("Cancel");
+            setAlertYesButton("Confirm");
+        } else {
+            setAlertIcon("question");
+            setAlertHeader("Confirmation");
+            setAlertDesc("Are you sure you want to save?");
+            setAlertNoButton("Cancel");
+            setAlertYesButton("Confirm");
+        }
+        setSaveType(type);
+        setSaveAlert(index);
     }
 
     function formattedAmount(index) {
@@ -32,22 +69,6 @@ export default function InspectionForm(props) {
         const formattedAmount = Math.abs(amount).toLocaleString();
         return formattedAmount;
     }
-
-    const [Loading, setLoading] = useState();
-    const [returnedItemsData, setReturnedItemsData] = useState();
-    const [returnedItemsInfo, setReturnedItemsInfo] = useState();
-    const [returnedUsersInfo, setReturnedUsersInfo] = useState();
-    const [users, setUsers] = useState();
-
-    const [preNature, setPreNature] = useState("Not yet inspected.");
-    const [preParts, setPreParts] = useState("Not yet inspected.");
-    const [PreDate, setPreDate] = useState("");
-    const [PreInspection, setPreInspection] = useState("Not yet inspected.");
-    const [PreApproved, setPreApproved] = useState("Not yet approved.");
-    const [postfindings, setPostFindings] = useState("Not yet inspected.");
-    const [postApproved, setPostApproved] = useState("Not yet approved.");
-    const [PostDate, setPostDate] = useState("");
-    const [status, setStatus] = useState("");
 
     useEffect(() => {
         const getData = async () => {
@@ -137,9 +158,11 @@ export default function InspectionForm(props) {
     const [PreInspectionInfo, setPreInspectionInfo] = useState(
         useUserInfo(PreInspection, users)
     );
+
     const [PreApprovedInfo, setPreApprovedInfo] = useState(
         useUserInfo(PreApproved, users)
     );
+
     const [PostApprovedInfo, setPostApprovedInfo] = useState(
         useUserInfo(postApproved, users)
     );
@@ -156,36 +179,50 @@ export default function InspectionForm(props) {
         setPostApprovedInfo(useUserInfo(postApproved, users));
     }, [postApproved, users]);
 
+    const [isChanged, setIsChanged] = useState(false);
+
+    function clickChange(){
+        setIsChanged(false)
+    }
+
     const preInspection = (e) => {
         setPreInspection(e.target.value);
+        setIsChanged(true);
     };
 
     const preApproved = (e) => {
         setPreApproved(e.target.value);
+        setIsChanged(true);
     };
 
     const PostApproved = (e) => {
         setPostApproved(e.target.value);
+        setIsChanged(true);
     };
 
     const natureScope = (e) => {
         setPreNature(e.target.value);
+        setIsChanged(true);
     };
 
     const prePartsChange = (e) => {
         setPreParts(e.target.value);
+        setIsChanged(true);
     };
 
     const preDate = (e) => {
         setPreDate(e.target.value);
+        setIsChanged(true);
     };
 
     const postFindings = (e) => {
         setPostFindings(e.target.value);
+        setIsChanged(true);
     };
 
     const postDate = (e) => {
         setPostDate(e.target.value);
+        setIsChanged(true);
     };
 
     const preSave = () => {
@@ -259,10 +296,28 @@ export default function InspectionForm(props) {
         }
     }
 
-    const currentYear = new Date().getFullYear();
-
     return (
         <div className={props.className}>
+            {saveAlert === "open" ? (
+                <SaveAlert
+                    clickSave={clickSave}
+                    className={""}
+                    alertIcon={alertIcon}
+                    alertHeader={alertHeader}
+                    alertDesc={alertDesc}
+                    alertButtonColor={alertButtonColor}
+                    alertYesButton={alertYesButton}
+                    alertNoButton={alertNoButton}
+                    preSave={preSave}
+                    postSave={postSave}
+                    saveType={saveType}
+                    closerHandler={closerHandler}
+                    clickChange={clickChange}
+                />
+            ) : (
+                ""
+            )}
+
             <div className="fixed inset-0 bg-[#FAFAFA] w-full h-full flex z-30">
                 {/* form */}
                 <div className="dark:bg-darkColor-800 w-[75%] flex justify-center p-10 overflow-y-auto">
@@ -311,7 +366,10 @@ export default function InspectionForm(props) {
                                             Type:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? generateArticle(returnedItemsData.description, true)
+                                                    ? generateArticle(
+                                                          returnedItemsData.description,
+                                                          true
+                                                      )
                                                     : ""}
                                             </font>
                                         </div>
@@ -349,7 +407,10 @@ export default function InspectionForm(props) {
                                             Brand/Model:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? generateArticle(returnedItemsData.description, false)
+                                                    ? generateArticle(
+                                                          returnedItemsData.description,
+                                                          false
+                                                      )
                                                     : ""}
                                             </font>
                                         </div>
@@ -671,7 +732,11 @@ export default function InspectionForm(props) {
                                 <i className="fa-solid fa-print mr-1"></i>Print
                             </div>
                             <div
-                                onClick={closerHandler}
+                                onClick={
+                                    isChanged == false
+                                        ? closerHandler
+                                        : () => clickSave("open", "back")
+                                }
                                 className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer"
                             >
                                 Back
@@ -839,7 +904,7 @@ export default function InspectionForm(props) {
 
                             <div className="flex gap-3 mt-14">
                                 <button
-                                    onClick={preSave}
+                                    onClick={() => clickSave("open", "pre")}
                                     id="save_changes"
                                     className="h-10 w-24 p-1 btn-sm bg-primary rounded-full dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
                                 >
@@ -918,13 +983,9 @@ export default function InspectionForm(props) {
 
                             <div className="flex gap-3 mt-14">
                                 <button
-                                    onClick={postSave}
+                                    onClick={() => clickSave("open", "post")}
                                     id="save_changes"
-                                    className={
-                                        0 === 0
-                                            ? "h-10 w-24 p-1 btn-sm bg-primary rounded-full dark:bg-active-icon hover:btn-color-3 text-lightColor-800 font-semibold"
-                                            : "h-10 w-24 p-1 btn-sm bg-primary rounded-full dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
-                                    }
+                                    className="h-10 w-24 p-1 btn-sm bg-primary rounded-full dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
                                 >
                                     Save
                                 </button>
