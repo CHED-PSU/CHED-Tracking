@@ -118,7 +118,7 @@ class ItemController extends Controller
     public function getPendingitems(Request $req)
     {
         $getPendingItems = DB::table('user_returned_items as uri')
-            ->select('u.img','u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'pi.code as code', 'subCat.name as article', 'pi.description', 'uri.uri_id', 'pri.price', 'uri.created_at', 'uri.defect', 't.tracking_id')
+            ->select('u.img', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'pi.code as code', 'subCat.name as article', 'pi.description', 'uri.uri_id', 'pri.price', 'uri.created_at', 'uri.defect', 't.tracking_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
@@ -188,7 +188,7 @@ class ItemController extends Controller
                     $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname .
                     ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix ?
                         ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix : ''),
-                        
+
                 'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname .
                     ' ' .
                     ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename ?
@@ -274,7 +274,7 @@ class ItemController extends Controller
 
 
         DB::table('user_returned_items')
-        ->update(['status' => 'returned to owner']);
+            ->update(['status' => 'returned to owner']);
 
         DB::table('users_notification')
             ->insert([
@@ -286,9 +286,9 @@ class ItemController extends Controller
                 'description'  => 'has returned an item to you'
             ]);
 
-            return response()->json([
-                'success' => 'success'
-            ]);
+        return response()->json([
+            'success' => 'success'
+        ]);
     }
 
     public function assignToAnotherUser(Request $req)
@@ -376,6 +376,7 @@ class ItemController extends Controller
             ]);
 
         DB::table('user_returned_items as uri')
+            ->where('uri.uri_id', $req->input('id'))
             ->update(['status' => 'Unserviceable']);
     }
     //get inventory items
@@ -393,11 +394,11 @@ class ItemController extends Controller
             ->where('uri.status', 'Inventories')
             ->get();
 
-            $getUsers = DB::table('users')
+        $getUsers = DB::table('users')
             ->select('prefix', 'firstname', 'middlename', 'surname', 'suffix', 'id')
             ->get();
 
-        return response()->json(['inventory_items' => $inventory_items , 'users' => $getUsers]);
+        return response()->json(['inventory_items' => $inventory_items, 'users' => $getUsers]);
     }
     public function getInventorySorted(Request $req)
     {
@@ -517,10 +518,11 @@ class ItemController extends Controller
     }
 
     //admin multi assign to other user
-    public function mutliAssignToOtherUser(Request $req){
+    public function mutliAssignToOtherUser(Request $req)
+    {
         $num = DB::table('trackings')
-            ->whereMonth('created_at',date('m'))
-            ->whereYear('created_at',date('Y'))
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
             ->count();
 
         $total = 0;
@@ -578,15 +580,15 @@ class ItemController extends Controller
         }
 
         DB::table('users_notification')
-        ->insert([
-            'trackings_id' => $tracking_id,
-            'user_id'      => $req->input('issued_by'),
-            'to_user_id'   => $req->input('user_id'),
-            'ns_id'        => 2,
-            'np_id'        => 1,
-            'confirmation' => 'TBD',
-            'description'  => $form
-        ]);
+            ->insert([
+                'trackings_id' => $tracking_id,
+                'user_id'      => $req->input('issued_by'),
+                'to_user_id'   => $req->input('user_id'),
+                'ns_id'        => 2,
+                'np_id'        => 1,
+                'confirmation' => 'TBD',
+                'description'  => $form
+            ]);
 
         return response()->json([
             'success' => 'success'
