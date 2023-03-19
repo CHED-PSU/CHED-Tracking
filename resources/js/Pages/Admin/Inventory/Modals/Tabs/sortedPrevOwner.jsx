@@ -51,6 +51,8 @@ export default function PreOwner({
         setAlertFunction(true);
     }
 
+    console.log(users)
+
     return (
         <div className={className}>
             <div className="">
@@ -68,15 +70,15 @@ export default function PreOwner({
                         <div className="border-b-2 border-gray-300 w-full">
                             <h2 className="pl-[10px] text-xl text-text-gray-2 font-semibold">
                                 {users?.length !== 0
-                                    ? users[user_id - 1].firstname +
+                                    ? users[user_id - 2].firstname +
                                       " " +
-                                      users[user_id - 1].surname
+                                      users[user_id - 2].surname
                                     : ""}
                             </h2>
                         </div>
                         <p className="pl-[10px] text-sm text-red-500 font-medium">
                             {users?.length !== 0
-                                ? users[user_id - 1].designation
+                                ? users[user_id - 2].designation
                                 : ""}CEPS
                         </p>
                     </div>

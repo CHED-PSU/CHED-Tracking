@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import DisposeModal from "../Modals/Dispose";
+import DonationForm from '../Forms/Editable/DonationForm';
+import DestructionSalesForm from '../Forms/Editable/DestructionForm';
 
 export default function ItemTab({ className }) {
     const [pageNumber, setPageNumber] = useState([]);
@@ -9,6 +11,9 @@ export default function ItemTab({ className }) {
     const [Loading, setLoading] = useState();
     const [UnserviceableItems, setUnserviceableItems] = useState();
     const [openDisposeModal, setOpenDisposeModal] = useState("close");
+
+    const [openDonationForm, setOpenDonationForm] = useState(false)
+    const [openDestructionSalesForm, setOpenDestructionSalesForm] = useState(false)
 
     //Storage for IDs that is selected
     const [selectedIds, setSelectedIds] = useState([]);
@@ -69,8 +74,6 @@ export default function ItemTab({ className }) {
         const selectAllCheckbox = document.getElementById("select-all");
         selectAllCheckbox.addEventListener("change", handleSelectAll);
     }, []);
-
-    console.log(selectedIds);
 
     const changePage = ({ selected }) => {
         setPageNumber(selected);
@@ -154,7 +157,10 @@ export default function ItemTab({ className }) {
     const itemsMapper = (items) => {
         return items?.map((data) => {
             return (
-                <tr key={data.id} className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                <tr
+                    key={data.id}
+                    className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default"
+                >
                     {/* checkbox */}
                     <td>
                         <div className="flex justify-center item-center">
@@ -219,16 +225,32 @@ export default function ItemTab({ className }) {
         });
     };
 
+    const confirmHandler = (index) => {
+        if(index === 'Donation'){
+            setOpenDonationForm(true)
+            clickDisposeModal('close')
+        }
+    }
+
     return (
         <div className={className + " w-full h-full relative"}>
             {openDisposeModal === "open" ? (
                 <DisposeModal
                     clickDisposeModal={clickDisposeModal}
+                    selectedIds={selectedIds}
+                    confirmHandler = {confirmHandler}
                     className={""}
                 />
             ) : (
                 ""
             )}
+
+            {openDonationForm ? (
+                <DonationForm setOpenDonationForm={setOpenDonationForm} />
+            ) : (
+                ""
+            )}
+            {openDestructionSalesForm ? <DestructionSalesForm /> : ""}
 
             <div className="w-full flex justify-end  items-center h-16">
                 <button
