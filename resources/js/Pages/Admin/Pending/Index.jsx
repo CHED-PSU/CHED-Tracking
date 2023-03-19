@@ -65,12 +65,6 @@ export default function Pending({ className }) {
         getPendingItems();
     };
 
-    //const pageCount = Math.ceil(pendingRequests?.length / pendingPerPage);
-    const pageCount = 5;
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
-    };
-
     function displayPhoto(profilePhoto, name) {
         if (profilePhoto == null) {
             return (
@@ -144,6 +138,20 @@ export default function Pending({ className }) {
         }
     }
 
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 9;
+
+    const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    };
+
+    const slicedData = pendingItems?.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+    );
+
+    const pageCount = Math.ceil((pendingItems?.length || 0) / itemsPerPage);
+
     const pendingItemsMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -156,7 +164,10 @@ export default function Pending({ className }) {
                             <div className="w-[500px] truncate flex flex-col">
                                 <div className=" dark:text-white gap-1 items-center">
                                     <h4 className="2xl:text-base xl:text-base text-base font-semibold 2xl:mb-0 xl:-mb-1 -mb-1">
-                                        {generateArticle(data.description, true)}
+                                        {generateArticle(
+                                            data.description,
+                                            true
+                                        )}
                                     </h4>
                                     <p className="text-sm text-[#434343]">
                                         Requested by: {displayName(data, true)}
@@ -165,13 +176,18 @@ export default function Pending({ className }) {
 
                                 <div className="text-xs dark:text-gray-300 2xl:mt-2 mt-1">
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
-                                        Description: {generateArticle(data.description, false)}
+                                        Description:{" "}
+                                        {generateArticle(
+                                            data.description,
+                                            false
+                                        )}
                                     </div>
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
                                         Defect: {data.defect}
                                     </div>
                                     <h4 className="text-[#888888]">
-                                        Date: {formatDateDisplay(data.created_at)}
+                                        Date:{" "}
+                                        {formatDateDisplay(data.created_at)}
                                     </h4>
                                 </div>
                             </div>
@@ -234,7 +250,7 @@ export default function Pending({ className }) {
                                 </div>
                             </div>
                         ) : (
-                            pendingItemsMapper(pendingItems)
+                            pendingItemsMapper(slicedData)
                         )}
                         {pendingItems?.length === 0 ? (
                             <>
@@ -256,20 +272,23 @@ export default function Pending({ className }) {
                             ""
                         )}
                     </ul>
-
-                    <div className="absolute bottom-10 w-full flex justify-center dark:text-white">
-                        <ReactPaginate
-                            previousLabel={"Prev"}
-                            nextLabel={"Next"}
-                            pageCount={pageCount}
-                            onPageChange={changePage}
-                            containerClassName={"paginationButtons"}
-                            previousLinkClassName={"previousButtons"}
-                            nextLinkClassName={"nextButtons"}
-                            disabledClassName={"paginationDisabled"}
-                            activeClassName={"paginationActive"}
-                        />
-                    </div>
+                    {pendingItems?.length === 0 ? (
+                        ""
+                    ) : (
+                        <div className="absolute bottom-10 w-full flex justify-center dark:text-white">
+                            <ReactPaginate
+                                previousLabel={"Prev"}
+                                nextLabel={"Next"}
+                                pageCount={pageCount}
+                                onPageChange={handlePageClick}
+                                containerClassName={"paginationButtons"}
+                                previousLinkClassName={"previousButtons"}
+                                nextLinkClassName={"nextButtons"}
+                                disabledClassName={"paginationDisabled"}
+                                activeClassName={"paginationActive"}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

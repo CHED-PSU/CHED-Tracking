@@ -39,7 +39,7 @@ export default function Return({ className }) {
             setAlertDesc("You can't edit an unserviceable item.");
             setAlertNoButton("Okay");
             setButtonDisable(index);
-        }else if (type == "Ready for Return") {
+        } else if (type == "Ready for Return") {
             setAlertIcon("exclamation");
             setAlertHeader("Button not available");
             setAlertDesc("Item must be ready for return.");
@@ -143,11 +143,6 @@ export default function Return({ className }) {
         const year = date.getFullYear();
         return `${month} ${day}, ${year}`;
     }
-
-    const pageCount = 5;
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
-    };
 
     function displayName(data, prefix) {
         const middleInitial = data.middlename
@@ -290,7 +285,10 @@ export default function Return({ className }) {
                                     if (data.status === "Ready for Return") {
                                         clickAssignModal("open", data.uri_id);
                                     } else {
-                                        clickButtonDisable("open", 'Ready for Return');
+                                        clickButtonDisable(
+                                            "open",
+                                            "Ready for Return"
+                                        );
                                     }
                                 }}
                             >
@@ -311,7 +309,7 @@ export default function Return({ className }) {
                                     ) {
                                         clickDisposeModal("open", data.uri_id);
                                     } else {
-                                        clickButtonDisable("open", '');
+                                        clickButtonDisable("open", "");
                                     }
                                 }}
                             >
@@ -323,6 +321,20 @@ export default function Return({ className }) {
             );
         });
     };
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 9;
+
+    const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    };
+
+    const slicedData = returnedItems?.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+    );
+
+    const pageCount = Math.ceil((returnedItems?.length || 0) / itemsPerPage);
 
     return (
         <div className={className + "  flex justify-center"}>
@@ -433,7 +445,7 @@ export default function Return({ className }) {
                                     </td>
                                 </tr>
                             ) : returnedItems?.length > 0 ? (
-                                returnItemsMapper(returnedItems)
+                                returnItemsMapper(slicedData)
                             ) : (
                                 <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                                     <td
@@ -448,20 +460,23 @@ export default function Return({ className }) {
                             )}
                         </tbody>
                     </table>
-                    {/*table 1*/}
-                    <div className="absolute bottom-[61px]  w-full flex justify-center">
-                        <ReactPaginate
-                            previousLabel={"Prev"}
-                            nextLabel={"Next"}
-                            pageCount={pageCount}
-                            onPageChange={changePage}
-                            containerClassName={"paginationButtons"}
-                            previousLinkClassName={"previousButtons"}
-                            nextLinkClassName={"nextButtons"}
-                            disabledClassName={"paginationDisabled"}
-                            activeClassName={"paginationActive"}
-                        />
-                    </div>
+                    {returnedItems?.length > 0 ? (
+                        <div className="absolute bottom-[61px]  w-full flex justify-center">
+                            <ReactPaginate
+                                previousLabel={"Prev"}
+                                nextLabel={"Next"}
+                                pageCount={pageCount}
+                                onPageChange={handlePageClick}
+                                containerClassName={"paginationButtons"}
+                                previousLinkClassName={"previousButtons"}
+                                nextLinkClassName={"nextButtons"}
+                                disabledClassName={"paginationDisabled"}
+                                activeClassName={"paginationActive"}
+                            />
+                        </div>
+                    ) : (
+                        ""
+                    )}
                 </div>
             </div>
         </div>

@@ -27,10 +27,19 @@ export default function ICSControl(props) {
         return formattedAmount;
     }
 
-    const pageCount = 5;
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 9;
+  
+    const handlePageClick = ({ selected: selectedPage }) => {
+      setCurrentPage(selectedPage);
     };
+  
+    const slicedData = props.icsControl?.slice(
+      currentPage * itemsPerPage,
+      (currentPage + 1) * itemsPerPage
+    );
+
+    const pageCount = Math.ceil((props.icsControl?.length || 0) / itemsPerPage);
 
     function formatDateDisplay(dateString) {
         const date = new Date(dateString);
@@ -183,7 +192,7 @@ export default function ICSControl(props) {
                                 <tbody id="logs-ics-slips-table">
                                     {props.icsControl?.length !== 0 ? (
                                         icsItemsMapper(
-                                            Object.values(props.icsControl)
+                                            Object.values(slicedData)
                                         )
                                     ) : (
                                         <tr className="h-16 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -211,19 +220,23 @@ export default function ICSControl(props) {
                     {/* table */}
                 </div>
 
-                <div className="absolute bottom-10 w-full flex justify-center z-40">
-                    <ReactPaginate
-                        previousLabel={"Prev"}
-                        nextLabel={"Next"}
-                        pageCount={pageCount}
-                        onPageChange={changePage}
-                        containerClassName={"paginationButtons"}
-                        previousLinkClassName={"previousButtons"}
-                        nextLinkClassName={"nextButtons"}
-                        disabledClassName={"paginationDisabled"}
-                        activeClassName={"paginationActive"}
-                    />
-                </div>
+                {props.icsControl?.length == 0 ? (
+                    ""
+                ) : (
+                    <div className="absolute bottom-10 w-full flex justify-center z-40">
+                        <ReactPaginate
+                            previousLabel={"Prev"}
+                            nextLabel={"Next"}
+                            pageCount={pageCount}
+                            onPageChange={handlePageClick}
+                            containerClassName={"paginationButtons"}
+                            previousLinkClassName={"previousButtons"}
+                            nextLinkClassName={"nextButtons"}
+                            disabledClassName={"paginationDisabled"}
+                            activeClassName={"paginationActive"}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );
