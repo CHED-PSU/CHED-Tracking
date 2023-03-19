@@ -73,7 +73,6 @@ export default function ICSModal(props) {
     };
 
     const clickDecline = () => {
-        console.log("pasok");
         setAlertIcon("question");
         setAlertHeader("Confirmation");
         setAlertDesc("Are you sure you want to decline it?");
@@ -278,16 +277,16 @@ export default function ICSModal(props) {
                         {/* Hide this buttons if the form is already accepted */}
                         <div className="flex pt-5 gap-4 justify-center">
                             <button
-                                onClick={clickAccept}
-                                className="2xl:h-12 xl:h-9 h-9 w-fit px-8 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
-                            >
-                                Accept
-                            </button>
-                            <button
                                 onClick={() => clickDecline()}
                                 className="2xl:h-12 xl:h-9 h-9 w-fit px-8 p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
                             >
                                 Decline
+                            </button>
+                            <button
+                                onClick={clickAccept}
+                                className="2xl:h-12 xl:h-9 h-9 w-fit px-8 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
+                            >
+                                Accept
                             </button>
                         </div>
 

@@ -12,6 +12,7 @@ export default function ConditionalAlert(props) {
     const acceptHandler = () => {
         axios.post('api/moveToInventories', {id: props.id})
         props.success()
+        props.LoadData()
     }
 
 

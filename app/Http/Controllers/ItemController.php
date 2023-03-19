@@ -147,6 +147,7 @@ class ItemController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.confirmation', 'accepted')
+            ->where('uri.status', '!=', 'Unserviceable')
             ->get();
 
         return response()->json(['returnedItems' => $returnedItems]);

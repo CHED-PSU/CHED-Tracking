@@ -32,12 +32,26 @@ export default function Return({ className }) {
 
     const [buttonDisable, setButtonDisable] = useState("close");
 
-    function clickButtonDisable(index) {
-        setAlertIcon("exclamation");
-        setAlertHeader("Button not available");
-        setAlertDesc("This button is disabled due to item status.");
-        setAlertNoButton("Okay");
-        setButtonDisable(index);
+    function clickButtonDisable(index, type) {
+        if (type == "Unserviceable") {
+            setAlertIcon("exclamation");
+            setAlertHeader("Button not available");
+            setAlertDesc("You can't edit an unserviceable item.");
+            setAlertNoButton("Okay");
+            setButtonDisable(index);
+        }else if (type == "Ready for Return") {
+            setAlertIcon("exclamation");
+            setAlertHeader("Button not available");
+            setAlertDesc("Item must be ready for return.");
+            setAlertNoButton("Okay");
+            setButtonDisable(index);
+        } else {
+            setAlertIcon("exclamation");
+            setAlertHeader("Button not available");
+            setAlertDesc("Item must not be ready for return or unserviceable.");
+            setAlertNoButton("Okay");
+            setButtonDisable(index);
+        }
     }
 
     const getReturnedItems = async () => {
@@ -103,6 +117,10 @@ export default function Return({ className }) {
         setOpenAssignModal(index);
         setId(id);
     }
+
+    const LoadData = () => {
+        getReturnedItems();
+    };
 
     function clickDisposeModal(index, id) {
         setAlertIcon("question");
@@ -221,7 +239,8 @@ export default function Return({ className }) {
                                     {data.defect}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
-                                    Date Accepted: {formatDateDisplay(data.created_at)}
+                                    Date Accepted:{" "}
+                                    {formatDateDisplay(data.created_at)}
                                 </p>
                             </div>
                         </a>
@@ -241,10 +260,21 @@ export default function Return({ className }) {
                         <div className="flex gap-4 justify-center">
                             <button
                                 value={data.id}
-                                className="flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn cursor-pointer"
+                                className={`flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn ${
+                                    data.status !== "Unserviceable"
+                                        ? ""
+                                        : "opacity-50"
+                                }`}
                                 onClick={() => {
-                                    clickForms("ins-form"),
-                                        getReturnedItemsData(data.uri_id);
+                                    if (data.status === "Unserviceable") {
+                                        clickButtonDisable(
+                                            "open",
+                                            "Unserviceable"
+                                        );
+                                    } else {
+                                        clickForms("ins-form"),
+                                            getReturnedItemsData(data.uri_id);
+                                    }
                                 }}
                             >
                                 <i className="fa-solid fa-pen"></i>
@@ -260,7 +290,7 @@ export default function Return({ className }) {
                                     if (data.status === "Ready for Return") {
                                         clickAssignModal("open", data.uri_id);
                                     } else {
-                                        clickButtonDisable("open");
+                                        clickButtonDisable("open", 'Ready for Return');
                                     }
                                 }}
                             >
@@ -281,7 +311,7 @@ export default function Return({ className }) {
                                     ) {
                                         clickDisposeModal("open", data.uri_id);
                                     } else {
-                                        clickButtonDisable("open");
+                                        clickButtonDisable("open", '');
                                     }
                                 }}
                             >
@@ -333,6 +363,7 @@ export default function Return({ className }) {
                     alertYesButton={alertYesButton}
                     alertNoButton={alertNoButton}
                     id={id ? id : ""}
+                    LoadData={LoadData}
                     className={""}
                     success={success}
                 />
@@ -351,6 +382,7 @@ export default function Return({ className }) {
                     alertNoButton={alertNoButton}
                     id={id ? id : ""}
                     className={""}
+                    LoadData={LoadData}
                     success={success}
                 />
             ) : (
@@ -396,12 +428,23 @@ export default function Return({ className }) {
                                         className="text-center h-12 bg-white border"
                                     >
                                         <small className="text-sm">
-                                            No data available in table.
+                                            Loading data.
                                         </small>
                                     </td>
                                 </tr>
-                            ) : (
+                            ) : returnedItems?.length > 0 ? (
                                 returnItemsMapper(returnedItems)
+                            ) : (
+                                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                    <td
+                                        colSpan="5"
+                                        className="text-center h-12 bg-white border"
+                                    >
+                                        <small className="text-sm">
+                                            No returned items yet.
+                                        </small>
+                                    </td>
+                                </tr>
                             )}
                         </tbody>
                     </table>

@@ -74,7 +74,7 @@ export default function IndividualInventory(props) {
                     <td className="text-center px-2 border"></td>
                     <td className="text-center px-2 border">{data.code}</td>
                     <td className="text-center px-2 border">
-                    {formattedAmount(data.qty * data.amount)}
+                        {formattedAmount(data.qty * data.amount)}
                     </td>
                     <td className="text-center px-2 border">
                         {formatDateDisplay(data.date)}
@@ -243,7 +243,11 @@ export default function IndividualInventory(props) {
 
                                             {/* index 1 */}
                                             {props.indivItems?.length !== 0 ? (
-                                                itemsMapper(Object.values(props.indivItems))
+                                                itemsMapper(
+                                                    Object.values(
+                                                        props.indivItems
+                                                    )
+                                                )
                                             ) : (
                                                 <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                                     <td
@@ -261,7 +265,10 @@ export default function IndividualInventory(props) {
                             </div>
                             {/* table container */}
                             <div className="avoid w-full flex justify-end gap-1 text-sm mt-4">
-                                Total Amount: <span>₱ {formattedAmount(props.totalPrice)}</span>
+                                Total Amount:{" "}
+                                <span>
+                                    ₱ {formattedAmount(props.totalPrice)}
+                                </span>
                             </div>
                         </div>
                     </div>

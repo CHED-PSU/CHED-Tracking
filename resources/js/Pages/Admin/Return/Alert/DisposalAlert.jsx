@@ -12,9 +12,8 @@ export default function ConditionalAlert(props) {
     const acceptHandler = () => {
         axios.post('api/moveItemstoUnserviceableItems', {id: props.id})
         props.success()
+        props.LoadData()
     }
-
-
 
     return (
         <div className={props.className}>
