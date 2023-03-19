@@ -147,10 +147,29 @@ class ItemController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.confirmation', 'accepted')
-            ->where('uri.status', '!=', 'Unserviceable')
+            // ->where('uri.status', '!=', 'Unserviceable')
+            // ->where('uri.status', '!=', 'Inventories')
             ->get();
 
         return response()->json(['returnedItems' => $returnedItems]);
+    }
+    
+    public function getReturnedItemsByStatus(Request $req)
+    {
+        $returnedItems = DB::table('user_returned_items as uri')
+            ->select('uri.uri_id', 'pi.description as article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'uri.status', 'u.id')
+            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->join('users as u', 'u.id', '=', 'uri.user_id')
+            ->where('uri.confirmation', 'accepted')
+            ->where('uri.status', '=', $req->input('status'))
+            ->get();
+
+        return response()->json(['returnedItemsByStatus' => $returnedItems]);
     }
 
     //returned Items Data Fetcher
