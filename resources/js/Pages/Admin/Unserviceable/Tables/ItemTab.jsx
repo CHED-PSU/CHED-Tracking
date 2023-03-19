@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import DisposeModal from "../Modals/Dispose";
-import DonationForm from '../Forms/Editable/DonationForm';
-import DestructionSalesForm from '../Forms/Editable/DestructionForm';
+import DonationForm from '../Forms/DonationFormPre';
+import DestructionSalesForm from '../Forms/DestructionFormPre';
 
 export default function ItemTab({ className }) {
     const [pageNumber, setPageNumber] = useState([]);
