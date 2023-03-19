@@ -265,7 +265,7 @@ class FormController extends Controller
     public function getIndividualItems(Request $req)
     {
         $items = DB::table('trackings as t')
-            ->select('ui.ui_id', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.code as code as', 'it.eul', 'ui.item_status as remarks', 'it.id')
+            ->select('ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.code as code', 'it.eul', 'ui.item_status as remarks', 'it.id')
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia','ia.id','=','it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -335,11 +335,10 @@ class FormController extends Controller
     public function getReturnedItemsData(Request $req)
     {
         $getreturnedItemsdata = DB::table('user_returned_items as uri')
-            ->select('pu.name as unit', 'pi.description as brand', 'rii.pre_nature as nature', 'rii.updated_at as lastRepair', 'ps.name as article', 'pi.code as property_no', 'pri.price as acquisition', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'uri.uri_id')
+            ->select('pu.name as unit', 'pi.description as brand', 'ps.name as article', 'pi.code as property_no', 'pri.price as acquisition', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'uri.uri_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia','ia.id','=','it.item_id')
-            ->join('returned_items_info as rii','rii.uri_id','=','uri.uri_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_subcategories as ps', 'ps.id', '=', 'pi.product_subcategory_id')
@@ -347,7 +346,24 @@ class FormController extends Controller
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.uri_id', $req->input('id'))
             ->get();
-        return response()->json(['returnedItemsData' => $getreturnedItemsdata]);
+
+        $getreturnedItemsInfo = DB::table('returned_items_info as rii')
+            ->where('rii.uri_id', $req->input('id'))
+            ->get();
+
+        if ($getreturnedItemsInfo->isNotEmpty()) {
+            $data = [
+                'pre_nature' => $getreturnedItemsInfo->first()->pre_nature,
+                'updated_at' => $getreturnedItemsInfo->first()->updated_at
+            ];
+        } else {
+            $data = [
+                'pre_nature' => null,
+                'updated_at' => null
+            ];
+        }
+        
+        return response()->json(['returnedItemsData' => $getreturnedItemsdata, 'returnedItemsInfo' => $data]);
     }
     //accept pending request
     public function acceptPendingRequest(Request $req)

@@ -6,6 +6,7 @@ export default function ICSModal(props) {
     let modalBody = useRef();
     const [Loading, setLoading] = useState(true);
     const [returnedItemsData, setReturnedItemsData] = useState();
+    const [returnedItemsInfo, setReturnedItemsInfo] = useState();
     const [openAlert, setOpenAlert] = useState(false);
 
     const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
@@ -91,6 +92,7 @@ export default function ICSModal(props) {
                 });
                 const data = response.data;
                 setReturnedItemsData(data.returnedItemsData);
+                setReturnedItemsInfo([data.returnedItemsInfo]);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -215,9 +217,9 @@ export default function ICSModal(props) {
                                     Nature of last repair:{" "}
                                     {Loading
                                         ? "N/A"
-                                        : returnedItemsData[0].nature == null
+                                        : returnedItemsInfo[0].pre_nature == null
                                         ? "Not yet repaired."
-                                        : returnedItemsData[0].nature}
+                                        : returnedItemsInfoa[0].pre_nature}
                                     <font className="dark:text-gray-400"></font>
                                 </div>
                             </div>
@@ -243,12 +245,12 @@ export default function ICSModal(props) {
                                     <font className="dark:text-gray-400">
                                         {Loading
                                             ? "N/A"
-                                            : returnedItemsData[0].lastRepair ==
+                                            : returnedItemsInfo[0].pre_nature ==
                                               null
                                             ? "Not yet repaired."
                                             : formatDateDisplay(
-                                                  returnedItemsData[0]
-                                                      .lastRepair
+                                                  returnedItemsInfo[0]
+                                                      .updated_at
                                               )}
                                     </font>
                                 </div>

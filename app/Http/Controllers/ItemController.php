@@ -93,7 +93,7 @@ class ItemController extends Controller
                 'user_id' => $req->input('user_id'),
                 'defect' => $req->input('data')['defect'],
                 'status' => $req->input('data')['reason'],
-                'confirmation' => 'Pending'
+                'confirmation' => 'pending'
             ]);
 
         DB::table('user_items as ui')
@@ -106,7 +106,7 @@ class ItemController extends Controller
             'user_id'      => $req->input('user_id'),
             'ns_id' => 2,
             'np_id' => 4,
-            'confirmation' => 'Pending',
+            'confirmation' => 'pending',
             'description'  => 'has requested to return an item'
         ]);
 
