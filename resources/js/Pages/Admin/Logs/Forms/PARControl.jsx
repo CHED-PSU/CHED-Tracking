@@ -13,17 +13,26 @@ export default function PARControl(props) {
         setOpenSubForms(index);
     }
 
-    const pageCount = 5;
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
-    };
-
     function getPardetails(index) {
         axios.post("api/getParDetails", { id: index }).then((response) => {
             setParItems(response.data.dataItems);
             setFormDetails(response.data.form_details);
         });
     }
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 9;
+
+    const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    };
+
+    const slicedData = props.parControl?.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+    );
+
+    const pageCount = Math.ceil((props.parControl?.length || 0) / itemsPerPage);
 
     const parItemsMapper = (items) => {
         return items?.map((data) => {
@@ -138,7 +147,7 @@ export default function PARControl(props) {
                                 <tbody id="logs-ics-slips-table">
                                     {props.parControl?.length != 0 ? (
                                         parItemsMapper(
-                                            Object.values(props.parControl)
+                                            Object.values(slicedData)
                                         )
                                     ) : (
                                         <tr className="h-16 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -165,20 +174,23 @@ export default function PARControl(props) {
                     </div>
                     {/* table */}
                 </div>
-
-                <div className="absolute bottom-10 w-full flex justify-center z-40">
-                    <ReactPaginate
-                        previousLabel={"Prev"}
-                        nextLabel={"Next"}
-                        pageCount={pageCount}
-                        onPageChange={changePage}
-                        containerClassName={"paginationButtons"}
-                        previousLinkClassName={"previousButtons"}
-                        nextLinkClassName={"nextButtons"}
-                        disabledClassName={"paginationDisabled"}
-                        activeClassName={"paginationActive"}
-                    />
-                </div>
+                {props.parControl?.length == 0 ? (
+                    ""
+                ) : (
+                    <div className="absolute bottom-10 w-full flex justify-center z-40">
+                        <ReactPaginate
+                            previousLabel={"Prev"}
+                            nextLabel={"Next"}
+                            pageCount={pageCount}
+                            onPageChange={handlePageClick}
+                            containerClassName={"paginationButtons"}
+                            previousLinkClassName={"previousButtons"}
+                            nextLinkClassName={"nextButtons"}
+                            disabledClassName={"paginationDisabled"}
+                            activeClassName={"paginationActive"}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -78,10 +78,19 @@ export default function IndividualTable({ className }) {
         }
     }
 
-    const pageCount = 5;
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 9;
+  
+    const handlePageClick = ({ selected: selectedPage }) => {
+      setCurrentPage(selectedPage);
     };
+  
+    const slicedData = UserLists?.slice(
+      currentPage * itemsPerPage,
+      (currentPage + 1) * itemsPerPage
+    );
+  
+    const pageCount = Math.ceil((UserLists?.length || 0) / itemsPerPage);
 
     return (
         <div className={className + " w-full h-full relative"}>
@@ -117,7 +126,7 @@ export default function IndividualTable({ className }) {
                 </thead>
                 <tbody>
                     {/*item 1*/}
-                    {Loading ? "" : userMapper(UserLists)}
+                    {Loading ? "" : userMapper(slicedData)}
                     {UserLists?.length === 0 ? (
                         <>
                             <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -141,7 +150,7 @@ export default function IndividualTable({ className }) {
                     previousLabel={"Prev"}
                     nextLabel={"Next"}
                     pageCount={pageCount}
-                    onPageChange={changePage}
+                    onPageChange={handlePageClick}
                     containerClassName={"paginationButtons"}
                     previousLinkClassName={"previousButtons"}
                     nextLinkClassName={"nextButtons"}

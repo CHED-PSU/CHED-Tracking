@@ -42,6 +42,20 @@ export default function PARTable({ className }) {
         getUsers();
     }, []);
 
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 9;
+  
+    const handlePageClick = ({ selected: selectedPage }) => {
+      setCurrentPage(selectedPage);
+    };
+  
+    const slicedData = UserLists?.slice(
+      currentPage * itemsPerPage,
+      (currentPage + 1) * itemsPerPage
+    );
+  
+    const pageCount = Math.ceil((UserLists?.length || 0) / itemsPerPage);
+
     const userMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -63,11 +77,6 @@ export default function PARTable({ className }) {
                 />
             );
         });
-    };
-
-    const pageCount = 5;
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
     };
 
     async function getData(id) {
@@ -116,7 +125,7 @@ export default function PARTable({ className }) {
                 </thead>
                 <tbody>
                     {/*item 1*/}
-                    {Loading ? "" : userMapper(UserLists)}
+                    {Loading ? "" : userMapper(slicedData)}
                     {UserLists?.length === 0 ? (
                         <>
                             <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -140,7 +149,7 @@ export default function PARTable({ className }) {
                     previousLabel={"Prev"}
                     nextLabel={"Next"}
                     pageCount={pageCount}
-                    onPageChange={changePage}
+                    onPageChange={handlePageClick}
                     containerClassName={"paginationButtons"}
                     previousLinkClassName={"previousButtons"}
                     nextLinkClassName={"nextButtons"}

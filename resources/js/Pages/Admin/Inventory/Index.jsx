@@ -73,12 +73,6 @@ export default function Inventory({ className }) {
         getInventoryItems();
     }, []);
 
-    const [pageNumber, setPageNumber] = useState();
-    const pageCount = 5;
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
-    };
-
     const [toggleSort, setToggleSort] = useState("all");
 
     useEffect(() => {
@@ -197,6 +191,20 @@ export default function Inventory({ className }) {
             return fullNamePrefixArr.filter(Boolean).join(" ");
         }
     }
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 9;
+
+    const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    };
+
+    const slicedData = items?.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+    );
+
+    const pageCount = Math.ceil((items?.length || 0) / itemsPerPage);
 
     const itemMapper = (items) => {
         return items?.map((data) => {
@@ -483,7 +491,7 @@ export default function Inventory({ className }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {loading ? "" : itemMapper(items)}
+                                {loading ? "" : itemMapper(slicedData)}
                                 {items?.length === 0 ? (
                                     <>
                                         <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -500,19 +508,23 @@ export default function Inventory({ className }) {
                                 )}
                             </tbody>
                         </table>
-                        <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
-                            <ReactPaginate
-                                previousLabel={"Prev"}
-                                nextLabel={"Next"}
-                                pageCount={pageCount}
-                                onPageChange={changePage}
-                                containerClassName={"paginationButtons"}
-                                previousLinkClassName={"previousButtons"}
-                                nextLinkClassName={"nextButtons"}
-                                disabledClassName={"paginationDisabled"}
-                                activeClassName={"paginationActive"}
-                            />
-                        </div>
+                        {items?.length === 0 ? (
+                            ""
+                        ) : (
+                            <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
+                                <ReactPaginate
+                                    previousLabel={"Prev"}
+                                    nextLabel={"Next"}
+                                    pageCount={pageCount}
+                                    onPageChange={handlePageClick}
+                                    containerClassName={"paginationButtons"}
+                                    previousLinkClassName={"previousButtons"}
+                                    nextLinkClassName={"nextButtons"}
+                                    disabledClassName={"paginationDisabled"}
+                                    activeClassName={"paginationActive"}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
