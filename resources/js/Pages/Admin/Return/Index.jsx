@@ -78,7 +78,6 @@ export default function Return({ className }) {
 
     useEffect(() => {
         getReturnedItems();
-
         getUsers();
     }, []);
 
@@ -99,6 +98,7 @@ export default function Return({ className }) {
 
     function clickForms(index) {
         getReturnedItems();
+        getReturnedItemsByStatus();
         getUsers();
         setOpenForms(index);
     }
@@ -116,6 +116,7 @@ export default function Return({ className }) {
     }
 
     const LoadData = () => {
+        getReturnedItemsByStatus();
         getReturnedItems();
     };
 
@@ -251,7 +252,8 @@ export default function Return({ className }) {
                     <td>
                         <div className="flex gap-4 justify-center">
                             {data.status === "Unserviceable" ||
-                            data.status === "Inventories" ? (
+                            data.status === "Inventories" ||
+                            data.status === "returned to owner" ? (
                                 <div
                                     onClick={() => {
                                         clickForms("view-form"),
@@ -370,16 +372,27 @@ export default function Return({ className }) {
             } finally {
                 setLoading(false);
             }
+        } else if (status == "Inventories") {
+            try {
+                await axios
+                    .get("api/getReturnedItemsInventory")
+                    .then((response) => {
+                        const data = response.data;
+                        setReturnedItemsByStatus(data.returnedItemsInventory);
+                    });
+            } catch (e) {
+                console.log(e);
+            }
         } else {
             try {
-                const response = await axios.post(
-                    "api/getReturnedItemsByStatus",
-                    {
-                        status: status,
-                    }
-                );
-                const data = response.data;
-                setReturnedItemsByStatus(data.returnedItemsByStatus);
+                await axios
+                    .get("api/getReturnedItemsUnserviceable")
+                    .then((response) => {
+                        const data = response.data;
+                        setReturnedItemsByStatus(
+                            data.returnedItemsUnserviceable
+                        );
+                    });
             } catch (e) {
                 console.log(e);
             }
@@ -395,18 +408,20 @@ export default function Return({ className }) {
     }
 
     const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 9;
+    const itemsPerPage = 8;
 
     const handlePageClick = ({ selected: selectedPage }) => {
         setCurrentPage(selectedPage);
     };
 
-    const slicedData = returnedItems?.slice(
+    const slicedData = returnedItemsByStatus?.slice(
         currentPage * itemsPerPage,
         (currentPage + 1) * itemsPerPage
     );
 
-    const pageCount = Math.ceil((returnedItems?.length || 0) / itemsPerPage);
+    const pageCount = Math.ceil(
+        (returnedItemsByStatus?.length || 0) / itemsPerPage
+    );
 
     return (
         <div className={className + "  flex justify-center"}>
@@ -494,13 +509,13 @@ export default function Return({ className }) {
                         <Searchbar />
                     </div>
                 </div>
-                <div className="flex flex-col h-full w-[1100px] items-center mb-12 pt-6 py-2 px-4 border dark:border-[#434343] rounded-lg bg-white dark:bg-darkColor-800">
-                    {/* <div className="w-full flex  items-center h-14 pb-2 gap-5">
+                <div className="flex flex-col h-full w-[1100px] items-center mb-12 pt-3 py-2 px-4 border dark:border-[#434343] rounded-lg bg-white dark:bg-darkColor-800">
+                    <div className="w-full flex  items-center h-14 pb-2 gap-5">
                         <button
                             className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("all")}
                         >
-                            <i className="fa-solid fa-file-export"></i>
+                            <i className="fa-solid fa-filter"></i>
                         </button>
                         <button
                             className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
@@ -514,7 +529,7 @@ export default function Return({ className }) {
                         >
                             <i className="fa-solid fa-file-export"></i>
                         </button>
-                    </div> */}
+                    </div>
                     {/*table 1*/}
                     <table className="w-full">
                         <thead>
@@ -548,7 +563,7 @@ export default function Return({ className }) {
                                         </small>
                                     </td>
                                 </tr>
-                            ) : returnedItems?.length > 0 ? (
+                            ) : returnedItemsByStatus?.length > 0 ? (
                                 returnItemsMapper(slicedData)
                             ) : (
                                 <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -557,14 +572,19 @@ export default function Return({ className }) {
                                         className="text-center h-12 bg-white border"
                                     >
                                         <small className="text-sm">
-                                            No returned items yet.
+                                            {status != "Unserviceable" &&
+                                            status != "Inventories"
+                                                ? "No returned items yet."
+                                                : status == "Unserviceable"
+                                                ? "No unserviceable items yet."
+                                                : "No items in inventory."}
                                         </small>
                                     </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
-                    {returnedItems?.length > 0 ? (
+                    {returnedItemsByStatus?.length > 0 ? (
                         <div className="absolute bottom-[61px]  w-full flex justify-center">
                             <ReactPaginate
                                 previousLabel={"Prev"}

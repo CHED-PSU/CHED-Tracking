@@ -106,7 +106,8 @@ Route::post('getUserParControls', [FormController::class, 'getUserParControls'])
 //Admin Returned Items
 // Admin Returned Items Fetcher
 Route::get('getReturnedItems', [ItemController::class, 'getReturnedItems']);
-Route::post('getReturnedItemsByStatus', [ItemController::class, 'getReturnedItemsByStatus']);
+Route::get('getReturnedItemsUnserviceable', [ItemController::class, 'getReturnedItemsUnserviceable']);
+Route::get('getReturnedItemsInventory', [ItemController::class, 'getReturnedItemsInventory']);
 //Returned Items Data Fetcher
 Route::post('getAdminReturnedItemsData', [ItemController::class, 'getAdminReturnedItemsData']);
 //Admin return pre save
