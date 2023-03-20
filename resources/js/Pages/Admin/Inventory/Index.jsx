@@ -370,11 +370,11 @@ export default function Inventory({ className }) {
                         <Searchbar />
                     </div>
                 </div>
-                <div className="flex flex-col h-full w-[1100px] items-center mb-12 pb-2 pt-0 px-4 border rounded-lg bg-white">
+                <div className="flex flex-col h-full w-[1100px] items-center mb-12 pb-2 pt-0 px-4 border rounded-lg bg-white dark:border-[#434343] dark:bg-darkColor-800">
                     <div className="w-full h-full relative">
                         <div className="w-full flex items-center justify-between h-16">
                             <div className="w-56">
-                                <div className="w-fit h-fit flex items-center text-xs rounded-full bg-gray-100 -space-x-2">
+                                <div className="w-fit h-fit flex items-center text-xs rounded-full bg-gray-100  -space-x-2">
                                     {toggleSort === "all" ? (
                                         <div
                                             onClick={() => clickSort("all")}

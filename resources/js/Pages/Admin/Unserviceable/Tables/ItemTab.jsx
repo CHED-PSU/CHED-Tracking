@@ -74,10 +74,6 @@ export default function ItemTab({ className }) {
         selectAllCheckbox.addEventListener("change", handleSelectAll);
     }, []);
 
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
-    };
-
     function clickDisposeModal(index) {
         setOpenDisposeModal(index);
     }
@@ -91,7 +87,7 @@ export default function ItemTab({ className }) {
         } catch (e) {
             console.log(e);
         } finally {
-            setLoading(true);
+            setLoading(false);
         }
     };
 
@@ -291,10 +287,10 @@ export default function ItemTab({ className }) {
                                 />
                             </div>
                         </th>
-                        <th className="h-10 w-58 font-medium text-left">
+                        <th className="h-10 w-72 font-medium text-left">
                             Items
                         </th>
-                        <th className="h-10 w-80 font-medium text-left">
+                        <th className="h-10 w-64 font-medium text-left">
                             Description
                         </th>
                         <th className="h-10 w-80 font-medium text-left">
@@ -307,7 +303,18 @@ export default function ItemTab({ className }) {
                 </thead>
                 <tbody>
                     {/*item*/}
-                    {itemsMapper(slicedData)}
+                    {Loading ? (
+                        <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                            <td
+                                colSpan="5"
+                                className="text-center h-12 bg-white border"
+                            >
+                                <small className="text-sm">Loading data.</small>
+                            </td>
+                        </tr>
+                    ) : (
+                        itemsMapper(slicedData)
+                    )}
                     {UnserviceableItems?.length === 0 ? (
                         <>
                             <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">

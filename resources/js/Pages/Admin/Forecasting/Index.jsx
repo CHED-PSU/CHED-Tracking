@@ -1,55 +1,56 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
 import AdminBg from "../../../Components/AdminBg";
 import Disposal from "./Tabs/Disposal";
 import Newproposal from "./Tabs/Newproposal";
+import Loader from "../../../components/Loader";
 
 export default function Forecasting({ className }) {
     const [toggleTabs, setToggleTabs] = useState("newproposal");
-
     const domain = window.location.href;
     const url = new URL(domain);
-
-    function clickTabs(index) {
-        setToggleTabs(index);
-    }
     const [Loading, setLoading] = useState(true);
-
     const [data, setData] = useState([]);
     const [xAxis, setxAxis] = useState([]);
     const [yAxis, setyAxis] = useState([]);
     const [predictedyAxis, setpredictedyAxis] = useState([]);
     const [predicted, setpredicted] = useState();
-
     const [ddata, dsetData] = useState([]);
     const [dxAxis, dsetxAxis] = useState([]);
     const [dyAxis, dsetyAxis] = useState([]);
     const [dpredictedyAxis, dsetpredictedyAxis] = useState([]);
     const [dpredicted, dsetpredicted] = useState();
 
+    function clickTabs(index) {
+        setToggleTabs(index);
+    }
+
     useEffect(() => {
         const forecast = async () => {
-            setLoading(true)
+            setLoading(true);
             try {
-                await axios.get('api/forecast').then(response => {
+                await axios.get("api/forecast").then((response) => {
                     setData(response.data.data);
                     setxAxis(response.data.xAxis);
                     setyAxis(response.data.yAxis);
                     setpredictedyAxis(response.data.predicted_data);
                     setpredicted(response.data.predicted);
-                })
+                });
             } catch (e) {
-                console.log(e)
+                console.log(e);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
-        }
-        forecast()
-    }, [])
+        };
+        forecast();
+    }, []);
 
     return (
         <div className={className + " flex justify-center"}>
+            {/* Loader */}
+            {Loading ? <Loader /> : ""}
+            {/* Loader */}
+
             <div className="absolute -right-14 bottom-0 w-1/3">
                 <AdminBg />
             </div>
@@ -58,7 +59,6 @@ export default function Forecasting({ className }) {
                 {/*tab buttons*/}
                 <div className="pb-3">
                     <ul className="flex gap-4">
-
                         <li
                             onClick={() => clickTabs("newproposal")}
                             className={
@@ -97,7 +97,6 @@ export default function Forecasting({ className }) {
                             predicted={predicted}
                         />
                     )}
-
                 </div>
                 {/*Tabs*/}
             </div>

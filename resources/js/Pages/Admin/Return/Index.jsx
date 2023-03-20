@@ -196,7 +196,7 @@ export default function Return({ className }) {
             return (
                 <tr
                     key={data.uri_id}
-                    className="relative h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default"
+                    className="relative h-18 text-xs border bg-t-bg text-th dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white cursor-default"
                 >
                     {/* no */}
                     <td>
@@ -215,7 +215,7 @@ export default function Return({ className }) {
                                 />
                             </div>
                             <div className="flex flex-col gap-1">
-                                <h4 className="text-[16px] font-medium text-text-black w-64 truncate">
+                                <h4 className="text-[16px] font-medium text-text-black dark:text-white w-64 truncate">
                                     {data.article}
                                 </h4>
                                 <p className="text-[#878787] text-[14px]">
@@ -228,7 +228,7 @@ export default function Return({ className }) {
                     <td>
                         <a className="text-left flex items-center w-full h-12 gap-3 pl-2">
                             <div className="flex flex-col gap-1">
-                                <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
+                                <h5 className="text-[14px] font-medium text-text-black w-72 truncate dark:text-white">
                                     {data.defect}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
@@ -241,7 +241,7 @@ export default function Return({ className }) {
                     {/* item status */}
                     <td>
                         <a className="text-left flex justify-center items-center w-full h-12 gap-3">
-                            <h5 className="p-1 px-2 w-fit text-[14px] receivedItem rounded-full flex items-center gap-1">
+                            <h5 className="p-1 px-2 w-fit text-[14px] receivedItem rounded-full flex items-center gap-1 dark:text-neutral-400 dark:bg-[#434343]">
                                 <i className="fa-solid fa-circle text-[7px]"></i>
                                 {data.status.charAt(0).toUpperCase() +
                                     data.status.slice(1)}
@@ -503,7 +503,7 @@ export default function Return({ className }) {
             <div className="absolute -right-14 bottom-0 w-1/3">
                 <AdminBg />
             </div>
-            <div className="z-20 pt-[14px] flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
+            <div className="z-20 pt-[14px] flex flex-col items-center 2xl:px-10 xl:px-5 px-5 ">
                 <div className="pb-3 h-14 items-center w-full">
                     <div className="">
                         <Searchbar />
@@ -514,19 +514,19 @@ export default function Return({ className }) {
                     <div className="w-full flex  items-center h-14 pb-2 gap-5">
 
                         <button
-                            className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
+                            className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("all")}
                         >
                             <i className="fa-solid fa-box-archive"></i>
                         </button>
                         <button
-                            className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
+                            className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("Unserviceable")}
                         >
                             <i className="fa-solid fa-trash-can-arrow-up"></i>
                         </button>
                         <button
-                            className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
+                            className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("Inventories")}
                         >
                             <i className="fa-solid fa-box"></i>
@@ -568,10 +568,10 @@ export default function Return({ className }) {
                             ) : returnedItemsByStatus?.length > 0 ? (
                                 returnItemsMapper(slicedData)
                             ) : (
-                                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th  cursor-default">
                                     <td
                                         colSpan="5"
-                                        className="text-center h-12 bg-white border"
+                                        className="text-center h-12 bg-white dark:bg-darkColor-800 dark:border-[#434343] border"
                                     >
                                         <small className="text-sm">
                                             {status != "Unserviceable" &&
@@ -587,7 +587,7 @@ export default function Return({ className }) {
                         </tbody>
                     </table>
                     {returnedItemsByStatus?.length > 0 ? (
-                        <div className="absolute bottom-[61px]  w-full flex justify-center">
+                        <div className="absolute bottom-[61px] dark:text-neutral-200 w-full flex justify-center">
                             <ReactPaginate
                                 previousLabel={"Prev"}
                                 nextLabel={"Next"}

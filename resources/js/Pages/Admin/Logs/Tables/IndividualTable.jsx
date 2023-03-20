@@ -80,16 +80,16 @@ export default function IndividualTable({ className }) {
 
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 9;
-  
+
     const handlePageClick = ({ selected: selectedPage }) => {
-      setCurrentPage(selectedPage);
+        setCurrentPage(selectedPage);
     };
-  
+
     const slicedData = UserLists?.slice(
-      currentPage * itemsPerPage,
-      (currentPage + 1) * itemsPerPage
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
     );
-  
+
     const pageCount = Math.ceil((UserLists?.length || 0) / itemsPerPage);
 
     return (
@@ -126,7 +126,18 @@ export default function IndividualTable({ className }) {
                 </thead>
                 <tbody>
                     {/*item 1*/}
-                    {Loading ? "" : userMapper(slicedData)}
+                    {Loading ? (
+                        <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                            <td
+                                colSpan="100"
+                                className="text-center h-12 bg-white border"
+                            >
+                                <small className="text-sm">Loading data.</small>
+                            </td>
+                        </tr>
+                    ) : (
+                        userMapper(slicedData)
+                    )}
                     {UserLists?.length === 0 ? (
                         <>
                             <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">

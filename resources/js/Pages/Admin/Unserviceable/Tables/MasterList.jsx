@@ -12,11 +12,6 @@ export default function MasterList({ className, items }) {
         setToggleTabs(index);
     }
 
-    const pageCount = 5;
-    const changePage = ({ selected }) => {
-        setPageNumber(selected)
-    };
-
     useEffect(() => {
         const getUnserviceableStatus = async (index) => {
             setLoading(true);
@@ -37,8 +32,6 @@ export default function MasterList({ className, items }) {
 
         getUnserviceableStatus(toggleTabs);
     }, [toggleTabs]);
-
-    console.log(UnserviceableStatus)
 
     return (
         <div className={className + " w-fit h-full"}>

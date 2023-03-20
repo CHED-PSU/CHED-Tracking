@@ -71,11 +71,9 @@ export default function Dashboard({ className }) {
                 setLoading(false);
             }
         };
-
         axios.get("api/totalCostPerYear").then((response) => {
             setYearData(response.data.data);
         });
-
         getAdminDashboardData();
     }, []);
 
@@ -153,7 +151,7 @@ export default function Dashboard({ className }) {
         <>
             <div className={className + "  2xl:px-10 xl:px-5 px-5"}>
                 {/* Loader */}
-                {Loader ? "" : <Loader />}
+                {Loading ? <Loader /> : ''}
                 {/* Loader */}
 
                 <div className="flex 2xl:w-2/3 xl:w-[70%] w-[65%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5 border-r border-neutral-200 dark:border-[#434343]">
