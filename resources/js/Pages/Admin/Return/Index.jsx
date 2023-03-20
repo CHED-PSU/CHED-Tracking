@@ -510,24 +510,26 @@ export default function Return({ className }) {
                     </div>
                 </div>
                 <div className="flex flex-col h-full w-[1100px] items-center mb-12 pt-3 py-2 px-4 border dark:border-[#434343] rounded-lg bg-white dark:bg-darkColor-800">
+
                     <div className="w-full flex  items-center h-14 pb-2 gap-5">
+
                         <button
                             className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("all")}
                         >
-                            <i className="fa-solid fa-filter"></i>
+                            <i className="fa-solid fa-box-archive"></i>
                         </button>
                         <button
                             className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("Unserviceable")}
                         >
-                            <i className="fa-solid fa-file-export"></i>
+                            <i className="fa-solid fa-trash-can-arrow-up"></i>
                         </button>
                         <button
                             className="flex justify-center items-center gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("Inventories")}
                         >
-                            <i className="fa-solid fa-file-export"></i>
+                            <i className="fa-solid fa-box"></i>
                         </button>
                     </div>
                     {/*table 1*/}

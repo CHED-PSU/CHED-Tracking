@@ -438,7 +438,7 @@ export default function ViewInspection(props) {
                                             }
                                             name=""
                                             id="natureScope"
-                                            className=" bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
+                                            className=" border-none bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
                                         ></textarea>
                                     </div>
                                     <div className=" mb-2">
@@ -457,7 +457,7 @@ export default function ViewInspection(props) {
                                             }
                                             name=""
                                             id="supplied"
-                                            className=" bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
+                                            className=" border-none bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
                                         ></textarea>
                                     </div>
                                 </div>
@@ -539,7 +539,7 @@ export default function ViewInspection(props) {
                                                     : postfindings
                                             }
                                             id="natureScope"
-                                            className=" bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
+                                            className="border-none bg-white w-full rounded-lg underline h-16 text-sm outline-none resize-none"
                                         ></textarea>
                                     </div>
                                 </div>
