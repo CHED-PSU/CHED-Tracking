@@ -67,12 +67,20 @@ export default function Index({ className }) {
         }
     };
 
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
     const renderItems = (itemsData) => {
         return itemsData.map((data) => {
             let date = new Date(data.created_at);
             let date_text = date.toString();
             return (
-                <tr className="bg-[#F5F5F5]">
+                <tr key={data.ui_id} className="bg-[#F5F5F5]">
                     <td className="text-center rounded-tableRow">
                         <input
                             type="checkbox"
@@ -89,7 +97,7 @@ export default function Index({ className }) {
                         {data.code}
                     </td>
                     <td className="text-sm">{data.description}</td>
-                    <td className="text-sm">{data.date}</td>
+                    <td className="text-sm">{formatDateDisplay(data.created_at)}</td>
                     <td className="text-center py-3 rounded-tableRow">
                         <button
                             value={data.ui_id}
