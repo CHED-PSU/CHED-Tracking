@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import IcsItems from "../FormItems/IcsItems";
 import Searchbar from "../../Components/Searchbar";
-import { values } from "lodash";
 
-export default function ICSTable({ className, toggleTabs, clickTabs, setTotalICS }) {
+export default function ICSTable({ setTotalICS }) {
     const [icsItems, setIcsItems] = useState([]);
     const [filteredItemsData, setFilteredItemsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -70,49 +69,11 @@ export default function ICSTable({ className, toggleTabs, clickTabs, setTotalICS
 
     return (
         <>
-            <div className="flex justify-between">
-                <ul className="flex 2xl:gap-4 xl:gap-2 gap-2 h-10">
-                    <li
-                        onClick={() => clickTabs("ics")}
-                        className={
-                            toggleTabs === "ics"
-                                ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
-                        }
-                    >
-                        <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                            ICS
-                        </div>
-                    </li>
-                    <li
-                        onClick={() => clickTabs("par")}
-                        className={
-                            toggleTabs === "par"
-                                ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
-                        }
-                    >
-                        <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                            PAR
-                        </div>
-                    </li>
-                    <li
-                        onClick={() => clickTabs("ii")}
-                        className={
-                            toggleTabs === "ii"
-                                ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
-                                : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
-                        }
-                    >
-                        <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                            Individual Inventory
-                        </div>
-                    </li>
-                </ul>
+            <div className=" flex w-fit right-0 absolute px-5">
                 <Searchbar search={setSearchTerm} className="h-10" />
             </div>
             <div className="mt-5 flex flex-col w-full">
-                <table className={className}>
+                <table>
                     <thead>
                         <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                             <th className="h-10 font-medium text-left pl-6">
@@ -133,20 +94,27 @@ export default function ICSTable({ className, toggleTabs, clickTabs, setTotalICS
                     <tbody>
                         {/*item 1*/}
                         {Loading ? (
-                            <>
+                            <tr>
+                                <td
+                                    colSpan="5"
+                                    className="text-center h-12 bg-white border"
+                                >
+                                    <small>Loading data.</small>
+                                </td>
+                            </tr>
+                        ) : (
+                            icsItems?.length == 0 ? (
                                 <tr>
                                     <td
                                         colSpan="5"
                                         className="text-center h-12 bg-white border"
                                     >
-                                        <small>
-                                            No data available in table
-                                        </small>
+                                        <small>No data available in table</small>
                                     </td>
                                 </tr>
-                            </>
-                        ) : (
-                            icsMapper(Object.values(icsItems))
+                            ) : (
+                                icsMapper(Object.values(icsItems))
+                            )
                         )}
                         {/*item 5*/}
                     </tbody>

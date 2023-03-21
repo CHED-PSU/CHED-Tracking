@@ -79,7 +79,7 @@ export default function Index(props) {
     }
 
     const recentIssuanceMapper = (items) => {
-        return items?.map((data) => {
+        return items?.slice(0, 3).map((data) => {
             var created_at = new Date(data.created_at);
 
             let today = new Date();

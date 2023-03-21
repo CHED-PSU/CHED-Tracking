@@ -30,6 +30,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 //Notification List
 Route::post('/getNotificationItems', [FormController::class, 'getNotificationItems']);
+Route::post('/getUserNotificationIsRead', [FormController::class, 'getUserNotificationIsRead']);
 //Notification Form Item List
 Route::post('/getNotifSecListItems', [ItemController::class, 'getNotifSecListItems']);
 //Notification Form Details

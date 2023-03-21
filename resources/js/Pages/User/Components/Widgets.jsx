@@ -12,6 +12,7 @@ export default function Widgets(props) {
     const value = JSON.parse(user);
     const [name, setName] = useState("default");
     const [role, setRole] = useState("default");
+    const [Loading, setLoading] = useState(true);
 
     function clickTabs(index) {
         setToggleTabs(index);
@@ -120,14 +121,27 @@ export default function Widgets(props) {
     const [openNotifSpecList, setOpenNotifSpecList] = useState(false);
     const [listId, setListId] = useState();
 
-    const notifSpecList = (id) => {
+    const notifSpecList = (id, notifId) => {
         setListId(id);
+        isRead(notifId);
         setOpenNotifSpecList(!openNotifSpecList);
         setOpenNotifDropdown(!openNotifDropdown);
     };
 
+    function isRead(index) {
+        axios
+            .post("api/getUserNotificationIsRead", {
+                id: index,
+                status: 1,
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     //for Notification mapping
     const [notificationItems, setNotificationItems] = useState([]);
+    const [notificationItemsUnread, setNotificationItemsUnread] = useState([]);
 
     async function getNotificationItems() {
         try {
@@ -140,93 +154,81 @@ export default function Widgets(props) {
         }
     }
 
+    const getNotif = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.post("/api/getNotificationItems", {
+                id: value.id,
+            });
+            const data = response.data;
+            setNotificationItems(data.data);
+            setNotificationItemsUnread(data.unread_data);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const notifMapper = (items) => {
         if (items.length > 0) {
-            return items.map((nfItems) => {
-                return nfItems.map((data) => {
-                    var created_at = new Date(data.created_at);
-                    let today = new Date();
+            return items.map((data) => {
+                var created_at = new Date(data.created_at);
 
-                    var distance = today.getTime() - created_at.getTime();
+                let today = new Date();
 
-                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    if (data.np_id === 1) {
-                        if (data.ns_id === 2) {
-                            return (
-                                <li
-                                    onClick={() => notifSpecList(data.id)}
-                                    className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer"
-                                >
-                                    <div className="flex h-full items-center justify-between gap-3 px-3">
-                                        {displayPhoto(
-                                            data.img,
-                                            data.firstname,
-                                            "2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9"
-                                        )}
-                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
-                                                <span className="font-semibold">
-                                                    {displayName(data, true)}
-                                                </span>{" "}
-                                                <span className="">
-                                                    {" "}
-                                                    has issued you an{" "}
-                                                    {data.description} form.
-                                                </span>
-                                            </div>
-                                            <div className="text-xs text-blue-400">
-                                                {days === 1 || days === 0
-                                                    ? "a day ago"
-                                                    : days + " days ago"}
-                                            </div>
-                                        </div>
-                                    </div>
+                var distance = today.getTime() - created_at.getTime();
 
-                                    {/* Ping Notif */}
-                                    <div className="h-auto flex relative">
-                                        <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+                if (data.np_id === 1) {
+                    return (
+                        <li
+                            key={data.id}
+                            onClick={() => notifSpecList(data.id, data.notifId)}
+                            className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer"
+                        >
+                            <div className="flex h-full items-center justify-between gap-3 px-3">
+                                {displayPhoto(
+                                    data.img,
+                                    data.firstname,
+                                    "2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9"
+                                )}
+                                <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
+                                    <div className="text-sm 2xl:leading-0 xl:leading-4">
+                                        <span className="font-semibold">
+                                            {displayName(data, true)}
+                                        </span>{" "}
+                                        <span className="">
+                                            {" "}
+                                            has issued you an {
+                                                data.description
+                                            }{" "}
+                                            form.
                                         </span>
                                     </div>
-                                </li>
-                            );
-                        } else {
-                            return (
-                                <li
-                                    onClick={() => notifSpecList(data.id)}
-                                    className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer"
-                                >
-                                    <div className="flex h-full items-center justify-between gap-3 px-3">
-                                        {displayPhoto(
-                                            data.img,
-                                            data.firstname,
-                                            "2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9"
-                                        )}
-                                        <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-                                            <div className="text-sm 2xl:leading-0 xl:leading-4">
-                                                <span className="font-semibold">
-                                                    {displayName(data, true)}
-                                                </span>{" "}
-                                                <span className="">
-                                                    {" "}
-                                                    has issued you an{" "}
-                                                    {data.description} form.
-                                                </span>
-                                            </div>
-                                            <div className="text-xs text-blue-400">
-                                                {days === 1 || days === 0
-                                                    ? "a day ago"
-                                                    : days + " days ago"}
-                                            </div>
-                                        </div>
+                                    <div className="text-xs text-blue-400">
+                                        {days === 1 || days === 0
+                                            ? "a day ago"
+                                            : days + " days ago"}
                                     </div>
-                                    {/* Ping Notif */}
-                                </li>
-                            );
-                        }
-                    }
-                });
+                                </div>
+                            </div>
+
+                            {/* Ping Notif */}
+                            {data.ns_id === 2 ? (
+                                <div className="h-auto flex relative">
+                                    <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                        <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                                    </span>
+                                </div>
+                            ) : (
+                                ""
+                            )}
+                        </li>
+                    );
+                }
             });
         } else {
             return (
@@ -235,10 +237,6 @@ export default function Widgets(props) {
                 </li>
             );
         }
-    };
-
-    const getNotif = () => {
-        getNotificationItems();
     };
 
     return (
@@ -356,7 +354,11 @@ export default function Widgets(props) {
                                     Notification
                                 </h2>
                                 <p className="text-xs 2xl:mt-0 xl:-mt-1 -mt-1 text-slate-600 dark:text-neutral-300">
-                                    You've got 9 unread notifications.
+                                    {Loading
+                                        ? ""
+                                        : "You've got " +
+                                          notificationItemsUnread.length +
+                                          " unread notifications."}
                                 </p>
                             </div>
 
@@ -374,21 +376,48 @@ export default function Widgets(props) {
                                         All
                                     </div>
                                 </li>
+                                <li
+                                    onClick={() => clickTabs("unread")}
+                                    className={
+                                        toggleTabs === "unread"
+                                            ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
+                                            : "btn-color-3 border border-border-iconLight dark:border-neutral-700 dark:bg-darkColor-800 dark:text-white hover:bg-neutral-200 rounded-full"
+                                    }
+                                >
+                                    <div className="select-none text-xs w-fit px-5 py-2 cursor-pointer">
+                                        Unread
+                                    </div>
+                                </li>
                             </ul>
                             {/*tab buttons*/}
 
                             {/* All Tabs */}
-                            <div
-                                className={
-                                    toggleTabs === "all" ? "flex" : "hidden"
-                                }
-                            >
-                                <ul className="min-h-fit 2xl:max-h-[520px] xl:max-h-[380px] max-h-[380px] pr-1 overflow-auto flex-row space-y-2 2xl:w-[350px] xl:w-[300px] w-[300px]">
-                                    {notifMapper(
-                                        Object.values(notificationItems)
-                                    )}
-                                </ul>
-                            </div>
+                            <ul className="min-h-fit 2xl:max-h-[520px] xl:max-h-[380px] max-h-[380px] pr-1 overflow-auto flex-row space-y-2 2xl:w-[350px] xl:w-[300px] w-[300px]">
+                                {Loading ? (
+                                    <li className="py-5 text-center cursor-default">
+                                        <small>Loading notification...</small>
+                                    </li>
+                                ) : toggleTabs === "unread" ? (
+                                    notificationItemsUnread?.length === 0 ? (
+                                        <li className="py-5 text-center cursor-default">
+                                            <small>
+                                                You don't have unread
+                                                notification yet
+                                            </small>
+                                        </li>
+                                    ) : (
+                                        notifMapper(notificationItemsUnread)
+                                    )
+                                ) : notificationItems?.length === 0 ? (
+                                    <li className="py-5 text-center cursor-default">
+                                        <small>
+                                            You don't have notification yet
+                                        </small>
+                                    </li>
+                                ) : (
+                                    notifMapper(notificationItems)
+                                )}
+                            </ul>
                         </div>
                     ) : (
                         ""

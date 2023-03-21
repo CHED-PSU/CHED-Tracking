@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import ICSTable from "./Tables/ICSTable";
 import PARTable from "./Tables/PARTable";
@@ -45,10 +45,49 @@ export default function Index({ className }) {
             <div className="relative flex 2xl:w-[73%] xl:w-[70%] w-[70%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5">
                 {/*Tabs*/}
                 <div className="flex flex-col w-full">
+                    <div className="flex justify-between">
+                        <ul className="flex 2xl:gap-4 xl:gap-2 gap-2 h-10">
+                            <li
+                                onClick={() => clickTabs("ics")}
+                                className={
+                                    toggleTabs === "ics"
+                                        ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
+                                        : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                                }
+                            >
+                                <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
+                                    ICS
+                                </div>
+                            </li>
+                            <li
+                                onClick={() => clickTabs("par")}
+                                className={
+                                    toggleTabs === "par"
+                                        ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
+                                        : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                                }
+                            >
+                                <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
+                                    PAR
+                                </div>
+                            </li>
+                            <li
+                                onClick={() => clickTabs("ii")}
+                                className={
+                                    toggleTabs === "ii"
+                                        ? "btn-color-4 text-white dark:text-black font-semibold rounded-full"
+                                        : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                                }
+                            >
+                                <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
+                                    Individual Inventory
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                     {toggleTabs === "ics" ? (
                         <ICSTable
                             setTotalICS={setTotalICS}
-                            clickTabs={clickTabs}
                             toggleTabs={toggleTabs}
                         />
                     ) : (
@@ -58,7 +97,6 @@ export default function Index({ className }) {
                     {toggleTabs === "par" ? (
                         <PARTable
                             setTotalPAR={setTotalPAR}
-                            clickTabs={clickTabs}
                             toggleTabs={toggleTabs}
                         />
                     ) : (
@@ -67,7 +105,6 @@ export default function Index({ className }) {
 
                     {toggleTabs === "ii" ? (
                         <IndividualTable
-                            clickTabs={clickTabs}
                             toggleTabs={toggleTabs}
                         />
                     ) : (

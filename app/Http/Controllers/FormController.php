@@ -14,17 +14,35 @@ class FormController extends Controller
     public function getNotificationItems(Request $request)
     {
         $NotificationItems = DB::table('users_notification as un')
-            ->select('un.description', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id')
+            ->select('un.description', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id', 'un.id as notifId')
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->join('users as u', 't.issued_by', '=', 'u.id')
             ->where('t.received_by', $request->input('id'))
             ->where('un.confirmation', 'TBD')
             ->get();
 
+        $NotificationItemsUnread = DB::table('users_notification as un')
+            ->select('un.description', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id', 'un.id as notifId')
+            ->join('trackings as t', 'un.trackings_id', '=', 't.id')
+            ->join('users as u', 't.issued_by', '=', 'u.id')
+            ->where('t.received_by', $request->input('id'))
+            ->where('un.ns_id', 2)
+            ->where('un.confirmation', 'TBD')
+            ->get();
 
         return response()->json([
-            'data' => $NotificationItems
+            'data' => $NotificationItems,
+            'unread_data' => $NotificationItemsUnread
         ]);
+    }
+
+    public function getUserNotificationIsRead(Request $req)
+    {
+        $getNotificationIsRead = DB::table('users_notification as un')
+        ->where('un.id', $req->input('id'))
+        ->update(['un.ns_id' => $req->input('status')]);
+    
+        return response()->json(['notificationIsRead' => $getNotificationIsRead]);
     }
 
     //notification form details
@@ -139,10 +157,12 @@ class FormController extends Controller
     //ICS Table
     public function getICS(Request $request)
     {
-        $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+        $subQuery = DB::table('inventory_tracking as it')
+            ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
         
-            $result = DB::table('trackings as t')
+        $result = DB::table('trackings as t')
             ->joinSub($subQuery, 'subData', function ($join) {
                 $join->on('t.id', '=', 'subData.trackings_id');
             })
@@ -152,8 +172,6 @@ class FormController extends Controller
             ->where('ui.confirmation', 'accepted')
             // ->groupBy('t.id')
             ->get();
-
-
 
         return response()->json([
             'allICS' => $result
@@ -209,10 +227,14 @@ class FormController extends Controller
     //PAR Table
     public function getPAR(Request $request)
     {
-        $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(pri.price * it.quantity) as total"), 'it.tracking_id')->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')->groupBy('it.tracking_id');
+        $subQuery = DB::table('inventory_tracking as it')
+        ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
+        ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+        ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
+        
         $result = DB::table('trackings as t')
             ->joinSub($subQuery, 'subData', function ($join) {
-                $join->on('t.id', '=', 'subData.tracking_id');
+                $join->on('t.id', '=', 'subData.trackings_id');
             })
             ->where('t.received_by', $request->input('user_id'))
             ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
@@ -220,8 +242,6 @@ class FormController extends Controller
             ->where('ui.confirmation', 'accepted')
             // ->groupBy('t.id')
             ->get();
-
-
 
         return response()->json([
             'allPAR' => $result

@@ -8,7 +8,19 @@ export default function IcsItems({ data }) {
         setOpenSubForms(index);
     }
 
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
 
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
 
     return (
         
@@ -32,7 +44,7 @@ export default function IcsItems({ data }) {
                 <a className="text-left flex items-center w-full gap-3">
                     <div className="flex flex-col gap-1">
                         <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium text-text-black">
-                            {data.created_at}
+                            {formatDateDisplay(data.created_at)}
                         </h4>
                         
                     </div>
@@ -43,7 +55,7 @@ export default function IcsItems({ data }) {
                 <a className="text-left flex items-center w-full gap-3">
                     <div className="flex flex-col gap-1">
                         <h4 className="text-[16px] font-medium text-primary">
-                            {data.total}
+                            {formattedAmount(data.total)}
                         </h4>
                         <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
                             Php

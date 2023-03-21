@@ -68,6 +68,15 @@ export default function ICSDetails({ className, clickSubForms, id }) {
             return <IcsItemLists key={data.id} data={data} />;
         });
     };
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
     return (
         <div className={className}>
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40">
@@ -207,7 +216,7 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                             {designation}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {issuedDate}
+                                            {formatDateDisplay(issuedDate)}
                                         </div>
                                     </div>
                                 </div>
@@ -230,7 +239,7 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                             {designation2}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {receivedDate}
+                                            {formatDateDisplay(receivedDate)}
                                         </div>
                                     </div>
                                 </div>

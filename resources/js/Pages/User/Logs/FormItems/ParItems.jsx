@@ -7,6 +7,21 @@ export default function ParItems(props) {
     function clickSubForms(index) {
         setOpenSubForms(index);
     }
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
     return (
         <tr className="h-14 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
             {openSubForms === "open" ? <PARDetails
@@ -27,7 +42,7 @@ export default function ParItems(props) {
                 <a className="text-left flex items-center w-full gap-3">
                     <div className="flex flex-col gap-1">
                         <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium text-text-black">
-                            {props.data.created_at}
+                            {formatDateDisplay(props.data.created_at)}
                         </h4>
                         <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
                             
@@ -40,7 +55,7 @@ export default function ParItems(props) {
                 <a className="text-left flex items-center w-full gap-3">
                     <div className="flex flex-col gap-1">
                         <h4 className="text-[16px] font-medium text-primary">
-                        {props.data.total}
+                        {formattedAmount(props.data.total)}
                         </h4>
                         <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
                             Php
