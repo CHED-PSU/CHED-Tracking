@@ -63,6 +63,7 @@ export default function PARTable({ className }) {
                     key={data.id}
                     firstname={data.firstname}
                     surname={data.surname}
+                    img={data.img}
                     middlename={data.middlename}
                     suffix={data.suffix}
                     prefix={data.prefix}

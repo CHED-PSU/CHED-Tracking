@@ -2,8 +2,6 @@ import react from "react";
 
 
 export default function UserList(props) {
-    const data = props.data;
-
     function displayName(data, prefix) {
         const middleInitial = data.middlename
             ? data.middlename.substring(0, 1) + "."
@@ -29,17 +27,37 @@ export default function UserList(props) {
         }
     }
 
+    function displayPhoto(profilePhoto, name) {
+        if (profilePhoto == null) {
+            return (
+                <span
+                    className={
+                        "w-9 h-9 bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center text-base text-white font-semibold rounded-full"
+                    }
+                >
+                    {name.substring(0, 1)}
+                </span>
+            );
+        } else {
+            return (
+                <img
+                    draggable="false"
+                    src="./img/profile-pic.jpeg"
+                    className={
+                        "w-9 h-9 rounded-full flex-none bg-gray-500 object-cover"
+                    }
+                />
+            );
+        }
+    }
+
     return (
         <tr className="h-18 text-xs border dark:border-neutral-700 bg-white hover:bg-primary hover:bg-opacity-5 text-th dark:bg-darkColor-800 dark:text-white dark:hover:bg-darkColor-700 cursor-default transition duration-150 ease-in-out">
             {/* name */}
             <td>
                 <a className="text-left pl-6 flex items-center w-full h-12 gap-3">
                     <div className="flex flex-none items-center">
-                        <img
-                            src="./img/profile-pic.jpeg"
-                            alt=""
-                            className="rounded-full bg-gray-500 w-9 h-9 object-cover"
-                        />
+                        {displayPhoto(props.img, props.firstname)}
                     </div>
                     <div className="flex flex-col gap-1">
                         <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium w-60 text-text-black dark:text-white leading-5 truncate">

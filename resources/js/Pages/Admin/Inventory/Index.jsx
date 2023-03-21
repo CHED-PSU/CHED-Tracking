@@ -491,7 +491,20 @@ export default function Inventory({ className }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {loading ? "" : itemMapper(slicedData)}
+                                {loading ? (
+                                    <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                        <td
+                                            colSpan="5"
+                                            className="text-center h-12 bg-white border"
+                                        >
+                                            <small className="text-sm">
+                                                Loading data.
+                                            </small>
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    itemMapper(slicedData)
+                                )}
                                 {items?.length === 0 ? (
                                     <>
                                         <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">

@@ -50,6 +50,7 @@ export default function IndividualTable({ className }) {
                     firstname={data.firstname}
                     surname={data.surname}
                     middlename={data.middlename}
+                    img={data.img}
                     suffix={data.suffix}
                     prefix={data.prefix}
                     passUserName={passUserName}

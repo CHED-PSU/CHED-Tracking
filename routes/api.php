@@ -79,6 +79,7 @@ Route::post('getPendingRequests', [FormController::class, 'getPendingRequests'])
 
 //get admin notification items
 Route::get('getAdminNotification', [FormController::class, 'getAdminNotification']);
+Route::post('getAdminNotificationIsRead', [FormController::class, 'getAdminNotificationIsRead']);
 Route::get('getAdminRequest', [FormController::class, 'getAdminRequest']);
 //Admin Dashboard
 Route::get('getAdminDashboardData', [GeneralController::class, 'getAdminDashboardData']);

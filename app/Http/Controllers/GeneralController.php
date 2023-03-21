@@ -60,7 +60,7 @@ class GeneralController extends Controller
     public function getUserLists()
     {
         $userList = DB::table('users')
-            ->select('users.prefix', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'r.name', 'users.id')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'r.name', 'users.id')
             ->join('roles as r', 'r.id', '=', 'users.role_id')
             ->get();
 

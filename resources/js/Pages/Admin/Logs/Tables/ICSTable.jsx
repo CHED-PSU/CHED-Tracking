@@ -80,6 +80,7 @@ export default function ICSTable({ className }) {
                 <UserList
                     key={data.id}
                     firstname={data.firstname}
+                    img={data.img}
                     surname={data.surname}
                     middlename={data.middlename}
                     suffix={data.suffix}

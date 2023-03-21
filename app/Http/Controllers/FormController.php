@@ -317,8 +317,27 @@ class FormController extends Controller
             ->orderBy('an.created_at', 'DESC')
             ->get();
 
-        return response()->json(['admin_notification' => $getAdminNotification]);
+        $getAdminNotificationUnread = DB::table('admin_notification as an')
+            ->select('an.id', 'an.user_id', 'u.prefix', 'u.firstname', 'u.surname', 'u.suffix', 'an.created_at', 'an.description', 'an.ns_id')
+            ->join('users as u', 'u.id', '=', 'an.user_id')
+            ->where('an.ns_id', 2)
+            ->orderBy('an.created_at', 'DESC')
+            ->get();
+
+        return response()->json(['admin_notification' => $getAdminNotification, 'admin_unread_notification' => $getAdminNotificationUnread]);
     }
+
+    public function getAdminNotificationIsRead(Request $req)
+    {
+        $getAdminNotificationIsRead = DB::table('admin_notification as an')
+        ->where('an.id', $req->input('id'))
+        ->update(['an.ns_id' => $req->input('status')]);
+    
+        return response()->json(['admin_notificationIsRead' => $getAdminNotificationIsRead]);
+    }
+
+
+
 
     public function getAdminRequest(Request $request)
     {
