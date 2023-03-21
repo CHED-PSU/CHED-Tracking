@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Accepted from "./AcceptedRequest/Accepted";
+import Loader from "../../../Components/Loader";
 
 export default function Index(props) {
     const [numberOfItems, setNumberOfItems] = useState();
@@ -124,6 +125,7 @@ export default function Index(props) {
             return <Accepted key={data.uri_id} data={data} />;
         });
     };
+
     return (
         <div
             className={
@@ -131,6 +133,7 @@ export default function Index(props) {
                 " 2xl:px-10 xl:px-5 px-5 2xl:py-5 xl:py-3 py-3"
             }
         >
+            {Loading ? <Loader /> : ''}
             <div className="flex flex-col 2xl:w-[70%] xl:w-[65%] w-[65%] h-full 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:pr-10 xl:pr-5 pr-5">
                 <div className="flex w-full 2xl:h-[320px] xl:h-[200px] h-[200px] rounded-2xl bg-center bg-cover bg-card-4"></div>
                 <div className="flex flex-col gap-1">
