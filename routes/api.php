@@ -67,12 +67,13 @@ Route::post('getParDetails', [FormController::class, 'getParDetails']);
 Route::post('getIndividualItems', [FormController::class, 'getIndividualItems']);
 
 //User Requests Area
-
 //Pending Requests
 //Pending and Accepted Count
 Route::get('getPendingAcceptedRequests', [GeneralController::class, 'getPendingAcceptedRequests']);
+Route::post('getPendingAcceptedRequestsById', [GeneralController::class, 'getPendingAcceptedRequestsById']);
 //Pending Data
 Route::post('getPendingRequests', [FormController::class, 'getPendingRequests']);
+Route::post('getUsersAcceptedRequests', [FormController::class, 'getUsersAcceptedRequests']);
 
 
 //Admin Notification

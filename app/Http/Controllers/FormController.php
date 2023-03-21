@@ -116,8 +116,9 @@ class FormController extends Controller
     public function HomeData(Request $req)
     {
         $recentIssuance = DB::table('trackings')
-            ->select('users.firstname', 'users.surname', 'trackings.tracking_id', 'trackings.created_at')
+            ->select('users.img', 'users.firstname', 'users.surname', 'users.suffix', 'trackings.tracking_id', 'trackings.created_at', 'roles.name')
             ->join('users', 'users.id', '=', 'trackings.issued_by')
+            ->join('roles', 'roles.id', '=', 'users.role_id')
             ->where('received_by', $req->input('user_id'))
             ->get();
 
@@ -140,7 +141,8 @@ class FormController extends Controller
     {
         $subQuery = DB::table('inventory_tracking as it')->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
-        $result = DB::table('trackings as t')
+        
+            $result = DB::table('trackings as t')
             ->joinSub($subQuery, 'subData', function ($join) {
                 $join->on('t.id', '=', 'subData.trackings_id');
             })
@@ -305,6 +307,23 @@ class FormController extends Controller
         return response()->json(['data' => $getItems]);
     }
 
+    public function getUsersAcceptedRequests(Request $req)
+    {
+
+        $getItemsAccepted = DB::table('user_returned_items as uri')
+            ->select('uri.created_at', 'pri.price', 'pi.code as article', 'pi.description', 'uri.uri_id', 'uri.defect', 'uri.status', 'uri.updated_at')
+            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('iar_items as ia','ia.id','=','it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->where('uri.user_id', $req->input('id'))
+            ->where('uri.confirmation', 'accepted')
+            ->get();
+
+        return response()->json(['acceptedRequest' => $getItemsAccepted]);
+    }
 
     //Admin Area
     //Notification Area

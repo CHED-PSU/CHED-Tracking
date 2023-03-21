@@ -22,6 +22,21 @@ class GeneralController extends Controller
         return response()->json(['pending' => $pendingCount, 'accepted' => $acceptedCount]);
     }
 
+    public function getPendingAcceptedRequestsById(Request $req)
+    {
+        $pendingCount = DB::table('user_returned_items as uri')
+            ->where('uri.user_id', $req->input('id'))
+            ->where('uri.confirmation', 'pending')
+            ->count();
+
+        $acceptedCount = DB::table('user_returned_items as uri')
+        ->where('uri.user_id', $req->input('id'))
+        ->where('uri.confirmation', 'accepted')
+            ->count();
+
+        return response()->json(['pending' => $pendingCount, 'accepted' => $acceptedCount]);
+    }
+
     //Admin Dashboard
     public function getAdminDashboardData(Request $req)
     {

@@ -19,12 +19,13 @@ export default function Index({ className }) {
     const url = new URL(domain)
     const user = localStorage.getItem('localSession');
     const value = JSON.parse(user);
+
     useEffect(()=>{
        const getPendingAcceptedRequests = async () => {
         setLoading(true);
             try{
-                const response = await axios.post('api/getPendingAcceptedRequests',{
-                    user_id: value.id
+                const response = await axios.post('api/getPendingAcceptedRequestsById',{
+                    id: value.id
                 })
 
                 const data = response.data;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-
 import ICSTable from "./Tables/ICSTable";
 import PARTable from "./Tables/PARTable";
 import IndividualTable from "./Tables/IndividualTable";
@@ -10,51 +9,70 @@ export default function Index({ className }) {
     const [toggleTabs, setToggleTabs] = useState("ics");
     const [totalICS, setTotalICS] = useState(0);
     const [totalPAR, setTotalPAR] = useState(0);
+    const [Loading, setLoading] = useState(true);
 
     function clickTabs(index) {
         setToggleTabs(index);
     }
 
     const domain = window.location.href;
-    const url = new URL(domain)
-    const user = localStorage.getItem('localSession');
+    const url = new URL(domain);
+    const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
 
-    useEffect(() => {
+    // useEffect(() => {
+    //     const getTotalICSPAR = async () => {
+    //         setLoading(true);
+    //         try {
+    //             const response = await axios.post("api/getTotalICSPAR", {
+    //                 body: value.id,
+    //             });
 
-
-        fetch('http://' + url.hostname + ':8000/api/getTotalICSPAR', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: value.id
-        })
-            .then(response => response.json())
-            .then((data) => {
-                setTotalICS(data.ics)
-                setTotalPAR(data.par)
-            })
-    }, [])
+    //             const data = await response.data;
+    //             setTotalICS(data.ics);
+    //             setTotalPAR(data.par);
+    //         } catch (e) {
+    //             console.log(e);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+    //     getTotalICSPAR();
+    // }, []);
 
     return (
         <div className={className + "  2xl:px-10 xl:px-5 px-5"}>
             <div className="relative flex 2xl:w-[73%] xl:w-[70%] w-[70%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5">
-                {/*tab buttons*/}
-
-                {/*tab buttons*/}
-
                 {/*Tabs*/}
                 <div className="flex flex-col w-full">
+                    {toggleTabs === "ics" ? (
+                        <ICSTable
+                            setTotalICS={setTotalICS}
+                            clickTabs={clickTabs}
+                            toggleTabs={toggleTabs}
+                        />
+                    ) : (
+                        ""
+                    )}
 
-                    {toggleTabs === "ics" ? <ICSTable clickTabs={clickTabs} toggleTabs={toggleTabs} /> : ""}
+                    {toggleTabs === "par" ? (
+                        <PARTable
+                            setTotalPAR={setTotalPAR}
+                            clickTabs={clickTabs}
+                            toggleTabs={toggleTabs}
+                        />
+                    ) : (
+                        ""
+                    )}
 
-
-                    {toggleTabs === "par" ? <PARTable clickTabs={clickTabs} toggleTabs={toggleTabs} /> : ""}
-
-
-                    {toggleTabs === "ii" ? <IndividualTable clickTabs={clickTabs} toggleTabs={toggleTabs} /> : ""}
-
+                    {toggleTabs === "ii" ? (
+                        <IndividualTable
+                            clickTabs={clickTabs}
+                            toggleTabs={toggleTabs}
+                        />
+                    ) : (
+                        ""
+                    )}
                 </div>
                 {/*Tabs*/}
             </div>

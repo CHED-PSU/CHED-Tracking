@@ -8,7 +8,7 @@ export default function AcceptedData(props) {
             {/* no */}
             <td>
                 <a className="text-left pl-6 text-[14px]">
-                    {props.id}
+                    {props.value}
                 </a>
             </td>
             {/* requested by */}

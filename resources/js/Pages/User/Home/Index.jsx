@@ -3,43 +3,82 @@ import React, { useEffect, useState } from "react";
 import Accepted from "./AcceptedRequest/Accepted";
 
 export default function Index(props) {
-
-    const [numberOfItems, setNumberOfItems] = useState()
-    const [acceptedItems, setAcceptedItems] = useState([])
-    const [recentIssuance, setRecentIssuance] = useState([])
+    const [numberOfItems, setNumberOfItems] = useState();
+    const [acceptedItems, setAcceptedItems] = useState([]);
+    const [recentIssuance, setRecentIssuance] = useState([]);
     const domain = window.location.href;
-    const url = new URL(domain)
-    const user = localStorage.getItem('localSession');
+    const url = new URL(domain);
+    const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
+    const [Loading, setLoading] = useState(true);
 
-    const [loader, setLoader] = useState(false)
+    useEffect(() => {
+        const getPendingRequests = async () => {
+            setLoading(true);
+            try {
+                await axios
+                    .post("api/getUsersAcceptedRequests", {
+                        id: value.id,
+                    })
+                    .then((res) => {
+                        setAcceptedItems(res.data.acceptedRequest);
+                    });
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getPendingRequests();
+    }, []);
 
-
-
-    useEffect(()=>{
-        async function getHomeData(){
-            setLoader(true)
-            try{
-                await axios.post('api/HomeData', {
-                    user_id: value.id
-                }).then(res =>{
-                    setRecentIssuance(res.data.recentIssuance)
-                    setNumberOfItems(res.data.numberOFItems)
-                })
-            }catch (e){
-                console.log(e)
-            }finally{
-                setLoader(false)
+    useEffect(() => {
+        async function getHomeData() {
+            setLoading(true);
+            try {
+                await axios
+                    .post("api/HomeData", {
+                        user_id: value.id,
+                    })
+                    .then((res) => {
+                        setRecentIssuance(res.data.recentIssuance);
+                        setNumberOfItems(res.data.numberOFItems);
+                    });
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
             }
         }
+        getHomeData();
+    }, []);
 
-        getHomeData()
-    },[])
-
-    console.log(recentIssuance)
+    function displayPhoto(profilePhoto, name) {
+        if (profilePhoto == null) {
+            return (
+                <span
+                    className={
+                        "2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center text-base text-white font-semibold rounded-full"
+                    }
+                >
+                    {name.substring(0, 1)}
+                </span>
+            );
+        } else {
+            return (
+                <img
+                    draggable="false"
+                    src="./img/profile-pic.jpeg"
+                    className={
+                        "2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 rounded-full flex-none bg-gray-500 object-cover"
+                    }
+                />
+            );
+        }
+    }
 
     const recentIssuanceMapper = (items) => {
-        return items?.map(data => {
+        return items?.map((data) => {
             var created_at = new Date(data.created_at);
 
             let today = new Date();
@@ -48,25 +87,26 @@ export default function Index(props) {
 
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             return (
-                <div className="flex flex-row w-full gap-3 pb-4">
+                <div key={data.tracking_id} className="flex flex-row w-full gap-3 pb-4">
                     <div className="w-fit h-full flex flex-none items-center">
-                        <img
-                            src="./img/profile-pic.jpeg"
-                            alt=""
-                            className="rounded-full bg-gray-500 2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 object-cover"
-                        />
+                        {displayPhoto(data.img, data.firstname)}
                     </div>
                     <div className="flex flex-col cursor-pointer 2xl:space-y-1">
                         <div className="flex text-sm justify-between text-text-gray">
                             <h4 className="">
-                                {data.surname + ' ' + data.firstname.charAt(0)}. | {data.name}
+                            {data.surname}{data.suffix == null ? '' : (" " + data.suffix)},  {data.firstname.charAt(0)}.
+                                | {data.name}
                             </h4>
-                            <p className="">{days === 1 || days === 0 ? "a day ago" : days + " days ago"}</p>
+                            <p className="">
+                                {days === 1 || days === 0
+                                    ? "a day ago"
+                                    : days + " days ago"}
+                            </p>
                         </div>
                         <div className="rounded-lg bg-[#F0F2F5]">
                             <h4 className="text-sm font-medium py-2 px-3">
-                                <font className="font-bold">You</font> have
-                                been issued {" "}
+                                <font className="font-bold">You</font> have been
+                                issued{" "}
                                 <font className="font-bold">
                                     {data.tracking_id}
                                 </font>{" "}
@@ -75,29 +115,45 @@ export default function Index(props) {
                         </div>
                     </div>
                 </div>
-            )
-        })
-    }
+            );
+        });
+    };
 
     const acceptedRequestMapper = (items) => {
-        return items.map(data => {
-            return <Accepted data={data} />
-        })
-    }
+        return items.map((data) => {
+            return <Accepted key={data.uri_id} data={data} />;
+        });
+    };
     return (
-        <div className={props.className + " 2xl:px-10 xl:px-5 px-5 2xl:py-5 xl:py-3 py-3"}>
+        <div
+            className={
+                props.className +
+                " 2xl:px-10 xl:px-5 px-5 2xl:py-5 xl:py-3 py-3"
+            }
+        >
             <div className="flex flex-col 2xl:w-[70%] xl:w-[65%] w-[65%] h-full 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:pr-10 xl:pr-5 pr-5">
                 <div className="flex w-full 2xl:h-[320px] xl:h-[200px] h-[200px] rounded-2xl bg-center bg-cover bg-card-4"></div>
                 <div className="flex flex-col gap-1">
-                    <h4 className="2xl:text-lg xl:text-base text-base font-semibold">Menu</h4>
+                    <h4 className="2xl:text-lg xl:text-base text-base font-semibold">
+                        Menu
+                    </h4>
                     <div className="flex 2xl:gap-6 xl:gap-4 gap-4">
-                        <div onClick={() => props.clickTabs('logs')} className="2xl:h-44 xl:h-36 h-36 w-64 rounded-xl bg-cover bg-center bg-card-5 text-white text-xl font-bold p-4 cursor-pointer">
+                        <div
+                            onClick={() => props.clickTabs("logs")}
+                            className="2xl:h-44 xl:h-36 h-36 w-64 rounded-xl bg-cover bg-center bg-card-5 text-white text-xl font-bold p-4 cursor-pointer"
+                        >
                             Logs
                         </div>
-                        <div onClick={() => props.clickTabs('items')} className="2xl:h-44 xl:h-36 h-36 w-64 rounded-xl bg-cover bg-center bg-card-6 text-white text-xl font-bold p-4 cursor-pointer">
+                        <div
+                            onClick={() => props.clickTabs("items")}
+                            className="2xl:h-44 xl:h-36 h-36 w-64 rounded-xl bg-cover bg-center bg-card-6 text-white text-xl font-bold p-4 cursor-pointer"
+                        >
                             Items
                         </div>
-                        <div onClick={() => props.clickTabs('requests')} className="2xl:h-44 xl:h-36 h-36 w-64 rounded-xl bg-cover bg-center bg-card-7 text-white text-xl font-bold p-4 cursor-pointer">
+                        <div
+                            onClick={() => props.clickTabs("requests")}
+                            className="2xl:h-44 xl:h-36 h-36 w-64 rounded-xl bg-cover bg-center bg-card-7 text-white text-xl font-bold p-4 cursor-pointer"
+                        >
                             Requests
                         </div>
                     </div>
@@ -126,11 +182,20 @@ export default function Index(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {acceptedItems?.length === 0 ? <tr className="bg-white">
-                                    <td colSpan={5} className=" font-semibold text-darkColor-700 text-center 2xl:text-base xl:text-sm text-sm rounded-tableRow py-3">
-                                        No Data
-                                    </td>
-                                </tr> : acceptedRequestMapper(Object.values(acceptedItems))}
+                                {acceptedItems?.length === 0 ? (
+                                    <tr className="bg-white">
+                                        <td
+                                            colSpan={5}
+                                            className=" font-semibold text-darkColor-700 text-center 2xl:text-base xl:text-sm text-sm rounded-tableRow py-3"
+                                        >
+                                            No Data
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    acceptedRequestMapper(
+                                        Object.values(acceptedItems)
+                                    )
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -144,14 +209,24 @@ export default function Index(props) {
                             <div className="font-semibold 2xl:text-lg xl:text-base text-[#434343] dark:text-white">
                                 Recent Issuance
                             </div>
-
                         </div>
-                        {recentIssuance?.length != 0 ? recentIssuanceMapper(Object.values(recentIssuance)) : <div className="flex items-center justify-center pb-8 cursor-default">
-                            <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 rounded-full w-[300px] h-[300px]">
-                                <img src="./img/no_data.png" alt="no data" className="w-52" draggable="false" />
-                                <strong className="text-text-gray-2 text-sm">You haven't been issued yet</strong>
+                        {recentIssuance?.length != 0 ? (
+                            recentIssuanceMapper(Object.values(recentIssuance))
+                        ) : (
+                            <div className="flex items-center justify-center pb-8 cursor-default">
+                                <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 rounded-full w-[300px] h-[300px]">
+                                    <img
+                                        src="./img/no_data.png"
+                                        alt="no data"
+                                        className="w-52"
+                                        draggable="false"
+                                    />
+                                    <strong className="text-text-gray-2 text-sm">
+                                        You haven't been issued yet
+                                    </strong>
+                                </div>
                             </div>
-                        </div>}
+                        )}
                         {/* no data */}
 
                         {/* no data */}
