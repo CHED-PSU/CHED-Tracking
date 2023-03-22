@@ -272,30 +272,6 @@ export default function InspectionForm(props) {
         return `${month} ${day}, ${year}`;
     }
 
-    function generateArticle(data, isArticle) {
-        const firstCommaIndex = data.indexOf(",");
-        let article, description;
-
-        if (firstCommaIndex === -1) {
-            // No comma found
-            if (isArticle == true) {
-                return data;
-            } else {
-                return "";
-            }
-        } else {
-            // Comma found
-            article = data.substring(0, firstCommaIndex);
-            description = data.substring(firstCommaIndex + 1) ?? "";
-
-            if (isArticle == true) {
-                return article;
-            } else {
-                return description;
-            }
-        }
-    }
-
     return (
         <div className={props.className}>
             {saveAlert === "open" ? (
@@ -366,10 +342,7 @@ export default function InspectionForm(props) {
                                             Type:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? generateArticle(
-                                                          returnedItemsData.description,
-                                                          true
-                                                      )
+                                                    ? returnedItemsData.article
                                                     : ""}
                                             </font>
                                         </div>
@@ -407,10 +380,7 @@ export default function InspectionForm(props) {
                                             Brand/Model:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? generateArticle(
-                                                          returnedItemsData.description,
-                                                          false
-                                                      )
+                                                    ? returnedItemsData.description
                                                     : ""}
                                             </font>
                                         </div>

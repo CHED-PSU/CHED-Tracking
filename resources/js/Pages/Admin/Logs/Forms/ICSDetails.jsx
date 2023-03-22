@@ -29,30 +29,6 @@ export default function ICSDetails(props) {
         documentTitle: "ICS",
     });
 
-    function generateArticle(data, isArticle) {
-        const firstCommaIndex = data.indexOf(",");
-        let article, description;
-
-        if (firstCommaIndex === -1) {
-            // No comma found
-            if (isArticle == true) {
-                return data;
-            } else {
-                return "";
-            }
-        } else {
-            // Comma found
-            article = data.substring(0, firstCommaIndex);
-            description = data.substring(firstCommaIndex + 1) ?? "";
-
-            if (isArticle == true) {
-                return article;
-            } else {
-                return description;
-            }
-        }
-    }
-
     const icsItemsMapper = (items) => {
         return items?.map((data, index) => {
             return (
@@ -67,12 +43,12 @@ export default function ICSDetails(props) {
                     </td>
                     <td className="text-left px-2 py-3 border">
                         <div className="font-semibold">
-                            {generateArticle(data.description, true)}
+                            {data.article}
                         </div>
                     </td>
                     <td className="text-left px-2 py-3 border">
                         <div className="min-w-[100px]">
-                            {generateArticle(data.description, false)}
+                            {data.description}
                         </div>
                     </td>
                     <td className="text-left px-2 border"></td>

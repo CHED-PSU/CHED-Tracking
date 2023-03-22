@@ -116,30 +116,6 @@ export default function InventorySticker(props) {
         setSelectSingleIds([itemId]);
     };
 
-    function generateArticle(data, isArticle) {
-        const firstCommaIndex = data.indexOf(",");
-        let article, description;
-
-        if (firstCommaIndex === -1) {
-            // No comma found
-            if (isArticle == true) {
-                return data;
-            } else {
-                return "";
-            }
-        } else {
-            // Comma found
-            article = data.substring(0, firstCommaIndex);
-            description = data.substring(firstCommaIndex + 1) ?? "";
-
-            if (isArticle == true) {
-                return article;
-            } else {
-                return description;
-            }
-        }
-    }
-
     const icsItemsMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -164,14 +140,10 @@ export default function InventorySticker(props) {
                         {formattedAmount(data.quantity * data.price)}
                     </td>
                     <td className="text-left px-3 py-3 border">
-                        <div className="font-semibold">
-                            {generateArticle(data.description, true)}
-                        </div>
+                        <div className="font-semibold">{data.article}</div>
                     </td>
                     <td className="text-left px-3 py-3 border">
-                        <div className="min-w-[100px]">
-                            {generateArticle(data.description, false)}
-                        </div>
+                        <div className="min-w-[100px]">{data.description}</div>
                     </td>
                     <td className="flex justify-center items-center px-2 h-14">
                         <button
@@ -271,11 +243,7 @@ export default function InventorySticker(props) {
                                                 ARTICLE
                                             </td>
                                             <td className="text-[8px] font-semibold">
-                                                :{" "}
-                                                {generateArticle(
-                                                    data.description,
-                                                    true
-                                                )}
+                                                : {data.article}
                                             </td>
                                         </tr>
                                         <tr>
@@ -283,10 +251,7 @@ export default function InventorySticker(props) {
                                             <td className="text-[8px] font-medium flex">
                                                 :&nbsp;
                                                 <p className="w-[185px] truncate">
-                                                    {generateArticle(
-                                                        data.description,
-                                                        false
-                                                    )}
+                                                    {data.description}
                                                 </p>
                                             </td>
                                         </tr>

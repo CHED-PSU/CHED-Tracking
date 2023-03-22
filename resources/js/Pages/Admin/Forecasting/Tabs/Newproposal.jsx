@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { NewproposalData } from "../Charts/ForecastData";
 import NewproposalChart from "../Charts/NewproposalChart";
 
 export default function Newproposal({
@@ -15,35 +14,58 @@ export default function Newproposal({
     const url = new URL(domain);
 
     const predictRef = useRef(null);
-    const [projectedValue, setProjectedValue] = useState(predicted);
     const [totalCostPerYear, settotalCostPerYear] = useState([]);
+    const [projectedValue, setProjectedValue] = useState("");
+    const [year, setYear] = useState("");
+    const [Loading, setLoading] = useState(true);
 
-    const predictHandler = (e) => {
-        let year;
-        if (predictRef.current.value > 0) {
-            year = predictRef.current.value;
-        } else {
-            year = currentYear + 1;
-        }
+    useEffect(() => {
+        predictHandler();
+    }, []);
 
-        e.preventDefault();
-        axios.post("api/forecastSpecific", { value: year }).then((response) => {
+    // const predictHandler = (e) => {
+    //     let year;
+    //     if (predictRef.current.value > 0) {
+    //         year = predictRef.current.value;
+    //     } else {
+    //         year = currentYear + 1;
+    //     }
+
+    //     e.preventDefault();
+    //     axios.post("api/forecastSpecific", { value: year }).then((response) => {
+    //         setProjectedValue(response.data.predicted);
+    //         setyear(year);
+    //     });
+    // };
+
+    const predictHandler = async () => {
+        const currentYear = new Date().getFullYear();
+        const yearToPredict = currentYear + 3;
+        try {
+            const response = await axios.post("api/forecastSpecific", {
+                value: yearToPredict,
+            });
             setProjectedValue(response.data.predicted);
-            setyear(year);
-        });
+            setYear(yearToPredict);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     useEffect(() => {
-        fetch("http://" + url.hostname + ":8000/api/totalCostPerYear", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
+        const getTotalCost = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get("api/totalCostPerYear");
+                const data = response.data;
                 settotalCostPerYear(data.data);
-            });
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getTotalCost();
     }, []);
 
     const dataMapper = (items) => {
@@ -68,6 +90,39 @@ export default function Newproposal({
         });
     };
 
+    var currentYear = new Date().getFullYear()+1;
+    var nextThreeYears = [currentYear + 1, currentYear + 2];
+
+    // var data = {
+    //     labels: [...xAxis.map((data) => data.year), ...nextThreeYears],
+    //     datasets: [
+    //         {
+    //             label: "Actual Data",
+    //             data: yAxis.map((data) => parseInt(data.total_cost)),
+    //             fill: true,
+    //             backgroundColor: ["rgba(220, 232, 255, 0.4)"],
+    //             pointBackgroundColor: "rgba(34, 127, 255, 1)",
+    //             borderColor: "rgba(34, 127, 255, 1)",
+    //             borderWidth: 2,
+    //             hoverOffset: 10,
+    //             tension: 0.2,
+    //         },
+    //         {
+    //             label: "Projected Data",
+    //             data: [...Array(3)],
+    //             fill: true,
+    //             backgroundColor: ["rgba(220, 232, 255, 0)"],
+    //             pointBackgroundColor: "rgba(34, 127, 255, 0)",
+    //             borderColor: "rgba(34, 127, 255, 1)",
+    //             borderWidth: 2,
+    //             hoverOffset: 10,
+    //             tension: 0.2,
+    //             borderDash: [10, 5],
+    //             spanGaps: true,
+    //         },
+    //     ],
+    // };
+
     var data = {
         labels: xAxis.map((data) => data.year),
         datasets: [
@@ -85,15 +140,20 @@ export default function Newproposal({
         ],
     };
 
-    const currentYear = new Date().getFullYear();
-    const [year, setyear] = useState();
-
     return (
         <div className={className + " flex"}>
             <div>
                 <div className="flex gap-7">
-                    <div className="w-[880px] h-96 bg-white border p-8 rounded-lg">
-                        <NewproposalChart chartData={data} />
+                    <div className="w-[880px] bg-white border pt-8 px-8 pb-4 space-y-3 rounded-lg">
+                        <div className=" h-80">
+                            <NewproposalChart chartData={data} />
+                        </div>
+                        <div className="w-full justify-center flex items-center gap-2 py-2">
+                            <div className="2xl:h-4 2xl:w-6 xl:h-3 xl:w-6 h-3 w-6 rounded-sm bg-[#227fff]"></div>
+                            <div className="dark:text-white font-semibold leading-3">
+                                Disposal Cost
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -141,8 +201,8 @@ export default function Newproposal({
                 </div>
             </div>
 
-            <div className="bg-white h-fit border py-8 px-8 rounded-lg space-y-2">
-                <form action="">
+            <div className="bg-white h-fit border py-8 px-8 rounded-lg space-y-14">
+                {/* <form action="">
                     <div className="">
                         <h1 className="font-semibold text-text-black">
                             Predict Year:
@@ -165,8 +225,8 @@ export default function Newproposal({
                             </button>
                         </div>
                     </div>
-                </form>
-                <div className="2xl:pt-6 2xl:space-y-1">
+                </form> */}
+                <div className="2xl:space-y-1">
                     <div className="w-72 text-[#011284] 2xl:text-xs xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
                         Estimated total disposal cost for the year
                     </div>

@@ -141,30 +141,6 @@ export default function ViewInspection(props) {
         return `${month} ${day}, ${year}`;
     }
 
-    function generateArticle(data, isArticle) {
-        const firstCommaIndex = data.indexOf(",");
-        let article, description;
-
-        if (firstCommaIndex === -1) {
-            // No comma found
-            if (isArticle == true) {
-                return data;
-            } else {
-                return "";
-            }
-        } else {
-            // Comma found
-            article = data.substring(0, firstCommaIndex);
-            description = data.substring(firstCommaIndex + 1) ?? "";
-
-            if (isArticle == true) {
-                return article;
-            } else {
-                return description;
-            }
-        }
-    }
-
     return (
         <div className={props.className}>
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-30">
@@ -183,7 +159,8 @@ export default function ViewInspection(props) {
                                     Inspection Form
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
-                                    <b>Return Items</b> / Inspection Form (View Only)
+                                    <b>Return Items</b> / Inspection Form (View
+                                    Only)
                                 </p>
                             </div>
                         </div>
@@ -244,10 +221,7 @@ export default function ViewInspection(props) {
                                             Type:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? generateArticle(
-                                                          returnedItemsData.description,
-                                                          true
-                                                      )
+                                                    ? returnedItemsData.article
                                                     : ""}
                                             </font>
                                         </div>
@@ -285,10 +259,7 @@ export default function ViewInspection(props) {
                                             Brand/Model:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? generateArticle(
-                                                          returnedItemsData.description,
-                                                          false
-                                                      )
+                                                    ? returnedItemsData.description
                                                     : ""}
                                             </font>
                                         </div>

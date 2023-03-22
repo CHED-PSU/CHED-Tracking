@@ -229,7 +229,7 @@ export default function Inventory({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3">
                             <div className="flex flex-col gap-1">
                                 <h4 className="text-[17px] font-medium text-text-black">
-                                    {generateArticle(data.article, true)}
+                                    {data.article}
                                 </h4>
                                 <p className="text-[#878787] text-[14px]">
                                     Previous owner: {displayName(data, true)}
@@ -242,7 +242,7 @@ export default function Inventory({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3">
                             <div className="flex flex-col gap-1">
                                 <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                    {generateArticle(data.article, false)}
+                                    {data.description}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
                                     Item Code: {data.code}
@@ -295,30 +295,6 @@ export default function Inventory({ className }) {
             setLoading(false);
         }
     };
-
-    function generateArticle(data, isArticle) {
-        const firstCommaIndex = data.indexOf(",");
-        let article, description;
-
-        if (firstCommaIndex === -1) {
-            // No comma found
-            if (isArticle == true) {
-                return data;
-            } else {
-                return "";
-            }
-        } else {
-            // Comma found
-            article = data.substring(0, firstCommaIndex);
-            description = data.substring(firstCommaIndex + 1) ?? "";
-
-            if (isArticle == true) {
-                return article;
-            } else {
-                return description;
-            }
-        }
-    }
 
     return (
         <div className={className + " flex justify-center relative"}>

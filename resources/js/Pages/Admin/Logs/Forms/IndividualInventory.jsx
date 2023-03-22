@@ -23,30 +23,6 @@ export default function IndividualInventory(props) {
         });
     };
 
-    function generateArticle(data, isArticle) {
-        const firstCommaIndex = data.indexOf(",");
-        let article, description;
-
-        if (firstCommaIndex === -1) {
-            // No comma found
-            if (isArticle == true) {
-                return data;
-            } else {
-                return "";
-            }
-        } else {
-            // Comma found
-            article = data.substring(0, firstCommaIndex);
-            description = data.substring(firstCommaIndex + 1) ?? "";
-
-            if (isArticle == true) {
-                return article;
-            } else {
-                return description;
-            }
-        }
-    }
-
     function formatDateDisplay(dateString) {
         const date = new Date(dateString);
         const month = date.toLocaleString("default", { month: "short" });
@@ -65,10 +41,10 @@ export default function IndividualInventory(props) {
                 >
                     <td className="text-center px-2 border">{index + 1}</td>
                     <td className="text-center px-2 border">
-                        {generateArticle(data.description)}
+                        {data.article}
                     </td>
                     <td className="text-left px-2 border">
-                        {generateArticle(data.description)}
+                        {data.description}
                     </td>
                     <td className="text-center px-2 border">{data.qty}</td>
                     <td className="text-center px-2 border"></td>

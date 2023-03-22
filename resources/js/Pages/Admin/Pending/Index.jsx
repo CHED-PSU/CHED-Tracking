@@ -114,30 +114,6 @@ export default function Pending({ className }) {
         }
     }
 
-    function generateArticle(data, isArticle) {
-        const firstCommaIndex = data.indexOf(",");
-        let article, description;
-
-        if (firstCommaIndex === -1) {
-            // No comma found
-            if (isArticle == true) {
-                return data;
-            } else {
-                return "";
-            }
-        } else {
-            // Comma found
-            article = data.substring(0, firstCommaIndex);
-            description = data.substring(firstCommaIndex + 1) ?? "";
-
-            if (isArticle == true) {
-                return article;
-            } else {
-                return description;
-            }
-        }
-    }
-
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 9;
 
@@ -164,10 +140,7 @@ export default function Pending({ className }) {
                             <div className="w-[500px] truncate flex flex-col">
                                 <div className=" dark:text-white gap-1 items-center">
                                     <h4 className="2xl:text-base xl:text-base text-base font-semibold 2xl:mb-0 xl:-mb-1 -mb-1">
-                                        {generateArticle(
-                                            data.description,
-                                            true
-                                        )}
+                                        {data.article}
                                     </h4>
                                     <p className="text-sm text-[#434343]">
                                         Requested by: {displayName(data, true)}
@@ -177,10 +150,7 @@ export default function Pending({ className }) {
                                 <div className="text-xs dark:text-gray-300 2xl:mt-2 mt-1">
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
                                         Description:{" "}
-                                        {generateArticle(
-                                            data.description,
-                                            false
-                                        )}
+                                        {data.description}
                                     </div>
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
                                         Defect: {data.defect}

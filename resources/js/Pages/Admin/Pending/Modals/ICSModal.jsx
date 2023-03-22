@@ -134,30 +134,6 @@ export default function ICSModal(props) {
         }
     }
 
-    function generateArticle(data, isArticle) {
-        const firstCommaIndex = data.indexOf(",");
-        let article, description;
-
-        if (firstCommaIndex === -1) {
-            // No comma found
-            if (isArticle == true) {
-                return data;
-            } else {
-                return "";
-            }
-        } else {
-            // Comma found
-            article = data.substring(0, firstCommaIndex);
-            description = data.substring(firstCommaIndex + 1) ?? "";
-
-            if (isArticle == true) {
-                return article;
-            } else {
-                return description;
-            }
-        }
-    }
-
     return (
         <div>
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-30">
@@ -191,7 +167,7 @@ export default function ICSModal(props) {
                                     <font className="dark:text-gray-400 font-medium text-sm">
                                         {Loading
                                             ? "N/A"
-                                            : generateArticle(returnedItemsData[0].brand, true)}
+                                            : returnedItemsData[0].article}
                                     </font>
                                 </div>
                                 <div className="">
@@ -218,7 +194,7 @@ export default function ICSModal(props) {
                                         ? "N/A"
                                         : returnedItemsInfo[0].pre_nature == null
                                         ? "Not yet repaired."
-                                        : returnedItemsInfoa[0].pre_nature}
+                                        : returnedItemsInfo[0].pre_nature}
                                     <font className="dark:text-gray-400"></font>
                                 </div>
                             </div>
@@ -228,7 +204,7 @@ export default function ICSModal(props) {
                                     <font className="dark:text-gray-400 font-medium text-sm">
                                         {Loading
                                             ? "N/A"
-                                            : generateArticle(returnedItemsData[0].brand, false)}
+                                            : returnedItemsData[0].brand}
                                     </font>
                                 </div>
                                 <div className="">
