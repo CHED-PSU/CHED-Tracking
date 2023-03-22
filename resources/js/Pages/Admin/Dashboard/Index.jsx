@@ -134,7 +134,7 @@ export default function Dashboard({ className }) {
     });
 
     const recentIssuanceMapper = (item) => {
-        return item?.slice(0, 3).map((data, index) => {
+        return item?.slice(0, 5).map((data, index) => {
             var created_at = new Date(data.created_at);
 
             let today = new Date();
@@ -257,7 +257,7 @@ export default function Dashboard({ className }) {
                 </div>
 
                 <div className="flex flex-col 2xl:w-1/3 xl:w-[30%] w-[35%] h-full 2xl:space-y-7 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pl-10 xl:pl-5 pl-5">
-                    <div className="h-96 rounded-xl 2xl:space-y-3 xl:space-y-2 space-y-2">
+                    <div className="h-[430px] rounded-xl 2xl:space-y-3 xl:space-y-2 space-y-2">
                         <div className="flex justify-between content-center">
                             <div className="font-semibold 2xl:text-lg xl:text-base text-[#434343] dark:text-white">
                                 Recent Issuance
