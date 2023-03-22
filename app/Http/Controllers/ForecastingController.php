@@ -59,10 +59,10 @@ class ForecastingController extends Controller
             array_push($predicted_data,$temp);
         }  
 
-        
+        $getpdataX = [];        
+        $getpdataY = [];
 
         for($x = $yearStopped+1;  $x <= $yearStopped+3; $x++){
-            
             $temp = $x*$slope+$yInt;
             $dataX = [
                 'year' => $x,
@@ -70,8 +70,10 @@ class ForecastingController extends Controller
             $dataY = [
                 'total_cost' => $temp
             ];
-            $getdataX->push((object) $dataX);
-            $getdataY->push((object) $dataY);
+            // $getdataX->push((object) $dataX);
+            // $getdataY->push((object) $dataY);
+            $getpdataX[] = (object) $dataX;
+            $getpdataY[] = (object) $dataY;
         }
 
         
@@ -80,6 +82,8 @@ class ForecastingController extends Controller
             'predicted'=>intval($predict),
             'xAxis' =>$getdataX,
             'yAxis' => $getdataY,
+            'pxAxis' =>$getpdataX,
+            'pyAxis' => $getpdataY,
             'predicted_data' => $predicted_data
         ]);
 
