@@ -9,16 +9,24 @@ export default function ICSControl(props) {
     const [openSubForms, setOpenSubForms] = useState("close");
     const [icsItems, setIcsItems] = useState();
     const [formDetails, setFormDetails] = useState();
+    const [Loading, setLoading] = useState();
 
     function clickSubForms(index) {
         setOpenSubForms(index);
     }
 
     function getICSdetails(index) {
-        axios.post("api/getIcsDetails", { id: index }).then((response) => {
-            setIcsItems(response.data.dataItems);
-            setFormDetails(response.data.form_details);
-        });
+        setLoading(true);
+        try {
+            axios.post("api/getIcsDetails", { id: index }).then((response) => {
+                setIcsItems(response.data.dataItems);
+                setFormDetails(response.data.form_details);
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
     }
 
     function formattedAmount(index) {
@@ -29,14 +37,14 @@ export default function ICSControl(props) {
 
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 9;
-  
+
     const handlePageClick = ({ selected: selectedPage }) => {
-      setCurrentPage(selectedPage);
+        setCurrentPage(selectedPage);
     };
-  
+
     const slicedData = props.icsControl?.slice(
-      currentPage * itemsPerPage,
-      (currentPage + 1) * itemsPerPage
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
     );
 
     const pageCount = Math.ceil((props.icsControl?.length || 0) / itemsPerPage);
@@ -131,6 +139,8 @@ export default function ICSControl(props) {
                     icsItems={icsItems ? icsItems : ""}
                     formDetails={formDetails ? formDetails : ""}
                     userName={props.userName}
+                    Loading={Loading}
+                    setLoading={setLoading}
                     clickSubForms={clickSubForms}
                     className={""}
                 />
@@ -190,7 +200,18 @@ export default function ICSControl(props) {
                                     </tr>
                                 </thead>
                                 <tbody id="logs-ics-slips-table">
-                                    {props.icsControl?.length !== 0 ? (
+                                    {props.Loading ? (
+                                        <tr className="h-16 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                        <td
+                                            colSpan="5"
+                                            className="text-center items-center w-full h-12"
+                                        >
+                                            <small className="text-sm">
+                                                Loading data.
+                                            </small>
+                                        </td>
+                                    </tr>
+                                    ) : props.icsControl?.length !== 0 ? (
                                         icsItemsMapper(
                                             Object.values(slicedData)
                                         )

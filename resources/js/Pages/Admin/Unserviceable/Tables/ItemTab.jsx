@@ -6,7 +6,7 @@ import DonationForm from "../Forms/DonationFormPre";
 import DestructionSalesForm from "../Forms/DestructionFormPre";
 
 export default function ItemTab({ className }) {
-    const [Loading, setLoading] = useState();
+    const [Loading, setLoading] = useState(true);
     const [UnserviceableItems, setUnserviceableItems] = useState();
     const [openDisposeModal, setOpenDisposeModal] = useState("close");
 
@@ -312,11 +312,7 @@ export default function ItemTab({ className }) {
                                 <small className="text-sm">Loading data.</small>
                             </td>
                         </tr>
-                    ) : (
-                        itemsMapper(slicedData)
-                    )}
-                    {UnserviceableItems?.length === 0 ? (
-                        <>
+                    ) : UnserviceableItems?.length === 0 ? (
                             <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                                 <td
                                     colSpan="5"
@@ -327,13 +323,15 @@ export default function ItemTab({ className }) {
                                     </small>
                                 </td>
                             </tr>
-                        </>
                     ) : (
-                        ""
+                        itemsMapper(slicedData)
                     )}
                 </tbody>
             </table>
-            {UnserviceableItems?.length === 0 ? (
+
+            {Loading ? (
+                ""
+            ) : UnserviceableItems?.length === 0 ? (
                 ""
             ) : (
                 <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">

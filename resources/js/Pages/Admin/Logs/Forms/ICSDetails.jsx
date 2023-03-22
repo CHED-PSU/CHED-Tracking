@@ -38,7 +38,7 @@ export default function ICSDetails(props) {
             if (isArticle == true) {
                 return data;
             } else {
-                return '';
+                return "";
             }
         } else {
             // Comma found
@@ -71,7 +71,9 @@ export default function ICSDetails(props) {
                         </div>
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div className="min-w-[100px]">{generateArticle(data.description, false)}</div>
+                        <div className="min-w-[100px]">
+                            {generateArticle(data.description, false)}
+                        </div>
                     </td>
                     <td className="text-left px-2 border"></td>
                     <td className="text-center px-2 border">{data.eul}</td>
@@ -211,7 +213,16 @@ export default function ICSDetails(props) {
                                         </tr>
                                         {/* header */}
 
-                                        {props.icsItems?.length !== 0 ? (
+                                        {props.Loading ? (
+                                            <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                                <td
+                                                    colSpan={7}
+                                                    className="text-center py-2 px-2 border"
+                                                >
+                                                    Loading data.
+                                                </td>
+                                            </tr>
+                                        ) : props.icsItems?.length !== 0 ? (
                                             icsItemsMapper(
                                                 Object.values(props.icsItems)
                                             )

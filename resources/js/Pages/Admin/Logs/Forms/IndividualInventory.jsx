@@ -242,7 +242,17 @@ export default function IndividualInventory(props) {
                                             </tr>
 
                                             {/* index 1 */}
-                                            {props.indivItems?.length !== 0 ? (
+                                            {props.Loading ? (
+                                                <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                                    <td
+                                                        colSpan={100}
+                                                        className="text-center py-2 px-2 border"
+                                                    >
+                                                        Loading data.
+                                                    </td>
+                                                </tr>
+                                            ) : props.indivItems?.length !==
+                                              0 ? (
                                                 itemsMapper(
                                                     Object.values(
                                                         props.indivItems

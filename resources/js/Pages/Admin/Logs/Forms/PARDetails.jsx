@@ -141,7 +141,16 @@ export default function PARDetails(props) {
                                         </tr>
                                     </thead>
                                     <tbody id="slip-table">
-                                        {props.icsItems?.length !== 0 ? (
+                                        {props.Loading ? (
+                                            <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                                <td
+                                                    colSpan={6}
+                                                    className="text-center py-2 px-2 border"
+                                                >
+                                                    There is no data yet.
+                                                </td>
+                                            </tr>
+                                        ) : props.icsItems?.length !== 0 ? (
                                             parItemsMapper(
                                                 Object.values(props.parItems)
                                             )

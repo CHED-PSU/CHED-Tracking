@@ -8,16 +8,24 @@ export default function PARControl(props) {
     const [openSubForms, setOpenSubForms] = useState("close");
     const [parItems, setParItems] = useState();
     const [formDetails, setFormDetails] = useState();
+    const [Loading, setLoading] = useState();
 
     function clickSubForms(index, id) {
         setOpenSubForms(index);
     }
 
     function getPardetails(index) {
-        axios.post("api/getParDetails", { id: index }).then((response) => {
-            setParItems(response.data.dataItems);
-            setFormDetails(response.data.form_details);
-        });
+        setLoading(true);
+        try {
+            axios.post("api/getParDetails", { id: index }).then((response) => {
+                setParItems(response.data.dataItems);
+                setFormDetails(response.data.form_details);
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
     }
 
     const [currentPage, setCurrentPage] = useState(0);
@@ -87,6 +95,8 @@ export default function PARControl(props) {
                     parItems={parItems ? parItems : ""}
                     formDetails={formDetails ? formDetails : ""}
                     userName={props.userName}
+                    Loading={Loading}
+                    setLoading={setLoading}
                     clickSubForms={clickSubForms}
                 />
             ) : (
@@ -145,7 +155,18 @@ export default function PARControl(props) {
                                     </tr>
                                 </thead>
                                 <tbody id="logs-ics-slips-table">
-                                    {props.parControl?.length != 0 ? (
+                                    {props.Loading ? (
+                                        <tr className="h-16 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                            <td
+                                                colSpan="5"
+                                                className="text-center items-center w-full h-12"
+                                            >
+                                                <small className="text-sm">
+                                                    Loading data.
+                                                </small>
+                                            </td>
+                                        </tr>
+                                    ) : props.parControl?.length != 0 ? (
                                         parItemsMapper(
                                             Object.values(slicedData)
                                         )

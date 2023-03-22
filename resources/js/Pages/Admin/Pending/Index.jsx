@@ -253,30 +253,25 @@ export default function Pending({ className }) {
                                     </strong>
                                 </div>
                             </div>
+                        ) : pendingItems?.length === 0 ? (
+                            <div className="flex items-center justify-center cursor-default">
+                                <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 dark:bg-darkColor-900 rounded-full w-[300px] h-[300px]">
+                                    <img
+                                        src="./img/no_data.png"
+                                        alt="no data"
+                                        className="w-52"
+                                        draggable="false"
+                                    />
+                                    <strong className="text-text-gray-2 dark:text-lightColor-800 text-sm">
+                                        You haven't been issued yet
+                                    </strong>
+                                </div>
+                            </div>
                         ) : (
                             pendingItemsMapper(slicedData)
                         )}
-                        {pendingItems?.length === 0 ? (
-                            <>
-                                <div className="flex items-center justify-center cursor-default">
-                                    <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 dark:bg-darkColor-900 rounded-full w-[300px] h-[300px]">
-                                        <img
-                                            src="./img/no_data.png"
-                                            alt="no data"
-                                            className="w-52"
-                                            draggable="false"
-                                        />
-                                        <strong className="text-text-gray-2 dark:text-lightColor-800 text-sm">
-                                            You haven't been issued yet
-                                        </strong>
-                                    </div>
-                                </div>
-                            </>
-                        ) : (
-                            ""
-                        )}
                     </ul>
-                    {pendingItems?.length === 0 ? (
+                    {Loading ? "" : pendingItems?.length === 0 ? (
                         ""
                     ) : (
                         <div className="absolute bottom-10 w-full flex justify-center dark:text-white">

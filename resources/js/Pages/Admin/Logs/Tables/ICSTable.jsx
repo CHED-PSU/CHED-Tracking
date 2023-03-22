@@ -47,6 +47,7 @@ export default function ICSTable({ className }) {
     }
 
     async function getData(id) {
+        setLoading(true);
         try {
             const response = await axios.post("api/getUserIcsControls", {
                 id: id,
@@ -57,6 +58,8 @@ export default function ICSTable({ className }) {
             setTotalPrice(data.total_price);
         } catch (e) {
             console.log(e);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -107,6 +110,8 @@ export default function ICSTable({ className }) {
                     totalPrice={totalPrice ? totalPrice : ""}
                     designation={designation}
                     userName={userName}
+                    Loading={Loading}
+                    setLoading={setLoading}
                     clickForms={clickForms}
                     className={""}
                 />
@@ -142,40 +147,40 @@ export default function ICSTable({ className }) {
                                 <small className="text-sm">Loading data.</small>
                             </td>
                         </tr>
+                    ) : UserLists?.length === 0 ? (
+                        <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                            {/* checkbox */}
+                            <td colSpan={4}>
+                                <div className="flex text-sm justify-center item-center">
+                                    There is no user yet.
+                                </div>
+                            </td>
+                        </tr>
                     ) : (
                         userMapper(slicedData)
-                    )}
-                    {UserLists?.length === 0 ? (
-                        <>
-                            <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                {/* checkbox */}
-                                <td colSpan={4}>
-                                    <div className="flex text-sm justify-center item-center">
-                                        There is no user yet.
-                                    </div>
-                                </td>
-                            </tr>
-                        </>
-                    ) : (
-                        ""
                     )}
                     {/*item 2*/}
                 </tbody>
             </table>
-
-            <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
-                <ReactPaginate
-                    previousLabel={"Prev"}
-                    nextLabel={"Next"}
-                    pageCount={pageCount}
-                    onPageChange={handlePageClick}
-                    containerClassName={"paginationButtons"}
-                    previousLinkClassName={"previousButtons"}
-                    nextLinkClassName={"nextButtons"}
-                    disabledClassName={"paginationDisabled"}
-                    activeClassName={"paginationActive"}
-                />
-            </div>
+            {Loading ? (
+                ""
+            ) : UserLists?.length !== 0 ? (
+                <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
+                    <ReactPaginate
+                        previousLabel={"Prev"}
+                        nextLabel={"Next"}
+                        pageCount={pageCount}
+                        onPageChange={handlePageClick}
+                        containerClassName={"paginationButtons"}
+                        previousLinkClassName={"previousButtons"}
+                        nextLinkClassName={"nextButtons"}
+                        disabledClassName={"paginationDisabled"}
+                        activeClassName={"paginationActive"}
+                    />
+                </div>
+            ) : (
+                ""
+            )}
         </div>
     );
 }
