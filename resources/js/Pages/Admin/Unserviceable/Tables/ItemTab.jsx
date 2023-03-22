@@ -148,7 +148,7 @@ export default function ItemTab({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3">
                             <div className="flex flex-col pr-2 gap-1">
                                 <h4 className="text-[15px] font-medium text-text-black">
-                                    {generateArticle(data.description, true)}
+                                    {data.article}
                                 </h4>
                                 <p className="text-[#878787] text-[14px]">
                                     Previous owner: {displayName(data, true)}
@@ -161,7 +161,7 @@ export default function ItemTab({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3">
                             <div className="flex flex-col gap-1">
                                 <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                    {generateArticle(data.description, false)}
+                                    {data.description}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
                                     Item Code: {data.code}
@@ -289,16 +289,16 @@ export default function ItemTab({ className }) {
                             </td>
                         </tr>
                     ) : UnserviceableItems?.length === 0 ? (
-                            <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                <td
-                                    colSpan="5"
-                                    className="text-center items-center w-full h-12"
-                                >
-                                    <small className="text-sm">
-                                        No data available in table.
-                                    </small>
-                                </td>
-                            </tr>
+                        <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                            <td
+                                colSpan="5"
+                                className="text-center items-center w-full h-12"
+                            >
+                                <small className="text-sm">
+                                    No data available in table.
+                                </small>
+                            </td>
+                        </tr>
                     ) : (
                         itemsMapper(slicedData)
                     )}
