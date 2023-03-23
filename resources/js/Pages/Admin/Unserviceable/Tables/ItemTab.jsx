@@ -125,6 +125,13 @@ export default function ItemTab({ className }) {
         }
     }
 
+    const confirmation =(index) => {
+        setOpenDonationForm(index)
+        if(index === false){
+            getUnserviceableItems()
+        }
+    }
+
     const itemsMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -236,6 +243,7 @@ export default function ItemTab({ className }) {
                 <DonationForm
                     selectedIds={selectedIds}
                     setOpenDonationForm={setOpenDonationForm}
+                    confirmation = {confirmation}
                 />
             ) : (
                 ""

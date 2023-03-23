@@ -142,7 +142,13 @@ Route::post('mutliAssignToOtherUser', [ItemController::class, 'mutliAssignToOthe
 //Admin Unserviceable Items
 Route::get('getUnserviceableItems', [ItemController::class, 'getUnserviceableItems']);
     //Donation fetcher details of items
-        Route::post('getUnserviceableItemsDetails',[ItemController::class, 'getUnserviceableItemsDetails']);
+        Route::post('getUnserviceableItemsDetails',[ItemController::class, 'getUnserviceableItemsDetails']); 
+        //make donation information and add items to donation table
+            Route::post('donationReport',[FormController::class, 'donationReport']);
+    //Donation master list fetcher
+        Route::get('getDonationMasterList',[FormController::class, 'getDonationMasterList']);
+        //fetcher of Donation infromation
+            Route::post('getDonationInformation',[FormController::class, 'getDonationInformation']);
 
 //Admin forecasting Items
 Route::get('forecast', [ForecastingController::class, 'forecast']);
