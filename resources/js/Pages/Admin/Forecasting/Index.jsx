@@ -12,7 +12,9 @@ export default function Forecasting({ className }) {
     const [Loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const [xAxis, setxAxis] = useState([]);
+    const [pxAxis, setpxAxis] = useState([]);
     const [yAxis, setyAxis] = useState([]);
+    const [pyAxis, setpyAxis] = useState([]);
     const [predictedyAxis, setpredictedyAxis] = useState([]);
     const [predicted, setpredicted] = useState();
     const [ddata, dsetData] = useState([]);
@@ -33,6 +35,8 @@ export default function Forecasting({ className }) {
                     setData(response.data.data);
                     setxAxis(response.data.xAxis);
                     setyAxis(response.data.yAxis);
+                    setpxAxis(response.data.pxAxis);
+                    setpyAxis(response.data.pyAxis);
                     setpredictedyAxis(response.data.predicted_data);
                     setpredicted(response.data.predicted);
                 });
@@ -93,6 +97,8 @@ export default function Forecasting({ className }) {
                             data={data}
                             xAxis={xAxis}
                             yAxis={yAxis}
+                            pxAxis={pxAxis}
+                            pyAxis={pyAxis}
                             predictedyAxis={predictedyAxis}
                             predicted={predicted}
                         />

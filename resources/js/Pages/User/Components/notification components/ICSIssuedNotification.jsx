@@ -14,7 +14,7 @@ export default function ICSIssuedNotification({
 
     const [items, setItems] = useState([]);
     const [formDetails, setFormDetails] = useState([]);
-    
+
 
 
 
@@ -49,7 +49,7 @@ export default function ICSIssuedNotification({
                 listId: listId
             }).then(res => {
                 setFormDetails(res.data.form_details)
-                
+
             })
         } catch (e) {
             console.log(e)
@@ -71,7 +71,7 @@ export default function ICSIssuedNotification({
         setOpenAlert(val);
     }
 
-    
+
 
     const itemsData = (item) => {
         return item.map((data) => {
@@ -93,7 +93,7 @@ export default function ICSIssuedNotification({
         });
     };
 
-    //alert 
+    //alert
     const [openAlert, setOpenAlert] = useState(false);
     const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
     const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
@@ -148,7 +148,7 @@ export default function ICSIssuedNotification({
                     listId={listId}
                     feedback = {feedback}
                     className={""}
-                    
+
                 />
             ) : (
                 ""
@@ -156,15 +156,15 @@ export default function ICSIssuedNotification({
             <div className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-30">
                 <div
                     ref={modalBody}
-                    className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-12 py-8 z-20"
+                    className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-8 py-6 z-20"
                 >
                     <button
                         onClick={() => setOpenNotifSpecList(false)}
-                        className="closeModal text-xl"
+                        className="closeModal text-xl pb-2"
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
-                    <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10 px-5 py-6 ">
+                    <div className="bg-white dark:bg-darkColor-900 rounded-lg border px-5 py-6 ">
                         <div className="text-center dark:text-white py-2">
                             <div className="text-sm font-semibold">
                                 INVENTORY CUSTODIAN SLIP
@@ -292,21 +292,21 @@ export default function ICSIssuedNotification({
                             </div>
                         </div>
                     </div>
-                    <div className="pt-2">
+                    <div className="pt-8">
                         {/* Hide this buttons if the form is already accepted */}
 
-                        <div className="flex flex-col space-y-3 ">
+                        <div className="flex gap-4 justify-center">
                                 <button onClick={acceptHandler}
-                                    className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
+                                    className="2xl:h-12 xl:h-9 h-9 w-48 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
                                 >
                                     Accept
                                 </button>
                                 <button onClick={declineHandler}
-                                    className="2xl:h-12 xl:h-9 h-9 w-full p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
+                                    className="2xl:h-12 xl:h-9 h-9 w-48 p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
                                 >
                                     Decline
                                 </button>
-                            </div> 
+                            </div>
 
                         {/* Accepted Button (unhide this button if the form is already accepted) */}
                     </div>

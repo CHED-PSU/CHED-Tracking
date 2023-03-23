@@ -340,6 +340,7 @@ class FormController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->where('uri.user_id', $req->input('id'))
             ->where('uri.confirmation', 'accepted')
+            ->orderBy('uri.created_at', 'DESC')
             ->get();
 
         return response()->json(['acceptedRequest' => $getItemsAccepted]);

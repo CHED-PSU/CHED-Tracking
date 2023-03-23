@@ -121,7 +121,7 @@ export default function Index(props) {
     };
 
     const acceptedRequestMapper = (items) => {
-        return items.map((data) => {
+        return items?.slice(0, 3).map((data) => {
             return <Accepted key={data.uri_id} data={data} />;
         });
     };
@@ -163,7 +163,7 @@ export default function Index(props) {
                 </div>
                 <div className="flex flex-col 2xl:gap-1 xl:gap-0 gap-0">
                     <h4 className="2xl:text-lg xl:text-base text-base font-semibold">
-                        Accepted Request
+                        Recent Accepted Request
                     </h4>
                     <div className="">
                         <table className="w-full border-separate 2xl:border-spacing-y-3 xl:border-spacing-y-2 border-spacing-y-2 table-auto">

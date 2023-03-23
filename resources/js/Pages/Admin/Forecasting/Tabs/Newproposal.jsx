@@ -7,9 +7,12 @@ export default function Newproposal({
     data,
     xAxis,
     yAxis,
+    pxAxis,
+    pyAxis,
     predictedyAxis,
     predicted,
-}) {
+}) {    
+
     const domain = window.location.href;
     const url = new URL(domain);
 
@@ -19,38 +22,38 @@ export default function Newproposal({
     const [year, setYear] = useState("");
     const [Loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        predictHandler();
-    }, []);
-
-    // const predictHandler = (e) => {
-    //     let year;
-    //     if (predictRef.current.value > 0) {
-    //         year = predictRef.current.value;
-    //     } else {
-    //         year = currentYear + 1;
-    //     }
-
-    //     e.preventDefault();
-    //     axios.post("api/forecastSpecific", { value: year }).then((response) => {
-    //         setProjectedValue(response.data.predicted);
-    //         setyear(year);
-    //     });
-    // };
-
-    const predictHandler = async () => {
-        const currentYear = new Date().getFullYear();
-        const yearToPredict = currentYear + 3;
-        try {
-            const response = await axios.post("api/forecastSpecific", {
-                value: yearToPredict,
-            });
-            setProjectedValue(response.data.predicted);
-            setYear(yearToPredict);
-        } catch (error) {
-            console.error(error);
+    const predictHandler = (e) => {
+        let year;
+        if (predictRef.current.value > 0) {
+            year = predictRef.current.value;
+        } else {
+            year = currentYear + 1;
         }
+
+        e.preventDefault();
+        axios.post("api/forecastSpecific", { value: year }).then((response) => {
+            setProjectedValue(response.data.predicted);
+            setYear(year);
+        });
     };
+
+    // useEffect(() => {
+    //     predictHandler();
+    // }, []);
+
+    // const predictHandler = async () => {
+    //     const currentYear = new Date().getFullYear();
+    //     const yearToPredict = currentYear + 3;
+    //     try {
+    //         const response = await axios.post("api/forecastSpecific", {
+    //             value: yearToPredict,
+    //         });
+    //         setProjectedValue(response.data.predicted);
+    //         setYear(yearToPredict);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
 
     useEffect(() => {
         const getTotalCost = async () => {
@@ -90,11 +93,25 @@ export default function Newproposal({
         });
     };
 
-    var currentYear = new Date().getFullYear()+1;
-    var nextThreeYears = [currentYear + 1, currentYear + 2];
+    var data = {
+        labels: [...xAxis.map((data) => data.year), ...pxAxis.map((data) => data.year)],
+        datasets: [
+            {
+                label: "Actual Data",
+                data: [...yAxis.map((data) => parseInt(data.total_cost)), ...pyAxis.map((data) => parseInt(data.total_cost))],
+                fill: true,
+                backgroundColor: ["rgba(220, 232, 255, 0.4)"],
+                pointBackgroundColor: "rgba(34, 127, 255, 1)",
+                borderColor: "rgba(34, 127, 255, 1)",
+                borderWidth: 2,
+                hoverOffset: 10,
+                tension: 0.2,
+            },
+        ],
+    };
 
     // var data = {
-    //     labels: [...xAxis.map((data) => data.year), ...nextThreeYears],
+    //     labels: xAxis.map((data) => data.year),
     //     datasets: [
     //         {
     //             label: "Actual Data",
@@ -107,38 +124,10 @@ export default function Newproposal({
     //             hoverOffset: 10,
     //             tension: 0.2,
     //         },
-    //         {
-    //             label: "Projected Data",
-    //             data: [...Array(3)],
-    //             fill: true,
-    //             backgroundColor: ["rgba(220, 232, 255, 0)"],
-    //             pointBackgroundColor: "rgba(34, 127, 255, 0)",
-    //             borderColor: "rgba(34, 127, 255, 1)",
-    //             borderWidth: 2,
-    //             hoverOffset: 10,
-    //             tension: 0.2,
-    //             borderDash: [10, 5],
-    //             spanGaps: true,
-    //         },
     //     ],
     // };
 
-    var data = {
-        labels: xAxis.map((data) => data.year),
-        datasets: [
-            {
-                label: "Actual Data",
-                data: yAxis.map((data) => parseInt(data.total_cost)),
-                fill: true,
-                backgroundColor: ["rgba(220, 232, 255, 0.4)"],
-                pointBackgroundColor: "rgba(34, 127, 255, 1)",
-                borderColor: "rgba(34, 127, 255, 1)",
-                borderWidth: 2,
-                hoverOffset: 10,
-                tension: 0.2,
-            },
-        ],
-    };
+    var currentYear = new Date().getFullYear();
 
     return (
         <div className={className + " flex"}>
@@ -202,7 +191,7 @@ export default function Newproposal({
             </div>
 
             <div className="bg-white h-fit border py-8 px-8 rounded-lg space-y-14">
-                {/* <form action="">
+                <form action="">
                     <div className="">
                         <h1 className="font-semibold text-text-black">
                             Predict Year:
@@ -211,6 +200,7 @@ export default function Newproposal({
                             <input
                                 ref={predictRef}
                                 min={currentYear + 1}
+                                max={currentYear + 3}
                                 placeholder={currentYear + 1}
                                 type="number"
                                 name=""
@@ -225,7 +215,7 @@ export default function Newproposal({
                             </button>
                         </div>
                     </div>
-                </form> */}
+                </form>
                 <div className="2xl:space-y-1">
                     <div className="w-72 text-[#011284] 2xl:text-xs xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
                         Estimated total disposal cost for the year
