@@ -7,7 +7,7 @@ const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Widgets(props) {
     const [toggleTabs, setToggleTabs] = useState("all");
-    const [read, setRead] = useState();
+    const [read, setRead] = useState(false);
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
     const [name, setName] = useState("default");
@@ -170,6 +170,8 @@ export default function Widgets(props) {
         }
     };
 
+    console.log(props.unread)
+
     const notifMapper = (items) => {
         if (items.length > 0) {
             return items.map((data) => {
@@ -281,16 +283,7 @@ export default function Widgets(props) {
                     className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover rounded-full flex justify-center items-center relative"
                 >
                     <div className="2xl:w-6 xl:w-5 w-5 dark:fill-icon-light">
-                        {props.unread != 0 ? (
-                            <div className="h-auto flex left-6 top-2 absolute">
-                                <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                                    <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
-                                </span>
-                            </div>
-                        ) : (
-                            ""
-                        )}
+
                         <svg
                             version="1.0"
                             xmlns="http://www.w3.org/2000/svg"
@@ -307,7 +300,7 @@ export default function Widgets(props) {
                             />
                         </svg>
                     </div>
-                    {read ? (
+                    {props.unread ? (
                         <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 bg-blue-500 justify-center items-center text-white font-semibold text-ss"></span>

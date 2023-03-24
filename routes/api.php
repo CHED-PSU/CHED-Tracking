@@ -41,6 +41,9 @@ Route::post('declineIssuedForm', [FormController::class, 'declineIssuedForm']);
 
 //User Home Area
 
+//unread notif
+Route::post('getUnread',[GeneralController::class, 'getUnread']);
+
 //recent Issuance
 Route::post('HomeData', [FormController::class, 'HomeData']);
 
@@ -143,7 +146,7 @@ Route::post('mutliAssignToOtherUser', [ItemController::class, 'mutliAssignToOthe
 //Admin Unserviceable Items
 Route::get('getUnserviceableItems', [ItemController::class, 'getUnserviceableItems']);
     //Donation fetcher details of items
-        Route::post('getUnserviceableItemsDetails',[ItemController::class, 'getUnserviceableItemsDetails']); 
+        Route::post('getUnserviceableItemsDetails',[ItemController::class, 'getUnserviceableItemsDetails']);
         //make donation information and add items to donation table
             Route::post('donationReport',[FormController::class, 'donationReport']);
     //Donation master list fetcher

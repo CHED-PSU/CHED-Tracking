@@ -100,4 +100,18 @@ class GeneralController extends Controller
 
         return response()->json(['users' => $getUsers]);
     }
+
+    public function getUnread(Request $req){
+        $count = DB::table('users_notification')
+        ->where('to_user_id',$req->input('id'))
+        ->count();
+
+        if($count > 0) {
+            return response()->json(['read' => true]);
+        }else{
+            return response()->json(['read' => false]);
+        }
+
+
+    }
 }
