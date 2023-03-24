@@ -1,8 +1,21 @@
+import axios from "axios";
 import React, { useEffect, useRef } from "react";
 
 export default function ConditionalAlert(props) {
 
     let modalBody = useRef();
+
+    const saveHandler = () => {
+        
+
+
+
+        axios.post('api/donationReport', { data: props.data,selectedIds: props.selectedIds }).then(res => {
+            if (res.data.success === 'success') {
+                props.acceptHandler()
+            }
+        })
+    }
 
     return (
         <div className={props.className}>
@@ -55,7 +68,7 @@ export default function ConditionalAlert(props) {
 
                     </div>
                     <div className="flex gap-4 items-center justify-center">
-                        <div  className="btn-color-3 dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full px-5 py-3 cursor-pointer">
+                        <div onClick= {()=> {props.alertSaveHandler(false)}} className="btn-color-3 dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full px-5 py-3 cursor-pointer">
                             {props.alertNoButton}
                         </div>
                         
@@ -68,7 +81,7 @@ export default function ConditionalAlert(props) {
                         {/* Red Button */}
 
                         {/* Red Button */}
-                        <div className={props.  alertButtonColor === "blue" ? "" : "hidden"}>
+                        <div onClick={()=>saveHandler()} className={props.  alertButtonColor === "blue" ? "" : "hidden"}>
                             <div  className="bg-primary text-white rounded-full px-5 py-3 cursor-pointer font-semibold">
                                 {props.alertYesButton}
                             </div>

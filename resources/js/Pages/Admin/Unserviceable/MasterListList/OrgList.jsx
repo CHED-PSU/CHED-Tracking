@@ -6,6 +6,7 @@ export default function OrgList(props) {
         props.setBtnType(index);
         console.log(index)
     }
+    console.log(props.data)
 
     return (
         <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
