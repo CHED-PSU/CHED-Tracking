@@ -63,6 +63,23 @@ export default function ICSTable({ className }) {
         }
     }
 
+    const [getICS, setICS] = useState();
+
+    async function getID(id) {
+        setLoading(true);
+        try {
+            const response = await axios.post("api/getUserICS", {
+                id: id,
+            });
+            const data = response.data;
+            setICS(data.ics_details);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 9;
 
@@ -95,6 +112,7 @@ export default function ICSTable({ className }) {
                     id={data.id}
                     type={"ics-control"}
                     getData={getData}
+                    getID={getID}
                     clickForms={clickForms}
                 />
             );
@@ -108,6 +126,7 @@ export default function ICSTable({ className }) {
                     icsControl={IcsControl ? IcsControl : ""}
                     icsDetails={IcsDetails ? IcsDetails : ""}
                     totalPrice={totalPrice ? totalPrice : ""}
+                    getICS={getICS ? getICS : ""}
                     designation={designation}
                     userName={userName}
                     Loading={Loading}

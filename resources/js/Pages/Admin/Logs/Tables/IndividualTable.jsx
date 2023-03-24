@@ -58,6 +58,7 @@ export default function IndividualTable({ className }) {
                     passDesignation={passDesignation}
                     name={data.name}
                     id={data.id}
+                    getID={getID}
                     type={"in-in"}
                     getData={getData}
                     clickForms={clickForms}
@@ -92,6 +93,23 @@ export default function IndividualTable({ className }) {
     );
 
     const pageCount = Math.ceil((UserLists?.length || 0) / itemsPerPage);
+
+    const [getII, setII] = useState();
+
+    async function getID(id) {
+        setLoading(true);
+        try {
+            const response = await axios.post("api/getUserICS", {
+                id: id,
+            });
+            const data = response.data;
+            setII(data.ics_details);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <div className={className + " w-full h-full relative"}>

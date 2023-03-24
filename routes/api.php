@@ -103,6 +103,7 @@ Route::get('getUsers', [GeneralController::class, 'getUsers']);
 
 //get User Ics Controls
 Route::post('getUserIcsControls', [FormController::class, 'getUserIcsControls']);
+Route::post('getUserICS', [FormController::class, 'getUserICS']);
 //get User PAR Controls
 Route::post('getUserParControls', [FormController::class, 'getUserParControls']);
 

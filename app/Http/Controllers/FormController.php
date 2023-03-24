@@ -545,4 +545,25 @@ class FormController extends Controller
 
         return response()->json(['ics_controls' => $result, 'total_price' => $totalPrice]);
     }
+
+    public function getUserICS(Request $req)
+    {
+
+        $getICS = DB::table('trackings as t')
+        ->select('t.tracking_id as trackingCode', 't.issued_by', 'it.trackings_id as tracking_id', 'iar.pr_item_uid', 'iar.serial_no', 'pri.price', 'pi.article', 'pi.description', 'pu.name')
+        ->join('inventory_tracking as it','it.trackings_id','=','t.id')
+        ->join('iar_items as iar','iar.id','=','it.item_id')
+        ->join('purchase_request_items as pri','pri.pr_item_uid','=','iar.pr_item_uid')
+        ->join('product_items as pi','pi.id','=','pri.product_item_id')
+        ->join('product_units as pu','pu.id','=','pi.product_unit_id')
+        ->where('t.received_by', $req->input('id'))
+        ->get();
+
+        $groupedItems = collect($getICS)->groupBy('tracking_id');
+
+
+        return response()->json(['ics_details' => $groupedItems]);
+    }
+
+
 }
