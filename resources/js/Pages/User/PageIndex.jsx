@@ -11,12 +11,30 @@ import Items from "./Items/Index";
 import Requests from "./Requests/Index";
 import Myaccount from "./MyAccount/Index";
 import Theme from "./Theme/Index";
+import axios from "axios";
 
 export default function Index() {
     //dark mode
     const [theme, setTheme] = useState(null);
 
-    
+    const user = localStorage.getItem("localSession");
+    const value = JSON.parse(user);
+
+    const [read, setRead] = useState(false);
+
+    const unread = async () => {
+        try{
+            axios.post('api/getUnread',{id: value.id}).then(res => {
+                setRead(res.data.read)
+            })
+        }catch(e){
+
+        }
+    }
+
+    useEffect(()=>{
+        unread()
+    },[])
 
     useEffect(() => {
         if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
@@ -38,14 +56,14 @@ export default function Index() {
         setTheme(theme === "dark" ? "light" : "dark");
     };
 
-    const [read, setRead] = useState('');
+
     const [toggleTabs, setToggleTabs] = useState("home");
 
     function clickTabs(index) {
         setToggleTabs(index);
     }
 
- 
+
 
     return (
         <div className="relative w-full h-screen flex bg-[#fafafa] dark:bg-darkColor-900 transition-all duration-150 transform overflow-x-hidden">

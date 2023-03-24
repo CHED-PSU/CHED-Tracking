@@ -71,6 +71,7 @@ export default function PARTable({ className }) {
                     passDesignation={passDesignation}
                     designation={data.designation}
                     name={data.name}
+                    getID={getID}
                     id={data.id}
                     type={"par-control"}
                     getData={getData}
@@ -90,6 +91,23 @@ export default function PARTable({ className }) {
             setTotalPrice(data.total_price);
         } catch (e) {
             console.log(e);
+        }
+    }
+
+    const [getPAR, setPAR] = useState();
+
+    async function getID(id) {
+        setLoading(true);
+        try {
+            const response = await axios.post("api/getUserICS", {
+                id: id,
+            });
+            const data = response.data;
+            setPAR(data.ics_details);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
         }
     }
 

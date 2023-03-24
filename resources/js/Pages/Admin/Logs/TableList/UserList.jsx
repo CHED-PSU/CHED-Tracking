@@ -95,7 +95,7 @@ export default function UserList(props) {
             {/* mobile no */}
             <td>
                 <div
-                    onClick={() => {props.clickForms(props.type), props.passDesignation(props.designation), props.getData(props.id), props.passUserName((props.prefix == null ? "" : (props.prefix + " ")) + props.firstname + " " + (props.middlename == null ? "" : ((props.middlename.charAt(0) + ".") + " ")) + " " + props.surname + (props.suffix == null ? "" : (" " + props.suffix)))}}
+                    onClick={() => {props.clickForms(props.type), props.passDesignation(props.designation), props.getData(props.id), props.getID(props.id), props.passUserName((props.prefix == null ? "" : (props.prefix + " ")) + props.firstname + " " + (props.middlename == null ? "" : ((props.middlename.charAt(0) + ".") + " ")) + " " + props.surname + (props.suffix == null ? "" : (" " + props.suffix)))}}
                     className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
                     value = {0}
                 >
