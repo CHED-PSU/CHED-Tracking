@@ -311,8 +311,6 @@ class ItemController extends Controller
             ->first();
 
 
-        DB::table('user_returned_items')
-            ->update(['status' => 'returned to owner']);
 
         DB::table('users_notification')
             ->insert([

@@ -6,7 +6,8 @@ import { data } from "autoprefixer";
 
 export default function ICSIssuedNotification({
     listId,
-    setOpenNotifSpecList
+    setOpenNotifSpecList,
+    closer
 }) {
     let modalBody = useRef();
 
@@ -133,6 +134,8 @@ export default function ICSIssuedNotification({
     }
 
 
+
+
     return (
         <div ref={modalBody}>
             {openAlert ? (
@@ -148,7 +151,7 @@ export default function ICSIssuedNotification({
                     listId={listId}
                     feedback = {feedback}
                     className={""}
-
+                    closer ={closer}
                 />
             ) : (
                 ""

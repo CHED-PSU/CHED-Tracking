@@ -70,7 +70,6 @@ export default function Widgets(props) {
 
     useEffect(() => {
         socket.on("user_notif", (data) => {
-            console.log("pasok");
             setRead(true);
         });
     }, [socket]);
@@ -238,6 +237,10 @@ export default function Widgets(props) {
             );
         }
     };
+
+    const closer = () => {
+        setOpenNotifSpecList(false)
+    }
 
     return (
         <div className={props.className}>
@@ -463,10 +466,12 @@ export default function Widgets(props) {
                 </div>
                 {/* Profile */}
             </div>
+
             {openNotifSpecList ? (
                 <ICSIssuedNotification
                     listId={listId != null ? listId : null}
                     setOpenNotifSpecList={setOpenNotifSpecList}
+                    closer = {closer}
                 />
             ) : (
                 ""

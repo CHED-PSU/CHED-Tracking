@@ -82,7 +82,7 @@ export default function ReturnRequest(props) {
             setAlertButtonColor('none')
             setAlertYesButton('Confirm')
             setAlertNoButton('Okay')
-            props.openFormHandler()
+            // props.openFormHandler()
         }
     }
 
@@ -122,6 +122,7 @@ export default function ReturnRequest(props) {
                 optionhandler={optionhandler}
                 valueId={props.valueId}
                 success={success}
+                closer = {props.closer}
                 className={""}
             /> : ""}
             <div className="z-30 w-full h-full bg-neutral-800 bg-opacity-75 fixed top-0 right-0 flex justify-center items-center">

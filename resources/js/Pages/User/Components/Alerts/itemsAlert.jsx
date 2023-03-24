@@ -20,16 +20,22 @@ export default function ConditionalAlert(props) {
             'reason': props.optionhandler,
             'ui_id': props.valueId,
         }
-        
+
         try {
             axios.post('api/returnItemsToAdmin', {
 
                 data: data,
                 user_id: value.id
             }).then(res => {
-                props.success('success')
+                if(res.data.success === 'success'){
+                    props.success('success')
+                    socket.emit('User_return_item', { message: value.name + '  has requested to return an Item' })
+
+                }
+                //
+
             })
-           
+
         } catch (e) {
             console.log(e)
         }
@@ -91,7 +97,7 @@ export default function ConditionalAlert(props) {
 
                     </div>
                     <div className="flex gap-4 items-center justify-center">
-                        <div onClick={() => props.clickAlert(false)} className="btn-color-3 dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full px-5 py-3 cursor-pointer">
+                        <div onClick={() => {props.clickAlert(false),props.closer()}} className="btn-color-3 dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full px-5 py-3 cursor-pointer">
                             {props.alertNoButton}
                         </div>
 

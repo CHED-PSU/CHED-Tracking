@@ -27,25 +27,31 @@ export default function Index({ className }) {
         setOpenForm(!openForm);
     };
 
+    const closer = () => {
+        setOpenForm(!openForm)
+        getIndividualItems()
+    }
+
+    const getIndividualItems = async () => {
+        setLoading(true);
+        try {
+            await axios
+                .post("api/getuserIndividualItems", {
+                    user_id: value.id,
+                })
+                .then((res) => {
+                    setItemsData(res.data.itemsData);
+                    setFilteredItemsData(res.data.itemsData);
+                    setCheckBoxData(res.data.itemsData);
+                });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-        const getIndividualItems = async () => {
-            setLoading(true);
-            try {
-                await axios
-                    .post("api/getuserIndividualItems", {
-                        user_id: value.id,
-                    })
-                    .then((res) => {
-                        setItemsData(res.data.itemsData);
-                        setFilteredItemsData(res.data.itemsData);
-                        setCheckBoxData(res.data.itemsData);
-                    });
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
-        };
+
         getIndividualItems();
     }, []);
 
@@ -112,9 +118,7 @@ export default function Index({ className }) {
         });
     };
 
-    const returnManyItems = () => {
-        console.log(checkboxData);
-    };
+
 
     const handleChangeCheckBox = (e) => {
         checkboxData.map((item) => {
@@ -238,6 +242,7 @@ export default function Index({ className }) {
                 <ReturnRequest
                     openFormHandler={openFormHandler}
                     valueId={valueId ? valueId : ""}
+                    closer ={closer}
                 />
             ) : (
                 ""
