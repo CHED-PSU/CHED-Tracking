@@ -63,7 +63,9 @@ export default function Index() {
         setToggleTabs(index);
     }
 
-
+    function clickRead(index) {
+        setRead(false)
+    }
 
     return (
         <div className="relative w-full h-screen flex bg-[#fafafa] dark:bg-darkColor-900 transition-all duration-150 transform overflow-x-hidden">
@@ -155,6 +157,7 @@ export default function Index() {
                         clickTabs={clickTabs}
                         toggleDarkMode={toggleDarkMode}
                         unread = {read}
+                        clickRead = {clickRead}
                     />
                 </nav>
 

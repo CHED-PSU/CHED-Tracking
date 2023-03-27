@@ -104,6 +104,7 @@ class GeneralController extends Controller
     public function getUnread(Request $req){
         $count = DB::table('users_notification')
         ->where('to_user_id',$req->input('id'))
+        ->where('ns_id',2)
         ->count();
 
         if($count > 0) {

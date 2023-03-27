@@ -20,15 +20,12 @@ export default function ConditionalAlert(props) {
                 user_id: value.id
             }).then( res => {
                 props.feedback('none','Successfully accepted','check')
-                setAccepted(true)
+                socket.emit('User_return_item', {message: value.name + '  has accepted the item'})
             })
         } catch (e){
             console.log(e)
         }
-        setAccepted(true)
-        if(accepted === true){
-            socket.emit('User_Accept', {message: value.name + '  has accepted the item'})
-        }
+
     }
     const declineIssuedForm = () =>{
         try{

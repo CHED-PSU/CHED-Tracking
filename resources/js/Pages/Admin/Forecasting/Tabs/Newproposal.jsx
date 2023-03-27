@@ -11,7 +11,7 @@ export default function Newproposal({
     pyAxis,
     predictedyAxis,
     predicted,
-}) {    
+}) {
 
     const domain = window.location.href;
     const url = new URL(domain);
@@ -140,7 +140,7 @@ export default function Newproposal({
                         <div className="w-full justify-center flex items-center gap-2 py-2">
                             <div className="2xl:h-4 2xl:w-6 xl:h-3 xl:w-6 h-3 w-6 rounded-sm bg-[#227fff]"></div>
                             <div className="dark:text-white font-semibold leading-3">
-                                Disposal Cost
+                                Annual Cost
                             </div>
                         </div>
                     </div>
@@ -150,7 +150,7 @@ export default function Newproposal({
                 <div>
                     <div className="flex flex-col 2xl:gap-1 xl:gap-0 gap-0 pt-5">
                         <h4 className="2xl:text-lg xl:text-base text-base font-semibold">
-                            New Proposal Data
+                            Annual Cost Data
                         </h4>
                         <div className="w-full">
                             <table className="w-full border-separate 2xl:border-spacing-y-3 xl:border-spacing-y-2 border-spacing-y-2 table-auto">
@@ -218,10 +218,10 @@ export default function Newproposal({
                 </form>
                 <div className="2xl:space-y-1">
                     <div className="w-72 text-[#011284] 2xl:text-xs xl:text-xs font-semibold 2xl:leading-0 xl:leading-3">
-                        Estimated total disposal cost for the year
+                        Estimated total annual cost for the year
                     </div>
                     <div className="font-bold text-[#434343] 2xl:text-lg xl:text-lg text-lg xl:pb-1">
-                        Disposal/Total Cost {year}
+                        Annual/Total Cost {year}
                     </div>
                     <div className="flex 2xl:h-46 xl:h-40 h-40 py-4 px-7 rounded-2xl bg-card-8 bg-cover bg-center">
                         <div className="w-full">

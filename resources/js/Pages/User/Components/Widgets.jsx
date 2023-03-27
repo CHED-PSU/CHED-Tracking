@@ -116,6 +116,8 @@ export default function Widgets(props) {
         };
     });
 
+
+
     // Modal for Notification Item
     const [openNotifSpecList, setOpenNotifSpecList] = useState(false);
     const [listId, setListId] = useState();
@@ -281,7 +283,7 @@ export default function Widgets(props) {
                 <button
                     ref={notifButton}
                     onClick={() => {
-                        setOpenNotifDropdown(!openNotifDropdown), getNotif();
+                        setOpenNotifDropdown(!openNotifDropdown), getNotif(), props.clickRead(false);
                     }}
                     className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover rounded-full flex justify-center items-center relative"
                 >

@@ -72,7 +72,7 @@ export default function Forecasting({ className }) {
                             }
                         >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                                New Proposal
+                                Annual Cost
                             </div>
                         </li>
                     </ul>
