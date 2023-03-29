@@ -42,17 +42,23 @@ export default function ICSDetails(props) {
                         {formattedAmount(data.quantity * data.price)}
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div className="font-semibold">
-                            {data.article}
-                        </div>
+                        <div className="font-semibold">{data.article}</div>
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div className="min-w-[100px]">
-                            {data.description}
-                        </div>
+                        <div className="min-w-[100px]">{data.description}</div>
                     </td>
                     <td className="text-left px-2 border"></td>
                     <td className="text-center px-2 border">{data.eul}</td>
+                    <td className="text-center px-2 border">
+                        {data.firstname +
+                              " " +
+                              (data.middlename == null
+                                  ? ""
+                                  : data.middlename.charAt(0) + "." + " ") +
+                              " " +
+                              data.surname +
+                              (data.suffix == null ? "" : " " + data.suffix)}
+                    </td>
                 </tr>
             );
         });
@@ -141,7 +147,7 @@ export default function ICSDetails(props) {
                                             Fund Cluster:
                                         </div>
                                         <div className="text-xs  dark:text-gray-400 font-semibold">
-                                            101
+                                            {""}
                                         </div>
                                     </div>
                                 </div>
@@ -186,13 +192,16 @@ export default function ICSDetails(props) {
                                             <th className="h-10 px-2 font-medium border">
                                                 Estimated Useful Life
                                             </th>
+                                            <th className="h-10 px-2 font-medium border">
+                                                Assigned to
+                                            </th>
                                         </tr>
                                         {/* header */}
 
                                         {props.Loading ? (
                                             <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                                 <td
-                                                    colSpan={7}
+                                                    colSpan={8}
                                                     className="text-center py-2 px-2 border"
                                                 >
                                                     Loading data.
@@ -205,7 +214,7 @@ export default function ICSDetails(props) {
                                         ) : (
                                             <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                                 <td
-                                                    colSpan={7}
+                                                    colSpan={8}
                                                     className="text-center py-2 px-2 border"
                                                 >
                                                     There is no data yet.

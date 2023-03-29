@@ -20,25 +20,11 @@ export default function Index({ className }) {
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
 
-    // useEffect(() => {
-    //     const getTotalICSPAR = async () => {
-    //         setLoading(true);
-    //         try {
-    //             const response = await axios.post("api/getTotalICSPAR", {
-    //                 body: value.id,
-    //             });
-
-    //             const data = await response.data;
-    //             setTotalICS(data.ics);
-    //             setTotalPAR(data.par);
-    //         } catch (e) {
-    //             console.log(e);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-    //     getTotalICSPAR();
-    // }, []);
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
 
     return (
         <div className={className + "  2xl:px-10 xl:px-5 px-5"}>
@@ -128,8 +114,8 @@ export default function Index({ className }) {
                                 <div className="2xl:text-xl xl:text-lg text-lg text-white">
                                     Php
                                 </div>
-                                <div className="w-full 2xl:text-5xl xl:text-3xl text-3xl font-bold text-white">
-                                    {totalICS}
+                                <div className="w-full 2xl:text-4xl xl:text-3xl text-3xl font-bold text-white">
+                                    {formattedAmount(totalICS)}
                                 </div>
                             </div>
                         </div>
@@ -147,8 +133,8 @@ export default function Index({ className }) {
                                 <div className="2xl:text-xl xl:text-lg text-lg text-white">
                                     Php
                                 </div>
-                                <div className="w-full 2xl:text-5xl xl:text-3xl text-3xl font-bold text-white">
-                                    {totalPAR}
+                                <div className="w-full 2xl:text-4xl xl:text-3xl text-3xl font-bold text-white">
+                                    {formattedAmount(totalPAR)}
                                 </div>
                             </div>
                         </div>

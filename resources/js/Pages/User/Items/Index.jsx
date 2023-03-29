@@ -51,7 +51,6 @@ export default function Index({ className }) {
         }
     };
     useEffect(() => {
-
         getIndividualItems();
     }, []);
 
@@ -83,15 +82,13 @@ export default function Index({ className }) {
 
     const renderItems = (itemsData) => {
         return itemsData.map((data) => {
-            let date = new Date(data.created_at);
-            let date_text = date.toString();
             return (
                 <tr key={data.ui_id} className="bg-[#F5F5F5]">
                     <td className="text-center rounded-tableRow">
                         <input
                             type="checkbox"
                             className="h-4 w-4"
-                            check={data.check}
+                            check={value.toString(data.check)}
                             value={data.ui_id}
                             onClick={handleChangeCheckBox}
                         />
@@ -102,6 +99,7 @@ export default function Index({ className }) {
                     <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
                         {data.code}
                     </td>
+                    <td className="text-sm">{data.article}</td>
                     <td className="text-sm">{data.description}</td>
                     <td className="text-sm">{formatDateDisplay(data.created_at)}</td>
                     <td className="text-center py-3 rounded-tableRow">
@@ -117,8 +115,6 @@ export default function Index({ className }) {
             );
         });
     };
-
-
 
     const handleChangeCheckBox = (e) => {
         checkboxData.map((item) => {
@@ -205,10 +201,13 @@ export default function Index({ className }) {
                                     Item Code
                                 </th>
                                 <th className="font-medium text-left">
+                                    Article
+                                </th>
+                                <th className="font-medium text-left">
                                     Description
                                 </th>
                                 <th className="font-medium text-left">Date</th>
-                                <th className="w-58"></th>
+                                <th className=" w-44"></th>
                             </tr>
                         </thead>
                         <tbody>

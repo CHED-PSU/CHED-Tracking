@@ -97,7 +97,7 @@ export default function ICSControl(props) {
                             <h5 className="text-base text-text-black font-semibold"></h5>
                             <h6 className="text-text-gray text-2base">
                                 Date Acquired:{" "}
-                                {formatDateDisplay(props.icsDetails.issuerDate)}
+                                {formatDateDisplay(props.icsDetails.receiverDate)}
                             </h6>
                         </div>
                     </td>

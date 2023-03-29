@@ -14,20 +14,18 @@ class FormController extends Controller
     public function getNotificationItems(Request $request)
     {
         $NotificationItems = DB::table('users_notification as un')
-            ->select('un.description', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id', 'un.id as notifId')
+            ->select('un.confirmation', 'un.description', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id', 'un.id as notifId')
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->join('users as u', 't.issued_by', '=', 'u.id')
             ->where('t.received_by', $request->input('id'))
-            ->where('un.confirmation', 'TBD')
             ->get();
 
         $NotificationItemsUnread = DB::table('users_notification as un')
-            ->select('un.description', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id', 'un.id as notifId')
+            ->select('un.confirmation', 'un.description', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id', 'un.id as notifId')
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->join('users as u', 't.issued_by', '=', 'u.id')
             ->where('t.received_by', $request->input('id'))
             ->where('un.ns_id', 2)
-            ->where('un.confirmation', 'TBD')
             ->get();
 
         return response()->json([
@@ -170,7 +168,6 @@ class FormController extends Controller
             ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
             ->where('ui.description', 'ICS')
             ->where('ui.confirmation', 'accepted')
-            // ->groupBy('t.id')
             ->get();
 
         return response()->json([
@@ -183,14 +180,16 @@ class FormController extends Controller
     public function getIcsDetails(Request $req)
     {
         $getItems = DB::table('trackings as t')
-            ->select('pri.quantity', 'pu.name as unit', 'pri.price', 'pi.description', 'pi.article', 'pi.code as property_no', 'it.eul', 'it.id')
+            ->select('pri.quantity', 'pu.name as unit', 'pri.price', 'pi.description', 'pi.article', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('product_subcategories as ps', 'ps.id', '=', 'pi.product_category_id')
+            ->join('users as u', 'u.id', '=', 'it.assigned_to')
             ->where('t.id', $req->input('id'))
+            ->where('ia.category_id', '!=', 1)
             ->get();
 
         $getFormDetails = DB::table('trackings as t')
@@ -219,6 +218,7 @@ class FormController extends Controller
             'designation2' => $getFormDetails->issuerD,
             'designation1' => $getFormDetails->receiverD
         ];
+
 
 
         return response()->json(['dataItems' => $getItems, 'form_details' => $data]);
@@ -287,7 +287,7 @@ class FormController extends Controller
     public function getIndividualItems(Request $req)
     {
         $items = DB::table('trackings as t')
-            ->select('ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.article', 'pi.code as code', 'it.eul', 'ui.item_status as remarks', 'it.id')
+            ->select('ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.article', 'pi.code as code', 'it.eul', 'ui.item_status as remarks', 'it.id', 'it.assigned_to', 'ua.firstname', 'ua.middlename', 'ua.surname', 'ua.suffix')
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -295,10 +295,10 @@ class FormController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
             ->join('users as u', 'u.id', '=', 't.received_by')
+            ->join('users as ua', 'ua.id', '=', 'it.assigned_to')
             ->where('t.received_by', $req->input('id'))
             ->where('ui.item_status', 'owned')
             ->get();
-
 
         $total_price = 0;
 
@@ -307,6 +307,30 @@ class FormController extends Controller
         }
 
         return response()->json(['allIndivItems' => $items, 'total_price' => $total_price]);
+    }
+
+    public function getIndividualItemsCOS(Request $req)
+    {
+        $items = DB::table('trackings as t')
+            ->select('ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.article', 'pi.code as code', 'it.eul', 'ui.item_status as remarks', 'it.id')
+            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
+            ->join('users as u', 'u.id', '=', 't.received_by')
+            ->where('it.assigned_to', $req->input('id'))
+            ->where('ui.item_status', 'owned')
+            ->get();
+
+        $total_price = 0;
+
+        foreach ($items as $i) {
+            $total_price += $i->amount;
+        }
+
+        return response()->json(['allIndivItemsCOS' => $items, 'total_price' => $total_price]);
     }
 
     // Pending Requests Area
@@ -500,7 +524,6 @@ class FormController extends Controller
             ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
             ->where('ui.description', 'ICS')
             ->where('ui.confirmation', 'accepted')
-            // ->groupBy('t.id')
             ->get();
 
         $getFormDetails = DB::table('trackings as t')

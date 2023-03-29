@@ -4,6 +4,7 @@ import AdminBg from "../../../Components/AdminBg";
 import ICSTable from "./Tables/ICSTable";
 import PARTable from "./Tables/PARTable";
 import IndividualTable from "./Tables/IndividualTable";
+import IndividualTableCOS from "./Tables/IndividualTableCOS";
 import Searchbar from "../Components/Searchbar";
 
 export default function Logs({ className }) {
@@ -47,15 +48,27 @@ export default function Logs({ className }) {
                             </div>
                         </li>
                         <li
-                            onClick={() => clickTabs("ii")}
+                            onClick={() => clickTabs("iir")}
                             className={
-                                toggleTabs === "ii"
+                                toggleTabs === "iir"
                                 ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full transition duration-500 ease-in-out"
                                 : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] rounded-full"
                             }
                         >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                                Individual Inventory
+                                Individual Inventory Regular
+                            </div>
+                        </li>
+                        <li
+                            onClick={() => clickTabs("iij")}
+                            className={
+                                toggleTabs === "iij"
+                                ? "btn-color-4 text-white dark:bg-[#476aca] dark:border-none font-semibold rounded-full transition duration-500 ease-in-out"
+                                : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] rounded-full"
+                            }
+                        >
+                            <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
+                                Individual Inventory COS/JO
                             </div>
                         </li>
                     </ul>
@@ -79,7 +92,13 @@ export default function Logs({ className }) {
 
                     {/*Individual Inventory Table*/}
                     <IndividualTable
-                        className={toggleTabs === "ii" ? "" : "hidden"}
+                        className={toggleTabs === "iir" ? "" : "hidden"}
+                    />
+                    {/*Individual Inventory Table*/}
+
+                    {/*Individual Inventory Table*/}
+                    <IndividualTableCOS
+                        className={toggleTabs === "iij" ? "" : "hidden"}
                     />
                     {/*Individual Inventory Table*/}
                 </div>

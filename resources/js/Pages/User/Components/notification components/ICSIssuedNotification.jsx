@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Alert from "../Alerts/WidgetAcceptAlert";
-import { set } from "lodash";
-import { data } from "autoprefixer";
 
 export default function ICSIssuedNotification({
     listId,
     setOpenNotifSpecList,
-    closer
+    closer,
+    confirmation,
 }) {
     let modalBody = useRef();
 
@@ -16,27 +15,24 @@ export default function ICSIssuedNotification({
     const [items, setItems] = useState([]);
     const [formDetails, setFormDetails] = useState([]);
 
-
-
-
-
     const domain = window.location.href;
     const url = new URL(domain);
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
 
-
     //Notification Items
     async function getIssuedItems() {
         setLoading(true);
         try {
-            await axios.post('api/getNotifSecListItems', {
-                listId: listId
-            }).then(res => {
-                setItems(res.data.items)
-            })
+            await axios
+                .post("api/getNotifSecListItems", {
+                    listId: listId,
+                })
+                .then((res) => {
+                    setItems(res.data.items);
+                });
         } catch (e) {
-            console.log(e)
+            console.log(e);
         } finally {
             setLoading(false);
         }
@@ -46,51 +42,57 @@ export default function ICSIssuedNotification({
     async function getFormDetails() {
         setLoading(true);
         try {
-            await axios.post('api/getFormDetails', {
-                listId: listId
-            }).then(res => {
-                setFormDetails(res.data.form_details)
-
-            })
+            await axios
+                .post("api/getFormDetails", {
+                    listId: listId,
+                })
+                .then((res) => {
+                    setFormDetails(res.data.form_details);
+                });
         } catch (e) {
-            console.log(e)
+            console.log(e);
         } finally {
             setLoading(false);
         }
-
     }
 
     useEffect(() => {
-        getIssuedItems()
-        getFormDetails()
-    }, [])
-
+        getIssuedItems();
+        getFormDetails();
+    }, []);
 
     //accepting and declining the issued forms
 
-    const clickAlert = (val) =>{
+    const clickAlert = (val) => {
         setOpenAlert(val);
-    }
-
-
+    };
 
     const itemsData = (item) => {
         return item.map((data) => {
             return (
-                <tr key={data.id} className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                <tr
+                    key={data.id}
+                    className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
+                >
                     <td className="text-center px-3 border">{data.quantity}</td>
                     <td className="text-center px-3 border">{data.unit}</td>
-                    <td className="text-center px-3 border">{parseInt(data.price) * parseInt(data.quantity)}</td>
+                    <td className="text-center px-3 border">
+                        {parseInt(data.price) * parseInt(data.quantity)}
+                    </td>
                     <td className="text-left px-3 py-3 border">
                         <div className="flex items-center">
-                            <div className="font-semibold mr-3">{data.article}</div>
+                            <div className="font-semibold mr-3">
+                                {data.article}
+                            </div>
                             <div>{data.description}</div>
                         </div>
                     </td>
-                    <td className="text-left px-3 border">{data.inventory_no}</td>
+                    <td className="text-left px-3 border">
+                        {data.inventory_no}
+                    </td>
                     <td className="text-center px-3 border">{data.eul}</td>
                 </tr>
-            )
+            );
         });
     };
 
@@ -104,16 +106,16 @@ export default function ICSIssuedNotification({
     const [alertNoButton, setAlertNoButton] = useState("No");
     const [alertFunction, setAlertFunction] = useState();
 
-    const acceptHandler = () =>{
+    const acceptHandler = () => {
         setAlertIcon("question");
         setAlertHeader("Confirmation");
         setAlertDesc("Are you sure you want to accept it?");
         setAlertButtonColor("blue");
         setAlertYesButton("Accept");
         setAlertNoButton("Cancel");
-        setAlertFunction('acceptIssuedForm')
-        clickAlert(true)
-    }
+        setAlertFunction("acceptIssuedForm");
+        clickAlert(true);
+    };
 
     const declineHandler = () => {
         setAlertIcon("question");
@@ -122,19 +124,15 @@ export default function ICSIssuedNotification({
         setAlertButtonColor("red");
         setAlertYesButton("Decline");
         setAlertNoButton("Cancel");
-        setAlertFunction('declineIssuedForm')
-        clickAlert(true)
-    }
+        setAlertFunction("declineIssuedForm");
+        clickAlert(true);
+    };
 
-
-    const feedback = (button,desc,icon) =>{
-        setAlertButtonColor(button)
-        setAlertDesc(desc)
-        setAlertIcon(icon)
-    }
-
-
-
+    const feedback = (button, desc, icon) => {
+        setAlertButtonColor(button);
+        setAlertDesc(desc);
+        setAlertIcon(icon);
+    };
 
     return (
         <div ref={modalBody}>
@@ -149,9 +147,9 @@ export default function ICSIssuedNotification({
                     alertFunction={alertFunction}
                     clickAlert={clickAlert}
                     listId={listId}
-                    feedback = {feedback}
+                    feedback={feedback}
                     className={""}
-                    closer ={closer}
+                    closer={closer}
                 />
             ) : (
                 ""
@@ -167,7 +165,7 @@ export default function ICSIssuedNotification({
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
-                    <div className="bg-white dark:bg-darkColor-900 rounded-lg border px-5 py-6 ">
+                    <div className="bg-white dark:bg-darkColor-900 rounded-lg px-5 py-6 ">
                         <div className="text-center dark:text-white py-2">
                             <div className="text-sm font-semibold">
                                 INVENTORY CUSTODIAN SLIP
@@ -199,7 +197,9 @@ export default function ICSIssuedNotification({
                                         <span id="form_identifier"></span>
                                     </div>
                                     <div className="text-xs  dark:text-gray-400 font-semibold">
-                                        {formDetails ? formDetails.tracking_id : 'Nan'}
+                                        {formDetails
+                                            ? formDetails.tracking_id
+                                            : "Nan"}
                                     </div>
                                 </div>
                             </div>
@@ -250,46 +250,58 @@ export default function ICSIssuedNotification({
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center">
                                 <div className="w-fit">
                                     <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                        Issued by: {formDetails ? formDetails.u1name + ' ' + formDetails.u1surname : 'Nan'}
+                                        Issued by:{" "}
+                                        {formDetails
+                                            ? formDetails.u1name +
+                                              " " +
+                                              formDetails.u1surname
+                                            : "Nan"}
                                     </div>
                                     <div
                                         className="pt-1 text-left text-sm underline font-semibold dark:text-white"
                                         id="Property_custodian_name"
                                     ></div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        Signature Over Printed Name
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails ? formDetails.u1designation : 'Nan'}/Property Officer-Designate
+                                        {formDetails
+                                            ? formDetails.u1designation
+                                            : ""}
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
                                         Position/Office
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        {formDetails ? formDetails.u1role : 'Nan'}
+                                        {formDetails
+                                            ? formDetails.u1role
+                                            : ""}
                                     </div>
                                 </div>
                             </div>
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center">
                                 <div className="w-fit">
                                     <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                        Received by: {formDetails ? formDetails.u2name + ' ' + formDetails.u2surname : 'Nan'}
+                                        Received by:{" "}
+                                        {formDetails
+                                            ? formDetails.u2name +
+                                              " " +
+                                              formDetails.u2surname
+                                            : ""}
                                     </div>
                                     <div
                                         className="pt-1 text-left text-sm underline font-semibold dark:text-white"
                                         id="user-employee"
                                     ></div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        Signature Over Printed Name
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails ? formDetails.u2designation : 'Nan'}
+                                        {formDetails
+                                            ? formDetails.u2designation
+                                            : "Nan"}
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
                                         Position/Office
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        {formDetails ? formDetails.u2role : 'Nan'}
+                                        {formDetails
+                                            ? formDetails.u2role
+                                            : "Nan"}
                                     </div>
                                 </div>
                             </div>
@@ -297,21 +309,28 @@ export default function ICSIssuedNotification({
                     </div>
                     <div className="pt-8">
                         {/* Hide this buttons if the form is already accepted */}
-
-                        <div className="flex gap-4 justify-center">
-                                <button onClick={acceptHandler}
-                                    className="2xl:h-12 xl:h-9 h-9 w-48 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
-                                >
-                                    Accept
+                        {confirmation === "accepted" ? (
+                            <div className="flex gap-4 pb-4 justify-center">
+                                <button className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
+                                    Accepted
                                 </button>
-                                <button onClick={declineHandler}
-                                    className="2xl:h-12 xl:h-9 h-9 w-48 p-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
+                            </div>
+                        ) : (
+                            <div className="flex gap-4 pb-4 justify-center">
+                                <button
+                                    onClick={declineHandler}
+                                    className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
                                 >
                                     Decline
                                 </button>
+                                <button
+                                    onClick={acceptHandler}
+                                    className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
+                                >
+                                    Accept
+                                </button>
                             </div>
-
-                        {/* Accepted Button (unhide this button if the form is already accepted) */}
+                        )}
                     </div>
                 </div>
             </div>

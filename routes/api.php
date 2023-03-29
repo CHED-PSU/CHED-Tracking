@@ -69,6 +69,7 @@ Route::post('getPAR', [FormController::class, 'getPAR']);
 Route::post('getParDetails', [FormController::class, 'getParDetails']);
 //Individual Items
 Route::post('getIndividualItems', [FormController::class, 'getIndividualItems']);
+Route::post('getIndividualItemsCOS', [FormController::class, 'getIndividualItemsCOS']);
 
 //User Requests Area
 //Pending Requests

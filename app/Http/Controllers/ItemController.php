@@ -14,7 +14,6 @@ class ItemController extends Controller
     {
 
         $items = DB::table('users_notification as un')
-            // ->select('it.quantity','it.eul','i.description','i.article as unit','i.property_no as inventory_no','i.id')
             ->select('pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul')
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->where('un.trackings_id', $req->input('listId'))
@@ -23,6 +22,7 @@ class ItemController extends Controller
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->where('ia.category_id', '!=', 1)
             ->get();
 
         return response()->json(['items' => $items]);
@@ -39,7 +39,7 @@ class ItemController extends Controller
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
-            ->where('t.received_by', $req->input('user_id'))
+            ->where('it.assigned_to', $req->input('user_id'))
             ->where('ui.item_status', 'owned')
             ->get();
 
@@ -58,10 +58,6 @@ class ItemController extends Controller
 
             array_push($data, $temp_data);
         }
-
-
-
-
         return response()->json(['itemsData' => $data]);
     }
 
@@ -150,6 +146,7 @@ class ItemController extends Controller
             ->where('uri.status', '!=', 'Unserviceable')
             ->where('uri.status', '!=', 'Inventories')
             ->where('uri.status', '!=', 'returned to owner')
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return response()->json(['returnedItems' => $returnedItems]);
@@ -235,13 +232,13 @@ class ItemController extends Controller
                     ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix ?
                         ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix : ''),
 
-                'post_approve' => $getUsers[$getAdminReturnedItemsInfo->post_approved]->firstname .
+                'post_approve' => $getUsers[$getAdminReturnedItemsInfo->post_approve]->firstname .
                     ' ' .
-                    ($getUsers[$getAdminReturnedItemsInfo->post_approved]->middlename ?
-                        $getUsers[$getAdminReturnedItemsInfo->post_approved]->middlename[0] . '. ' : '') .
-                    $getUsers[$getAdminReturnedItemsInfo->post_approved]->surname .
-                    ($getUsers[$getAdminReturnedItemsInfo->post_approved]->suffix ?
-                        ' ' . $getUsers[$getAdminReturnedItemsInfo->post_approved]->suffix : ''),
+                    ($getUsers[$getAdminReturnedItemsInfo->post_approve]->middlename ?
+                        $getUsers[$getAdminReturnedItemsInfo->post_approve]->middlename[0] . '. ' : '') .
+                    $getUsers[$getAdminReturnedItemsInfo->post_approve]->surname .
+                    ($getUsers[$getAdminReturnedItemsInfo->post_approve]->suffix ?
+                        ' ' . $getUsers[$getAdminReturnedItemsInfo->post_approve]->suffix : ''),
             ];
         } else if ($getAdminReturnedItemsInfo->pre_inspected != null && $getAdminReturnedItemsInfo->pre_approved != null && $getAdminReturnedItemsInfo->post_approve == null) {
             $data = [

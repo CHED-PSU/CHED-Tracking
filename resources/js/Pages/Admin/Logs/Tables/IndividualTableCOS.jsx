@@ -1,15 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import ICSControl from "../Forms/ICSControl";
+import IndividualInventoryCOS from "../Forms/IndividualInventoryCOS";
 import UserList from "../TableList/UserList";
 
-export default function ICSTable({ className }) {
+export default function IndividualTableCOS({ className }) {
     const [openForms, setOpenForms] = useState("close");
     const [Loading, setLoading] = useState(true);
     const [UserLists, setUserLists] = useState();
-    const [IcsControl, setIcsControl] = useState();
-    const [IcsDetails, setIcsDetails] = useState();
+    const [indivItems, setIndivItems] = useState();
     const [totalPrice, setTotalPrice] = useState();
     const [userName, setUserName] = useState();
     const [designation, setDesignation] = useState();
@@ -18,8 +17,13 @@ export default function ICSTable({ className }) {
         setDesignation(index);
     }
 
-    const user = localStorage.getItem("localSession");
-    const value = JSON.parse(user);
+    function passUserName(index) {
+        setUserName(index);
+    }
+
+    function clickForms(index) {
+        setOpenForms(index);
+    }
 
     useEffect(() => {
         const getUsers = async () => {
@@ -38,28 +42,41 @@ export default function ICSTable({ className }) {
         getUsers();
     }, []);
 
-    function clickForms(index) {
-        setOpenForms(index);
-    }
-
-    function passUserName(index) {
-        setUserName(index);
-    }
+    const userMapper = (items) => {
+        return items?.map((data) => {
+            return (
+                <UserList
+                    key={data.id}
+                    firstname={data.firstname}
+                    surname={data.surname}
+                    middlename={data.middlename}
+                    img={data.img}
+                    suffix={data.suffix}
+                    prefix={data.prefix}
+                    passUserName={passUserName}
+                    designation={data.designation}
+                    passDesignation={passDesignation}
+                    name={data.name}
+                    id={data.id}
+                    getID={getID}
+                    type={"in-in-cos"}
+                    getData={getData}
+                    clickForms={clickForms}
+                />
+            );
+        });
+    };
 
     async function getData(id) {
-        setLoading(true);
         try {
-            const response = await axios.post("api/getUserIcsControls", {
+            const response = await axios.post("api/getIndividualItemsCOS", {
                 id: id,
             });
             const data = response.data;
-            setIcsControl(data.ics_controls);
-            setIcsDetails(data.ics_details);
+            setIndivItems(data.allIndivItemsCOS);
             setTotalPrice(data.total_price);
         } catch (e) {
             console.log(e);
-        } finally {
-            setLoading(false);
         }
     }
 
@@ -77,51 +94,43 @@ export default function ICSTable({ className }) {
 
     const pageCount = Math.ceil((UserLists?.length || 0) / itemsPerPage);
 
-    const userMapper = (items) => {
-        return items?.map((data) => {
-            return (
-                <UserList
-                    key={data.id}
-                    firstname={data.firstname}
-                    img={data.img}
-                    surname={data.surname}
-                    middlename={data.middlename}
-                    suffix={data.suffix}
-                    prefix={data.prefix}
-                    designation={data.designation}
-                    passUserName={passUserName}
-                    passDesignation={passDesignation}
-                    name={data.name}
-                    id={data.id}
-                    type={"ics-control"}
-                    getData={getData}
-                    clickForms={clickForms}
-                />
-            );
-        });
-    };
+    const [getII, setII] = useState();
+
+    async function getID(id) {
+        setLoading(true);
+        try {
+            const response = await axios.post("api/getUserICS", {
+                id: id,
+            });
+            const data = response.data;
+            setII(data.ics_details);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <div className={className + " w-full h-full relative"}>
-            {openForms === "ics-control" ? (
-                <ICSControl
-                    icsControl={IcsControl ? IcsControl : ""}
-                    icsDetails={IcsDetails ? IcsDetails : ""}
+            {openForms === "in-in-cos" ? (
+                <IndividualInventoryCOS
+                    indivItems={indivItems ? indivItems : ""}
                     totalPrice={totalPrice ? totalPrice : ""}
-                    designation={designation}
                     userName={userName}
                     Loading={Loading}
                     setLoading={setLoading}
                     clickForms={clickForms}
                     className={""}
+                    designation={designation}
                 />
             ) : (
                 ""
             )}
 
             <table className="w-full">
-                <thead className="">
-                    <tr className="text-xs border dark:border-neutral-700 bg-primary bg-opacity-5 text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                <thead>
+                    <tr className="text-xs border dark:border-neutral-700 bg-[#F5F5F5] text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                         <th className="h-10 w-80 font-medium text-left pl-6">
                             Name
                         </th>
@@ -162,9 +171,12 @@ export default function ICSTable({ className }) {
                     {/*item 2*/}
                 </tbody>
             </table>
+
             {Loading ? (
                 ""
-            ) : UserLists?.length !== 0 ? (
+            ) : UserLists?.length === 0 ? (
+                ""
+            ) : (
                 <div className="absolute bottom-1 2xl:text-base xl:text-sm text-sm dark:text-neutral-200 w-full flex justify-center">
                     <ReactPaginate
                         previousLabel={"Prev"}
@@ -178,8 +190,6 @@ export default function ICSTable({ className }) {
                         activeClassName={"paginationActive"}
                     />
                 </div>
-            ) : (
-                ""
             )}
         </div>
     );

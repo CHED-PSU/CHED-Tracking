@@ -20,7 +20,7 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
             try {
                 await axios
                     .post("/api/getIndividualItems", {
-                        user_id: value.id,
+                        id: value.id,
                     })
                     .then((res) => {
                         setIndivItems(res.data.allIndivItems);
@@ -36,25 +36,28 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
         setFilteredItemsData(indivItems);
     }, []);
 
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
     useEffect(() => {
         search();
     }, [searchTerm]);
 
     const itemsMapper = (im) => {
+        let counter = 0;
         return im.map((data) => {
+            counter++;
             if (data != "No items") {
-                return (
-                    <Items
-                        data={data}
-                        key={data.id}
-                        date={new Date(data.created_at)}
-                    />
-                );
+                return <Items data={data} key={data.id} counter={counter} formattedAmount={formattedAmount} />;
             } else {
                 return "";
             }
         });
     };
+
     const search = () => {
         if (searchTerm !== " ") {
             const filterData = indivItems.filter((item) => {
@@ -66,7 +69,7 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
 
             setFilteredItemsData(filterData);
         } else {
-            setFilteredItemsData(icsItems);
+            setFilteredItemsData(indivItems);
         }
     };
 
@@ -91,10 +94,10 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
                             </div>
                             <div className="">
                                 <p className="text-xs text-slate-600 dark:text-neutral-300 underline">
-                                    ENGR. LUIS D. PEREZ
+                                    {''}
                                 </p>
                                 <p className="text-xs text-slate-600 dark:text-neutral-300">
-                                    CEPS, TECHNICAL DIVISION
+                                    {''}
                                 </p>
                             </div>
                         </div>
@@ -218,7 +221,7 @@ export default function IndividualTable({ className, toggleTabs, clickTabs }) {
                         <div className="w-full flex justify-end gap-1 text-sm mt-4">
                             Total Amount:{" "}
                             <span>
-                                {Loading ? "computing...." : totalPrice}
+                                {Loading ? "computing...." : '₱ ' + formattedAmount(totalPrice)}
                             </span>
                         </div>
                     </div>

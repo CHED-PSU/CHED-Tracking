@@ -3,6 +3,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import Alert from "./Alert";
 import MiniLogo from "../../../../../Components/Mini-logo";
+import BarCode from "../../../../../Components/BarCode";
+import QRCode from "../../../../../Components/QRCode";
+import { Bar } from "react-chartjs-2";
 
 export default function InventorySticker(props) {
     const stickerRef = useRef();
@@ -214,9 +217,9 @@ export default function InventorySticker(props) {
                     stickers.push(
                         <div
                             key={i}
-                            className="flex-none border-2 border-black w-[2.9in] avoid"
+                            className="flex-none border-2 border-black w-[3.1in] avoid"
                         >
-                            <div className="flex items-center bg-amber-400 py-2">
+                            <div className="flex items-center justify-center gap-1 bg-amber-400 p-2">
                                 <MiniLogo className="w-14 h-14" />
                                 <div className="w-full">
                                     <div className="w-[180px] text-[8px] font-medium text-center">
@@ -228,6 +231,7 @@ export default function InventorySticker(props) {
                                         <h6>REGIONAL OFFICE XI</h6>
                                     </div>
                                 </div>
+                                <QRCode className="w-10 h-10 bg-white p-1" />
                             </div>
                             <div className="bg-black text-white text-ss font-bold text-center">
                                 PROPERTY INVENTORY STICKER
@@ -416,9 +420,10 @@ export default function InventorySticker(props) {
                             <div className="text-[7px] text-black font-semibold bg-amber-400 py-1 px-1">
                                 NOTE: PLEASE DO NOT REMOVE
                             </div>
-                            <div className="bg-black text-white text-[5px] text-center py-1">
-                                UNAUTHORIZED REMOVAL OR TAMPERING WILL BE
-                                SUBJECTED TO DISCIPLINARY ACTION.
+                            <div className="flex gap-2 px-2 items-center bg-black text-white text-[5px] text-center py-1">
+                                <BarCode className="w-10"/>
+                                <p className="w-56 text-[6px] font-medium text-left">UNAUTHORIZED REMOVAL OR TAMPERING WILL BE
+                                    SUBJECTED TO DISCIPLINARY ACTION.</p>
                             </div>
                         </div>
                     );

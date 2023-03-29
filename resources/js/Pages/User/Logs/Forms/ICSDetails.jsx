@@ -133,7 +133,7 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                             Fund Cluster:
                                         </div>
                                         <div className="text-xs  dark:text-gray-400 font-semibold">
-                                            101
+                                            {''}
                                         </div>
                                     </div>
                                 </div>
@@ -156,23 +156,29 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                 >
                                     <thead>
                                         <tr className="avoid text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                            <th className="h-10 w-20 font-medium border">
+                                            <th className="h-10 px-2 font-medium border">
                                                 Qty
                                             </th>
-                                            <th className="h-10 w-20 font-medium border">
+                                            <th className="h-10 px-2 font-medium border">
                                                 Unit
                                             </th>
-                                            <th className="h-10 w-40 font-medium border">
+                                            <th className="h-10 px-2 font-medium border">
                                                 Amount
                                             </th>
-                                            <th className="h-10 font-medium border">
+                                            <th
+                                                colSpan={2}
+                                                className="h-10 px-2 font-medium border"
+                                            >
                                                 Description
                                             </th>
-                                            <th className="h-10 w-40 font-medium border">
+                                            <th className="h-10 px-2 font-medium border">
                                                 Inventory Item No.
                                             </th>
-                                            <th className="h-10 w-40 font-medium border">
+                                            <th className="h-10 px-2 font-medium border">
                                                 Estimated Useful Life
+                                            </th>
+                                            <th className="h-10 px-2 font-medium border">
+                                                Assigned to
                                             </th>
                                         </tr>
                                     </thead>

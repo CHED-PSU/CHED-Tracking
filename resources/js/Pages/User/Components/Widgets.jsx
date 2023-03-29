@@ -116,14 +116,14 @@ export default function Widgets(props) {
         };
     });
 
-
-
     // Modal for Notification Item
     const [openNotifSpecList, setOpenNotifSpecList] = useState(false);
     const [listId, setListId] = useState();
+    const [confirmation, setConfirmation] = useState();
 
-    const notifSpecList = (id, notifId) => {
+    const notifSpecList = (id, notifId, confirmation) => {
         setListId(id);
+        setConfirmation(confirmation);
         isRead(notifId);
         setOpenNotifSpecList(!openNotifSpecList);
         setOpenNotifDropdown(!openNotifDropdown);
@@ -171,8 +171,6 @@ export default function Widgets(props) {
         }
     };
 
-    console.log(props.unread)
-
     const notifMapper = (items) => {
         if (items.length > 0) {
             return items.map((data) => {
@@ -184,54 +182,58 @@ export default function Widgets(props) {
 
                 var days = Math.floor(distance / (1000 * 60 * 60 * 24));
 
-                if (data.np_id === 1) {
-                    return (
-                        <li
-                            key={data.id}
-                            onClick={() => notifSpecList(data.id, data.notifId)}
-                            className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer"
-                        >
-                            <div className="flex h-full items-center justify-between gap-3 px-3">
-                                {displayPhoto(
-                                    data.img,
-                                    data.firstname,
-                                    "2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9"
-                                )}
-                                <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
-                                    <div className="text-sm 2xl:leading-0 xl:leading-4">
-                                        <span className="font-semibold">
-                                            {displayName(data, true)}
-                                        </span>{" "}
-                                        <span className="">
-                                            {" "}
-                                            has issued you an {
-                                                data.description
-                                            }{" "}
-                                            form.
-                                        </span>
-                                    </div>
-                                    <div className="text-xs text-blue-400">
-                                        {days === 1 || days === 0
-                                            ? "a day ago"
-                                            : days + " days ago"}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Ping Notif */}
-                            {data.ns_id === 2 ? (
-                                <div className="h-auto flex relative">
-                                    <span className="flex h-4 w-4 mr-4 pointer-events-none">
-                                        <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                return (
+                    <li
+                        key={data.id}
+                        onClick={() =>
+                            notifSpecList(
+                                data.id,
+                                data.notifId,
+                                data.confirmation
+                            )
+                        }
+                        className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer"
+                    >
+                        <div className="flex h-full items-center justify-between gap-3 px-3">
+                            {displayPhoto(
+                                data.img,
+                                data.firstname,
+                                "2xl:w-10 2xl:h-10 xl:w-9 xl:h-9 w-9 h-9"
+                            )}
+                            <div className="w-fit flex flex-col justify-center dark:text-neutral-200">
+                                <div className="text-sm 2xl:leading-0 xl:leading-4">
+                                    <span className="font-semibold">
+                                        {displayName(data, true)}
+                                    </span>{" "}
+                                    <span className="">
+                                        {" "}
+                                        has issued you an {
+                                            data.description
+                                        }{" "}
+                                        form.
                                     </span>
                                 </div>
-                            ) : (
-                                ""
-                            )}
-                        </li>
-                    );
-                }
+                                <div className="text-xs text-blue-400">
+                                    {days === 1 || days === 0
+                                        ? "a day ago"
+                                        : days + " days ago"}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Ping Notif */}
+                        {data.ns_id === 2 ? (
+                            <div className="h-auto flex relative">
+                                <span className="flex h-4 w-4 mr-4 pointer-events-none">
+                                    <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+                                </span>
+                            </div>
+                        ) : (
+                            ""
+                        )}
+                    </li>
+                );
             });
         } else {
             return (
@@ -243,8 +245,8 @@ export default function Widgets(props) {
     };
 
     const closer = () => {
-        setOpenNotifSpecList(false)
-    }
+        setOpenNotifSpecList(false);
+    };
 
     return (
         <div className={props.className}>
@@ -283,12 +285,13 @@ export default function Widgets(props) {
                 <button
                     ref={notifButton}
                     onClick={() => {
-                        setOpenNotifDropdown(!openNotifDropdown), getNotif(), props.clickRead(false);
+                        setOpenNotifDropdown(!openNotifDropdown),
+                            getNotif(),
+                            props.clickRead(false);
                     }}
                     className="2xl:w-12 2xl:h-12 xl:w-10 xl:h-10 w-10 h-10 border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-darkColor-700 hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover rounded-full flex justify-center items-center relative"
                 >
                     <div className="2xl:w-6 xl:w-5 w-5 dark:fill-icon-light">
-
                         <svg
                             version="1.0"
                             xmlns="http://www.w3.org/2000/svg"
@@ -464,9 +467,10 @@ export default function Widgets(props) {
 
             {openNotifSpecList ? (
                 <ICSIssuedNotification
+                    confirmation={confirmation}
                     listId={listId != null ? listId : null}
                     setOpenNotifSpecList={setOpenNotifSpecList}
-                    closer = {closer}
+                    closer={closer}
                 />
             ) : (
                 ""

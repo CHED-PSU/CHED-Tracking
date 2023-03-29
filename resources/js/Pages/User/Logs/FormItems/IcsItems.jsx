@@ -23,14 +23,14 @@ export default function IcsItems({ data }) {
     }
 
     return (
-        
+
         <tr className="h-14 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
             {openSubForms === "open" ? <ICSDetails
-                id = {data.id}
+                id = {data.trackings_id}
                 clickSubForms={clickSubForms}
                 className={""}
             /> : ""}
-            
+
             {/* ICS No. */}
             <td>
                 <a className="text-left pl-6 flex items-center w-full gap-3">
@@ -46,7 +46,7 @@ export default function IcsItems({ data }) {
                         <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium text-text-black">
                             {formatDateDisplay(data.created_at)}
                         </h4>
-                        
+
                     </div>
                 </a>
             </td>

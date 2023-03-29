@@ -2,7 +2,7 @@ import { toUpper } from "lodash";
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 
-export default function IndividualInventory(props) {
+export default function IndividualInventoryCOS(props) {
     const ref = useRef();
 
     const handlePrint = useReactToPrint({
@@ -15,7 +15,7 @@ export default function IndividualInventory(props) {
               margin-bottom: 0.5in;
             }
           }`,
-        documentTitle: "Individual Inventory",
+        documentTitle: "Individual Inventory COS/JO",
     });
 
     function formatDateDisplay(dateString) {
@@ -52,14 +52,6 @@ export default function IndividualInventory(props) {
                     </td>
                     <td className="text-center px-2 border">{toUpper(data.remarks)}</td>
                     <td className="text-center px-2 border"></td>
-                    <td className="text-center px-2 border">{data.firstname +
-                              " " +
-                              (data.middlename == null
-                                  ? ""
-                                  : data.middlename.charAt(0) + "." + " ") +
-                              " " +
-                              data.surname +
-                              (data.suffix == null ? "" : " " + data.suffix)}</td>
                 </tr>
             );
         });
@@ -86,7 +78,7 @@ export default function IndividualInventory(props) {
                             </button>
                             <div className="text-left cursor-default">
                                 <h4 className="text-primary dark:text-white text-2xl font-semibold">
-                                    Individual Inventory Regular
+                                    Individual Inventory COS/JO
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
                                     <b>Logs</b> / Individual Inventory /{" "}
@@ -111,7 +103,7 @@ export default function IndividualInventory(props) {
                             {/* title */}
                             <div className="flex justify-center">
                                 <h4 className="text-text-black dark:text-white text-lg font-semibold pb-4">
-                                    Individual Inventory Regular
+                                    Individual Inventory COS/JO
                                 </h4>
                             </div>
                             {/* details */}
@@ -137,95 +129,69 @@ export default function IndividualInventory(props) {
                                         id="items"
                                         className="table-auto custom-t w-full min-w-[650px]"
                                     >
-                                        <thead>
+                                        <tbody>
                                             <tr className="h-8 avoid text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                                                 <th
-                                                    colSpan="100"
-                                                    className="text-left font-medium pl-2"
-                                                >
-                                                    OFFICE EQUIPMENT AND
-                                                    FURNITURE & FIXTURES
-                                                </th>
-                                            </tr>
-                                            <tr className="avoid text-xs border dark:border-neutral-700 text-darkColor-700 dark:text-white cursor-default">
-                                                <th
                                                     title="No."
-                                                    className="w-16 h-10 font-medium text-center border px-2"
+                                                    className="h-10 font-medium text-center border px-2"
                                                 >
-                                                    NO.
+                                                    No.
                                                 </th>
                                                 <th
                                                     title="Article"
-                                                    className="w-36 h-10 font-semibold text-center border px-2"
+                                                    className="h-10 font-medium text-center border px-2"
                                                 >
-                                                    ARTICLE
+                                                    Article
                                                 </th>
                                                 <th
                                                     title="Description"
-                                                    className="w-auto h-10 font-semibold text-center border px-2"
+                                                    className="w-auto h-10 font-medium text-center border px-2"
                                                 >
-                                                    DESCRIPTION
+                                                    Description
                                                 </th>
                                                 <th
                                                     title="Quantity"
-                                                    className="w-16 h-10 font-semibold text-center border px-2"
+                                                    className="h-10 font-medium text-center border px-2"
                                                 >
-                                                    QTY
+                                                    Qty
                                                 </th>
                                                 <th
                                                     title="Serial No."
-                                                    className="w-28 h-10 font-semibold text-center border px-2"
+                                                    className="h-10 font-medium text-center border px-2"
                                                 >
                                                     Serial No
                                                 </th>
                                                 <th
                                                     title="Inventory Item No."
-                                                    className="w-28 h-10 font-semibold text-center border px-2"
+                                                    className="h-10 font-medium text-center border px-2"
                                                 >
-                                                    CODE
+                                                    Code
                                                 </th>
                                                 <th
                                                     title="Amount"
-                                                    className="w-28 h-10 font-semibold text-center border px-2"
+                                                    className="h-10 font-medium text-center border px-2"
                                                 >
-                                                    AMOUNT
+                                                    Amount
                                                 </th>
                                                 <th
                                                     title="Data Acquired"
-                                                    className="w-28 h-10 font-semibold text-center border px-2"
+                                                    className="h-10 font-medium text-center border px-2"
                                                 >
-                                                    DATE ACQUIRED
+                                                    Date Acquired
                                                 </th>
                                                 <th
                                                     title="Remarks"
-                                                    className="w-28 h-10 font-semibold text-center border px-2"
+                                                    className="h-10 font-medium text-center border px-2"
                                                 >
-                                                    REMARKS/ TRANSFERRED
+                                                    Remarks/Transferred
                                                 </th>
                                                 <th
                                                     title="Remarks"
-                                                    className="w-28 h-10 font-semibold text-center border px-2"
+                                                    className="h-10 font-medium text-center border px-2"
                                                 >
-                                                    REMARKS
-                                                </th>
-                                                <th
-                                                    title="Remarks"
-                                                    className="w-28 h-10 font-semibold text-center border px-2"
-                                                >
-                                                    ASSIGNED TO
+                                                    Remarks
                                                 </th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr className="avoid h-8 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                                <th
-                                                    colSpan="100"
-                                                    className="text-left font-medium pl-2"
-                                                >
-                                                    FURNITURE AND FIXTURES
-                                                </th>
-                                            </tr>
-
                                             {/* index 1 */}
                                             {props.Loading ? (
                                                 <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">

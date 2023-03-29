@@ -134,7 +134,7 @@ export default function Dashboard({ className }) {
     });
 
     const recentIssuanceMapper = (item) => {
-        return item?.slice(0, 5).map((data, index) => {
+        return item?.slice(0, 4).map((data, index) => {
             var created_at = new Date(data.created_at);
 
             let today = new Date();
