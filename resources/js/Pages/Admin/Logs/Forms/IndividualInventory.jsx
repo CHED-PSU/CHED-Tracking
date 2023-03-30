@@ -48,18 +48,17 @@ export default function IndividualInventory(props) {
                         {formattedAmount(data.qty * data.amount)}
                     </td>
                     <td className="text-center px-2 border">
-                        {formatDateDisplay(data.date)}
+                        {toUpper(formatDateDisplay(data.date))}
                     </td>
                     <td className="text-center px-2 border">{toUpper(data.remarks)}</td>
-                    <td className="text-center px-2 border"></td>
-                    <td className="text-center px-2 border">{data.firstname +
+                    <td className="text-center px-2 border">{toUpper(data.firstname +
                               " " +
                               (data.middlename == null
                                   ? ""
                                   : data.middlename.charAt(0) + "." + " ") +
                               " " +
                               data.surname +
-                              (data.suffix == null ? "" : " " + data.suffix)}</td>
+                              (data.suffix == null ? "" : " " + data.suffix))}</td>
                 </tr>
             );
         });
@@ -137,7 +136,7 @@ export default function IndividualInventory(props) {
                                         id="items"
                                         className="table-auto custom-t w-full min-w-[650px]"
                                     >
-                                        <thead>
+                                        <tbody>
                                             <tr className="h-8 avoid text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                                                 <th
                                                     colSpan="100"
@@ -206,17 +205,9 @@ export default function IndividualInventory(props) {
                                                     title="Remarks"
                                                     className="w-28 h-10 font-semibold text-center border px-2"
                                                 >
-                                                    REMARKS
-                                                </th>
-                                                <th
-                                                    title="Remarks"
-                                                    className="w-28 h-10 font-semibold text-center border px-2"
-                                                >
                                                     ASSIGNED TO
                                                 </th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
                                             <tr className="avoid h-8 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                                                 <th
                                                     colSpan="100"

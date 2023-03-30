@@ -26,6 +26,27 @@ export default function Index({ className }) {
         return formattedAmount;
     }
 
+    function formattedAmountAbbrv(num) {
+        const absNum = Math.abs(num);
+        if (absNum >= 1e15) {
+            return (
+                Math.sign(num) * parseFloat((absNum / 1e15).toFixed(1)) + "Q"
+            );
+        } else if (absNum >= 1e12) {
+            return (
+                Math.sign(num) * parseFloat((absNum / 1e12).toFixed(1)) + "T"
+            );
+        } else if (absNum >= 1e9) {
+            return Math.sign(num) * parseFloat((absNum / 1e9).toFixed(1)) + "B";
+        } else if (absNum >= 1e6) {
+            return Math.sign(num) * parseFloat((absNum / 1e6).toFixed(1)) + "M";
+        } else if (absNum >= 1e3) {
+            return Math.sign(num) * parseFloat((absNum / 1e3).toFixed(1)) + "k";
+        } else {
+            return Math.sign(num) * absNum;
+        }
+    }
+
     return (
         <div className={className + "  2xl:px-10 xl:px-5 px-5"}>
             <div className="relative flex 2xl:w-[73%] xl:w-[70%] w-[70%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5">
@@ -90,9 +111,7 @@ export default function Index({ className }) {
                     )}
 
                     {toggleTabs === "ii" ? (
-                        <IndividualTable
-                            toggleTabs={toggleTabs}
-                        />
+                        <IndividualTable toggleTabs={toggleTabs} />
                     ) : (
                         ""
                     )}
@@ -115,7 +134,7 @@ export default function Index({ className }) {
                                     Php
                                 </div>
                                 <div className="w-full 2xl:text-4xl xl:text-3xl text-3xl font-bold text-white">
-                                    {formattedAmount(totalICS)}
+                                    {formattedAmountAbbrv(totalICS)}
                                 </div>
                             </div>
                         </div>
@@ -134,7 +153,7 @@ export default function Index({ className }) {
                                     Php
                                 </div>
                                 <div className="w-full 2xl:text-4xl xl:text-3xl text-3xl font-bold text-white">
-                                    {formattedAmount(totalPAR)}
+                                    {formattedAmountAbbrv(totalPAR)}
                                 </div>
                             </div>
                         </div>

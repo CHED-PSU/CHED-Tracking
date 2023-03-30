@@ -79,27 +79,73 @@ export default function ICSTable({ className }) {
 
     const userMapper = (items) => {
         return items?.map((data) => {
-            return (
-                <UserList
-                    key={data.id}
-                    firstname={data.firstname}
-                    img={data.img}
-                    surname={data.surname}
-                    middlename={data.middlename}
-                    suffix={data.suffix}
-                    prefix={data.prefix}
-                    designation={data.designation}
-                    passUserName={passUserName}
-                    passDesignation={passDesignation}
-                    name={data.name}
-                    id={data.id}
-                    type={"ics-control"}
-                    getData={getData}
-                    clickForms={clickForms}
-                />
-            );
+            if (data.role_id != 4) {
+                return (
+                    <UserList
+                        key={data.id}
+                        firstname={data.firstname}
+                        img={data.img}
+                        surname={data.surname}
+                        middlename={data.middlename}
+                        suffix={data.suffix}
+                        prefix={data.prefix}
+                        designation={data.designation}
+                        passUserName={passUserName}
+                        passDesignation={passDesignation}
+                        name={data.name}
+                        id={data.id}
+                        type={"ics-control"}
+                        getData={getData}
+                        clickForms={clickForms}
+                    />
+                );
+            }
         });
     };
+
+    const loadingSkeleton = Array.from({ length: 9 }).map((_, index) => (
+        <tr
+            key={index}
+            className="h-18 text-xs border dark:border-neutral-700 bg-white text-th dark:bg-darkColor-800 dark:text-white hover:bg-primary hover:bg-opacity-5 dark:hover:bg-darkColor-700 cursor-default transition duration-150 ease-in-out"
+        >
+            {/* name */}
+            <td>
+                <a className="text-left pl-6 flex items-center w-full h-12 gap-3">
+                    <div className="flex flex-none items-center">
+                        <span className="w-12 h-12 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <span className="w-36 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                        <span className="w-20 h-3 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                </a>
+            </td>
+            {/* status */}
+            <td>
+                <a className="text-left flex items-center w-full h-12 gap-3">
+                    <div className="flex flex-col gap-1 items-center w-full">
+                        <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                </a>
+            </td>
+            {/* email */}
+            <td>
+                <a className="text-center flex items-center w-full h-12 gap-3 pl-4">
+                    <div className="flex flex-col items-center w-full justify-center">
+                        <span className="w-32 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                </a>
+            </td>
+            {/* mobile no */}
+            <td>
+                <div
+                    className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
+                >
+                    <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                </div>
+            </td>
+        </tr>
+    ));
 
     return (
         <div className={className + " w-full h-full relative"}>
@@ -139,14 +185,7 @@ export default function ICSTable({ className }) {
                 <tbody>
                     {/*item 1*/}
                     {Loading ? (
-                        <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                            <td
-                                colSpan="100"
-                                className="text-center h-12 bg-white border"
-                            >
-                                <small className="text-sm">Loading data.</small>
-                            </td>
-                        </tr>
+                        loadingSkeleton
                     ) : UserLists?.length === 0 ? (
                         <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                             {/* checkbox */}

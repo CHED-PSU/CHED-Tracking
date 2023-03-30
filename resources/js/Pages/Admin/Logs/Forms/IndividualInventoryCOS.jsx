@@ -42,7 +42,6 @@ export default function IndividualInventoryCOS(props) {
                         {data.description}
                     </td>
                     <td className="text-center px-2 border">{data.qty}</td>
-                    <td className="text-center px-2 border"></td>
                     <td className="text-center px-2 border">{data.code}</td>
                     <td className="text-center px-2 border">
                         {formattedAmount(data.qty * data.amount)}
@@ -51,7 +50,6 @@ export default function IndividualInventoryCOS(props) {
                         {formatDateDisplay(data.date)}
                     </td>
                     <td className="text-center px-2 border">{toUpper(data.remarks)}</td>
-                    <td className="text-center px-2 border"></td>
                 </tr>
             );
         });
@@ -116,7 +114,7 @@ export default function IndividualInventoryCOS(props) {
                                         {props.userName.toUpperCase()}
                                     </p>
                                     <p className="text-xs text-slate-600 dark:text-neutral-300">
-                                        {props.designation}
+                                        {props.designation === null ? 'N/A' : props.designation}
                                     </p>
                                 </div>
                             </div>
@@ -156,12 +154,6 @@ export default function IndividualInventoryCOS(props) {
                                                     Qty
                                                 </th>
                                                 <th
-                                                    title="Serial No."
-                                                    className="h-10 font-medium text-center border px-2"
-                                                >
-                                                    Serial No
-                                                </th>
-                                                <th
                                                     title="Inventory Item No."
                                                     className="h-10 font-medium text-center border px-2"
                                                 >
@@ -178,12 +170,6 @@ export default function IndividualInventoryCOS(props) {
                                                     className="h-10 font-medium text-center border px-2"
                                                 >
                                                     Date Acquired
-                                                </th>
-                                                <th
-                                                    title="Remarks"
-                                                    className="h-10 font-medium text-center border px-2"
-                                                >
-                                                    Remarks/Transferred
                                                 </th>
                                                 <th
                                                     title="Remarks"

@@ -1,3 +1,4 @@
+import { toUpper } from "lodash";
 import React, { createRef, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import InventorySticker from "./Modal/InventorySticker";
@@ -37,27 +38,27 @@ export default function ICSDetails(props) {
                     className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
                 >
                     <td className="text-center px-2 border">{data.quantity}</td>
-                    <td className="text-center px-2 border">{data.unit}</td>
+                    <td className="text-center px-2 border">{toUpper(data.unit)}</td>
                     <td className="text-center px-2 border">
                         {formattedAmount(data.quantity * data.price)}
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div className="font-semibold">{data.article}</div>
+                        <div className="font-semibold">{toUpper(data.article)}</div>
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div className="min-w-[100px]">{data.description}</div>
+                        <div className="min-w-[100px]">{toUpper(data.description)}</div>
                     </td>
                     <td className="text-left px-2 border"></td>
-                    <td className="text-center px-2 border">{data.eul}</td>
+                    <td className="text-center px-2 border">{toUpper(data.eul)}</td>
                     <td className="text-center px-2 border">
-                        {data.firstname +
+                        {toUpper(data.firstname +
                               " " +
                               (data.middlename == null
                                   ? ""
                                   : data.middlename.charAt(0) + "." + " ") +
                               " " +
                               data.surname +
-                              (data.suffix == null ? "" : " " + data.suffix)}
+                              (data.suffix == null ? "" : " " + data.suffix))}
                     </td>
                 </tr>
             );

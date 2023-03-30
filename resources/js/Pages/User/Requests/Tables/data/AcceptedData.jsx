@@ -2,6 +2,12 @@ import { data } from "autoprefixer";
 import React from "react";
 
 export default function AcceptedData(props) {
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
     return (
         <>
         <tr className="relative h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
@@ -27,7 +33,7 @@ export default function AcceptedData(props) {
             <td>
                 <a className="text-left flex items-center w-full h-12 gap-3">
                     <div className="flex flex-col gap-1">
-                        <h5 className="text-[14px] font-medium text-text-black w-[220px] truncate">P{props.price}</h5>
+                        <h5 className="text-[14px] font-medium text-text-black w-[220px] truncate">₱ {formattedAmount(props.price)}</h5>
                         <p className="text-[#878787] text-[14px]">Date Accepted: {props.date}</p>
                     </div>
                 </a>

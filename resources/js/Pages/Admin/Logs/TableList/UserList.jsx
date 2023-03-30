@@ -52,7 +52,7 @@ export default function UserList(props) {
     }
 
     return (
-        <tr className="h-18 text-xs border dark:border-neutral-700 bg-white hover:bg-primary hover:bg-opacity-5 text-th dark:bg-darkColor-800 dark:text-white dark:hover:bg-darkColor-700 cursor-default transition duration-150 ease-in-out">
+        <tr className="h-18 text-xs border dark:border-neutral-700 bg-white hover:bg-primary hover:bg-opacity-5 dark:hover:bg-darkColor-700 dark:bg-darkColor-800 dark:text-white text-th cursor-default transition duration-150 ease-in-out">
             {/* name */}
             <td>
                 <a className="text-left pl-6 flex items-center w-full h-12 gap-3">

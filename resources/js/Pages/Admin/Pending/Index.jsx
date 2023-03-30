@@ -181,7 +181,7 @@ export default function Pending({ className }) {
     return (
         <div className={className + " 2xl:px-10 xl:px-5 px-5"}>
             {/* Loader */}
-            {Loading ? <Loader /> : ""}
+            {Loading ? <><Loader />add</> : ""}
             {/* Loader */}
 
             <div className="absolute -right-14 bottom-0 w-1/3 -z-10">

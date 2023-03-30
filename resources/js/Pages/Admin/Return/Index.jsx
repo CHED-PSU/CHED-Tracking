@@ -399,6 +399,60 @@ export default function Return({ className }) {
         (returnedItemsByStatus?.length || 0) / itemsPerPage
     );
 
+    const loadingSkeleton = Array.from({ length: 9 }).map((_, index) => (
+        <tr
+            key={index}
+            className="h-18 text-xs border dark:border-neutral-700 bg-white text-th dark:bg-darkColor-800 dark:text-white dark:hover:bg-darkColor-700 cursor-default transition duration-150 ease-in-out"
+        >
+            {/* name */}
+            <td>
+                <a className="text-left pl-6 flex items-center w-full h-12 gap-3">
+                    <div className="flex flex-none items-center">
+                    <span className="w-6 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                </a>
+            </td>
+            {/* request */}
+            <td>
+                <a className="text-left flex items-center w-full h-12 gap-3">
+                    <div className="flex flex-none items-center">
+
+                        <span className="w-12 h-12 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <span className="w-36 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                        <span className="w-20 h-3 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                </a>
+            </td>
+            {/* defect */}
+            <td>
+                <a className="text-center flex items-center w-full h-12 gap-3 pl-4">
+                    <div className="flex flex-col w-full justify-center gap-2">
+                        <span className="w-52 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                        <span className="w-28 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                </a>
+            </td>
+            {/* item status */}
+            <td>
+                <div
+                    className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
+                >
+                    <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                </div>
+            </td>
+            {/* actions */}
+            <td>
+                <div
+                    className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
+                >
+                    <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                </div>
+            </td>
+        </tr>
+    ));
+
     return (
         <div className={className + "  flex justify-center"}>
             {buttonDisable === "open" ? (
@@ -490,18 +544,21 @@ export default function Return({ className }) {
                         <button
                             className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("all")}
+                            title="Returned"
                         >
                             <i className="fa-solid fa-box-archive"></i>
                         </button>
                         <button
                             className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("Unserviceable")}
+                            title="Unserviceable"
                         >
                             <i className="fa-solid fa-trash-can-arrow-up"></i>
                         </button>
                         <button
                             className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("Inventories")}
+                            title="Inventory"
                         >
                             <i className="fa-solid fa-box"></i>
                         </button>
@@ -529,16 +586,7 @@ export default function Return({ className }) {
                         </thead>
                         <tbody>
                             {Loading ? (
-                                <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                    <td
-                                        colSpan="5"
-                                        className="text-center h-12 bg-white border"
-                                    >
-                                        <small className="text-sm">
-                                            Loading data.
-                                        </small>
-                                    </td>
-                                </tr>
+                                loadingSkeleton
                             ) : returnedItemsByStatus?.length > 0 ? (
                                 returnItemsMapper(slicedData)
                             ) : (
