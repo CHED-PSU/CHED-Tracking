@@ -48,7 +48,7 @@ export default function ICSDetails(props) {
                     <td className="text-left px-2 py-3 border">
                         <div className="min-w-[100px]">{toUpper(data.description)}</div>
                     </td>
-                    <td className="text-left px-2 border"></td>
+                    <td className="text-left px-2 border">{data.code}</td>
                     <td className="text-center px-2 border">{toUpper(data.eul)}</td>
                     <td className="text-center px-2 border">
                         {toUpper(data.firstname +
@@ -60,6 +60,7 @@ export default function ICSDetails(props) {
                               data.surname +
                               (data.suffix == null ? "" : " " + data.suffix))}
                     </td>
+                    <td className="text-center px-2 border">{toUpper(data.item_status)}</td>
                 </tr>
             );
         });
@@ -195,6 +196,9 @@ export default function ICSDetails(props) {
                                             </th>
                                             <th className="h-10 px-2 font-medium border">
                                                 Assigned to
+                                            </th>
+                                            <th className="h-10 px-2 font-medium border">
+                                                Remarks
                                             </th>
                                         </tr>
                                         {/* header */}

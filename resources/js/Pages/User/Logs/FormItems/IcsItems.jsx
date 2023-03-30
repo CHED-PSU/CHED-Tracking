@@ -68,7 +68,7 @@ export default function IcsItems({ data }) {
                 <a className="text-left flex items-center w-full gap-3">
                     <div className="flex flex-col gap-1">
                         <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
-                            From John Doe
+                            {data.firstname}
                         </p>
                     </div>
                 </a>

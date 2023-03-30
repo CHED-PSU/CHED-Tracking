@@ -53,6 +53,7 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                 setIssuedDate(form_details.issued_date);
                 setdesignation(form_details.designation1);
                 setdesignation2(form_details.designation2);
+                setdesignation2(form_details.designation2);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -179,6 +180,9 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                             </th>
                                             <th className="h-10 px-2 font-medium border">
                                                 Assigned to
+                                            </th>
+                                            <th className="h-10 px-2 font-medium border">
+                                                Remarks
                                             </th>
                                         </tr>
                                     </thead>

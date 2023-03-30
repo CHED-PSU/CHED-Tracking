@@ -1,3 +1,4 @@
+import { upperCase } from "lodash";
 import React from "react";
 
 export default function IcsItemLists({ data }) {
@@ -37,6 +38,9 @@ export default function IcsItemLists({ data }) {
                               " " +
                               data.surname +
                               (data.suffix == null ? "" : " " + data.suffix)}</td>
+            <td className="text-left px-3 border">
+                {upperCase(data.item_status)}
+            </td>
         </tr>
     )
 }

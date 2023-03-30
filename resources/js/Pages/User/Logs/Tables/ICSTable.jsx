@@ -86,7 +86,7 @@ export default function ICSTable({ setTotalICS }) {
                                 Amount
                             </th>
                             <th className="h-10 font-medium text-left">
-                                Remarks/Transferred
+                                Issued By
                             </th>
                             <th className="h-10 w-32 font-medium">Actions</th>
                         </tr>

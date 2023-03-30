@@ -561,11 +561,17 @@ class ItemController extends Controller
         $total = 0;
 
         foreach ($req->input('selectedId') as $data) {
+           $assigned_to = DB::table('users')
+            ->select    ('firstname' ,'surname')
+            ->where('id',$req->input('user_id'))
+            ->first();
+
             DB::table('user_returned_items as uri')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
                 ->where('uri.uri_id', $data)
                 ->update([
-                    'uri.status' => 'Assigned to Another User',
+                    'uri.status' => 'Assigned to ' . $assigned_to->firstname . ' ' . $assigned_to->surname,
+                    'ui.item_status' => 'Assigned to ' . $assigned_to->firstname . ' ' . $assigned_to->surname
                 ]);
 
             $price = DB::table('user_returned_items as uri')
@@ -576,6 +582,8 @@ class ItemController extends Controller
                 ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
                 ->where('uri.uri_id', $data)
                 ->first();
+
+
 
             $total += $price->price;
         }
@@ -608,6 +616,7 @@ class ItemController extends Controller
                 ->insert([
                     'trackings_id' => $tracking_id,
                     'item_id'      => $getItemId->item_id,
+                    'assigned_to'  => $req->input('user_id'),
                     'eul'          => 'none'
                 ]);
         }
