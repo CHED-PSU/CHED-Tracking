@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ICSNotification from "./Notification/ICSNotification";
-import PARNotification from "./Notification/PARNotification";
 import Profilesett from "./ProfileSettings/ProfileSettings";
 import io from "socket.io-client";
 const socket = io.connect("http://127.0.0.1:8001");

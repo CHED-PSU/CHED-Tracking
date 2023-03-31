@@ -29,12 +29,6 @@ export default function ICSControl(props) {
         }
     }
 
-    function formattedAmount(index) {
-        const amount = index;
-        const formattedAmount = Math.abs(amount).toLocaleString();
-        return formattedAmount;
-    }
-
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 9;
 
@@ -48,6 +42,12 @@ export default function ICSControl(props) {
     );
 
     const pageCount = Math.ceil((props.icsControl?.length || 0) / itemsPerPage);
+
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
 
     function formatDateDisplay(dateString) {
         const date = new Date(dateString);

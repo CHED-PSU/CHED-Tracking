@@ -41,18 +41,38 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                 const response = await axios.post("/api/getIcsDetails", {
                     id: id,
                 });
-
                 const data = await response.data.dataItems;
                 const form_details = await response.data.form_details;
 
                 setIcsItemLists(data);
                 setform_no(form_details.ics_no);
-                setReceived(form_details.received);
-                setIssued(form_details.issued);
+                setReceived(
+                    form_details.receiverF +
+                        " " +
+                        (form_details.receiverM == null
+                            ? ""
+                            : form_details.receiverM.charAt(0) + "." + " ") +
+                        " " +
+                        form_details.receiverS +
+                        (form_details.receiverSuf == null
+                            ? ""
+                            : " " + form_details.receiverSuf)
+                );
+                setIssued(
+                    form_details.issuerF +
+                        " " +
+                        (form_details.issuerM == null
+                            ? ""
+                            : form_details.issuerM.charAt(0) + "." + " ") +
+                        " " +
+                        form_details.issuerS +
+                        (form_details.issuerSuf == null
+                            ? ""
+                            : " " + form_details.issuerSuf)
+                );
                 setReceivedDate(form_details.received_date);
                 setIssuedDate(form_details.issued_date);
                 setdesignation(form_details.designation1);
-                setdesignation2(form_details.designation2);
                 setdesignation2(form_details.designation2);
             } catch (e) {
                 console.log(e);
@@ -134,7 +154,7 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                             Fund Cluster:
                                         </div>
                                         <div className="text-xs  dark:text-gray-400 font-semibold">
-                                            {''}
+                                            {""}
                                         </div>
                                     </div>
                                 </div>
@@ -155,7 +175,7 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                     id="items"
                                     className="table-auto w-full min-w-[700px]"
                                 >
-                                    <thead>
+                                    <tbody id="slip-table">
                                         <tr className="avoid text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                                             <th className="h-10 px-2 font-medium border">
                                                 Qty
@@ -185,8 +205,6 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                                 Remarks
                                             </th>
                                         </tr>
-                                    </thead>
-                                    <tbody id="slip-table">
                                         {/* index 1 */}
                                         {Loading ? (
                                             <tr className="avoid text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
@@ -219,10 +237,6 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                             Signature Over Printed Name
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            Admin.Assist.III/Property
-                                            Officer-Designate
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
                                             {designation}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
@@ -243,9 +257,6 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                                             Signature Over Printed Name
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            ES II
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
                                             {designation2}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
@@ -256,10 +267,8 @@ export default function ICSDetails({ className, clickSubForms, id }) {
                             </div>
                         </div>
                     </div>
-                    {/* data table */}
                 </div>
             </div>
-            {/* <ICSprintable data1 = {icsItemLists} key={icsItemLists.id}  ref = {ref} hidden={"hidden"}/> */}
         </div>
     );
 }

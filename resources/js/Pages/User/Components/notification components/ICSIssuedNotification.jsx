@@ -10,7 +10,7 @@ export default function ICSIssuedNotification({
 }) {
     let modalBody = useRef();
 
-    const [loading, setLoading] = useState(false);
+    const [Loading, setLoading] = useState(false);
 
     const [items, setItems] = useState([]);
     const [formDetails, setFormDetails] = useState([]);
@@ -147,186 +147,384 @@ export default function ICSIssuedNotification({
             ) : (
                 ""
             )}
-            <div className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-30">
+
+            {Loading ? (
+                ""
+            ) : formDetails.description === "ICS" ? (
                 <div
-                    ref={modalBody}
-                    className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-8 py-6 z-20"
+                    id="ICS"
+                    className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-30"
                 >
-                    <button
-                        onClick={() => setOpenNotifSpecList(false)}
-                        className="closeModal text-xl pb-2"
+                    <div
+                        ref={modalBody}
+                        className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-8 py-6 z-20"
                     >
-                        <i className="fa-solid fa-xmark"></i>
-                    </button>
-                    <div className="bg-white dark:bg-darkColor-900 rounded-lg px-5 pt-2 ">
-                        <div className="text-center dark:text-white py-2">
-                            <div className="text-sm font-semibold">
-                                ISSUED {formDetails
-                                            ? formDetails.description
-                                            : ""} FORM DETAILS
-                            </div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <div className="">
-                                <div className="pt-4 flex items-center gap-2">
-                                    <div className="text-xs dark:text-white">
-                                        Entity Name:
-                                    </div>
-                                    <div className="text-xs  dark:text-gray-400 font-semibold">
-                                        Commision on Higher Education
-                                    </div>
-                                </div>
-                                <div className="pt-1 flex items-center gap-2">
-                                    <div className="text-xs dark:text-white">
-                                        Fund Cluster:
-                                    </div>
-                                    <div className="text-xs  dark:text-gray-400 font-semibold">
-                                        101
-                                    </div>
+                        <button
+                            onClick={() => setOpenNotifSpecList(false)}
+                            className="closeModal text-xl pb-2"
+                        >
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+                        <div className="bg-white dark:bg-darkColor-900 rounded-lg px-5 pt-2 ">
+                            <div className="text-center dark:text-white py-2">
+                                <div className="text-sm font-semibold">
+                                    INVENTORY CUSTODIAN SLIP
                                 </div>
                             </div>
-                            <div className="">
-                                <div className="pt-1 flex items-center gap-2">
-                                    <div className="text-xs dark:text-white">
-                                        {formDetails
-                                            ? formDetails.description
-                                            : ""}{" "}
-                                        No: <span id="form_identifier"></span>
+                            <div className="flex justify-between items-center">
+                                <div className="">
+                                    <div className="pt-4 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            Entity Name:
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            Commision on Higher Education
+                                        </div>
                                     </div>
-                                    <div className="text-xs  dark:text-gray-400 font-semibold">
-                                        {formDetails
-                                            ? formDetails.tracking_id
-                                            : ""}
+                                    <div className="pt-1 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            Fund Cluster:
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            101
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="mt-4 mb-2 overflow-y-hidden">
-                            <table
-                                id="items"
-                                className="table-auto w-full min-w-[700px]"
-                            >
-                                <thead>
-                                    <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                        <th className="h-10 w-20 text-center font-medium border px-2">
-                                            Qty
-                                        </th>
-                                        <th className="h-10 w-20 text-center font-medium border px-2">
-                                            Unit
-                                        </th>
-                                        <th className="h-10 w-10 text-center font-medium border px-2">
-                                            Amount
-                                        </th>
-                                        <th className="h-10 w-50 text-center font-medium border px-2">
-                                            Description
-                                        </th>
-                                        <th className="h-10 w-40 text-center font-medium border px-2">
-                                            Inventory Item No.
-                                        </th>
-                                        <th className="h-10 w-30 text-center font-medium border px-2">
-                                            Estimated Useful Life
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody id="slip-table">
-                                    {/* index 1 */}
-                                    {itemsData(Object.values(items))}
-                                    {/* index 2 */}
-                                    <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td
-                                            colSpan="6"
-                                            className="text-xs px-2 h-fit text-center"
-                                        >
-                                            *nothing follows*
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <div className="flex justify-center w-1/2 flex-none flex-col items-center">
-                                <div className="w-fit">
-                                    <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                        Issued by:{" "}
-                                        {formDetails
-                                            ? formDetails.u1name +
-                                              " " +
-                                              formDetails.u1surname
-                                            : ""}
-                                    </div>
-                                    <div
-                                        className="pt-1 text-left text-sm underline font-semibold dark:text-white"
-                                        id="Property_custodian_name"
-                                    ></div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails
-                                            ? formDetails.u1designation
-                                            : ""}
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        Position/Office
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails ? formDetails.u1role : ""}
+                                <div className="">
+                                    <div className="pt-1 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            {formDetails
+                                                ? formDetails.description
+                                                : ""}{" "}
+                                            No:{" "}
+                                            <span id="form_identifier"></span>
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            {formDetails
+                                                ? formDetails.tracking_id
+                                                : ""}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex justify-center w-1/2 flex-none flex-col items-center">
-                                <div className="w-fit">
-                                    <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                        Received by:{" "}
-                                        {formDetails
-                                            ? formDetails.u2name +
-                                              " " +
-                                              formDetails.u2surname
-                                            : ""}
-                                    </div>
-                                    <div
-                                        className="pt-1 text-left text-sm underline font-semibold dark:text-white"
-                                        id="user-employee"
-                                    ></div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails
-                                            ? formDetails.u2designation
-                                            : ""}
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        Position/Office
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails ? formDetails.u2role : ""}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="pt-8">
-                        {/* Hide this buttons if the form is already accepted */}
-                        {confirmation === "accepted" ? (
-                            <div className="flex gap-4 pb-4 justify-center">
-                                <button className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
-                                    Accepted
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="flex gap-4 pb-4 justify-center">
-                                <button
-                                    onClick={declineHandler}
-                                    className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
+                            <div className="mt-4 mb-2 overflow-y-hidden">
+                                <table
+                                    id="items"
+                                    className="table-auto w-full min-w-[700px]"
                                 >
-                                    Decline
-                                </button>
-                                <button
-                                    onClick={acceptHandler}
-                                    className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
-                                >
-                                    Accept
-                                </button>
+                                    <thead>
+                                        <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                            <th className="h-10 w-20 text-center font-medium border px-2">
+                                                Qty
+                                            </th>
+                                            <th className="h-10 w-20 text-center font-medium border px-2">
+                                                Unit
+                                            </th>
+                                            <th className="h-10 w-10 text-center font-medium border px-2">
+                                                Amount
+                                            </th>
+                                            <th className="h-10 w-50 text-center font-medium border px-2">
+                                                Description
+                                            </th>
+                                            <th className="h-10 w-40 text-center font-medium border px-2">
+                                                Inventory Item No.
+                                            </th>
+                                            <th className="h-10 w-30 text-center font-medium border px-2">
+                                                Estimated Useful Life
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="slip-table">
+                                        {/* index 1 */}
+                                        {itemsData(Object.values(items))}
+                                        {/* index 2 */}
+                                        <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                            <td
+                                                colSpan="6"
+                                                className="text-xs px-2 h-fit text-center"
+                                            >
+                                                *nothing follows*
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                        )}
+                            <div className="flex justify-between items-center">
+                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
+                                    <div className="w-fit">
+                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
+                                            Issued by:{" "}
+                                            {formDetails
+                                                ? formDetails.u1name +
+                                                  " " +
+                                                  formDetails.u1surname
+                                                : ""}
+                                        </div>
+                                        <div
+                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
+                                            id="Property_custodian_name"
+                                        ></div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u1designation
+                                                : ""}
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u1role
+                                                : ""}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
+                                    <div className="w-fit">
+                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
+                                            Received by:{" "}
+                                            {formDetails
+                                                ? formDetails.u2name +
+                                                  " " +
+                                                  formDetails.u2surname
+                                                : ""}
+                                        </div>
+                                        <div
+                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
+                                            id="user-employee"
+                                        ></div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u2designation
+                                                : ""}
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u2role
+                                                : ""}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="pt-8">
+                            {/* Hide this buttons if the form is already accepted */}
+                            {confirmation === "accepted" ? (
+                                <div className="flex gap-4 pb-4 justify-center">
+                                    <button className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
+                                        Accepted
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="flex gap-4 pb-4 justify-center">
+                                    <button
+                                        onClick={declineHandler}
+                                        className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
+                                    >
+                                        Decline
+                                    </button>
+                                    <button
+                                        onClick={acceptHandler}
+                                        className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
+                                    >
+                                        Accept
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div
+                    id="PAR"
+                    className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-30"
+                >
+                    <div
+                        ref={modalBody}
+                        className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-8 py-6 z-20"
+                    >
+                        <button
+                            onClick={() => setOpenNotifSpecList(false)}
+                            className="closeModal text-xl pb-2"
+                        >
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+                        <div className="bg-white dark:bg-darkColor-900 rounded-lg px-5 pt-2 ">
+                            <div className="text-center dark:text-white py-2">
+                                <div className="text-sm font-semibold">
+                                    PROPERTY ACKNOWLEDGEMENT RECEIPT
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <div className="">
+                                    <div className="pt-4 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            Entity Name:
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            Commision on Higher Education
+                                        </div>
+                                    </div>
+                                    <div className="pt-1 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            Fund Cluster:
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            101
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="">
+                                    <div className="pt-1 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            {formDetails
+                                                ? formDetails.description
+                                                : ""}{" "}
+                                            No:{" "}
+                                            <span id="form_identifier"></span>
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            {formDetails
+                                                ? formDetails.tracking_id
+                                                : ""}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="mt-4 mb-2 overflow-y-hidden">
+                                <table
+                                    id="items"
+                                    className="table-auto w-full min-w-[700px]"
+                                >
+                                    <thead>
+                                        <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                            <th className="h-10 w-20 text-center font-medium border px-2">
+                                                Qty
+                                            </th>
+                                            <th className="h-10 w-20 text-center font-medium border px-2">
+                                                Unit
+                                            </th>
+                                            <th className="h-10 w-10 text-center font-medium border px-2">
+                                                Amount
+                                            </th>
+                                            <th className="h-10 w-50 text-center font-medium border px-2">
+                                                Description
+                                            </th>
+                                            <th className="h-10 w-40 text-center font-medium border px-2">
+                                                Inventory Item No.
+                                            </th>
+                                            <th className="h-10 w-30 text-center font-medium border px-2">
+                                                Estimated Useful Life
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="slip-table">
+                                        {/* index 1 */}
+                                        {itemsData(Object.values(items))}
+                                        {/* index 2 */}
+                                        <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                            <td
+                                                colSpan="6"
+                                                className="text-xs px-2 h-fit text-center"
+                                            >
+                                                *nothing follows*
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
+                                    <div className="w-fit">
+                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
+                                            Issued by:{" "}
+                                            {formDetails
+                                                ? formDetails.u1name +
+                                                  " " +
+                                                  formDetails.u1surname
+                                                : ""}
+                                        </div>
+                                        <div
+                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
+                                            id="Property_custodian_name"
+                                        ></div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u1designation
+                                                : ""}
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u1role
+                                                : ""}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
+                                    <div className="w-fit">
+                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
+                                            Received by:{" "}
+                                            {formDetails
+                                                ? formDetails.u2name +
+                                                  " " +
+                                                  formDetails.u2surname
+                                                : ""}
+                                        </div>
+                                        <div
+                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
+                                            id="user-employee"
+                                        ></div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u2designation
+                                                : ""}
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u2role
+                                                : ""}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="pt-8">
+                            {/* Hide this buttons if the form is already accepted */}
+                            {confirmation === "accepted" ? (
+                                <div className="flex gap-4 pb-4 justify-center">
+                                    <button className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
+                                        Accepted
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="flex gap-4 pb-4 justify-center">
+                                    <button
+                                        onClick={declineHandler}
+                                        className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
+                                    >
+                                        Decline
+                                    </button>
+                                    <button
+                                        onClick={acceptHandler}
+                                        className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
+                                    >
+                                        Accept
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

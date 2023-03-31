@@ -24,16 +24,21 @@ export default function ParItems(props) {
 
     return (
         <tr className="h-14 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-            {openSubForms === "open" ? <PARDetails
-                id ={props.data.id}
-                clickSubForms={clickSubForms}
-                className={ ""}
-            />: ""}
+            {openSubForms === "open" ? (
+                <PARDetails
+                    id={props.data.trackings_id}
+                    clickSubForms={clickSubForms}
+                    className={""}
+                />
+            ) : (
+                ""
+            )}
+
             {/* ICS No. */}
             <td>
                 <a className="text-left pl-6 flex items-center w-full gap-3">
                     <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
-                        {props.data.assign_no}
+                        {props.data.tracking_id}
                     </p>
                 </a>
             </td>
@@ -44,9 +49,7 @@ export default function ParItems(props) {
                         <h4 className="2xl:text-[17px] xl:text-[15px] text-[15px] font-medium text-text-black">
                             {formatDateDisplay(props.data.created_at)}
                         </h4>
-                        <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
-                            
-                        </p>
+                        <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]"></p>
                     </div>
                 </a>
             </td>
@@ -55,7 +58,7 @@ export default function ParItems(props) {
                 <a className="text-left flex items-center w-full gap-3">
                     <div className="flex flex-col gap-1">
                         <h4 className="text-[16px] font-medium text-primary">
-                        {formattedAmount(props.data.total)}
+                            {formattedAmount(props.data.total)}
                         </h4>
                         <p className="text-[#878787] 2xl:text-[14px] xl:text-[12px] text-[12px]">
                             Php
@@ -87,5 +90,5 @@ export default function ParItems(props) {
                 </div>
             </td>
         </tr>
-    )
+    );
 }

@@ -1,3 +1,4 @@
+import { toUpper } from "lodash";
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 
@@ -17,26 +18,59 @@ export default function PARDetails(props) {
         documentTitle: "PAR",
     });
 
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
     const parItemsMapper = (items) => {
         return items?.map((data) => {
             return (
-                <tr className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                    <td className="text-center px-3 border">{data.quantity}</td>
-                    <td className="text-center px-3 border">{data.unit}</td>
-                    <td className="text-center px-3 border">
+                <>
+                <tr className="avoid text-xs h-fit cursor-default border border-darkColor-700 dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                    <td rowSpan={2} className="text-center px-3 border border-darkColor-700">{data.quantity}</td>
+                    <td rowSpan={2} className="text-center px-3 border border-darkColor-700">
+                        {toUpper(data.unit)}
+                    </td>
+                    <td className="text-left font-semibold px-3 border border-darkColor-700 text-xs">
+                        {data.article}
+                    </td>
+                    <td className="border border-darkColor-700"></td>
+                    <td className="border border-darkColor-700"></td>
+                    <td className="border border-darkColor-700"></td>
+                </tr>
+                <tr className="font-medium text-ss">
+                    <td className="text-left font-medium p-3 border border-darkColor-700">
                         {data.description}
                     </td>
-                    <td className="text-left px-3 py-3 border">
-                        <div className="flex items-center">
-                            <div className="font-semibold mr-3"></div>
-                            <div>{data.property_no}</div>
-                        </div>
+                    <td className="text-center border border-darkColor-700">
+                        {data.property_no}
                     </td>
-                    <td className="text-left px-3 border">{data.created_at}</td>
-                    <td className="text-center px-3 border">
-                        {data.quantity * data.price}
+                    <td className="text-center border border-darkColor-700">
+                        {props.dateAcquired}
+                    </td>
+                    <td className="text-center border border-darkColor-700">
+                        {formattedAmount(data.quantity * data.price)}
                     </td>
                 </tr>
+                <tr>
+                    <td className="border border-darkColor-700"></td>
+                    <td className="border border-darkColor-700"></td>
+                    <td className="text-center font-semibold text-ss border border-darkColor-700">*nothing follows*</td>
+                    <td className="border border-darkColor-700"></td>
+                    <td className="border border-darkColor-700"></td>
+                    <td className="border border-darkColor-700"></td>
+                </tr>
+                </>
             );
         });
     };
@@ -44,7 +78,7 @@ export default function PARDetails(props) {
     return (
         <div className={props.className}>
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40">
-                <div className="dark:bg-darkColor-800 h-full w-[70%] border-x border-[#C8C8C8]">
+                <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                     {/* header */}
                     <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                         <div className="w-1/2">
@@ -64,29 +98,36 @@ export default function PARDetails(props) {
                                 </p>
                             </div>
                         </div>
-                        <div
-                            onClick={handlePrint}
-                            className="flex w-1/2 justify-end items-end"
-                        >
-                            <div className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer">
+
+
+                        <div className="flex w-1/2 justify-end items-end gap-4">
+                            <button
+                                className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer"
+                            >
+                                <i className="fa-solid fa-print mr-1"></i>
+                                Print Sticker
+                            </button>
+                            <button
+                                onClick={handlePrint}
+                                className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer">
                                 <i className="fa-solid fa-print mr-1"></i>
                                 Print
-                            </div>
+                            </button>
                         </div>
                     </div>
                     {/* header */}
                     {/* data table */}
-                    <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10">
-                        <div ref={ref} className="w-[8.27in] px-12 py-6">
-                            <div className="text-center dark:text-white py-2">
-                                <div className="text-sm font-semibold">
+                    <div className="bg-white text-darkColor-800 dark:bg-darkColor-900 rounded-lg mx-10">
+                        <div ref={ref} className="w-[8.27in] py-2">
+                            <div className="text-center pt-2 pb-6 dark:text-white border border-b-0 border-darkColor-700">
+                                <div className="text-[13px] font-bold">
                                     PROPERTY ACKNOWLEDGEMENT RECEIPT
                                 </div>
                             </div>
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center border border-y-0 border-darkColor-700 pb-3">
                                 <div className="">
                                     <div className="pt-4 flex items-center gap-2">
-                                        <div className="text-xs dark:text-white">
+                                        <div className="pl-3 text-xs dark:text-white">
                                             Entity Name:
                                         </div>
                                         <div className="text-xs dark:text-gray-400 font-semibold">
@@ -94,7 +135,7 @@ export default function PARDetails(props) {
                                         </div>
                                     </div>
                                     <div className="pt-1 flex items-center gap-2">
-                                        <div className="text-xs dark:text-white">
+                                        <div className="pl-3 text-xs dark:text-white">
                                             Fund Cluster:
                                         </div>
                                         <div className="text-xs dark:text-gray-400 font-semibold">
@@ -107,35 +148,35 @@ export default function PARDetails(props) {
                                         <div className="text-xs dark:text-white">
                                             PAR No:
                                         </div>
-                                        <div className="text-xs dark:text-gray-400 font-semibold">
+                                        <div className="pr-3 text-xs dark:text-gray-400 font-semibold">
                                             {props.formDetails.ics_no}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="mt-4 mb-2 overflow-y-hidden">
+                            <div className="">
                                 <table
                                     id="items "
                                     className="table-auto w-full min-w-[700px]"
                                 >
                                     <thead>
-                                        <tr className="avoid text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                            <th className="h-10 w-20 font-medium border">
+                                        <tr className="avoid text-xs text-darkColor-700 border dark:border-neutral-700 dark:bg-darkColor-700 dark:text-white cursor-default">
+                                        <th className="h-10 font-medium border border-darkColor-700">
                                                 Quantity
                                             </th>
-                                            <th className="h-10 w-20 font-medium border">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Unit
                                             </th>
-                                            <th className="h-10 font-medium border">
+                                            <th className="h-10 w-80 font-medium border border-darkColor-700">
                                                 Description
                                             </th>
-                                            <th className="h-10 w-40 font-medium border">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Property Number
                                             </th>
-                                            <th className="h-10 w-40 font-medium border">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Date Acquired
                                             </th>
-                                            <th className="h-10 w-40 font-medium border">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Amount
                                             </th>
                                         </tr>
@@ -164,53 +205,139 @@ export default function PARDetails(props) {
                                                 </td>
                                             </tr>
                                         )}
+
+<tr>
+                                            <td colSpan={3} className="font-medium border border-t-0 pb-3 border-darkColor-700">
+                                                <div className="pt-4 ml-2 text-left text-xs font-medium dark:text-white">
+                                                    Received by:
+                                                </div>
+                                                <div
+                                                    className="pt-10 text-center text-sm underline font-semibold dark:text-white"
+                                                    id="Property_custodian_name"
+                                                >
+                                                    {props.formDetails.receiverF +
+                                                        " " +
+                                                        (props.formDetails.receiverM ==
+                                                        null
+                                                            ? ""
+                                                            : props.formDetails.receiverM.charAt(
+                                                                0
+                                                            ) +
+                                                            "." +
+                                                            " ") +
+                                                        " " +
+                                                        props.formDetails.receiverS +
+                                                        (props.formDetails
+                                                            .receiverSuf == null
+                                                            ? ""
+                                                            : " " +
+                                                            props.formDetails
+                                                                .receiverSuf)}
+                                                </div>
+                                                <div className="text-center underline dark:text-gray-400 text-xs">
+                                                    {props.formDetails.designation2 ===
+                                                        null
+                                                            ? "N/A"
+                                                            : props.formDetails
+                                                                .designation2}
+                                                </div>
+                                                <div className="text-center dark:text-gray-400 text-xs">
+                                                    Position / Office
+                                                </div>
+                                                <div className="text-center underline dark:text-gray-400 text-xs">
+                                                    {formatDateDisplay(
+                                                        props.formDetails.received_date
+                                                    )}
+                                                </div>
+                                                <div className="pb-6 text-center dark:text-gray-400 text-xs">
+                                                    Date
+                                                </div>
+                                                {/* assigned to */}
+                                                <div className="pt-4 ml-2 text-left text-xs font-medium dark:text-white">
+                                                    Assigned to:
+                                                </div>
+                                                <div
+                                                    className="text-center text-sm font-semibold dark:text-white"
+                                                    id="Property_custodian_name"
+                                                >
+                                                    {props.formDetails.assignedF +
+                                                        " " +
+                                                        (props.formDetails.assignedM ==
+                                                        null
+                                                            ? ""
+                                                            : props.formDetails.assignedM.charAt(
+                                                                0
+                                                            ) +
+                                                            "." +
+                                                            " ") +
+                                                        " " +
+                                                        props.formDetails.assignedS +
+                                                        (props.formDetails
+                                                            .assignedSuf == null
+                                                            ? ""
+                                                            : " " +
+                                                            props.formDetails
+                                                                .assignedSuf)}
+                                                </div>
+                                                <div className="text-center dark:text-gray-400 text-xs">
+                                                    {props.formDetails.designation3 ===
+                                                        null
+                                                            ? "N/A"
+                                                            : props.formDetails
+                                                                .designation3}
+                                                </div>
+                                            </td>
+                                            <td colSpan={3} className="font-medium border border-t-0 pb-3 border-l-0 border-darkColor-700">
+                                                <div className="pt-4 ml-2 text-left text-xs font-medium dark:text-white">
+                                                    Issued by:
+                                                </div>
+                                                <div
+                                                    className="pt-16 text-center text-sm underline font-semibold dark:text-white"
+                                                    id="user-employee"
+                                                >
+                                                    {props.formDetails.issuerF +
+                                                    " " +
+                                                    (props.formDetails.issuerM ==
+                                                    null
+                                                        ? ""
+                                                        : props.formDetails.issuerM.charAt(
+                                                            0
+                                                        ) +
+                                                        "." +
+                                                        " ") +
+                                                    " " +
+                                                    props.formDetails.issuerS +
+                                                    (props.formDetails.issuerSuf ==
+                                                    null
+                                                        ? ""
+                                                        : " " +
+                                                        props.formDetails
+                                                            .issuerSuf)}
+                                                </div>
+                                                <div className="text-center underline dark:text-gray-400 text-xs">
+                                                    {props.formDetails.designation1 ===
+                                                    null
+                                                        ? "N/A"
+                                                        : props.formDetails
+                                                            .designation1}
+                                                </div>
+                                                <div className="text-center dark:text-gray-400 text-xs">
+                                                    Position / Office
+                                                </div>
+                                                <div className="text-center underline dark:text-gray-400 text-xs">
+                                                    {formatDateDisplay(
+                                                        props.formDetails.issued_date
+                                                    )}
+                                                </div>
+                                                <div className="pb-16 text-center dark:text-gray-400 text-xs">
+                                                    Date
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <div className="avoid flex justify-center w-1/2 flex-none flex-col items-center">
-                                    <div className="w-fit">
-                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                            Issued by:{" "}
-                                            {props.formDetails.issued}
-                                        </div>
-                                        <div
-                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
-                                            id="Property_custodian_name"
-                                        ></div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            Signature Over Printed Name
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.designation2}
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.issued_date}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="avoid flex justify-center w-1/2 flex-none flex-col items-center">
-                                    <div className="w-fit">
-                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                            Received by:{" "}
-                                            {props.formDetails.received}
-                                        </div>
-                                        <div
-                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
-                                            id="user-employee"
-                                        ></div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            Signature Over Printed Name
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.designation1}
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.received_date}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                     {/* data table */}

@@ -14,7 +14,7 @@ export default function PARControl(props) {
         setOpenSubForms(index);
     }
 
-    function getPardetails(index) {
+    function getParDetails(index) {
         setLoading(true);
         try {
             axios.post("api/getParDetails", { id: index }).then((response) => {
@@ -42,37 +42,76 @@ export default function PARControl(props) {
 
     const pageCount = Math.ceil((props.parControl?.length || 0) / itemsPerPage);
 
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
+    function displayName(data, prefix) {
+        const middleInitial = data.issuerM
+            ? data.issuerM.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.issuerPre || "",
+            data.issuerf || "",
+            middleInitial,
+            data.issuerS || "",
+            data.issuerSuf || "",
+        ];
+        const fullNameArr = [
+            data.issuerf || "",
+            middleInitial,
+            data.issuerS || "",
+            data.issuerSuf || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
     const parItemsMapper = (items) => {
         return items?.map((data) => {
             return (
-                <tr className="text-xs h-16 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 text-text-gray dark:text-white">
+                <tr key={data.id} className="text-xs h-16 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 text-text-gray dark:text-white">
                     <td className="text-left pl-6 pr-3 text-text-gray text-2base">
-                        {data.assign_no}
+                        {data.tracking_id}
                     </td>
                     <td className="text-left px-3">
                         <div className="flex flex-col gap-1">
                             <h5 className="text-base text-text-black font-semibold"></h5>
                             <h6 className="text-text-gray text-2base">
-                                Date Acquired: {data.created_at}
+                                Date Acquired: {formatDateDisplay(props.parDetails.receiverDate)}
                             </h6>
                         </div>
                     </td>
                     <td className="text-left px-3">
                         <div className="flex flex-col gap-1">
                             <h5 className="text-base font-semibold text-text-blue">
-                                {data.total}
+                                {formattedAmount(data.total)}
                             </h5>
                             <h6 className="text-text-gray text-2base">Php</h6>
                         </div>
                     </td>
                     <td className="text-left px-3 text-2base">
-                        {data.firstname + " " + data.surname}
+                        {displayName(props.parDetails, true)}
                     </td>
                     <td className="text-right">
                         <div
                             onClick={() => {
                                 clickSubForms("par-details"),
-                                    getPardetails(data.trackings_id);
+                                    getParDetails(data.trackings_id);
                             }}
                             className="pr-6 flex items-center justify-end w-full h-12 gap-3"
                         >
@@ -95,6 +134,7 @@ export default function PARControl(props) {
                     parItems={parItems ? parItems : ""}
                     formDetails={formDetails ? formDetails : ""}
                     userName={props.userName}
+                    dateAcquired={formatDateDisplay(props.parDetails.receiverDate)}
                     Loading={Loading}
                     setLoading={setLoading}
                     clickSubForms={clickSubForms}
@@ -147,7 +187,7 @@ export default function PARControl(props) {
                                             Amount
                                         </th>
                                         <th className="h-10 2xl:w-40 xl:w-10 w-10 font-medium text-left px-3">
-                                            Remarks/Transfered
+                                            Issued By
                                         </th>
                                         <th className="h-10 2xl:w-40 xl:w-10 w-10 font-medium text-right pr-6">
                                             Actions

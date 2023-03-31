@@ -6,14 +6,25 @@ import { useReactToPrint } from "react-to-print";
 
 export default function PARDetails({ className, clickSubForms, id }) {
     const ref = useRef();
+    const [Loading, setLoading] = useState(true);
     const [parItemLists, setParItemLists] = useState("");
     const [form_no, setform_no] = useState("");
     const [issued, setIssued] = useState("");
     const [received, setReceived] = useState("");
+    const [assigned, setAssigned] = useState("");
     const [issuedDate, setIssuedDate] = useState("");
     const [receivedDate, setReceivedDate] = useState("");
     const [designation, setdesignation] = useState("");
     const [designation2, setdesignation2] = useState("");
+    const [designation3, setdesignation3] = useState("");
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
 
     const handlePrint = useReactToPrint({
         content: () => ref.current,
@@ -29,30 +40,88 @@ export default function PARDetails({ className, clickSubForms, id }) {
     });
 
     useEffect(() => {
-        axios.get("/sanctum/csrf-cookie").then(() => {
-            axios.post("api/get_items", id).then((res) => {
-                setParItemLists(res.data.items);
-                setform_no(res.data.ics_no);
-                setReceived(res.data.received);
-                setIssued(res.data.issued);
-                setReceivedDate(res.data.received_date);
-                setIssuedDate(res.data.issued_date);
-                setdesignation(res.data.designation1);
-                setdesignation2(res.data.designation2);
-            });
-        });
+        const getItemsPar = async () => {
+            try {
+                const response = await axios.post("/api/getParDetails", {
+                    id: id,
+                });
+                const data = await response.data.dataItems;
+                const form_details = await response.data.form_details;
+
+                setParItemLists(data);
+                setform_no(form_details.ics_no);
+                setReceived(
+                    form_details.receiverF +
+                        " " +
+                        (form_details.receiverM == null
+                            ? ""
+                            : form_details.receiverM.charAt(0) + "." + " ") +
+                        " " +
+                        form_details.receiverS +
+                        (form_details.receiverSuf == null
+                            ? ""
+                            : " " + form_details.receiverSuf)
+                );
+                setIssued(
+                    form_details.issuerF +
+                        " " +
+                        (form_details.issuerM == null
+                            ? ""
+                            : form_details.issuerM.charAt(0) + "." + " ") +
+                        " " +
+                        form_details.issuerS +
+                        (form_details.issuerSuf == null
+                            ? ""
+                            : " " + form_details.issuerSuf)
+                );
+                setAssigned(form_details.assignedF +
+                    " " +
+                    (form_details.assignedM ==
+                    null
+                        ? ""
+                        : form_details.assignedM.charAt(
+                            0
+                        ) +
+                        "." +
+                        " ") +
+                    " " +
+                    form_details.assignedS +
+                    (form_details
+                        .assignedSuf == null
+                        ? ""
+                        : " " +
+                        form_details
+                            .assignedSuf));
+                setReceivedDate(formatDateDisplay(form_details.received_date));
+                setIssuedDate(formatDateDisplay(form_details.issued_date));
+                setdesignation(form_details.designation1 === null ? 'N/A' : form_details.designation1);
+                setdesignation2(form_details.designation2 === null ? 'N/A' : form_details.designation2);
+                setdesignation3(form_details.designation3 === null ? 'N/A' : form_details.designation3);
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getItemsPar();
     }, []);
 
     const parItemListsMapper = (items) => {
         return items.map((data) => {
-            return <ParItemLists key={data.id} data={data} />;
+            return (
+                <ParItemLists
+                    receivedDate={receivedDate}
+                    key={data.id}
+                    data={data}
+                />
+            );
         });
     };
 
     return (
         <div className={className}>
             <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40">
-                <div className="dark:bg-darkColor-800 h-full w-[70%] border border-[#C8C8C8]">
+                <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                     {/* header */}
                     <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
                         <div className="w-1/2">
@@ -62,7 +131,7 @@ export default function PARDetails({ className, clickSubForms, id }) {
                             >
                                 <i className="fa-solid fa-arrow-left text-2xl text-darkColor-800 dark:text-white"></i>
                             </button>
-                            <div className="text-left cursor-defaul">
+                            <div className="text-left cursor-default">
                                 <h4 className="text-primary dark:text-white text-2xl font-semibold">
                                     PAR Details
                                 </h4>
@@ -83,17 +152,17 @@ export default function PARDetails({ className, clickSubForms, id }) {
                     </div>
                     {/* header */}
                     {/* data table */}
-                    <div className="bg-white dark:bg-darkColor-900 rounded-lg mx-10">
-                        <div ref={ref} className="w-[8.27in] px-12 py-6">
-                            <div className="text-center dark:text-white py-2">
-                                <div className="text-sm font-semibold">
+                    <div className="bg-white text-darkColor-800 dark:bg-darkColor-900 rounded-lg mx-10">
+                        <div ref={ref} className="w-[8.27in] py-2 ">
+                            <div className="text-center pt-2 pb-6 dark:text-white border border-b-0 border-darkColor-700">
+                                <div className="text-[13px] font-bold">
                                     PROPERTY ACKNOWLEDGEMENT RECEIPT
                                 </div>
                             </div>
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center border border-y-0 border-darkColor-700 pb-3">
                                 <div className="">
                                     <div className="pt-4 flex items-center gap-2">
-                                        <div className="text-xs dark:text-white">
+                                        <div className="pl-3 text-xs dark:text-white">
                                             Entity Name:
                                         </div>
                                         <div className="text-xs dark:text-gray-400 font-semibold">
@@ -101,7 +170,7 @@ export default function PARDetails({ className, clickSubForms, id }) {
                                         </div>
                                     </div>
                                     <div className="pt-1 flex items-center gap-2">
-                                        <div className="text-xs dark:text-white">
+                                        <div className="pl-3 text-xs dark:text-white">
                                             Fund Cluster:
                                         </div>
                                         <div className="text-xs dark:text-gray-400 font-semibold">
@@ -114,35 +183,35 @@ export default function PARDetails({ className, clickSubForms, id }) {
                                         <div className="text-xs dark:text-white">
                                             PAR No:
                                         </div>
-                                        <div className="text-xs dark:text-gray-400 font-semibold">
+                                        <div className="pr-3 text-xs dark:text-gray-400 font-semibold">
                                             {form_no}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="mt-4 mb-2 overflow-y-hidden">
+                            <div className="">
                                 <table
                                     id="items "
                                     className="table-auto w-full min-w-[700px]"
                                 >
                                     <thead>
-                                        <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                            <th className="h-10 w-20 font-medium border">
+                                        <tr className="avoid text-xs text-darkColor-700 border dark:border-neutral-700 dark:bg-darkColor-700 dark:text-white cursor-default">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Quantity
                                             </th>
-                                            <th className="h-10 w-20 font-medium border">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Unit
                                             </th>
-                                            <th className="h-10 font-medium border">
+                                            <th className="h-10 w-80 font-medium border border-darkColor-700">
                                                 Description
                                             </th>
-                                            <th className="h-10 w-40 font-medium border">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Property Number
                                             </th>
-                                            <th className="h-10 w-40 font-medium border">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Date Acquired
                                             </th>
-                                            <th className="h-10 w-40 font-medium border">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Amount
                                             </th>
                                         </tr>
@@ -151,59 +220,70 @@ export default function PARDetails({ className, clickSubForms, id }) {
                                         {parItemListsMapper(
                                             Object.values(parItemLists)
                                         )}
-                                        {/* index 2 */}
+                                        {/* authorities */}
+                                        <tr>
+                                            <td colSpan={3} className="font-medium border border-t-0 pb-3 border-darkColor-700">
+                                                <div className="pt-4 ml-2 text-left text-xs font-medium dark:text-white">
+                                                    Received by:
+                                                </div>
+                                                <div
+                                                    className="pt-10 text-center text-sm underline font-semibold dark:text-white"
+                                                    id="Property_custodian_name"
+                                                >   {received}
+                                                </div>
+                                                <div className="text-center underline dark:text-gray-400 text-xs">
+                                                    {designation2}
+                                                </div>
+                                                <div className="text-center dark:text-gray-400 text-xs">
+                                                    Position / Office
+                                                </div>
+                                                <div className="text-center underline dark:text-gray-400 text-xs">
+                                                    {receivedDate}
+                                                </div>
+                                                <div className="pb-6 text-center dark:text-gray-400 text-xs">
+                                                    Date
+                                                </div>
+                                                {/* assigned to */}
+                                                <div className="pt-4 ml-2 text-left text-xs font-medium dark:text-white">
+                                                    Assigned to:
+                                                </div>
+                                                <div
+                                                    className="text-center text-sm font-semibold dark:text-white"
+                                                    id="Property_custodian_name"
+                                                >   {assigned}
+                                                </div>
+                                                <div className="text-center dark:text-gray-400 text-xs">
+                                                    {designation3}
+                                                </div>
+                                            </td>
+                                            <td colSpan={3} className="font-medium border border-t-0 pb-3 border-l-0 border-darkColor-700">
+                                                <div className="pt-4 ml-2 text-left text-xs font-medium dark:text-white">
+                                                    Issued by:
+                                                </div>
+                                                <div
+                                                    className="pt-16 text-center text-sm underline font-semibold dark:text-white"
+                                                    id="user-employee"
+                                                >   {issued}
+                                                </div>
+                                                <div className="text-center underline dark:text-gray-400 text-xs">
+                                                    {designation}
+                                                </div>
+                                                <div className="text-center dark:text-gray-400 text-xs">
+                                                    Position / Office
+                                                </div>
+                                                <div className="text-center underline dark:text-gray-400 text-xs">
+                                                    {issuedDate}
+                                                </div>
+                                                <div className="pb-16 text-center dark:text-gray-400 text-xs">
+                                                    Date
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
-                                    <div className="w-fit">
-                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                            Issued by: {issued}
-                                        </div>
-                                        <div
-                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
-                                            id="Property_custodian_name"
-                                        ></div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            Signature Over Printed Name
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            Admin.Assist.III/Property
-                                            Officer-Designate
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            {designation}
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            {issuedDate}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
-                                    <div className="w-fit">
-                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                            Received by: {received}
-                                        </div>
-                                        <div
-                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
-                                            id="user-employee"
-                                        ></div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            Signature Over Printed Name
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            ES II
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            {designation2}
-                                        </div>
-                                        <div className="dark:text-gray-400 text-xs">
-                                            {receivedDate}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+
                         </div>
                     </div>
                     {/* data table */}

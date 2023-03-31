@@ -5,7 +5,7 @@ export default function ICSNotification({
     className,
     clickICSNotification,
     listId,
-    formType
+    formType,
 }) {
     const [Loading, setLoading] = useState(true);
     const [items, setItems] = useState([]);
@@ -74,144 +74,299 @@ export default function ICSNotification({
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
-                    <div className="bg-white dark:bg-darkColor-900 rounded-lg px-5 pb-6 ">
-                        <div className="text-center dark:text-white py-2">
-                            <div className="text-sm font-semibold">
-                                ACCEPTED {formType} FORM DETAILS
-                            </div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <div className="">
-                                <div className="pt-4 flex items-center gap-2">
-                                    <div className="text-xs dark:text-white">
-                                        Entity Name:
-                                    </div>
-                                    <div className="text-xs  dark:text-gray-400 font-semibold">
-                                        Commision on Higher Education
-                                    </div>
-                                </div>
-                                <div className="pt-1 flex items-center gap-2">
-                                    <div className="text-xs dark:text-white">
-                                        Fund Cluster:
-                                    </div>
-                                    <div className="text-xs  dark:text-gray-400 font-semibold">
-                                        {""}
-                                    </div>
+                    {formType === "ICS" ? (
+                        <div
+                            id="ICS"
+                            className="bg-white dark:bg-darkColor-900 rounded-lg px-5 pb-6 "
+                        >
+                            <div className="text-center dark:text-white py-2">
+                                <div className="text-sm font-semibold">
+                                    INVENTORY CUSTODIAN SLIP
                                 </div>
                             </div>
-                            <div className="">
-                                <div className="pt-1 flex items-center gap-2">
-                                    <div className="text-xs dark:text-white">
-                                        {formType} No:{""}
+                            <div className="flex justify-between items-center">
+                                <div className="">
+                                    <div className="pt-4 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            Entity Name:
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            Commision on Higher Education
+                                        </div>
                                     </div>
-                                    <div className="text-xs  dark:text-gray-400 font-semibold">
-                                        {formDetails
-                                            ? formDetails.tracking_id
-                                            : ""}
+                                    <div className="pt-1 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            Fund Cluster:
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            {""}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="">
+                                    <div className="pt-1 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            {formType} No:{""}
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            {formDetails
+                                                ? formDetails.tracking_id
+                                                : ""}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="mt-4 mb-2 overflow-y-hidden">
-                            <table
-                                id="items"
-                                className="table-auto w-full min-w-[700px]"
-                            >
-                                <thead>
-                                    <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                        <th className="h-10 w-20 text-center font-medium border px-2">
-                                            Qty
-                                        </th>
-                                        <th className="h-10 w-20 text-center font-medium border px-2">
-                                            Unit
-                                        </th>
-                                        <th className="h-10 w-10 text-center font-medium border px-2">
-                                            Amount
-                                        </th>
-                                        <th className="h-10 w-50 text-center font-medium border px-2">
-                                            Description
-                                        </th>
-                                        <th className="h-10 w-40 text-center font-medium border px-2">
-                                            Inventory Item No.
-                                        </th>
-                                        <th className="h-10 w-30 text-center font-medium border px-2">
-                                            Estimated Useful Life
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody id="slip-table">
-                                    {Loading == false ? (
-                                        itemsData(Object.values(items))
-                                    ) : (
-                                        <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                            <td
-                                                colSpan="6"
-                                                className="text-xs px-2 h-fit text-center"
-                                            >
-                                                Loading data.
-                                            </td>
+                            <div className="mt-4 mb-2 overflow-y-hidden">
+                                <table
+                                    id="items"
+                                    className="table-auto w-full min-w-[700px]"
+                                >
+                                    <thead>
+                                        <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                            <th className="h-10 w-20 text-center font-medium border px-2">
+                                                Qty
+                                            </th>
+                                            <th className="h-10 w-20 text-center font-medium border px-2">
+                                                Unit
+                                            </th>
+                                            <th className="h-10 w-10 text-center font-medium border px-2">
+                                                Amount
+                                            </th>
+                                            <th className="h-10 w-50 text-center font-medium border px-2">
+                                                Description
+                                            </th>
+                                            <th className="h-10 w-40 text-center font-medium border px-2">
+                                                Inventory Item No.
+                                            </th>
+                                            <th className="h-10 w-30 text-center font-medium border px-2">
+                                                Estimated Useful Life
+                                            </th>
                                         </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <div className="flex justify-center w-1/2 flex-none flex-col items-center">
-                                <div className="w-fit">
-                                    <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                        Issued by:{" "}
-                                        {formDetails
-                                            ? formDetails.u1name +
-                                              " " +
-                                              formDetails.u1surname
-                                            : ""}
+                                    </thead>
+                                    <tbody id="slip-table">
+                                        {Loading == false ? (
+                                            itemsData(Object.values(items))
+                                        ) : (
+                                            <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                                <td
+                                                    colSpan="6"
+                                                    className="text-xs px-2 h-fit text-center"
+                                                >
+                                                    Loading data.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
+                                    <div className="w-fit">
+                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
+                                            Issued by:{" "}
+                                            {formDetails
+                                                ? formDetails.u1name +
+                                                  " " +
+                                                  formDetails.u1surname
+                                                : ""}
+                                        </div>
+                                        <div
+                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
+                                            id="Property_custodian_name"
+                                        ></div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u1designation
+                                                : ""}
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u1role
+                                                : ""}
+                                        </div>
                                     </div>
-                                    <div
-                                        className="pt-1 text-left text-sm underline font-semibold dark:text-white"
-                                        id="Property_custodian_name"
-                                    ></div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails
-                                            ? formDetails.u1designation
-                                            : ""}
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        Position/Office
-                                    </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails ? formDetails.u1role : ""}
+                                </div>
+                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
+                                    <div className="w-fit">
+                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
+                                            Received by: {""}
+                                            {formDetails
+                                                ? formDetails.u2name +
+                                                  " " +
+                                                  formDetails.u2surname
+                                                : ""}
+                                        </div>
+                                        <div
+                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
+                                            id="user-employee"
+                                        ></div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u2designation
+                                                : ""}
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u2role
+                                                : ""}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex justify-center w-1/2 flex-none flex-col items-center">
-                                <div className="w-fit">
-                                    <div className="pt-4 text-left text-xs font-medium dark:text-white">
-                                        Received by: {""}
-                                        {formDetails
-                                            ? formDetails.u2name +
-                                              " " +
-                                              formDetails.u2surname
-                                            : ""}
+                        </div>
+                    ) : (
+                        <div
+                            id="PAR"
+                            className="bg-white dark:bg-darkColor-900 rounded-lg px-5 pb-6 "
+                        >
+                            <div className="text-center dark:text-white py-2">
+                                <div className="text-sm font-semibold">
+                                    PROPERTY ACKNOWLEDGEMENT RECEIPT
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <div className="">
+                                    <div className="pt-4 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            Entity Name:
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            Commision on Higher Education
+                                        </div>
                                     </div>
-                                    <div
-                                        className="pt-1 text-left text-sm underline font-semibold dark:text-white"
-                                        id="user-employee"
-                                    ></div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails
-                                            ? formDetails.u2designation
-                                            : ""}
+                                    <div className="pt-1 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            Fund Cluster:
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            {""}
+                                        </div>
                                     </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        Position/Office
+                                </div>
+                                <div className="">
+                                    <div className="pt-1 flex items-center gap-2">
+                                        <div className="text-xs dark:text-white">
+                                            {formType} No:{""}
+                                        </div>
+                                        <div className="text-xs  dark:text-gray-400 font-semibold">
+                                            {formDetails
+                                                ? formDetails.tracking_id
+                                                : ""}
+                                        </div>
                                     </div>
-                                    <div className="dark:text-gray-400 text-xs">
-                                        {formDetails ? formDetails.u2role : ""}
+                                </div>
+                            </div>
+                            <div className="mt-4 mb-2 overflow-y-hidden">
+                                <table
+                                    id="items"
+                                    className="table-auto w-full min-w-[700px]"
+                                >
+                                    <thead>
+                                        <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                                            <th className="h-10 w-20 text-center font-medium border px-2">
+                                                Qty
+                                            </th>
+                                            <th className="h-10 w-20 text-center font-medium border px-2">
+                                                Unit
+                                            </th>
+                                            <th className="h-10 w-10 text-center font-medium border px-2">
+                                                Amount
+                                            </th>
+                                            <th className="h-10 w-50 text-center font-medium border px-2">
+                                                Description
+                                            </th>
+                                            <th className="h-10 w-40 text-center font-medium border px-2">
+                                                Inventory Item No.
+                                            </th>
+                                            <th className="h-10 w-30 text-center font-medium border px-2">
+                                                Estimated Useful Life
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="slip-table">
+                                        {Loading == false ? (
+                                            itemsData(Object.values(items))
+                                        ) : (
+                                            <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                                                <td
+                                                    colSpan="6"
+                                                    className="text-xs px-2 h-fit text-center"
+                                                >
+                                                    Loading data.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
+                                    <div className="w-fit">
+                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
+                                            Issued by:{" "}
+                                            {formDetails
+                                                ? formDetails.u1name +
+                                                  " " +
+                                                  formDetails.u1surname
+                                                : ""}
+                                        </div>
+                                        <div
+                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
+                                            id="Property_custodian_name"
+                                        ></div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u1designation
+                                                : ""}
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u1role
+                                                : ""}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex justify-center w-1/2 flex-none flex-col items-center">
+                                    <div className="w-fit">
+                                        <div className="pt-4 text-left text-xs font-medium dark:text-white">
+                                            Received by: {""}
+                                            {formDetails
+                                                ? formDetails.u2name +
+                                                  " " +
+                                                  formDetails.u2surname
+                                                : ""}
+                                        </div>
+                                        <div
+                                            className="pt-1 text-left text-sm underline font-semibold dark:text-white"
+                                            id="user-employee"
+                                        ></div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u2designation
+                                                : ""}
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            Position/Office
+                                        </div>
+                                        <div className="dark:text-gray-400 text-xs">
+                                            {formDetails
+                                                ? formDetails.u2role
+                                                : ""}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>

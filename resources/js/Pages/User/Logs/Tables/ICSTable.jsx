@@ -45,12 +45,21 @@ export default function ICSTable({ setTotalICS }) {
         const icsItems = ics.map((data) => {
             if (data) {
                 totalICS += parseFloat(data.total);
+
                 return <IcsItems key={data.id} data={data} />;
             }
         });
-        setTotalICS(totalICS);
         return icsItems;
     };
+
+    useEffect(() => {
+        // calculate totalICS whenever icsData changes
+        let total = 0;
+        icsItems.forEach((data) => {
+            total += parseFloat(data.total);
+        });
+        setTotalICS(total);
+    }, [icsItems]);
 
     const search = () => {
         if (searchTerm !== " ") {
@@ -102,19 +111,17 @@ export default function ICSTable({ setTotalICS }) {
                                     <small>Loading data.</small>
                                 </td>
                             </tr>
+                        ) : icsItems?.length == 0 ? (
+                            <tr>
+                                <td
+                                    colSpan="5"
+                                    className="text-center h-12 bg-white border"
+                                >
+                                    <small>No data available in table</small>
+                                </td>
+                            </tr>
                         ) : (
-                            icsItems?.length == 0 ? (
-                                <tr>
-                                    <td
-                                        colSpan="5"
-                                        className="text-center h-12 bg-white border"
-                                    >
-                                        <small>No data available in table</small>
-                                    </td>
-                                </tr>
-                            ) : (
-                                icsMapper(Object.values(icsItems))
-                            )
+                            icsMapper(Object.values(icsItems))
                         )}
                         {/*item 5*/}
                     </tbody>

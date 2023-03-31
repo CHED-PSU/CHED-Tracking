@@ -11,6 +11,14 @@ export default function ICSDetails(props) {
         setOpenSticker(index);
     }
 
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
     function formattedAmount(index) {
         const amount = index;
         const formattedAmount = Math.abs(amount).toLocaleString();
@@ -38,41 +46,45 @@ export default function ICSDetails(props) {
                     className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
                 >
                     <td className="text-center px-2 border">{data.quantity}</td>
-                    <td className="text-center px-2 border">{toUpper(data.unit)}</td>
+                    <td className="text-center px-2 border">
+                        {toUpper(data.unit)}
+                    </td>
                     <td className="text-center px-2 border">
                         {formattedAmount(data.quantity * data.price)}
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div className="font-semibold">{toUpper(data.article)}</div>
+                        <div className="font-semibold">
+                            {toUpper(data.article)}
+                        </div>
                     </td>
                     <td className="text-left px-2 py-3 border">
-                        <div className="min-w-[100px]">{toUpper(data.description)}</div>
+                        <div className="min-w-[100px]">
+                            {toUpper(data.description)}
+                        </div>
                     </td>
                     <td className="text-left px-2 border">{data.code}</td>
-                    <td className="text-center px-2 border">{toUpper(data.eul)}</td>
                     <td className="text-center px-2 border">
-                        {toUpper(data.firstname +
-                              " " +
-                              (data.middlename == null
-                                  ? ""
-                                  : data.middlename.charAt(0) + "." + " ") +
-                              " " +
-                              data.surname +
-                              (data.suffix == null ? "" : " " + data.suffix))}
+                        {toUpper(data.eul)}
                     </td>
-                    <td className="text-center px-2 border">{toUpper(data.item_status)}</td>
+                    <td className="text-center px-2 border">
+                        {toUpper(
+                            data.firstname +
+                                " " +
+                                (data.middlename == null
+                                    ? ""
+                                    : data.middlename.charAt(0) + "." + " ") +
+                                " " +
+                                data.surname +
+                                (data.suffix == null ? "" : " " + data.suffix)
+                        )}
+                    </td>
+                    <td className="text-center px-2 border">
+                        {toUpper(data.item_status)}
+                    </td>
                 </tr>
             );
         });
     };
-
-    function formatDateDisplay(dateString) {
-        const date = new Date(dateString);
-        const month = date.toLocaleString("default", { month: "short" });
-        const day = date.getDate().toString().padStart(2, "0");
-        const year = date.getFullYear();
-        return `${month} ${day}, ${year}`;
-    }
 
     return (
         <div className={props.className}>
@@ -261,7 +273,11 @@ export default function ICSDetails(props) {
                                             Signature Over Printed Name
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.designation1}
+                                            {props.formDetails.designation1 ===
+                                            null
+                                                ? "N/A"
+                                                : props.formDetails
+                                                      .designation1}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
                                             Position/Office
@@ -304,7 +320,11 @@ export default function ICSDetails(props) {
                                             Signature Over Printed Name
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
-                                            {props.formDetails.designation2}
+                                            {props.formDetails.designation2 ===
+                                            null
+                                                ? "N/A"
+                                                : props.formDetails
+                                                      .designation2}
                                         </div>
                                         <div className="dark:text-gray-400 text-xs">
                                             Position/Office

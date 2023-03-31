@@ -8,6 +8,7 @@ export default function PARTable({ className }) {
     const [openForms, setOpenForms] = useState("close");
     const [Loading, setLoading] = useState(true);
     const [parControl, setParControl] = useState();
+    const [parDetails, setParDetails] = useState();
     const [totalPrice, setTotalPrice] = useState();
     const [UserLists, setUserLists] = useState();
     const [userName, setUserName] = useState();
@@ -89,7 +90,8 @@ export default function PARTable({ className }) {
                 id: id,
             });
             const data = response.data;
-            setParControl(data.ics_controls);
+            setParControl(data.par_controls);
+            setParDetails(data.par_details);
             setTotalPrice(data.total_price);
         } catch (e) {
             console.log(e);
@@ -148,9 +150,7 @@ export default function PARTable({ className }) {
             </td>
             {/* mobile no */}
             <td>
-                <div
-                    className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
-                >
+                <div className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer">
                     <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
                 </div>
             </td>
@@ -162,6 +162,7 @@ export default function PARTable({ className }) {
             {openForms === "par-control" ? (
                 <PARControl
                     parControl={parControl ? parControl : ""}
+                    parDetails={parDetails ? parDetails : ""}
                     totalPrice={totalPrice ? totalPrice : ""}
                     designation={designation}
                     Loading={Loading}

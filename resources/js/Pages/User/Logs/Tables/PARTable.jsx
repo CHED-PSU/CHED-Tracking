@@ -3,7 +3,7 @@ import ParItems from "../FormItems/ParItems";
 import axios from "axios";
 import Searchbar from "../../Components/Searchbar";
 
-export default function PARTable({ className }) {
+export default function PARTable({ className, setTotalPAR }) {
     const [parItems, setParItems] = useState([]);
     const [filteredItemsData, setFilteredItemsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +24,7 @@ export default function PARTable({ className }) {
                         user_id: value.id,
                     })
                     .then((res) => {
-                        setParItems(res.data.allPar);
+                        setParItems(res.data.allPAR);
                     });
             } catch (e) {
                 console.log(e);
@@ -32,14 +32,35 @@ export default function PARTable({ className }) {
                 setLoading(false);
             }
         };
-
         getParItems();
         setFilteredItemsData(parItems);
     }, []);
 
     useEffect(() => {
         search();
+        setFilteredItemsData(parItems);
     }, [searchTerm]);
+
+    const parMapper = (par) => {
+        let totalPAR = 0;
+
+        const parItems = par.map((data) => {
+            if (data) {
+                totalPAR += parseFloat(data.total);
+                return <ParItems key={data.id} data={data} />;
+            }
+        });
+        return parItems;
+    };
+
+    useEffect(() => {
+        // calculate totalICS whenever icsData changes
+        let total = 0;
+        parItems.forEach((data) => {
+            total += parseFloat(data.total);
+        });
+        setTotalPAR(total);
+    }, [parItems]);
 
     const search = () => {
         if (searchTerm !== " ") {
@@ -52,16 +73,8 @@ export default function PARTable({ className }) {
 
             setFilteredItemsData(filterData);
         } else {
-            setFilteredItemsData(icsItems);
+            setFilteredItemsData(parItems);
         }
-    };
-
-    const parMapper = (par) => {
-        return par.map((data) => {
-            if (data) {
-                return <ParItems key={data.id} data={data} />;
-            }
-        });
     };
 
     return (
@@ -98,7 +111,7 @@ export default function PARTable({ className }) {
                                     <small>Loading data.</small>
                                 </td>
                             </tr>
-                        ) : filteredItemsData?.length == 0 ? (
+                        ) : parItems?.length == 0 ? (
                             <tr>
                                 <td
                                     colSpan="5"
@@ -108,9 +121,8 @@ export default function PARTable({ className }) {
                                 </td>
                             </tr>
                         ) : (
-                            parMapper(Object.values(filteredItemsData))
+                            parMapper(Object.values(parItems))
                         )}
-                        {/*item 5*/}
                     </tbody>
                 </table>
             </div>
