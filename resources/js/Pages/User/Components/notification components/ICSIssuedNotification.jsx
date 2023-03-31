@@ -31,17 +31,7 @@ export default function ICSIssuedNotification({
                 .then((res) => {
                     setItems(res.data.items);
                 });
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
-        }
-    }
 
-    //Notification Form Details
-    async function getFormDetails() {
-        setLoading(true);
-        try {
             await axios
                 .post("api/getFormDetails", {
                     listId: listId,
@@ -58,7 +48,6 @@ export default function ICSIssuedNotification({
 
     useEffect(() => {
         getIssuedItems();
-        getFormDetails();
     }, []);
 
     //accepting and declining the issued forms
@@ -68,10 +57,12 @@ export default function ICSIssuedNotification({
     };
 
     const itemsData = (item) => {
+        let counter = 0;
         return item.map((data) => {
+            counter++;
             return (
                 <tr
-                    key={data.id}
+                    key={counter}
                     className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
                 >
                     <td className="text-center px-3 border">{data.quantity}</td>
@@ -132,6 +123,8 @@ export default function ICSIssuedNotification({
         setAlertButtonColor(button);
         setAlertDesc(desc);
         setAlertIcon(icon);
+
+        setAlertNoButton("Okay");
     };
 
     return (
@@ -165,10 +158,12 @@ export default function ICSIssuedNotification({
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
-                    <div className="bg-white dark:bg-darkColor-900 rounded-lg px-5 py-6 ">
+                    <div className="bg-white dark:bg-darkColor-900 rounded-lg px-5 pt-2 ">
                         <div className="text-center dark:text-white py-2">
                             <div className="text-sm font-semibold">
-                                INVENTORY CUSTODIAN SLIP
+                                ISSUED {formDetails
+                                            ? formDetails.description
+                                            : ""} FORM DETAILS
                             </div>
                         </div>
                         <div className="flex justify-between items-center">
@@ -193,13 +188,15 @@ export default function ICSIssuedNotification({
                             <div className="">
                                 <div className="pt-1 flex items-center gap-2">
                                     <div className="text-xs dark:text-white">
-                                        ICS No:{" "}
-                                        <span id="form_identifier"></span>
+                                        {formDetails
+                                            ? formDetails.description
+                                            : ""}{" "}
+                                        No: <span id="form_identifier"></span>
                                     </div>
                                     <div className="text-xs  dark:text-gray-400 font-semibold">
                                         {formDetails
                                             ? formDetails.tracking_id
-                                            : "Nan"}
+                                            : ""}
                                     </div>
                                 </div>
                             </div>
@@ -211,22 +208,22 @@ export default function ICSIssuedNotification({
                             >
                                 <thead>
                                     <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                        <th className="h-10 w-20 text-center font-medium border">
+                                        <th className="h-10 w-20 text-center font-medium border px-2">
                                             Qty
                                         </th>
-                                        <th className="h-10 w-20 text-center font-medium border">
+                                        <th className="h-10 w-20 text-center font-medium border px-2">
                                             Unit
                                         </th>
-                                        <th className="h-10 w-10 text-center font-medium border">
+                                        <th className="h-10 w-10 text-center font-medium border px-2">
                                             Amount
                                         </th>
-                                        <th className="h-10 w-50 text-center font-medium border">
+                                        <th className="h-10 w-50 text-center font-medium border px-2">
                                             Description
                                         </th>
-                                        <th className="h-10 w-40 text-center font-medium border">
+                                        <th className="h-10 w-40 text-center font-medium border px-2">
                                             Inventory Item No.
                                         </th>
-                                        <th className="h-10 w-30 text-center font-medium border">
+                                        <th className="h-10 w-30 text-center font-medium border px-2">
                                             Estimated Useful Life
                                         </th>
                                     </tr>
@@ -255,7 +252,7 @@ export default function ICSIssuedNotification({
                                             ? formDetails.u1name +
                                               " " +
                                               formDetails.u1surname
-                                            : "Nan"}
+                                            : ""}
                                     </div>
                                     <div
                                         className="pt-1 text-left text-sm underline font-semibold dark:text-white"
@@ -270,9 +267,7 @@ export default function ICSIssuedNotification({
                                         Position/Office
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        {formDetails
-                                            ? formDetails.u1role
-                                            : ""}
+                                        {formDetails ? formDetails.u1role : ""}
                                     </div>
                                 </div>
                             </div>
@@ -293,15 +288,13 @@ export default function ICSIssuedNotification({
                                     <div className="dark:text-gray-400 text-xs">
                                         {formDetails
                                             ? formDetails.u2designation
-                                            : "Nan"}
+                                            : ""}
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
                                         Position/Office
                                     </div>
                                     <div className="dark:text-gray-400 text-xs">
-                                        {formDetails
-                                            ? formDetails.u2role
-                                            : "Nan"}
+                                        {formDetails ? formDetails.u2role : ""}
                                     </div>
                                 </div>
                             </div>

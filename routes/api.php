@@ -31,10 +31,14 @@ Route::post('/login', [AuthController::class, 'login']);
 //Notification List
 Route::post('/getNotificationItems', [FormController::class, 'getNotificationItems']);
 Route::post('/getUserNotificationIsRead', [FormController::class, 'getUserNotificationIsRead']);
+
 //Notification Form Item List
 Route::post('/getNotifSecListItems', [ItemController::class, 'getNotifSecListItems']);
+Route::post('/getAdminNotifSecListItems', [ItemController::class, 'getAdminNotifSecListItems']);
+
 //Notification Form Details
 Route::post('/getFormDetails', [FormController::class, 'getFormDetails']);
+
 //Accept and Decline Issued form from notification
 Route::post('acceptIssuedForm', [FormController::class, 'acceptIssuedForm']);
 Route::post('declineIssuedForm', [FormController::class, 'declineIssuedForm']);
@@ -42,7 +46,7 @@ Route::post('declineIssuedForm', [FormController::class, 'declineIssuedForm']);
 //User Home Area
 
 //unread notif
-Route::post('getUnread',[GeneralController::class, 'getUnread']);
+Route::post('getUnread', [GeneralController::class, 'getUnread']);
 
 //recent Issuance
 Route::post('HomeData', [FormController::class, 'HomeData']);
@@ -146,14 +150,14 @@ Route::post('multiReturnAndRenew', [ItemController::class, 'multiReturnAndRenew'
 Route::post('mutliAssignToOtherUser', [ItemController::class, 'mutliAssignToOtherUser']);
 //Admin Unserviceable Items
 Route::get('getUnserviceableItems', [ItemController::class, 'getUnserviceableItems']);
-    //Donation fetcher details of items
-        Route::post('getUnserviceableItemsDetails',[ItemController::class, 'getUnserviceableItemsDetails']);
-        //make donation information and add items to donation table
-            Route::post('donationReport',[FormController::class, 'donationReport']);
-    //Donation master list fetcher
-        Route::get('getDonationMasterList',[FormController::class, 'getDonationMasterList']);
-        //fetcher of Donation infromation
-            Route::post('getDonationInformation',[FormController::class, 'getDonationInformation']);
+//Donation fetcher details of items
+Route::post('getUnserviceableItemsDetails', [ItemController::class, 'getUnserviceableItemsDetails']);
+//make donation information and add items to donation table
+Route::post('donationReport', [FormController::class, 'donationReport']);
+//Donation master list fetcher
+Route::get('getDonationMasterList', [FormController::class, 'getDonationMasterList']);
+//fetcher of Donation infromation
+Route::post('getDonationInformation', [FormController::class, 'getDonationInformation']);
 
 //Admin forecasting Items
 Route::get('forecast', [ForecastingController::class, 'forecast']);

@@ -28,6 +28,36 @@ class ItemController extends Controller
         return response()->json(['items' => $items]);
     }
 
+    public function getAdminNotifSecListItems(Request $req)
+    {
+
+        $items = DB::table('admin_notification as an')
+            ->select('t.id as tracking_id', 'pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul')
+            ->where('an.id', $req->input('listId'))
+            ->join('users_notification as un', 'un.id', '=', 'an.un_id')
+            ->join('trackings as t', 'un.trackings_id', '=', 't.id')
+            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->where('ia.category_id', '!=', 1)
+            ->get();
+
+        $tracking_ids = $items->pluck('tracking_id')->unique();
+
+        $form_details = DB::table('trackings as t')
+            ->select('u1.firstname as u1name', 'u1.surname as u1surname', 'u1.designation as u1designation', 'r1.name as u1role', 'u2.firstname as u2name', 'u2.surname as u2surname', 'u2.designation as u2designation', 'r2.name as u2role', 't.tracking_id')
+            ->join('users as u1', 'u1.id', '=', 't.issued_by')
+            ->join('users as u2', 'u2.id', '=', 't.received_by')
+            ->join('roles as r1', 'r1.id', '=', 'u1.role_id')
+            ->join('roles as r2', 'r2.id', '=', 'u2.role_id')
+            ->where('t.id', $tracking_ids)
+            ->first();
+
+        return response()->json(['items' => $items, 'form_details' => $form_details]);
+    }
+
     //User Items Area
     //User Items Fetcher
     public function getuserIndividualItems(Request $req)

@@ -149,8 +149,7 @@ export default function Pending({ className }) {
 
                                 <div className="text-xs dark:text-gray-300 2xl:mt-2 mt-1">
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
-                                        Description:{" "}
-                                        {data.description}
+                                        Description: {data.description}
                                     </div>
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
                                         Defect: {data.defect}
@@ -180,10 +179,6 @@ export default function Pending({ className }) {
 
     return (
         <div className={className + " 2xl:px-10 xl:px-5 px-5"}>
-            {/* Loader */}
-            {Loading ? <><Loader />add</> : ""}
-            {/* Loader */}
-
             <div className="absolute -right-14 bottom-0 w-1/3 -z-10">
                 <AdminBg />
             </div>
@@ -198,10 +193,12 @@ export default function Pending({ className }) {
             ) : (
                 ""
             )}
-            <PARModal
-                clickPARModal={clickPARModal}
-                className={openPARModal === "open" ? "" : "hidden"}
-            />
+
+            {openPARModal === "open" ? (
+                <PARModal clickPARModal={clickPARModal} />
+            ) : (
+                ""
+            )}
 
             {/* Contents */}
             <div className="relative flex w-full flex-col 2xl:py-5 xl:py-3 py-3">
@@ -212,14 +209,8 @@ export default function Pending({ className }) {
                         {Loading ? (
                             <div className="flex items-center justify-center cursor-default">
                                 <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 dark:bg-darkColor-900 rounded-full w-[300px] h-[300px]">
-                                    <img
-                                        src="./img/no_data.png"
-                                        alt="no data"
-                                        className="w-52"
-                                        draggable="false"
-                                    />
                                     <strong className="text-text-gray-2 dark:text-lightColor-800 text-sm">
-                                        You haven't been issued yet
+                                        Loading
                                     </strong>
                                 </div>
                             </div>
@@ -241,7 +232,10 @@ export default function Pending({ className }) {
                             pendingItemsMapper(slicedData)
                         )}
                     </ul>
-                    {Loading ? "" : pendingItems?.length === 0 ? (
+
+                    {Loading ? (
+                        ""
+                    ) : pendingItems?.length === 0 ? (
                         ""
                     ) : (
                         <div className="absolute bottom-10 w-full flex justify-center dark:text-white">
