@@ -148,9 +148,7 @@ export default function ICSIssuedNotification({
                 ""
             )}
 
-            {Loading ? (
-                ""
-            ) : formDetails.description === "ICS" ? (
+            {formDetails.description === "ICS" ? (
                 <div
                     id="ICS"
                     className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-30"
