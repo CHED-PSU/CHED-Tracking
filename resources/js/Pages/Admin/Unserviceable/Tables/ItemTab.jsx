@@ -9,7 +9,6 @@ export default function ItemTab({ className }) {
     const [Loading, setLoading] = useState(true);
     const [UnserviceableItems, setUnserviceableItems] = useState();
     const [openDisposeModal, setOpenDisposeModal] = useState("close");
-
     const [openDonationForm, setOpenDonationForm] = useState(false);
     const [openDestructionSalesForm, setOpenDestructionSalesForm] =
         useState(false);
@@ -77,21 +76,20 @@ export default function ItemTab({ className }) {
     function clickDisposeModal(index) {
         setOpenDisposeModal(index);
     }
-
-    const getUnserviceableItems = async () => {
-        setLoading(true);
-        try {
-            axios.get("api/getUnserviceableItems").then((res) => {
-                setUnserviceableItems(res.data.unserviceableItems);
-            });
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    
     useEffect(() => {
+        const getUnserviceableItems = async () => {
+            setLoading(true);
+            try {
+                axios.get("api/getUnserviceableItems").then((res) => {
+                    setUnserviceableItems(res.data.unserviceableItems);
+                });
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        };
         getUnserviceableItems();
     }, []);
 
@@ -125,12 +123,12 @@ export default function ItemTab({ className }) {
         }
     }
 
-    const confirmation =(index) => {
-        setOpenDonationForm(index)
-        if(index === false){
-            getUnserviceableItems()
+    const confirmation = (index) => {
+        setOpenDonationForm(index);
+        if (index === false) {
+            getUnserviceableItems();
         }
-    }
+    };
 
     const itemsMapper = (items) => {
         return items?.map((data) => {
@@ -226,6 +224,44 @@ export default function ItemTab({ className }) {
         (UnserviceableItems?.length || 0) / itemsPerPage
     );
 
+    const loadingSkeleton = Array.from({ length: 9 }).map((_, index) => (
+        <tr
+            key={index}
+            className="h-18 text-xs border dark:border-neutral-700 bg-white text-th dark:bg-darkColor-800 dark:text-white hover:bg-primary hover:bg-opacity-5 dark:hover:bg-darkColor-700 cursor-default transition duration-150 ease-in-out"
+        >
+            {/* name */}
+            <td></td>
+            {/* status */}
+            <td>
+                <a className="text-left flex items-center w-full h-12 gap-3">
+                    <div className="flex flex-col gap-1  w-full">
+                        <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                </a>
+            </td>
+            {/* email */}
+            <td>
+                <a className="flex items-center w-full h-12 gap-3">
+                    <div className="flex flex-col w-full justify-center">
+                        <span className="w-32 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                    </div>
+                </a>
+            </td>
+            {/* mobile no */}
+            <td>
+                <div className="flex pl-4 items-center w-full h-12 gap-3 cursor-pointer">
+                    <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                </div>
+            </td>
+            {/* mobile no */}
+            <td>
+                <div className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer">
+                    <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                </div>
+            </td>
+        </tr>
+    ));
+
     return (
         <div className={className + " w-full h-full relative"}>
             {openDisposeModal === "open" ? (
@@ -243,11 +279,12 @@ export default function ItemTab({ className }) {
                 <DonationForm
                     selectedIds={selectedIds}
                     setOpenDonationForm={setOpenDonationForm}
-                    confirmation = {confirmation}
+                    confirmation={confirmation}
                 />
             ) : (
                 ""
             )}
+
             {openDestructionSalesForm ? <DestructionSalesForm /> : ""}
 
             <div className="w-full flex justify-end  items-center h-16">
@@ -288,23 +325,13 @@ export default function ItemTab({ className }) {
                 <tbody>
                     {/*item*/}
                     {Loading ? (
-                        <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                            <td
-                                colSpan="5"
-                                className="text-center h-12 bg-white border"
-                            >
-                                <small className="text-sm">Loading data.</small>
-                            </td>
-                        </tr>
+                        loadingSkeleton
                     ) : UnserviceableItems?.length === 0 ? (
-                        <tr className="h-18 text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                            <td
-                                colSpan="5"
-                                className="text-center items-center w-full h-12"
-                            >
-                                <small className="text-sm">
-                                    No data available in table.
-                                </small>
+                        <tr className="h-18 text-xs border dark:border-neutral-700 text-th dark:bg-darkColor-700 dark:text-white cursor-default">
+                            <td colSpan={5}>
+                                <div className="flex text-sm justify-center item-center">
+                                    There is no data yet.
+                                </div>
                             </td>
                         </tr>
                     ) : (

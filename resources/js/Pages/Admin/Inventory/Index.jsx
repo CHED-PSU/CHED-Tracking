@@ -511,7 +511,6 @@ export default function Inventory({ className }) {
                                     loadingSkeleton
                                 ) : items?.length === 0 ? (
                                     <tr className="h-18 text-xs border dark:border-neutral-700 text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                        {/* checkbox */}
                                         <td colSpan={5}>
                                             <div className="flex text-sm justify-center item-center">
                                                 There is no data yet.
