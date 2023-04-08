@@ -1,24 +1,21 @@
-import React, { StrictMode, useEffect, useState } from "react";
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import NotFound from "../pages/NotFound";
-import GuestIndex from "../Pages/Guest/PageIndex";
-import AdminIndex from "../pages/Admin/PageIndex";
-import UserIndex from "../pages/User/PageIndex";
 import RoutingCondition from "../PrivateRoute/RoutingCondition";
 import PublicRoute from "../PrivateRoute/PublicRoute";
-export default function Router() {
+import Landing from "../Pages/Guest/Landing/Index";
 
-    
+export default function Router() {
     return (
         <div>
             <Routes>
-                    <Route path="/*" element={<NotFound />} />
-                    <Route path="/" element={<Navigate to="/login"/>} />
-                    <Route path="/login" element={<PublicRoute />}/>
-                    <Route path="/dashboard" element={<RoutingCondition />} />
-                    <Route path="/user" element={<UserIndex />} />
+                <Route path="/*" element={<NotFound />} />
+                <Route path="/" element={<Navigate to="/Login" />} />
+                <Route path="/Login" element={<PublicRoute />} />
+                <Route path="/LandingPage" element={<Landing />} />
+                <Route path="/Trackagamitan" element={<RoutingCondition />} />
             </Routes>
         </div>
     );
-};
+}

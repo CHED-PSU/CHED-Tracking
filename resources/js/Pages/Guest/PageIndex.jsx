@@ -70,7 +70,7 @@ export default function GuestIndex() {
                     }
 
                     if(item.Authenticated === "true"){
-                        navigate("/dashboard")
+                        navigate("/LandingPage")
                         localStorage.setItem("localSession", JSON.stringify(item));
                     }else{
                         if(item.Authenticated === "Username not found."){
@@ -87,9 +87,6 @@ export default function GuestIndex() {
 
                 })
         }
-
-        //
-        // navigate("/dashboard")
     }
 
     return (
