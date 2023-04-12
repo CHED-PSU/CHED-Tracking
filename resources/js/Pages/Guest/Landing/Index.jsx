@@ -33,11 +33,11 @@ export default function Landing() {
                                 <h1 className="text-5xl text-[#242526] leading-16">Efficient systems </h1>
                                 <h4 className="font-medium text-lg text-[#434343] leading-8">To streamline the supply chain and ensure optimal inventory levels.</h4>
                             </div>
-                            <div className="w-[300px] h-[400px] cursor-pointer bg-[#FF9FBF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl">
+                            <a href={"http://10.41.1.140:8080/procproject3.5/session-checker?token=" + token[1]} className="w-[300px] h-[400px] cursor-pointer bg-[#FF9FBF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl">
                                 <div className="h-[200px] w-[200px] bg-cover bg-center bg-procurement-icon"></div>
                                 <p>Procurement</p>
-                            </div>
-                            <a href={"http://10.41.1.142:8000/login-page/"+ token[1]} className="w-[300px] h-[400px] cursor-pointer bg-[#FFDE6A] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl">
+                            </a>
+                            <a href={"http://10.41.1.142:8000/login-page/" + getToken} className="w-[300px] h-[400px] cursor-pointer bg-[#FFDE6A] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl">
                                 <div className="h-[200px] w-[200px] bg-cover bg-center bg-inventory-icon"></div>
                                 <p>Inventory</p>
                             </a>
