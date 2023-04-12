@@ -9,7 +9,7 @@ const PublicRoute = () => {
 
     if (value) {
         if (value.Authenticated) {
-            return <Navigate to="/CHED-PSU" />;
+            return <Navigate to="/Portal" />;
         } else {
             return <GuestIndex />;
         }
