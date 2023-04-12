@@ -30,7 +30,7 @@ export default function PARTable({ className }) {
         const getUsers = async () => {
             setLoading(true);
             try {
-                const response = await axios.get("api/getUserLists");
+                const response = await axios.get("api/getUserListsPAR");
                 const data = response.data;
                 setUserLists(data.user_lists);
             } catch (e) {
@@ -39,7 +39,6 @@ export default function PARTable({ className }) {
                 setLoading(false);
             }
         };
-
         getUsers();
     }, []);
 

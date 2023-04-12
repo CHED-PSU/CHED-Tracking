@@ -30,8 +30,8 @@ class GeneralController extends Controller
             ->count();
 
         $acceptedCount = DB::table('user_returned_items as uri')
-        ->where('uri.user_id', $req->input('id'))
-        ->where('uri.confirmation', 'accepted')
+            ->where('uri.user_id', $req->input('id'))
+            ->where('uri.confirmation', 'accepted')
             ->count();
 
         return response()->json(['pending' => $pendingCount, 'accepted' => $acceptedCount]);
@@ -44,32 +44,32 @@ class GeneralController extends Controller
             ->count();
 
         $recentIssuance = DB::table('trackings as t')
-            ->select('t.tracking_id', 'u1.firstname as ufirstname', 'u2.id as rID' ,'u1.id as uID' ,'u1.surname as uSurname','u1.suffix as uSuffix', 't.created_at', 'u2.firstname as rfirstname', 'u2.surname as rSurname', 'u2.suffix as rSuffix',)
+            ->select('t.tracking_id', 'u1.firstname as ufirstname', 'u2.id as rID', 'u1.id as uID', 'u1.surname as uSurname', 'u1.suffix as uSuffix', 't.created_at', 'u2.firstname as rfirstname', 'u2.surname as rSurname', 'u2.suffix as rSuffix',)
             ->join('users as u1', 'u1.id', '=', 't.issued_by')
             ->join('users as u2', 'u2.id', '=', 't.received_by')
             ->get();
 
         $countDonated = DB::table('unserviceable_items')
-        ->select('status')
-        ->where('status', 'donated')
-        ->count();
+            ->select('status')
+            ->where('status', 'donated')
+            ->count();
 
         $countDestructed = DB::table('unserviceable_items')
-        ->select('status')
-        ->where('status', 'destructed')
-        ->count();
+            ->select('status')
+            ->where('status', 'destructed')
+            ->count();
 
         $countSold = DB::table('unserviceable_items')
-        ->select('status')
-        ->where('status', 'sold')
-        ->count();
+            ->select('status')
+            ->where('status', 'sold')
+            ->count();
 
         return response()->json(['total_users' => $totalUsers, 'recent_issuance' => $recentIssuance, 'countDonated' => $countDonated, 'countDestructed' => $countDestructed, 'countSold' => $countSold]);
     }
 
     //Admin Logs
     //Admin User Data Fetcher
-    public function getUserLists()
+    public function getUserListsICS()
     {
         $userList = DB::table('users')
             ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
@@ -78,6 +78,34 @@ class GeneralController extends Controller
 
         return response()->json(['user_lists' => $userList]);
     }
+    public function getUserListsPAR()
+    {
+        $userList = DB::table('users')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
+            ->join('roles as r', 'r.id', '=', 'users.role_id')
+            ->get();
+
+        return response()->json(['user_lists' => $userList]);
+    }
+    public function getUserListsIIR()
+    {
+        $userList = DB::table('users')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
+            ->join('roles as r', 'r.id', '=', 'users.role_id')
+            ->get();
+
+        return response()->json(['user_lists' => $userList]);
+    }
+    public function getUserListsIIC()
+    {
+        $userList = DB::table('users')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
+            ->join('roles as r', 'r.id', '=', 'users.role_id')
+            ->get();
+
+        return response()->json(['user_lists' => $userList]);
+    }
+
     //admin return items
     //admin user fetcher
     public function getUsers()
@@ -98,18 +126,17 @@ class GeneralController extends Controller
         return response()->json(['users' => $getUsers]);
     }
 
-    public function getUnread(Request $req){
+    public function getUnread(Request $req)
+    {
         $count = DB::table('users_notification')
-        ->where('to_user_id',$req->input('id'))
-        ->where('ns_id',2)
-        ->count();
+            ->where('to_user_id', $req->input('id'))
+            ->where('ns_id', 2)
+            ->count();
 
-        if($count > 0) {
+        if ($count > 0) {
             return response()->json(['read' => true]);
-        }else{
+        } else {
             return response()->json(['read' => false]);
         }
-
-
     }
 }

@@ -32,15 +32,14 @@ class AuthController extends Controller
                 }
                 session()->regenerate();
                 session()->put('name',$validate->firstname );
-                session()->put('role', $roles); 
+                session()->put('role', $roles);
                 session()->put('user_id', $validate->id);
 
                 $response = [
                     'status' => 200,
-                    'message' =>'Successfuly logged in.',
+                    'message' =>'Successfully logged in.',
                     'destinations' => $userDestination,
                     'Authenticated' => 'true',
-                    'name' => $validate->firstname . ' ' . $validate->surname,
                     'prefix' => $validate->prefix,
                     'firstname' => $validate->firstname,
                     'middlename' => $validate->middlename,

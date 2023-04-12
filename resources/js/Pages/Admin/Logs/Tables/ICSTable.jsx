@@ -25,7 +25,7 @@ export default function ICSTable({ className }) {
         const getUsers = async () => {
             setLoading(true);
             try {
-                const response = await axios.get("api/getUserLists");
+                const response = await axios.get("api/getUserListsICS");
                 const data = response.data;
                 setUserLists(data.user_lists);
             } catch (e) {
@@ -34,7 +34,6 @@ export default function ICSTable({ className }) {
                 setLoading(false);
             }
         };
-
         getUsers();
     }, []);
 

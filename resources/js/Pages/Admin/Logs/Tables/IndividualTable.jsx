@@ -29,7 +29,7 @@ export default function IndividualTable({ className }) {
         const getUsers = async () => {
             setLoading(true);
             try {
-                const response = await axios.get("api/getUserLists");
+                const response = await axios.get("api/getUserListsIIR");
                 const data = response.data;
                 setUserLists(data.user_lists);
             } catch (e) {
