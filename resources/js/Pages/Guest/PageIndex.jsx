@@ -95,7 +95,7 @@ export default function GuestIndex() {
                         type="text"
                         name="username"
                         id="username"
-                        className="w-full bg-lightColor-800 py-2 px-4 dark:bg-darkColor-900 border-none outline-sky-300 dark:outline-none rounded-lg ring-2 ring-white focus:ring-sky-500 hover:ring-sky-500"
+                        className="w-full h-12 bg-lightColor-800 py-2 px-4 dark:bg-darkColor-900 border-none outline-sky-300 dark:outline-none rounded-lg ring-2 ring-white focus:ring-sky-500 hover:ring-sky-500"
                         value={formData.username}
                         onChange={handleChange}
                     />
@@ -116,7 +116,7 @@ export default function GuestIndex() {
                         name="password"
                         autoComplete="off"
                         id="password"
-                        className="w-full bg-lightColor-800 py-2 px-4 dark:bg-darkColor-900 border-none outline-sky-300 dark:outline-none rounded-lg ring-2 ring-white focus:ring-sky-500 hover:ring-sky-500"
+                        className="w-full h-12 bg-lightColor-800 py-2 px-4 dark:bg-darkColor-900 border-none outline-sky-300 dark:outline-none rounded-lg ring-2 ring-white focus:ring-sky-500 hover:ring-sky-500"
                         value={formData.password}
                         onChange={handleChange}
                     />
@@ -149,7 +149,7 @@ export default function GuestIndex() {
                 <div className="">
                     {
 
-                        <button className="flex flex-none justify-center items-center btn-sm my-3 p-3 bg-primary rounded-full text-white 2xl:text-base xl:text-sm text-sm w-full cursor-pointer">
+                        <button className="flex flex-none justify-center items-center btn-sm my-3 p-3 bg-[#011284] rounded-full text-white 2xl:text-base xl:text-sm text-sm w-full h-12 cursor-pointer">
                             Log In
                         </button>
 

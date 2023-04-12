@@ -11,7 +11,7 @@ export default function Login({ children }) {
             <div className="justify-center items-end flex-col px-5 cursor-default w-full lg:flex hidden">
                 <img
                     src="./img/guest_illustration.png"
-                    className="2xl:w-[900px] xl:w-[650px] w-[650px]"
+                    className="2xl:w-[950px] xl:w-[650px] w-[650px]"
                     draggable="false"
                 />
             </div>
@@ -19,31 +19,23 @@ export default function Login({ children }) {
             {/* Right Column */}
             <div className="xl:w-[45%] w-[45%] flex flex-none justify-center items-center px-5">
                 <div className="flex flex-col 2xl:w-[500px] xl:w-[450px] w-[450px] 2xl:space-y-14 xl:space-y-8 space-y-8">
-                    <div className="flex h-fit text-darkColor-700 justify-between">
-                        <div className="flex items-center h-10 gap-4">
-                            <Link to="/">
-                                <AppLogo className="h-10" />
-                            </Link>
-                            <h4 className="2xl:text-lg xl:text-base text-base font-semibold select-none">
-                                Trac
-                                <font className="text-primary">Kagamitan</font>
-                            </h4>
-                        </div>
-                        <ChedLogo className="h-10" />
-                    </div>
-                    <div className="space-y-10">
-                        <div className="h-fit">
-                            <p className="2xl:text-xl xl:text-lg text-lg font-bold text-darkColor-700 dark:text-white">
+                    <div className="flex flex-col gap-16 h-fit text-darkColor-700 items-center">
+                        <ChedLogo className="h-32" />
+                        <div className="h-fit space-y-2 text-center">
+                            <p className="2xl:text-2xl xl:text-lg text-lg font-bold text-darkColor-700 dark:text-white">
                                 Welcome!
                             </p>
                             <p className="2xl:text-base xl:text-sm text-sm font-semibold text-gray-500 dark:text-lightColor-800">
                                 Please login your account
                             </p>
                         </div>
+                    </div>
+                    <div className="space-y-10">
+                        
 
                         <div className="h-fit">{children}</div>
                     </div>
-                    <div className="flex items-end dark:text-lightColor-700">
+                    <div className="flex justify-center dark:text-lightColor-700">
                         <p className="text-xs mt-4 select-none">
                             © 2022 TracKagamitan. All rights reserved.
                         </p>
