@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Login from "./Layouts/Login";
-import AdminIndex from "../Admin/PageIndex";
 import InputError from "../../components/InputError";
 import axios from "axios";
-
-import io from "socket.io-client";
-const socket = io.connect("http://127.0.0.1:8001")
-
-
 
 export default function GuestIndex() {
 
@@ -70,7 +64,7 @@ export default function GuestIndex() {
                     }
 
                     if(item.Authenticated === "true"){
-                        navigate("/LandingPage")
+                        navigate("/Portal")
                         localStorage.setItem("localSession", JSON.stringify(item));
                     }else{
                         if(item.Authenticated === "Username not found."){

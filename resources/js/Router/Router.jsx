@@ -13,7 +13,7 @@ export default function Router() {
                 <Route path="/*" element={<NotFound />} />
                 <Route path="/" element={<Navigate to="/Login" />} />
                 <Route path="/Login" element={<PublicRoute />} />
-                <Route path="/LandingPage" element={<Landing />} />
+                <Route path="/Portal" element={<Landing />} />
                 <Route path="/Trackagamitan" element={<RoutingCondition />} />
             </Routes>
         </div>

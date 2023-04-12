@@ -16,15 +16,15 @@ export default function Landing() {
             return (
                 <div className="flex w-full h-screen bg-white flex-col items-center justify-center">
                     <div className="flex gap-10">
-                        <div className="w-[400px] h-[400px] bg-pink-400 flex justify-center items-center font-extrabold text-xl rounded-xl">
+                        <div className="w-[400px] h-[400px] cursor-pointer bg-pink-400 flex justify-center items-center font-extrabold text-xl rounded-xl">
                             Procurement
                         </div>
-                        <div className="w-[400px] h-[400px] bg-green-400 flex justify-center items-center font-extrabold text-xl rounded-xl">
+                        <div className="w-[400px] h-[400px] cursor-pointer bg-green-400 flex justify-center items-center font-extrabold text-xl rounded-xl">
                             Inventory
                         </div>
                         <div
                             onClick={handleClick}
-                            className="w-[400px] h-[400px] bg-blue-400 flex justify-center items-center font-extrabold text-xl rounded-xl"
+                            className="w-[400px] h-[400px] cursor-pointer bg-blue-400 flex justify-center items-center font-extrabold text-xl rounded-xl"
                         >
                             Tracking
                         </div>

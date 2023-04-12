@@ -9,7 +9,7 @@ const PublicRoute = () => {
 
     if (value) {
         if (value.Authenticated) {
-            return <Navigate to="/LandingPage" />;
+            return <Navigate to="/CHED-PSU" />;
         } else {
             return <GuestIndex />;
         }

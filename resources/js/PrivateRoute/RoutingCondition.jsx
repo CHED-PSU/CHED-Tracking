@@ -17,10 +17,10 @@ function RoutingCondition() {
                 return <UserIndex />;
             }
         } else {
-            return <Navigate to="/LandingPage" />;
+            return <Navigate to="/Portal" />;
         }
     } else {
-        return <Navigate to="/LandingPage" />;
+        return <Navigate to="/Portal" />;
     }
 }
 
