@@ -4,53 +4,78 @@ import Login from "./Layouts/Login";
 import InputError from "../../components/InputError";
 import axios from "axios";
 
-export default function GuestIndex() {
+axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
-    const navigate = useNavigate()
+export default function GuestIndex() {
+    const navigate = useNavigate();
 
     const [formData, setData] = useState({
         username: "",
-        password: ""
-    })
+        password: "",
+    });
 
     const handleChange = (e) => {
-        setData(prevData => {
+        setData((prevData) => {
             return {
                 ...prevData,
-                [e.target.name]: e.target.value
-            }
-        })
-    }
+                [e.target.name]: e.target.value,
+            };
+        });
+    };
 
     const [alertUsername, setAlertUsername] = useState("");
     const [alertPass, setAlertPass] = useState("");
 
     const submitHandler = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         const data = {
             username: formData.username,
-            password: formData.password
-        }
+            password: formData.password,
+        };
 
         if (data.username === "" && data.password !== "") {
-            setAlertUsername("Please enter username.")
-            setAlertPass("")
-        }
-        else if (data.username !== "" && data.password === "") {
-            setAlertUsername("")
-            setAlertPass("Please enter password.")
-        }
-        else if (data.username === "" && data.password === "") {
-            setAlertUsername("Please enter username.")
-            setAlertPass("Please enter password.")
-        }else{
-            axios.post("/api/login", {
-                data: data
-            })
-                .then(response => {
+            setAlertUsername("Please enter username.");
+            setAlertPass("");
+        } else if (data.username !== "" && data.password === "") {
+            setAlertUsername("");
+            setAlertPass("Please enter password.");
+        } else if (data.username === "" && data.password === "") {
+            setAlertUsername("Please enter username.");
+            setAlertPass("Please enter password.");
+        } else {
+            axios
+                .get("http://10.41.1.142:8000/sanctum/csrf-cookie")
+                .then((response) => {
+                    axios
+                        .post("http://10.41.1.142:8000/api/login", {
+                            username: formData.username,
+                            password: formData.password,
+                        })
+                        .then((response) => {
+                            const item = {
+                                prefix: response.data.data.user.prefix,
+                                firstname: response.data.data.user.firstname,
+                                middlename: response.data.data.user.middlename,
+                                surname: response.data.data.user.surname,
+                                suffix: response.data.data.user.suffix,
+                                img: response.data.data.user.img,
+                                role: response.data.data.user.role,
+                                id: response.data.data.user.id,
+                            };
+                            localStorage.setItem(
+                                "token",
+                                response.data.data.token
+                            );
+                        });
+                });
+
+            axios
+                .post("/api/login", {
+                    data: data,
+                })
+                .then((response) => {
                     const item = {
-                        name: response.data.name,
                         prefix: response.data.prefix,
                         firstname: response.data.firstname,
                         middlename: response.data.middlename,
@@ -60,34 +85,42 @@ export default function GuestIndex() {
                         role: response.data.role,
                         Authenticated: response.data.Authenticated,
                         Path: response.data.destinations,
-                        id: response.data.id
-                    }
+                        id: response.data.id,
+                    };
 
-                    if(item.Authenticated === "true"){
-                        navigate("/Portal")
-                        localStorage.setItem("localSession", JSON.stringify(item));
-                    }else{
-                        if(item.Authenticated === "Username not found."){
-                            console.log(item.Authenticated)
-                            setAlertUsername(item.Authenticated)
-                            setAlertPass("")
+                    if (item.Authenticated === "true") {
+                        navigate("/Portal");
+                        localStorage.setItem(
+                            "localSession",
+                            JSON.stringify(item)
+                        );
+                    } else {
+                        if (item.Authenticated === "Username not found.") {
+                            console.log(item.Authenticated);
+                            setAlertUsername(item.Authenticated);
+                            setAlertPass("");
                         }
-                        if(item.Authenticated === "Password is incorrect."){
-                            console.log(item.Authenticated)
-                            setAlertUsername("")
-                            setAlertPass(item.Authenticated)
+                        if (item.Authenticated === "Password is incorrect.") {
+                            console.log(item.Authenticated);
+                            setAlertUsername("");
+                            setAlertPass(item.Authenticated);
                         }
                     }
-
-                })
+                });
         }
-    }
+    };
 
     return (
         <Login>
-            <form onSubmit={submitHandler} className="flex flex-col justify-center 2xl:space-y-5 xl:space-y-4 space-y-4 dark:text-lightColor-800">
+            <form
+                onSubmit={submitHandler}
+                className="flex flex-col justify-center 2xl:space-y-5 xl:space-y-4 space-y-4 dark:text-lightColor-800"
+            >
                 <div>
-                    <label htmlFor="email" className="2xl:text-sm xl:text-[13px] text-[13px] text-[434343] font-semibold mb-1 select-none">
+                    <label
+                        htmlFor="email"
+                        className="2xl:text-sm xl:text-[13px] text-[13px] text-[434343] font-semibold mb-1 select-none"
+                    >
                         Username/Email Address
                     </label>
                     <input
@@ -107,7 +140,10 @@ export default function GuestIndex() {
                 </div>
 
                 <div className="">
-                    <label htmlFor="password" className="2xl:text-sm xl:text-[13px] text-[13px] mb-1 text-[434343] font-semibold select-none">
+                    <label
+                        htmlFor="password"
+                        className="2xl:text-sm xl:text-[13px] text-[13px] mb-1 text-[434343] font-semibold select-none"
+                    >
                         Password
                     </label>
                     <input
@@ -135,7 +171,12 @@ export default function GuestIndex() {
                             id="remember"
                             className="rounded"
                         />
-                        <label htmlFor="remember" className="cursor-pointer select-none 2xl:text-sm xl:text-[13px] text-[13px]">Remember me</label>
+                        <label
+                            htmlFor="remember"
+                            className="cursor-pointer select-none 2xl:text-sm xl:text-[13px] text-[13px]"
+                        >
+                            Remember me
+                        </label>
                     </div>
 
                     <a
@@ -148,15 +189,12 @@ export default function GuestIndex() {
 
                 <div className="">
                     {
-
                         <button className="flex flex-none justify-center items-center btn-sm my-3 p-3 bg-primary rounded-full text-white 2xl:text-base xl:text-sm text-sm w-full cursor-pointer">
                             Log In
                         </button>
-
                     }
                 </div>
             </form>
         </Login>
     );
-};
-
+}

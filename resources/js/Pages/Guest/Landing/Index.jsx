@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Landing() {
     const user = localStorage.getItem("localSession");
@@ -11,6 +12,10 @@ export default function Landing() {
         setLinked(true);
     };
 
+    const getToken = localStorage.getItem('token')
+
+    const token = getToken.split("|");
+
     if (value) {
         if (value.Authenticated) {
             return (
@@ -19,9 +24,12 @@ export default function Landing() {
                         <div className="w-[400px] h-[400px] cursor-pointer bg-pink-400 flex justify-center items-center font-extrabold text-xl rounded-xl">
                             Procurement
                         </div>
-                        <div className="w-[400px] h-[400px] cursor-pointer bg-green-400 flex justify-center items-center font-extrabold text-xl rounded-xl">
+                        <a
+                            href={"http://10.41.1.142:8000/login-page/"+ token[1]}
+                            className="w-[400px] h-[400px] cursor-pointer bg-green-400 flex justify-center items-center font-extrabold text-xl rounded-xl"
+                        >
                             Inventory
-                        </div>
+                        </a>
                         <div
                             onClick={handleClick}
                             className="w-[400px] h-[400px] cursor-pointer bg-blue-400 flex justify-center items-center font-extrabold text-xl rounded-xl"
