@@ -86,7 +86,12 @@ module.exports = {
               "card-6": "url('../../public/img/items_card.png')",
               "card-7": "url('../../public/img/requests_card.png')",
               "card-8": "url('../../public/img/card_5.jpg')",
-              "card-9": "url('../../public/img/card_9.png')"
+              "card-9": "url('../../public/img/card_9.png')",
+              "procurement-icon": "url('../../public/img/procurement-icon.png')",
+              "inventory-icon": "url('../../public/img/inventory-icon.png')",
+              "tracking-icon": "url('../../public/img/tracking-icon.png')",
+              "circle-huge": "url('../../public/img/huge-circle-bg.png')",
+              "bg-pattern": "url('../../public/img/pattern-bg.png')"
           },
       },
   },
