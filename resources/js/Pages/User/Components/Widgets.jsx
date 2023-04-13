@@ -84,6 +84,7 @@ export default function Widgets(props) {
 
     const handleLogOut = () => {
         localStorage.removeItem("localSession");
+        localStorage.removeItem("token");
         nav("/");
     };
 

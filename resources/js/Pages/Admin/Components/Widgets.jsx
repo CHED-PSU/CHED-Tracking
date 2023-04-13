@@ -36,6 +36,7 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
 
     const handleLogOut = () => {
         localStorage.removeItem("localSession");
+        localStorage.removeItem("token");
         nav("/");
     };
 

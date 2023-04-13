@@ -11,6 +11,7 @@ export default function Sidebar(props) {
 
     const handleLogOut = () => {
         localStorage.removeItem('localSession')
+        localStorage.removeItem("token");
         nav('/');
     }
 
