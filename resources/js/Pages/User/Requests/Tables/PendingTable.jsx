@@ -2,8 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import RequestData from "./data/RequestData";
 import io from "socket.io-client";
-import Loader from "../../../../Components/Loader";
+import Loader from "../../../../components/Loader";
 
+const socket = io.connect("")
 //const socket = io.connect("http://127.0.0.1:8001");
 
 export default function PendingTable({ className }) {

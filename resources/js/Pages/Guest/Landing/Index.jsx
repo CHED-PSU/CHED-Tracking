@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
-import axios from "axios";
+import io from "socket.io-client";
+const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Landing() {
+    useEffect(() => {
+        socket.on("connect", () => {
+            console.log("Connected to server");
+          });
+    }, [socket]);
+
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
 
