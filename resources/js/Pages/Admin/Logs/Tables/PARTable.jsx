@@ -58,7 +58,7 @@ export default function PARTable({ className }) {
 
     const userMapper = (items) => {
         return items?.map((data) => {
-            if (data.role_id != 4) {
+            if (data.role_id != 5) {
                 return (
                     <UserList
                         key={data.id}
