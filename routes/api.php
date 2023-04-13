@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //logIn
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('logoutToken', [GeneralController::class, 'logoutToken']);
 
 //User Notification
 

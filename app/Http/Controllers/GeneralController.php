@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class GeneralController extends Controller
 {
@@ -137,6 +138,21 @@ class GeneralController extends Controller
             return response()->json(['read' => true]);
         } else {
             return response()->json(['read' => false]);
+        }
+    }
+
+    //Logout Delete Token
+    public function logoutToken(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        session()->forget('name');
+        session()->forget('role');
+        session()->forget('user_id');
+
+        if($token){
+            $token->delete();
+            return response()->json(['status' => true]);
+        } else {
+            return response()->json(['status' => false]);
         }
     }
 }

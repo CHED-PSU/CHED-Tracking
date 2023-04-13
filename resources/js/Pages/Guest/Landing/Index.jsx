@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
+import axios from "axios";
 
 export default function Landing() {
     const user = localStorage.getItem("localSession");
@@ -82,10 +83,27 @@ export default function Landing() {
     }
 
     const nav = useNavigate();
+    const headers = () => {
+        return {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+        };
+    };
 
     const handleLogOut = () => {
-        localStorage.removeItem('localSession')
-        localStorage.removeItem('token')
+        // axios({
+        //     url: "/api/logoutToken",
+        //     method: "post",
+        //     headers: headers(),
+        // }).then((response) => {
+        //     if (response.data.status === true) {
+        //         localStorage.removeItem("localSession");
+        //         localStorage.removeItem("token");
+        //         nav("/");
+        //     }
+        // });
+
+        localStorage.removeItem("localSession");
+        localStorage.removeItem("token");
         nav("/");
     };
 
