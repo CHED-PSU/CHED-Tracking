@@ -4,7 +4,7 @@ import RequestData from "./data/RequestData";
 import io from "socket.io-client";
 import Loader from "../../../../Components/Loader";
 
-const socket = io.connect("http://127.0.0.1:8001");
+//const socket = io.connect("http://127.0.0.1:8001");
 
 export default function PendingTable({ className }) {
     const [pendingData, setPendingData] = useState([]);

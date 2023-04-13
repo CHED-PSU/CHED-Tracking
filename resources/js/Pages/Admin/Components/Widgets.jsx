@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ICSNotification from "./Notification/ICSNotification";
 import Profilesett from "./ProfileSettings/ProfileSettings";
 import io from "socket.io-client";
-const socket = io.connect("http://127.0.0.1:8001");
+//const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Widgets({ className, toggleDarkMode, setSidebar }) {
     const user = localStorage.getItem("localSession");

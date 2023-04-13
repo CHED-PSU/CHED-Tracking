@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import io from "socket.io-client";
-const socket = io.connect("http://127.0.0.1:8001")
+//const socket = io.connect("http://127.0.0.1:8001")
 
 
 export default function ConditionalAlert(props) {
