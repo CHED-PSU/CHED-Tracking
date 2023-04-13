@@ -10,9 +10,7 @@ export default function Sidebar(props) {
     const nav = useNavigate();
 
     const handleLogOut = () => {
-        localStorage.removeItem('localSession')
-        localStorage.removeItem("token");
-        nav('/');
+        nav('/Portal');
     }
 
     return (
@@ -116,7 +114,7 @@ export default function Sidebar(props) {
 
             <div className="flex-none h-36 flex text-center items-center mx-6">
                 <button onClick={handleLogOut} className="font-semibold 2xl:text-md xl:text-[15px] text-[15px] dark:text-lightColor-800 mx-auto">
-                    Log out
+                    Exit
                 </button>
 
             </div>

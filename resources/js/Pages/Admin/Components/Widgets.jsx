@@ -35,9 +35,7 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
     const nav = useNavigate();
 
     const handleLogOut = () => {
-        localStorage.removeItem("localSession");
-        localStorage.removeItem("token");
-        nav("/");
+        nav("/Portal");
     };
 
     function displayPhoto(profilePhoto, name, className) {
@@ -103,7 +101,11 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
     useEffect(() => {
         socket.on("Admin_Notif", (data) => {
             setRead(true);
+            console.log(data.message);
         });
+        socket.on("connect", () => {
+            console.log("Connected to server");
+          });
     }, [socket]);
 
     const notifClick = async () => {
@@ -486,7 +488,7 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
                                 <div className="flex justify-between gap-3 2xl:px-3 xl:px-2 px-2">
                                     <div className="flex-col">
                                         <h2 className="text-sm font-semibold">
-                                            Logout
+                                            Exit
                                         </h2>
                                     </div>
                                 </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 
 export default function Landing() {
@@ -31,6 +31,64 @@ export default function Landing() {
         checkToken();
     }, []);
 
+    function displayPhoto(profilePhoto, name, className) {
+        if (profilePhoto == null) {
+            return (
+                <span
+                    className={
+                        className +
+                        " bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full"
+                    }
+                >
+                    {name.substring(0, 1)}
+                </span>
+            );
+        } else {
+            return (
+                <img
+                    draggable="false"
+                    src="./img/profile-pic.jpeg"
+                    className={
+                        className + " rounded-full bg-gray-500 object-cover"
+                    }
+                />
+            );
+        }
+    }
+
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
+
+    const nav = useNavigate();
+
+    const handleLogOut = () => {
+        localStorage.removeItem('localSession')
+        localStorage.removeItem('token')
+        nav("/");
+    };
+
     if (value) {
         if (value.Authenticated) {
             return (
@@ -38,6 +96,31 @@ export default function Landing() {
                     {/* Loader */}
                     {loading == true ? <Loader /> : ""}
                     {/* Loader */}
+
+                    <div className="w-fit fixed z-30 top-10 right-10 flex flex-col items-end space-y-3 2xl:space-x-4 xl:space-x-3 space-x-3">
+                        {/* Profile Button */}
+                        <button
+                            onClick={handleLogOut}
+                            className="outline-none flex 2xl:h-12 xl:h-10 h-10 w-fit border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-bg-iconDark hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover active:bg-bg-iconLightActive dark:active:bg-bg-iconDarkActive dark:text-lightColor-900 rounded-full justify-between transition duration-300 ease-in-out"
+                        >
+                            <div className="flex w-full justify-between pl-4 pr-2 xl:items-center items-center xl:h-full h-full rounded-xl gap-2">
+                                <div className=" text-left">
+                                    <h4 className="text-xs font-bold">
+                                        {displayName(value, false)}
+                                    </h4>
+                                    <p className="text-ss 2xl:block xl:hidden hidden">
+                                        {value.role}
+                                    </p>
+                                </div>
+                                {displayPhoto(
+                                    value.img,
+                                    value.firstname,
+                                    "2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7"
+                                )}
+                            </div>
+                        </button>
+                    </div>
+
                     <div className="z-0 w-[920px] h-[920px] bg-cover bg-center bg-circle-huge absolute right-0"></div>
                     <div className="z-0 w-full h-[150px] bg-cover bg-center bg-bg-pattern absolute bottom-0"></div>
                     <div className="flex flex-col gap-14 z-10">
