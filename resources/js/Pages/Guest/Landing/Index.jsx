@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
+import Alert from "../Alerts/Alert";
 import io from "socket.io-client";
 const socket = io.connect("http://127.0.0.1:8001");
 
@@ -8,7 +9,7 @@ export default function Landing() {
     useEffect(() => {
         socket.on("connect", () => {
             console.log("Connected to server");
-          });
+        });
     }, [socket]);
 
     const user = localStorage.getItem("localSession");
@@ -114,6 +115,42 @@ export default function Landing() {
         nav("/");
     };
 
+    const [openAlert, setOpenAlert] = useState("question"); // none, check, question, or exclamation
+    const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
+    const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
+    const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
+    const [alertButtonColor, setAlertButtonColor] = useState("blue"); // none, blue, or red
+    const [alertYesButton, setAlertYesButton] = useState("Yes");
+    const [alertNoButton, setAlertNoButton] = useState("No");
+
+    function clickLogout(index) {
+        setOpenAlert(index);
+        setAlertHeader("Logout");
+        setAlertIcon("question");
+        setAlertDesc("Are you sure you want to logout?");
+        setAlertNoButton("No");
+        setAlertYesButton("Yes");
+    }
+
+    function clickProcure(role, index) {
+        if (role == "Accounting") {
+            setOpenAlert(index);
+            setAlertHeader("Unavailable");
+            setAlertIcon("exclamation");
+            setAlertDesc("You don't have permission to access this feature.");
+            setAlertYesButton("None");
+            setAlertNoButton("Okay");
+        } else {
+            window.location.href =
+                "http://10.41.1.140:8080/procproject3.5/session-checker?token=" +
+                tokenOnly;
+        }
+    }
+
+    function clickInventory(role, index) {
+        window.location.href = "http://10.41.1.142:8000/login-page/" + token;
+    }
+
     if (value) {
         if (value.Authenticated) {
             return (
@@ -122,10 +159,25 @@ export default function Landing() {
                     {loading == true ? <Loader /> : ""}
                     {/* Loader */}
 
+                    {openAlert === "open" ? (
+                        <Alert
+                            handleLogOut={handleLogOut}
+                            clickLogout={clickLogout}
+                            alertIcon={alertIcon}
+                            alertHeader={alertHeader}
+                            alertDesc={alertDesc}
+                            alertButtonColor={alertButtonColor}
+                            alertYesButton={alertYesButton}
+                            alertNoButton={alertNoButton}
+                        />
+                    ) : (
+                        ""
+                    )}
+
                     <div className="w-fit fixed z-30 top-10 right-10 flex flex-col items-end space-y-3 2xl:space-x-4 xl:space-x-3 space-x-3">
                         {/* Profile Button */}
                         <button
-                            onClick={handleLogOut}
+                            onClick={() => clickLogout("open")}
                             className="outline-none flex 2xl:h-12 xl:h-10 h-10 w-fit border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-bg-iconDark hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover active:bg-bg-iconLightActive dark:active:bg-bg-iconDarkActive dark:text-lightColor-900 rounded-full justify-between transition duration-300 ease-in-out"
                         >
                             <div className="flex w-full justify-between pl-4 pr-2 xl:items-center items-center xl:h-full h-full rounded-xl gap-2">
@@ -170,26 +222,22 @@ export default function Landing() {
                                     optimal inventory levels.
                                 </h4>
                             </div>
-                            <a
-                                href={
-                                    "http://10.41.1.140:8080/procproject3.5/session-checker?token=" +
-                                    tokenOnly
-                                }
+                            <div
+                                onClick={() => clickProcure(value.role, "open")}
                                 className="w-[300px] h-[400px] cursor-pointer bg-[#FF9FBF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl"
                             >
                                 <div className="h-[200px] w-[200px] bg-cover bg-center bg-procurement-icon"></div>
                                 <p>Procurement</p>
-                            </a>
-                            <a
-                                href={
-                                    "http://10.41.1.142:8000/login-page/" +
-                                    token
+                            </div>
+                            <div
+                                onClick={() =>
+                                    clickInventory(value.role, "open")
                                 }
                                 className="w-[300px] h-[400px] cursor-pointer bg-[#FFDE6A] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl"
                             >
                                 <div className="h-[200px] w-[200px] bg-cover bg-center bg-inventory-icon"></div>
                                 <p>Inventory</p>
-                            </a>
+                            </div>
                             <div
                                 onClick={handleClick}
                                 className="w-[300px] h-[400px] cursor-pointer bg-[#2F52FF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl"
