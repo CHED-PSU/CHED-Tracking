@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import AdminBg from "../../../components/AdminBg";
 import Searchbar from "../Components/Searchbar";
 import ReturnRequest from "./Forms/ReturnRequest";
 import axios from "axios";
@@ -163,9 +162,6 @@ export default function Index({ className }) {
             }
         >
             {Loading ? <Loader /> : ""}
-            <div className="absolute -right-14 bottom-0 w-1/3">
-                <AdminBg />
-            </div>
             <div className="w-[80%] space-y-5 z-20">
                 <div className="flex justify-between w-full">
                     <button
