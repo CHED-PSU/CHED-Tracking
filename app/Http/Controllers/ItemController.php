@@ -176,6 +176,7 @@ class ItemController extends Controller
             ->where('uri.confirmation', 'accepted')
             ->where('uri.status', '!=', 'Unserviceable')
             ->where('uri.status', '!=', 'Inventories')
+            ->where('uri.status', '!=', 'Reassigned')
             ->where('uri.status', '!=', 'returned to owner')
             ->orderBy('created_at', 'DESC')
             ->get();
@@ -447,7 +448,7 @@ class ItemController extends Controller
     public function getItemsofInventories(Request $req)
     {
         $inventory_items = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id', 'pi.code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'uri.status', 'u.id')
+            ->select('uri.uri_id', 'pi.code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -467,7 +468,7 @@ class ItemController extends Controller
     public function getInventorySorted(Request $req)
     {
         $inventory_items = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id', 'pi.code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.firstname', 'u.surname', 'uri.status', 'u.id')
+            ->select('uri.uri_id', 'pi.code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -480,8 +481,7 @@ class ItemController extends Controller
             ->get();
 
         $getUsers = DB::table('users')
-            ->select('firstname', 'surname', 'id')
-            ->whereNot('firstname', 'jermine')
+            ->select('firstname', 'middlename', 'surname', 'suffix', 'designation', 'img', 'id')
             ->get();
 
         return response()->json(['inventory_items' => $inventory_items, 'users' => $getUsers]);
@@ -601,8 +601,9 @@ class ItemController extends Controller
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
                 ->where('uri.uri_id', $data)
                 ->update([
-                    'uri.status' => 'Assigned to ' . $assigned_to->firstname . ' ' . $assigned_to->surname,
-                    'ui.item_status' => 'Assigned to ' . $assigned_to->firstname . ' ' . $assigned_to->surname
+                    'uri.status' => 'Reassigned',
+                    'ui.item_status' => 'Reassigned',
+                    'ui.assigned_to_user' => $req->input('user_id')
                 ]);
 
             $price = DB::table('user_returned_items as uri')

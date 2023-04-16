@@ -128,19 +128,26 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
                                     className="rounded-full w-18 h-18 object-cover"
                                 />
                                 <div className="w-full space-y-2">
-                                    <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-xl h-8 w-full">
+                                    <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-lg h-8 w-full">
                                         {loading
                                             ? ""
-                                            : users[selectedPerson - 1]
-                                                  .firstname +
-                                              " " +
-                                              users[selectedPerson - 1].surname}
+                                            : users[selectedPerson - 1].firstname +
+                                            " " +
+                                            (users[selectedPerson - 1].middlename
+                                                ? users[
+                                                      selectedPerson - 1
+                                                  ].middlename.substring(0, 1) + "."
+                                                : "") +
+                                            users[selectedPerson - 1].surname +
+                                            " " +
+                                            (users[selectedPerson - 1].suffix || "")}
                                     </div>
                                     <div className="font-medium pl-[10px] text-sm h-8 rounded-md w-56">
                                         {loading
                                             ? ""
-                                            : users[selectedPerson - 1]
-                                                  .designation}
+                                            : (users[selectedPerson - 1]
+                                                  .designation ? users[selectedPerson - 1]
+                                                  .designation : 'N/A')}
                                     </div>
                                 </div>
                             </div>
@@ -162,7 +169,7 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
                                             ? ""
                                             : users?.map((data) => {
                                                   return (
-                                                      <option value={data.id}>
+                                                      <option key={data.id} value={data.id}>
                                                           {data.firstname +
                                                               " " +
                                                               data.surname}

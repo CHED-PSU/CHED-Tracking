@@ -4,6 +4,7 @@ import Searchbar from "../Components/Searchbar";
 import SortedModal from "./Modals/Sorted";
 import SingleModal from "./Modals/Single";
 import MultiModal from "./Modals/Multi";
+import Alert from "./Alerts/Alert";
 import axios from "axios";
 30;
 
@@ -16,8 +17,6 @@ export default function Inventory({ className }) {
     const [users, setUsers] = useState();
     const [loading, setLoading] = useState(true);
     const [personSelected, setPersonSelected] = useState(1);
-
-    const [selectedId, setSelectedId] = useState([]);
     const [id, setId] = useState();
     const [userId, setUserId] = useState();
 
@@ -34,23 +33,6 @@ export default function Inventory({ className }) {
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleChangeCheckBox = (e) => {
-        checkBoxItems.map((item) => {
-            if (item.uri_id == e.target.value) {
-                if (e.target.checked === true) {
-                    const value = e.target.value;
-                    const newArray = [...selectedId, value];
-                    setSelectedId(newArray);
-                } else {
-                    const originalArray = [...selectedId];
-                    const index = originalArray.indexOf(e.target.value);
-                    originalArray.splice(index, 1);
-                    setSelectedId(originalArray);
-                }
-            }
-        });
     };
 
     const getInventorySorted = async () => {
@@ -88,107 +70,6 @@ export default function Inventory({ className }) {
         }
     }
 
-    function clickSortedModal(index) {
-        if (index === "open-sorted") {
-            if (selectedId?.length !== 0) {
-                setOpenSortedModal(index);
-            } else {
-                alert("select items");
-            }
-        }
-
-        if (index === "close") {
-            setOpenSortedModal(index);
-        }
-    }
-
-    function clickSingleModal(index) {
-        setOpenSingleModal(index);
-    }
-
-    function clickMultiModal(index) {
-        if (index === "open-multi") {
-            if (selectedId?.length !== 0) {
-                setOpenMultiModal(index);
-            } else {
-                alert("select items");
-            }
-        }
-
-        if (index === "close") {
-            setOpenMultiModal(index);
-        }
-    }
-
-    const unselect = () => {
-        setSelectedId([]);
-        const checkbox = document.querySelector(".select_all");
-        checkbox.checked = false;
-        const checkboxes = document.querySelectorAll(".i_items");
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = false;
-        });
-    };
-
-    const handleSelectAll = (event) => {
-        if (event.target.checked) {
-            // Get all the checkboxes and their values
-            const checkboxes = document.querySelectorAll(".i_items");
-            const ids = [];
-            checkboxes.forEach((checkbox) => {
-                ids.push(parseInt(checkbox.value));
-                checkbox.checked = true;
-            });
-            setSelectedId(ids);
-        } else {
-            // Clear the selected IDs array and uncheck all the checkboxes
-            setSelectedId([]);
-            const checkboxes = document.querySelectorAll(".i_items");
-            checkboxes.forEach((checkbox) => {
-                checkbox.checked = false;
-            });
-        }
-
-        // Update the individual checkboxes' state
-        const individualCheckboxes = document.querySelectorAll(".i_items");
-        individualCheckboxes.forEach((checkbox) => {
-            checkbox.checked = event.target.checked;
-        });
-    };
-
-    function formatDateDisplay(dateString) {
-        const date = new Date(dateString);
-        const month = date.toLocaleString("default", { month: "short" });
-        const day = date.getDate().toString().padStart(2, "0");
-        const year = date.getFullYear();
-        return `${month} ${day}, ${year}`;
-    }
-
-    function displayName(data, prefix) {
-        const middleInitial = data.middlename
-            ? data.middlename.substring(0, 1) + "."
-            : "";
-        const fullNamePrefixArr = [
-            data.prefix || "",
-            data.firstname || "",
-            middleInitial,
-            data.surname || "",
-            data.suffix || "",
-        ];
-        const fullNameArr = [
-            data.firstname || "",
-            middleInitial,
-            data.surname || "",
-            data.suffix || "",
-        ];
-
-        if (prefix == false) {
-            return fullNameArr.filter(Boolean).join(" ");
-        } else {
-            return fullNamePrefixArr.filter(Boolean).join(" ");
-        }
-    }
-
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 9;
 
@@ -207,9 +88,7 @@ export default function Inventory({ className }) {
             className="h-18 text-xs border dark:border-neutral-700 bg-white text-th dark:bg-darkColor-800 dark:text-white hover:bg-primary hover:bg-opacity-5 dark:hover:bg-darkColor-700 cursor-default transition duration-150 ease-in-out"
         >
             {/* name */}
-            <td>
-
-            </td>
+            <td></td>
             {/* status */}
             <td>
                 <a className="text-left flex items-center w-full h-12 gap-3">
@@ -243,6 +122,22 @@ export default function Inventory({ className }) {
 
     const pageCount = Math.ceil((items?.length || 0) / itemsPerPage);
 
+    const changeUser = (e) => {
+        setPersonSelected(e.target.value);
+        try {
+            axios
+                .post("api/getInventorySorted", { id: e.target.value })
+                .then((res) => {
+                    setItems(res.data.inventory_items);
+                    setUsers(res.data.users);
+                });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const itemMapper = (items) => {
         return items?.map((data) => {
             return (
@@ -254,10 +149,10 @@ export default function Inventory({ className }) {
                     <td>
                         <div className="flex justify-center item-center">
                             <input
-                                onClick={handleChangeCheckBox}
                                 type="checkbox"
-                                className="i_items"
+                                className="u_items"
                                 value={data.uri_id}
+                                onChange={handleSelectItem}
                             />
                         </div>
                     </td>
@@ -300,15 +195,13 @@ export default function Inventory({ className }) {
                     <td>
                         <div className="w-full flex justify-center">
                             <button
-                                onClick={() => {
-                                    setOpenSingleModal("open-single"),
-                                        setPersonSelected(data.id),
-                                        setSelectedId(data.uri_id);
+                                onClick={() => {clickModalSingle(toggleSort),
+                                    handleSelectSingleItem(data.uri_id);
                                 }}
                                 value={data.uri_id}
                                 className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full"
                             >
-                                Return
+                                {toggleSort === "all" ? "Reissue" : "Return"}
                             </button>
                         </div>
                     </td>
@@ -317,28 +210,191 @@ export default function Inventory({ className }) {
         });
     };
 
-    const changeUser = (e) => {
-        setPersonSelected(e.target.value);
-        try {
-            axios
-                .post("api/getInventorySorted", { id: e.target.value })
-                .then((res) => {
-                    setItems(res.data.inventory_items);
-                    setUsers(res.data.users);
-                });
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
+    const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
+    const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
+    const [alertNoButton, setAlertNoButton] = useState("No");
+    const [selectedMultipleIds, setSelectedMultipleIds] = useState([]);
+
+    function clickModalSingle(index) {
+        if (index === "sorted") {
+            setOpenSortedModal('open-sorted');
+        } else if (index === "all") {
+            setOpenMultiModal('open-multi');
+        } else if (index === "close") {
+            setOpenMultiModal(index);
         }
+    }
+
+    function clickSortedModal(index) {
+        if (index === "open-sorted") {
+            if (selectedMultipleIds?.length !== 0) {
+                setSelectSingleIds([]);
+                setOpenSortedModal(index);
+            } else {
+                setOpenAlert(true);
+                setAlertIcon("exclamation");
+                setAlertHeader("No selected items.");
+                setAlertDesc("Please select an item on the checkbox.");
+                setAlertNoButton("Okay");
+            }
+        }
+
+        if (index === "close") {
+            setOpenSortedModal(index);
+        }
+    }
+
+    function clickMultiModal(index) {
+        if (index === "open-multi") {
+            if (selectedMultipleIds?.length !== 0) {
+                setSelectSingleIds([]);
+                setOpenMultiModal(index);
+            } else {
+                setOpenAlert(true);
+                setAlertIcon("exclamation");
+                setAlertHeader("No selected items.");
+                setAlertDesc("Please select an item on the checkbox.");
+                setAlertNoButton("Okay");
+            }
+        }
+
+        if (index === "close") {
+            setOpenMultiModal(index);
+        }
+    }
+
+    function clickAlert() {
+        setOpenAlert(false);
+    }
+
+    function clickSingleModal(index) {
+        setOpenSingleModal(index);
+    }
+
+    const unselect = () => {
+        setSelectedMultipleIds([]);
+        const checkbox = document.querySelector("#select-all");
+        checkbox.checked = false;
+        const checkboxes = document.querySelectorAll(".u_items");
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
     };
+
+    //Select Only One
+    const [selectSingleIds, setSelectSingleIds] = useState([]);
+
+    const handleSelectSingleItem = (itemId) => {
+        setSelectSingleIds([itemId]);
+    };
+
+    const handleSelectAll = (event) => {
+        if (event.target.checked) {
+            // Get all the checkboxes and their values
+            const checkboxes = document.querySelectorAll(".u_items");
+            const ids = [];
+            checkboxes.forEach((checkbox) => {
+                ids.push(parseInt(checkbox.value));
+                checkbox.checked = true;
+            });
+            setSelectedMultipleIds(ids);
+        } else {
+            // Clear the selected IDs array and uncheck all the checkboxes
+            setSelectedMultipleIds([]);
+            const checkboxes = document.querySelectorAll(".u_items");
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = false;
+            });
+        }
+
+        // Update the individual checkboxes' state
+        const individualCheckboxes = document.querySelectorAll(".u_items");
+        individualCheckboxes.forEach((checkbox) => {
+            checkbox.checked = event.target.checked;
+        });
+
+        setSelectSingleIds([]);
+    };
+
+    const handleSelectItem = (event) => {
+        const itemId = parseInt(event.target.value);
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            // Add the selected item ID to the array
+            setSelectedMultipleIds([...selectedMultipleIds, itemId]);
+        } else {
+            // Remove the selected item ID from the array
+            setSelectedMultipleIds(
+                selectedMultipleIds.filter((id) => id !== itemId)
+            );
+        }
+
+        // Check if all checkboxes are checked or not
+        const checkboxes = document.querySelectorAll(".u_items");
+        const allChecked = Array.from(checkboxes).every(
+            (checkbox) => checkbox.checked
+        );
+        const selectAllCheckbox = document.querySelector("#select-all");
+
+        // Update the select all checkbox accordingly
+        if (allChecked) {
+            selectAllCheckbox.checked = true;
+        } else {
+            selectAllCheckbox.checked = false;
+        }
+
+        setSelectSingleIds([]);
+    };
+
+    useEffect(() => {
+        const selectAllCheckbox = document.getElementById("select-all");
+        selectAllCheckbox.addEventListener("change", handleSelectAll);
+    }, []);
+
+    const selectedIds =
+        selectSingleIds != "" ? selectSingleIds : selectedMultipleIds;
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        const month = date.toLocaleString("default", { month: "short" });
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${month} ${day}, ${year}`;
+    }
+
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
+    }
 
     return (
         <div className={className + " flex justify-center relative"}>
             {openSortedModal === "open-sorted" ? (
                 <SortedModal
                     clickSortedModal={clickSortedModal}
-                    selectedId={selectedId}
+                    selectedId={selectedIds}
                     personSelected={personSelected}
                     users={users}
                     getInventorySorted={getInventorySorted}
@@ -355,7 +411,7 @@ export default function Inventory({ className }) {
                             ? getInventorySorted
                             : getInventoryItems
                     }
-                    selectedId={selectedId ? selectedId : ""}
+                    selectedId={selectedIds}
                     personSelected={personSelected}
                     users={users}
                 />
@@ -367,13 +423,26 @@ export default function Inventory({ className }) {
                 <MultiModal
                     clickMultiModal={clickMultiModal}
                     getInventoryItems={getInventoryItems}
-                    selectedId={selectedId}
+                    selectedId={selectedIds}
                     unselect={unselect}
                 />
             ) : (
                 ""
             )}
-            
+
+            {openAlert ? (
+                <Alert
+                    alertIcon={alertIcon}
+                    alertHeader={alertHeader}
+                    alertDesc={alertDesc}
+                    alertNoButton={alertNoButton}
+                    clickAlert={clickAlert}
+                    className={""}
+                />
+            ) : (
+                ""
+            )}
+
             <div className="z-20 pt-[14px] flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
                 <div className="pb-3 h-14 items-center w-full">
                     <div className="">
@@ -387,14 +456,18 @@ export default function Inventory({ className }) {
                                 <div className="w-fit h-fit flex items-center text-xs rounded-full bg-gray-100  -space-x-2">
                                     {toggleSort === "all" ? (
                                         <div
-                                            onClick={() => clickSort("all")}
+                                            onClick={() => {
+                                                clickSort("all"), unselect();
+                                            }}
                                             className="w-[72px] py-2 bg-pink-500 text-white text-center font-medium rounded-full cursor-pointer dark:text-white z-10"
                                         >
                                             All
                                         </div>
                                     ) : (
                                         <div
-                                            onClick={() => clickSort("all")}
+                                            onClick={() => {
+                                                clickSort("all"), unselect();
+                                            }}
                                             className="w-[72px] py-2 rounded-full text-center font-medium cursor-pointer dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 dark:bg-darkColor-700 dark:border-white transition duration-500 ease-in-out"
                                         >
                                             All
@@ -402,14 +475,18 @@ export default function Inventory({ className }) {
                                     )}
                                     {toggleSort === "sorted" ? (
                                         <div
-                                            onClick={() => clickSort("sorted")}
+                                            onClick={() => {
+                                                clickSort("sorted"), unselect();
+                                            }}
                                             className="w-[72px] py-2 bg-pink-500 text-white text-center font-medium rounded-full cursor-pointer dark:text-white z-10"
                                         >
                                             Sorted
                                         </div>
                                     ) : (
                                         <div
-                                            onClick={() => clickSort("sorted")}
+                                            onClick={() => {
+                                                clickSort("sorted"), unselect();
+                                            }}
                                             className="w-[72px] py-2 rounded-full text-center font-medium cursor-pointer dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 transition duration-500 ease-in-out"
                                         >
                                             Sorted
@@ -469,7 +546,7 @@ export default function Inventory({ className }) {
                                 >
                                     <i className="fa-solid fa-box-archive text-sm"></i>
                                     {toggleSort === "all"
-                                        ? "Assign"
+                                        ? "Reissue"
                                         : "Return/Renew"}
                                 </button>
                             </div>
@@ -481,7 +558,8 @@ export default function Inventory({ className }) {
                                         <div className="flex item-center">
                                             <input
                                                 type="checkbox"
-                                                className="select_all"
+                                                className=""
+                                                id="select-all"
                                                 onChange={handleSelectAll}
                                             />
                                         </div>

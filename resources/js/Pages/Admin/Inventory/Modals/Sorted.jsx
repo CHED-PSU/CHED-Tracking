@@ -69,7 +69,7 @@ export default function Assign({
                                         : "outline-none rounded-full py-2 px-3 font-medium"
                                 }
                             >
-                                Previous Owner
+                                Return
                             </button>
                             <button
                                 onClick={() => clickTabs("renewal")}

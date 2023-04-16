@@ -50,6 +50,7 @@ export default function InventorySticker(props) {
 
     //Select all
     const [selectedMultipleIds, setSelectedMultipleIds] = useState([]);
+    const [selectSingleIds, setSelectSingleIds] = useState([]);
 
     const handleSelectAll = (event) => {
         if (event.target.checked) {
@@ -75,6 +76,8 @@ export default function InventorySticker(props) {
         individualCheckboxes.forEach((checkbox) => {
             checkbox.checked = event.target.checked;
         });
+
+        setSelectSingleIds([]);
     };
 
     const handleSelectItem = (event) => {
@@ -103,6 +106,8 @@ export default function InventorySticker(props) {
         } else {
             selectAllCheckbox.checked = false;
         }
+
+        setSelectSingleIds([]);
     };
 
     useEffect(() => {
@@ -111,8 +116,6 @@ export default function InventorySticker(props) {
     }, []);
 
     //Select Only One
-    const [selectSingleIds, setSelectSingleIds] = useState([]);
-
     const handleSelectSingleItem = (itemId) => {
         setSelectSingleIds([itemId]);
     };
@@ -229,7 +232,10 @@ export default function InventorySticker(props) {
                                         <h6>REGIONAL OFFICE XI</h6>
                                     </div>
                                 </div>
-                                <QRCode className="w-10 h-10 bg-white p-1" serial_no={data.serial_no}/>
+                                <QRCode
+                                    className="w-10 h-10 bg-white p-1"
+                                    serial_no={data.serial_no}
+                                />
                             </div>
                             <div className="bg-black text-white text-ss font-bold text-center">
                                 PROPERTY INVENTORY STICKER
@@ -260,7 +266,10 @@ export default function InventorySticker(props) {
                                         <tr>
                                             <td className="h-3">SERIAL NO.</td>
                                             <td className="text-[8px] font-medium">
-                                                : {data.serial_no ? data.serial_no : 'N/A'}
+                                                :{" "}
+                                                {data.serial_no
+                                                    ? data.serial_no
+                                                    : "N/A"}
                                             </td>
                                         </tr>
                                         <tr>
@@ -268,7 +277,9 @@ export default function InventorySticker(props) {
                                                 PROPERTY CODE
                                             </td>
                                             <td className="text-[8px] font-medium">
-                                                : {props.formDetails.ics_no || props.formDetails.par_no}
+                                                :{" "}
+                                                {props.formDetails.ics_no ||
+                                                    props.formDetails.par_no}
                                             </td>
                                         </tr>
                                         <tr>
@@ -419,9 +430,18 @@ export default function InventorySticker(props) {
                                 NOTE: PLEASE DO NOT REMOVE
                             </div>
                             <div className="flex gap-2 px-2 items-center bg-black text-white text-[5px] text-center pt-1 py-1">
-                                {data.serial_no ? <BarCode className="h-8 bg-white" serial_no={data.serial_no}/> : <div className="h-8"></div>}
-                                <p className="text-[6px] font-medium text-left">UNAUTHORIZED REMOVAL OR TAMPERING WILL BE
-                                    SUBJECTED TO DISCIPLINARY ACTION.</p>
+                                {data.serial_no ? (
+                                    <BarCode
+                                        className="h-8 bg-white"
+                                        serial_no={data.serial_no}
+                                    />
+                                ) : (
+                                    <div className="h-8"></div>
+                                )}
+                                <p className="text-[6px] font-medium text-left">
+                                    UNAUTHORIZED REMOVAL OR TAMPERING WILL BE
+                                    SUBJECTED TO DISCIPLINARY ACTION.
+                                </p>
                             </div>
                         </div>
                     );
