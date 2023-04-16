@@ -177,7 +177,7 @@ class ItemController extends Controller
             ->where('uri.status', '!=', 'Unserviceable')
             ->where('uri.status', '!=', 'Inventories')
             ->where('uri.status', '!=', 'Reassigned')
-            ->where('uri.status', '!=', 'returned to owner')
+            ->where('uri.status', '!=', 'Returned to Owner')
             ->orderBy('created_at', 'DESC')
             ->get();
 
@@ -196,7 +196,7 @@ class ItemController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.confirmation', 'accepted')
-            ->whereIn('uri.status', ['Inventories', 'returned to owner'])
+            ->whereIn('uri.status', ['Inventories', 'Returned to Owner'])
             ->get();
 
         return response()->json(['returnedItemsInventory' => $returnedItems]);
@@ -495,7 +495,7 @@ class ItemController extends Controller
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
                 ->where('uri.uri_id', $data)
                 ->update([
-                    'uri.status' => 'returned to owner',
+                    'uri.status' => 'Returned to Owner',
                     'ui.item_status' => 'owned'
                 ]);
         }
