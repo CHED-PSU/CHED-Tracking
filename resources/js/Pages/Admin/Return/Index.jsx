@@ -63,15 +63,12 @@ export default function Return({ className }) {
     };
 
     const getUsers = async () => {
-        setLoading(true);
         try {
             await axios.get("api/getUsers").then((response) => {
                 setUsers(response.data.users);
             });
         } catch (e) {
             console.log(e);
-        } finally {
-            setLoading(false);
         }
     };
 

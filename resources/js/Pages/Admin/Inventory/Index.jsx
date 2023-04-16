@@ -20,6 +20,7 @@ export default function Inventory({ className }) {
     const [selectedId, setSelectedId] = useState([]);
     const [id, setId] = useState();
     const [userId, setUserId] = useState();
+
     const getInventoryItems = async () => {
         setLoading(true);
         try {
@@ -53,7 +54,6 @@ export default function Inventory({ className }) {
     };
 
     const getInventorySorted = async () => {
-        setLoading(true);
         try {
             await axios
                 .post("api/getInventorySorted", { id: personSelected })
@@ -63,8 +63,6 @@ export default function Inventory({ className }) {
                 });
         } catch (e) {
             console.log(e);
-        } finally {
-            setLoading(false);
         }
     };
 

@@ -37,24 +37,6 @@ export default function Newproposal({
         });
     };
 
-    // useEffect(() => {
-    //     predictHandler();
-    // }, []);
-
-    // const predictHandler = async () => {
-    //     const currentYear = new Date().getFullYear();
-    //     const yearToPredict = currentYear + 3;
-    //     try {
-    //         const response = await axios.post("api/forecastSpecific", {
-    //             value: yearToPredict,
-    //         });
-    //         setProjectedValue(response.data.predicted);
-    //         setYear(yearToPredict);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
     useEffect(() => {
         const getTotalCost = async () => {
             setLoading(true);

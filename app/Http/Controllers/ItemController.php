@@ -71,6 +71,7 @@ class ItemController extends Controller
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->where('it.assigned_to', $req->input('user_id'))
             ->where('ui.item_status', 'owned')
+            ->where('ia.category_id', '!=', 1)
             ->get();
 
         $data = [];

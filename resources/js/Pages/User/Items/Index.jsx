@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-
+import Loader from "../../../components/Loader";
+import UnderDev from "../../../Components/UnderDev";
 import Searchbar from "../Components/Searchbar";
 import ReturnRequest from "./Forms/ReturnRequest";
 import axios from "axios";
-import Loader from "../../../Components/Loader";
 
 export default function Index({ className }) {
     const [checkedData, setCheckedData] = useState([]);
@@ -27,9 +27,9 @@ export default function Index({ className }) {
     };
 
     const closer = () => {
-        setOpenForm(!openForm)
-        getIndividualItems()
-    }
+        setOpenForm(!openForm);
+        getIndividualItems();
+    };
 
     const getIndividualItems = async () => {
         setLoading(true);
@@ -49,6 +49,7 @@ export default function Index({ className }) {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         getIndividualItems();
     }, []);
@@ -100,7 +101,9 @@ export default function Index({ className }) {
                     </td>
                     <td className="text-sm">{data.article}</td>
                     <td className="text-sm">{data.description}</td>
-                    <td className="text-sm">{formatDateDisplay(data.created_at)}</td>
+                    <td className="text-sm">
+                        {formatDateDisplay(data.created_at)}
+                    </td>
                     <td className="text-center py-3 rounded-tableRow">
                         <button
                             value={data.ui_id}
@@ -135,6 +138,7 @@ export default function Index({ className }) {
     const returnHandler = () => {
         console.log(selected);
     };
+
     const search = (value) => {
         setSearchTerm(value);
 
@@ -154,6 +158,12 @@ export default function Index({ className }) {
 
     //for Form functions
 
+    const [openUnderDev, setOpenUnderDev] = useState("close");
+
+    function clickUnderDev(index) {
+        setOpenUnderDev(index);
+    }
+
     return (
         <div
             className={
@@ -162,6 +172,13 @@ export default function Index({ className }) {
             }
         >
             {Loading ? <Loader /> : ""}
+            
+            {openUnderDev == "open" ? (
+                <UnderDev clickUnderDev={clickUnderDev} />
+            ) : (
+                ""
+            )}
+
             <div className="w-[80%] space-y-5 z-20">
                 <div className="flex justify-between w-full">
                     <button
@@ -177,7 +194,9 @@ export default function Index({ className }) {
                             className="h-10"
                         />
                         <button
-                            onClick={returnHandler}
+                            onClick={() => {
+                                clickUnderDev("open"), returnHandler();
+                            }}
                             className="h-10 text-sm font-medium text-black w-fit px-4 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
                         >
                             <i className="fa-solid fa-box-archive text-base"></i>
@@ -237,7 +256,7 @@ export default function Index({ className }) {
                 <ReturnRequest
                     openFormHandler={openFormHandler}
                     valueId={valueId ? valueId : ""}
-                    closer ={closer}
+                    closer={closer}
                 />
             ) : (
                 ""

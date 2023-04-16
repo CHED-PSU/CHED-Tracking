@@ -186,7 +186,7 @@ export default function Landing() {
                         >
                             <div className="flex relative w-full justify-between xl:items-center items-center xl:h-full h-full rounded-xl ">
                                 <div className="bg-black/30 w-full h-full opacity-0 hover:opacity-100 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center transition ease-in-out delay-150">
-                                    <i class="fa-solid text-xl fa-arrow-right-from-bracket text-darkColor-800"></i>
+                                    <i className="fa-solid text-xl fa-arrow-right-from-bracket text-darkColor-800"></i>
                                 </div>
                                 {displayPhoto(
                                     value.img,
