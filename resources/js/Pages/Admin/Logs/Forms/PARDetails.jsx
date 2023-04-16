@@ -1,6 +1,7 @@
 import { toUpper } from "lodash";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
+import InventorySticker from "./Modal/InventorySticker";
 
 export default function PARDetails(props) {
     const ref = useRef();
@@ -18,6 +19,12 @@ export default function PARDetails(props) {
         documentTitle: "PAR",
     });
 
+    const [openSticker, setOpenSticker] = useState("close");
+
+    function clickSticker(index) {
+        setOpenSticker(index);
+    }
+
     function formattedAmount(index) {
         const amount = index;
         const formattedAmount = Math.abs(amount).toLocaleString();
@@ -33,24 +40,20 @@ export default function PARDetails(props) {
     }
 
     const parItemsMapper = (items) => {
-        return items?.map((data) => {
+        return items?.map((data, index) => {
             return (
-                <>
-                <tr className="avoid text-xs h-fit cursor-default border border-darkColor-700 dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                    <td rowSpan={2} className="text-center px-3 border border-darkColor-700">{data.quantity}</td>
-                    <td rowSpan={2} className="text-center px-3 border border-darkColor-700">
+                <tr key={index} className="avoid text-xs h-fit cursor-default border border-darkColor-700 dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                    <td className="text-center px-3 border border-darkColor-700">
+                        {data.quantity}
+                    </td>
+                    <td className="text-center px-3 border border-darkColor-700">
                         {toUpper(data.unit)}
                     </td>
-                    <td className="text-left font-semibold px-3 border border-darkColor-700 text-xs">
-                        {data.article}
-                    </td>
-                    <td className="border border-darkColor-700"></td>
-                    <td className="border border-darkColor-700"></td>
-                    <td className="border border-darkColor-700"></td>
-                </tr>
-                <tr className="font-medium text-ss">
-                    <td className="text-left font-medium p-3 border border-darkColor-700">
-                        {data.description}
+                    <td className="text-left border border-darkColor-700 text-xs">
+                        <div className="px-3 py-1 font-semibold border-b border-darkColor-700">
+                            {data.article}
+                        </div>
+                        <div className="px-3 py-1">{data.description}</div>
                     </td>
                     <td className="text-center border border-darkColor-700">
                         {data.property_no}
@@ -62,22 +65,24 @@ export default function PARDetails(props) {
                         {formattedAmount(data.quantity * data.price)}
                     </td>
                 </tr>
-                <tr>
-                    <td className="border border-darkColor-700"></td>
-                    <td className="border border-darkColor-700"></td>
-                    <td className="text-center font-semibold text-ss border border-darkColor-700">*nothing follows*</td>
-                    <td className="border border-darkColor-700"></td>
-                    <td className="border border-darkColor-700"></td>
-                    <td className="border border-darkColor-700"></td>
-                </tr>
-                </>
             );
         });
     };
 
     return (
         <div className={props.className}>
-            <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40">
+            {openSticker === "open" ? (
+                <InventorySticker
+                    className={""}
+                    formDetails={props.formDetails}
+                    icsItems={props.parItems}
+                    clickSticker={clickSticker}
+                />
+            ) : (
+                ""
+            )}
+
+            <div className="fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-30">
                 <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] pb-10 overflow-y-auto">
                     {/* header */}
                     <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
@@ -94,14 +99,14 @@ export default function PARDetails(props) {
                                 </h4>
                                 <p className="text-sm text-text-gray dark:text-neutral-300">
                                     <b>Logs</b> / PAR / {props.userName} /{" "}
-                                    {props.formDetails.ics_no}
+                                    {props.formDetails.par_no}
                                 </p>
                             </div>
                         </div>
 
-
                         <div className="flex w-1/2 justify-end items-end gap-4">
                             <button
+                                onClick={() => clickSticker("open")}
                                 className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer"
                             >
                                 <i className="fa-solid fa-print mr-1"></i>
@@ -109,7 +114,8 @@ export default function PARDetails(props) {
                             </button>
                             <button
                                 onClick={handlePrint}
-                                className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer">
+                                className="btn-color-3 rounded-full py-2 px-3 text-text-black text-sm cursor-pointer"
+                            >
                                 <i className="fa-solid fa-print mr-1"></i>
                                 Print
                             </button>
@@ -139,7 +145,6 @@ export default function PARDetails(props) {
                                             Fund Cluster:
                                         </div>
                                         <div className="text-xs dark:text-gray-400 font-semibold">
-                                            101
                                         </div>
                                     </div>
                                 </div>
@@ -149,7 +154,7 @@ export default function PARDetails(props) {
                                             PAR No:
                                         </div>
                                         <div className="pr-3 text-xs dark:text-gray-400 font-semibold">
-                                            {props.formDetails.ics_no}
+                                            {props.formDetails.par_no}
                                         </div>
                                     </div>
                                 </div>
@@ -159,9 +164,9 @@ export default function PARDetails(props) {
                                     id="items "
                                     className="table-auto w-full min-w-[700px]"
                                 >
-                                    <thead>
+                                    <tbody id="slip-table">
                                         <tr className="avoid text-xs text-darkColor-700 border dark:border-neutral-700 dark:bg-darkColor-700 dark:text-white cursor-default">
-                                        <th className="h-10 font-medium border border-darkColor-700">
+                                            <th className="h-10 font-medium border border-darkColor-700">
                                                 Quantity
                                             </th>
                                             <th className="h-10 font-medium border border-darkColor-700">
@@ -180,8 +185,6 @@ export default function PARDetails(props) {
                                                 Amount
                                             </th>
                                         </tr>
-                                    </thead>
-                                    <tbody id="slip-table">
                                         {props.Loading ? (
                                             <tr className="avoid text-sm h-14 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                                 <td
@@ -191,7 +194,7 @@ export default function PARDetails(props) {
                                                     There is no data yet.
                                                 </td>
                                             </tr>
-                                        ) : props.icsItems?.length !== 0 ? (
+                                        ) : props.parItems?.length !== 0 ? (
                                             parItemsMapper(
                                                 Object.values(props.parItems)
                                             )
@@ -205,9 +208,21 @@ export default function PARDetails(props) {
                                                 </td>
                                             </tr>
                                         )}
-
-<tr>
-                                            <td colSpan={3} className="font-medium border border-t-0 pb-3 border-darkColor-700">
+                                        <tr>
+                                            <td className="border border-darkColor-700"></td>
+                                            <td className="border border-darkColor-700"></td>
+                                            <td className="text-center font-semibold text-ss border border-darkColor-700">
+                                                *nothing follows*
+                                            </td>
+                                            <td className="border border-darkColor-700"></td>
+                                            <td className="border border-darkColor-700"></td>
+                                            <td className="border border-darkColor-700"></td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                colSpan={3}
+                                                className="font-medium border border-t-0 pb-3 border-darkColor-700"
+                                            >
                                                 <div className="pt-4 ml-2 text-left text-xs font-medium dark:text-white">
                                                     Received by:
                                                 </div>
@@ -215,38 +230,41 @@ export default function PARDetails(props) {
                                                     className="pt-10 text-center text-sm underline font-semibold dark:text-white"
                                                     id="Property_custodian_name"
                                                 >
-                                                    {props.formDetails.receiverF +
+                                                    {props.formDetails
+                                                        .receiverF +
                                                         " " +
-                                                        (props.formDetails.receiverM ==
-                                                        null
+                                                        (props.formDetails
+                                                            .receiverM == null
                                                             ? ""
                                                             : props.formDetails.receiverM.charAt(
-                                                                0
-                                                            ) +
-                                                            "." +
-                                                            " ") +
+                                                                  0
+                                                              ) +
+                                                              "." +
+                                                              " ") +
                                                         " " +
-                                                        props.formDetails.receiverS +
+                                                        props.formDetails
+                                                            .receiverS +
                                                         (props.formDetails
                                                             .receiverSuf == null
                                                             ? ""
                                                             : " " +
-                                                            props.formDetails
-                                                                .receiverSuf)}
+                                                              props.formDetails
+                                                                  .receiverSuf)}
                                                 </div>
                                                 <div className="text-center underline dark:text-gray-400 text-xs">
-                                                    {props.formDetails.designation2 ===
-                                                        null
-                                                            ? "N/A"
-                                                            : props.formDetails
-                                                                .designation2}
+                                                    {props.formDetails
+                                                        .designation2 === null
+                                                        ? "N/A"
+                                                        : props.formDetails
+                                                              .designation2}
                                                 </div>
                                                 <div className="text-center dark:text-gray-400 text-xs">
                                                     Position / Office
                                                 </div>
                                                 <div className="text-center underline dark:text-gray-400 text-xs">
                                                     {formatDateDisplay(
-                                                        props.formDetails.received_date
+                                                        props.formDetails
+                                                            .received_date
                                                     )}
                                                 </div>
                                                 <div className="pb-6 text-center dark:text-gray-400 text-xs">
@@ -260,34 +278,39 @@ export default function PARDetails(props) {
                                                     className="text-center text-sm font-semibold dark:text-white"
                                                     id="Property_custodian_name"
                                                 >
-                                                    {props.formDetails.assignedF +
+                                                    {props.formDetails
+                                                        .assignedF +
                                                         " " +
-                                                        (props.formDetails.assignedM ==
-                                                        null
+                                                        (props.formDetails
+                                                            .assignedM == null
                                                             ? ""
                                                             : props.formDetails.assignedM.charAt(
-                                                                0
-                                                            ) +
-                                                            "." +
-                                                            " ") +
+                                                                  0
+                                                              ) +
+                                                              "." +
+                                                              " ") +
                                                         " " +
-                                                        props.formDetails.assignedS +
+                                                        props.formDetails
+                                                            .assignedS +
                                                         (props.formDetails
                                                             .assignedSuf == null
                                                             ? ""
                                                             : " " +
-                                                            props.formDetails
-                                                                .assignedSuf)}
+                                                              props.formDetails
+                                                                  .assignedSuf)}
                                                 </div>
                                                 <div className="text-center dark:text-gray-400 text-xs">
-                                                    {props.formDetails.designation3 ===
-                                                        null
-                                                            ? "N/A"
-                                                            : props.formDetails
-                                                                .designation3}
+                                                    {props.formDetails
+                                                        .designation3 === null
+                                                        ? "N/A"
+                                                        : props.formDetails
+                                                              .designation3}
                                                 </div>
                                             </td>
-                                            <td colSpan={3} className="font-medium border border-t-0 pb-3 border-l-0 border-darkColor-700">
+                                            <td
+                                                colSpan={3}
+                                                className="font-medium border border-t-0 pb-3 border-l-0 border-darkColor-700"
+                                            >
                                                 <div className="pt-4 ml-2 text-left text-xs font-medium dark:text-white">
                                                     Issued by:
                                                 </div>
@@ -296,37 +319,39 @@ export default function PARDetails(props) {
                                                     id="user-employee"
                                                 >
                                                     {props.formDetails.issuerF +
-                                                    " " +
-                                                    (props.formDetails.issuerM ==
-                                                    null
-                                                        ? ""
-                                                        : props.formDetails.issuerM.charAt(
-                                                            0
-                                                        ) +
-                                                        "." +
-                                                        " ") +
-                                                    " " +
-                                                    props.formDetails.issuerS +
-                                                    (props.formDetails.issuerSuf ==
-                                                    null
-                                                        ? ""
-                                                        : " " +
+                                                        " " +
+                                                        (props.formDetails
+                                                            .issuerM == null
+                                                            ? ""
+                                                            : props.formDetails.issuerM.charAt(
+                                                                  0
+                                                              ) +
+                                                              "." +
+                                                              " ") +
+                                                        " " +
                                                         props.formDetails
-                                                            .issuerSuf)}
+                                                            .issuerS +
+                                                        (props.formDetails
+                                                            .issuerSuf == null
+                                                            ? ""
+                                                            : " " +
+                                                              props.formDetails
+                                                                  .issuerSuf)}
                                                 </div>
                                                 <div className="text-center underline dark:text-gray-400 text-xs">
-                                                    {props.formDetails.designation1 ===
-                                                    null
+                                                    {props.formDetails
+                                                        .designation1 === null
                                                         ? "N/A"
                                                         : props.formDetails
-                                                            .designation1}
+                                                              .designation1}
                                                 </div>
                                                 <div className="text-center dark:text-gray-400 text-xs">
                                                     Position / Office
                                                 </div>
                                                 <div className="text-center underline dark:text-gray-400 text-xs">
                                                     {formatDateDisplay(
-                                                        props.formDetails.issued_date
+                                                        props.formDetails
+                                                            .issued_date
                                                     )}
                                                 </div>
                                                 <div className="pb-16 text-center dark:text-gray-400 text-xs">
@@ -337,7 +362,6 @@ export default function PARDetails(props) {
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                     {/* data table */}

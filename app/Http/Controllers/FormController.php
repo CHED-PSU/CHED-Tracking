@@ -191,7 +191,7 @@ class FormController extends Controller
     public function getIcsDetails(Request $req)
     {
         $getItems = DB::table('trackings as t')
-            ->select('pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
+            ->select('ia.serial_no', 'pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -267,7 +267,7 @@ class FormController extends Controller
     public function getParDetails(Request $req)
     {
         $getItems = DB::table('trackings as t')
-            ->select('pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
+            ->select('ia.serial_no', 'pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -291,7 +291,7 @@ class FormController extends Controller
             ->first();
 
         $data = [
-            'ics_no' => $getFormDetails->tracking_id,
+            'par_no' => $getFormDetails->tracking_id,
             'issuerF' => $getFormDetails->issuerf,
             'issuerM' => $getFormDetails->issuerM,
             'issuerS' => $getFormDetails->issuerS,
