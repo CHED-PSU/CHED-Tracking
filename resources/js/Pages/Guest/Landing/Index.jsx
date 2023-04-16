@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import Alert from "../Alerts/Alert";
 import io from "socket.io-client";
+import ChedLogo from "../../../components/ChedLogo";
 const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Landing() {
@@ -174,32 +175,31 @@ export default function Landing() {
                         ""
                     )}
 
-                    <div className="w-fit fixed z-30 top-10 right-10 flex flex-col items-end space-y-3 2xl:space-x-4 xl:space-x-3 space-x-3">
+                    <div className="w-full fixed top-0 py-20 px-28 z-30 flex gap-4 items-center justify-end">
                         {/* Profile Button */}
+                        <p className="text-white font-semibold">{displayName(value, false)}</p>
                         <button
                             onClick={() => clickLogout("open")}
-                            className="outline-none flex 2xl:h-12 xl:h-10 h-10 w-fit border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-bg-iconDark hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover active:bg-bg-iconLightActive dark:active:bg-bg-iconDarkActive dark:text-lightColor-900 rounded-full justify-between transition duration-300 ease-in-out"
+                            title="Log Out"
+                            className="outline-none flex 2xl:h-12 xl:h-10 h-10 w-10 2xl:w-12 xl:w-10 dark:border-darkColor-800 bg-bg-iconLight dark:bg-bg-iconDark hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover active:bg-bg-iconLightActive dark:active:bg-bg-iconDarkActive dark:text-lightColor-900 rounded-full justify-between transition duration-300 ease-in-out"
                         >
-                            <div className="flex w-full justify-between pl-4 pr-2 xl:items-center items-center xl:h-full h-full rounded-xl gap-2">
-                                <div className=" text-left">
-                                    <h4 className="text-xs font-bold">
-                                        {displayName(value, false)}
-                                    </h4>
-                                    <p className="text-ss 2xl:block xl:hidden hidden">
-                                        {value.role}
-                                    </p>
+                            <div className="flex relative w-full justify-between xl:items-center items-center xl:h-full h-full rounded-xl ">
+                                <div className="bg-black/30 w-full h-full opacity-0 hover:opacity-100 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center transition ease-in-out delay-150">
+                                    <i class="fa-solid text-xl fa-arrow-right-from-bracket text-darkColor-800"></i>
                                 </div>
                                 {displayPhoto(
                                     value.img,
                                     value.firstname,
-                                    "2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7"
+                                    "w-full h-full border-white"
                                 )}
                             </div>
                         </button>
                     </div>
 
-                    <div className="z-0 w-[920px] h-[920px] bg-cover bg-center bg-circle-huge absolute right-0"></div>
-                    <div className="z-0 w-full h-[150px] bg-cover bg-center bg-bg-pattern absolute bottom-0"></div>
+                    <div className="z-0 w-[920px] h-[920px] bg-cover bg-center bg-circle-huge absolute right-0 mt-10"></div>
+                    <div className="w-full h-fit py-3 bg-white absolute bottom-0">
+                        <div className=" bg-cover max-h-[10px] min-h-[95px] bg-center bg-bg-pattern"></div>
+                    </div>
                     <div className="flex flex-col gap-14 z-10">
                         <div className="flex flex-col gap-5 mt-18 w-full items-left cursor-default">
                             <h5 className="text-white font-medium">
@@ -224,7 +224,7 @@ export default function Landing() {
                             </div>
                             <div
                                 onClick={() => clickProcure(value.role, "open")}
-                                className="w-[300px] h-[400px] cursor-pointer bg-[#FF9FBF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl"
+                                className="w-[300px] h-[400px] cursor-pointer hover:bg-[#FFD7D7] bg-[#FF9FBF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150"
                             >
                                 <div className="h-[200px] w-[200px] bg-cover bg-center bg-procurement-icon"></div>
                                 <p>Procurement</p>
@@ -233,16 +233,16 @@ export default function Landing() {
                                 onClick={() =>
                                     clickInventory(value.role, "open")
                                 }
-                                className="w-[300px] h-[400px] cursor-pointer bg-[#FFDE6A] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl"
+                                className="w-[300px] h-[400px] cursor-pointer hover:bg-[#FDFF83] bg-[#FFDE6A] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150"
                             >
                                 <div className="h-[200px] w-[200px] bg-cover bg-center bg-inventory-icon"></div>
                                 <p>Inventory</p>
                             </div>
                             <div
                                 onClick={handleClick}
-                                className="w-[300px] h-[400px] cursor-pointer bg-[#2F52FF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl"
+                                className="w-[300px] h-[400px] cursor-pointer bg-[#2F52FF] hover:bg-[#82B4FF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150"
                             >
-                                <div className="h-[200px] w-[200px] bg-cover bg-center bg-tracking-icon"></div>
+                                <div className="h-[220px] w-[200px] bg-cover bg-center bg-tracking-icon"></div>
                                 <p>Tracking</p>
                             </div>
                         </div>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import AdminBg from "../../../Components/AdminBg";
 import ReactPaginate from "react-paginate";
 import Searchbar from "../Components/Searchbar";
 import SortedModal from "./Modals/Sorted";
@@ -376,10 +375,7 @@ export default function Inventory({ className }) {
             ) : (
                 ""
             )}
-
-            <div className="absolute -right-14 bottom-0 w-1/3">
-                <AdminBg />
-            </div>
+            
             <div className="z-20 pt-[14px] flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
                 <div className="pb-3 h-14 items-center w-full">
                     <div className="">

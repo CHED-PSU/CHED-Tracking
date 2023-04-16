@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ItemTab from "./Tables/ItemTab";
 import MasterList from "./Tables/MasterList";
 import Reports from "./Tables/Reports";
-import AdminBg from "../../../Components/AdminBg";
 import Searchbar from "../Components/Searchbar";
 
 export default function Unserviceable({ className }) {
@@ -17,9 +16,6 @@ export default function Unserviceable({ className }) {
 
     return (
         <div className={className + " flex justify-center relative"}>
-            <div className="absolute -right-14 bottom-0 w-1/3">
-                <AdminBg />
-            </div>
             <div className="z-20 pt-3 flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
                 {/*tab buttons*/}
                 <div className="pb-3 h-14 items-center w-full flex justify-between ">
