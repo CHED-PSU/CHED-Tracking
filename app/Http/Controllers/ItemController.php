@@ -357,8 +357,8 @@ class ItemController extends Controller
     public function assignToAnotherUser(Request $req)
     {
         $year = date('Y');
-        $day = date('j');
-        $month = date('n');
+        $day = date('d');
+        $month = date('m');
 
         DB::table('user_returned_items as uri')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
@@ -378,25 +378,27 @@ class ItemController extends Controller
             ->update(['status' => 'assigned to another user']);
 
         $item_id = DB::table('user_returned_items as uri')
-            ->select('it.purchase_request_item_id', 'it.eul', 'pri.price')
+            ->select('it.item_id', 'it.assigned_to', 'it.eul', 'pri.price', 'iar.category_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('iar_items as iar', 'iar.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')
             ->where('uri.uri_id', $req->input('data')['rii_id'])
             ->first();
 
         $description = '';
-        if ($item_id->price > 40000) {
+        if ($item_id->category_id == 3) {
             $description = 'PAR';
-        } else {
+        } else if ($item_id->category_id == 2){
             $description = 'ICS';
         }
 
         DB::table('inventory_trackings')
             ->insert([
                 'trackings_id' => $tracking_id,
-                'purchase_request_item_id' => $item_id->purchase_request_item_id,
-                'eul' => $item_id->eul
+                'item_id' => $item_id->item_id,
+                'eul' => $item_id->eul,
+                'assigned_to' => $item_id->eul,
             ]);
 
         DB::table('users_notification')
@@ -520,7 +522,7 @@ class ItemController extends Controller
                 ]);
 
             $price = DB::table('user_returned_items as uri')
-                ->select('pri.price')
+                ->select('pri.price', 'ia.category_id')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
                 ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
                 ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -531,9 +533,9 @@ class ItemController extends Controller
             $total += $price->price;
         }
 
-        if ($total > 40000) {
+        if ($price->category_id == 3) {
             $form = 'PAR';
-        } else {
+        } else if ($price->category_id == 2){
             $form = 'ICS';
         }
 
@@ -559,7 +561,8 @@ class ItemController extends Controller
                 ->insert([
                     'trackings_id' => $tracking_id,
                     'item_id'      => $getItemId->item_id,
-                    'eul'          => 'none'
+                    'eul'          => 'none',
+                    'assigned_to'  => $req->input('user_id')
                 ]);
         }
 

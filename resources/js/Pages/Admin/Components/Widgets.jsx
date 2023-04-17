@@ -109,10 +109,8 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
         const getNotification = async () => {
             const response = await axios.get("/api/getAdminNotification");
             const data = response.data;
-            if(data.admin_unread_notification == null){
+            if(data.admin_unread_notification != ''){
                 return setRead(true)
-            }else{
-                return setRead(false)
             }
         };
         getNotification();
