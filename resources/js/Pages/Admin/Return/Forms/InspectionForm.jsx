@@ -10,7 +10,6 @@ export default function InspectionForm(props) {
     const [Loading, setLoading] = useState();
     const [returnedItemsData, setReturnedItemsData] = useState();
     const [returnedItemsInfo, setReturnedItemsInfo] = useState();
-    const [returnedUsersInfo, setReturnedUsersInfo] = useState();
     const [users, setUsers] = useState();
     const [preNature, setPreNature] = useState("Not yet inspected.");
     const [preParts, setPreParts] = useState("Not yet inspected.");
@@ -91,10 +90,6 @@ export default function InspectionForm(props) {
                         setReturnedItemsInfo(
                             response.data.adminReturnedItemsInfo
                         );
-                        setReturnedUsersInfo(
-                            response.data.return_items_users_info
-                        );
-
                         setPreDate(
                             response.data.adminReturnedItemsInfo.updated_at
                         );

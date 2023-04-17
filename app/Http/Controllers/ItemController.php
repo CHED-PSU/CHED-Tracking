@@ -246,58 +246,59 @@ class ItemController extends Controller
             ->where('deleted_at', null)
             ->get();
 
-        if ($getAdminReturnedItemsInfo->pre_inspected != null && $getAdminReturnedItemsInfo->pre_approved != null && $getAdminReturnedItemsInfo->post_approve != null) {
-            $data = [
-                'pre_inspected' => $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->firstname .
-                    ' ' .
-                    ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename ?
-                        $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename[0] . '. ' : '') .
-                    $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname .
-                    ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix ?
-                        ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix : ''),
+        // if ($getAdminReturnedItemsInfo->pre_inspected != null && $getAdminReturnedItemsInfo->pre_approved != null && $getAdminReturnedItemsInfo->post_approve != null) {
+        //     $data = [
+        //         'pre_inspected' => $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->firstname .
+        //             ' ' .
+        //             ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename ?
+        //                 $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename[0] . '. ' : '') .
+        //             $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname .
+        //             ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix ?
+        //                 ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix : ''),
 
-                'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname .
-                    ' ' .
-                    ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename ?
-                        $getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename[0] . '. ' : '') .
-                    $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname .
-                    ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix ?
-                        ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix : ''),
+        //         'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname .
+        //             ' ' .
+        //             ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename ?
+        //                 $getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename[0] . '. ' : '') .
+        //             $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname .
+        //             ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix ?
+        //                 ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix : ''),
 
-                'post_approve' => $getUsers[$getAdminReturnedItemsInfo->post_approve]->firstname .
-                    ' ' .
-                    ($getUsers[$getAdminReturnedItemsInfo->post_approve]->middlename ?
-                        $getUsers[$getAdminReturnedItemsInfo->post_approve]->middlename[0] . '. ' : '') .
-                    $getUsers[$getAdminReturnedItemsInfo->post_approve]->surname .
-                    ($getUsers[$getAdminReturnedItemsInfo->post_approve]->suffix ?
-                        ' ' . $getUsers[$getAdminReturnedItemsInfo->post_approve]->suffix : ''),
-            ];
-        } else if ($getAdminReturnedItemsInfo->pre_inspected != null && $getAdminReturnedItemsInfo->pre_approved != null && $getAdminReturnedItemsInfo->post_approve == null) {
-            $data = [
-                'pre_inspected' => $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->firstname .
-                    ' ' .
-                    ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename ?
-                        $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename[0] . '. ' : '') .
-                    $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname .
-                    ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix ?
-                        ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix : ''),
-                'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname .
-                    ' ' .
-                    ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename ?
-                        $getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename[0] . '. ' : '') .
-                    $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname .
-                    ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix ?
-                        ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix : ''),
-                'post_approve' => null
-            ];
-        } else {
-            $data = [
-                'pre_inspected' => null,
-                'pre_approved' => null,
-                'post_approve' => null
-            ];
-        }
-        return response()->json(['adminReturnedItemsData' => $getAdminReturnedItemsData, 'adminReturnedItemsInfo' => $getAdminReturnedItemsInfo, 'users' => $getUsers, 'return_items_users_info' => $data]);
+        //         'post_approve' => $getUsers[$getAdminReturnedItemsInfo->post_approve]->firstname .
+        //             ' ' .
+        //             ($getUsers[$getAdminReturnedItemsInfo->post_approve]->middlename ?
+        //                 $getUsers[$getAdminReturnedItemsInfo->post_approve]->middlename[0] . '. ' : '') .
+        //             $getUsers[$getAdminReturnedItemsInfo->post_approve]->surname .
+        //             ($getUsers[$getAdminReturnedItemsInfo->post_approve]->suffix ?
+        //                 ' ' . $getUsers[$getAdminReturnedItemsInfo->post_approve]->suffix : ''),
+        //     ];
+        // } else if ($getAdminReturnedItemsInfo->pre_inspected != null && $getAdminReturnedItemsInfo->pre_approved != null && $getAdminReturnedItemsInfo->post_approve == null) {
+        //     $data = [
+        //         'pre_inspected' => $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->firstname .
+        //             ' ' .
+        //             ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename ?
+        //                 $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->middlename[0] . '. ' : '') .
+        //             $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->surname .
+        //             ($getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix ?
+        //                 ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_inspected]->suffix : ''),
+        //         'pre_approved' => $getUsers[$getAdminReturnedItemsInfo->pre_approved]->firstname .
+        //             ' ' .
+        //             ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename ?
+        //                 $getUsers[$getAdminReturnedItemsInfo->pre_approved]->middlename[0] . '. ' : '') .
+        //             $getUsers[$getAdminReturnedItemsInfo->pre_approved]->surname .
+        //             ($getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix ?
+        //                 ' ' . $getUsers[$getAdminReturnedItemsInfo->pre_approved]->suffix : ''),
+        //         'post_approve' => null
+        //     ];
+        // } else {
+        //     $data = [
+        //         'pre_inspected' => null,
+        //         'pre_approved' => null,
+        //         'post_approve' => null
+        //     ];
+        // }
+
+        return response()->json(['adminReturnedItemsData' => $getAdminReturnedItemsData, 'adminReturnedItemsInfo' => $getAdminReturnedItemsInfo, 'users' => $getUsers]);
     }
     //return items pre save
     public function returnItemsPreSave(Request $req)
