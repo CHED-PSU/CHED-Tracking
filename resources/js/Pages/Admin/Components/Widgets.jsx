@@ -107,11 +107,13 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
 
     useEffect(() => {
         const getNotification = async () => {
-            const response = await axios.post("/api/getNotificationItems", {
-                id: value.id,
-            });
+            const response = await axios.get("/api/getAdminNotification");
             const data = response.data;
-            setRead(true);
+            if(data.admin_unread_notification == null){
+                return setRead(true)
+            }else{
+                return setRead(false)
+            }
         };
         getNotification();
     })
@@ -337,7 +339,7 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
                         </svg>
                     </div>
                     {/* Ping Notification */}
-                    {read ? (
+                    {read == true ? (
                         <span className="flex 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 absolute 2xl:-top-1 xl:-top-[3px] -top-[3px] 2xl:-right-1 xl:-right-[3px] -right-[3px]">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full 2xl:h-5 2xl:w-5 xl:h-4 xl:w-4 h-4 w-4 bg-blue-500 justify-center items-center text-white font-semibold text-ss"></span>
