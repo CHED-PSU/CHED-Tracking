@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import Alert from "../Alerts/Alert";
@@ -148,7 +149,7 @@ export default function Landing() {
     }
 
     function clickInventory(role, index) {
-        window.location.href = "http://10.41.2.167:8000/login-page/" + token;
+        window.location.href = "http://10.41.1.118:8080/login-page/" + token;
     }
 
     if (value) {
