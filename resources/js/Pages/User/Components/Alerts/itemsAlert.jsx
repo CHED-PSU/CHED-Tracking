@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import io from "socket.io-client";
-const socket = io.connect("")
 //const socket = io.connect("http://127.0.0.1:8001");
 
 export default function ConditionalAlert(props) {
@@ -28,11 +27,11 @@ export default function ConditionalAlert(props) {
                 .then((res) => {
                     if (res.data.success === "success") {
                         props.success("success");
-                        socket.emit("User_return_item", {
-                            message:
-                                value.name +
-                                "  has requested to return an Item",
-                        });
+                        // socket.emit("User_return_item", {
+                        //     message:
+                        //         value.name +
+                        //         "  has requested to return an Item",
+                        // });
                     }
                     //
                 });
@@ -41,9 +40,9 @@ export default function ConditionalAlert(props) {
         }
 
         if (accepted === true) {
-            socket.emit("User_return_item", {
-                message: value.name + "  has requested to return an Item",
-            });
+            // socket.emit("User_return_item", {
+            //     message: value.name + "  has requested to return an Item",
+            // });
         }
     };
 

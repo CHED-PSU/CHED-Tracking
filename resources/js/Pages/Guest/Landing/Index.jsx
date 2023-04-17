@@ -3,15 +3,14 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import Alert from "../Alerts/Alert";
 import io from "socket.io-client";
-const socket = io.connect("");
 //const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Landing() {
-    useEffect(() => {
-        socket.on("connect", () => {
-            console.log("Connected to server");
-        });
-    }, [socket]);
+    // useEffect(() => {
+    //     socket.on("connect", () => {
+    //         console.log("Connected to server");
+    //     });
+    // }, [socket]);
 
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);

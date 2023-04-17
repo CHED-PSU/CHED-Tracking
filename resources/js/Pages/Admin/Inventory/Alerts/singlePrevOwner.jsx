@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef } from "react";
 import io from "socket.io-client";
-const socket = io.connect("")
 //const socket = io.connect("http://127.0.0.1:8001")
 
 export default function ConditionalAlert(props) {
@@ -14,7 +13,7 @@ export default function ConditionalAlert(props) {
     const acceptHandler = () => {
         axios.post('api/returnToPreviousOwner',{id:props.selectedId, user_id:props.personSelected}).then(res => {
             if(res.data.success === 'success'){
-                socket.emit('Admin_accept', {message: 'admin' + '  has accepted the item'})
+                //socket.emit('Admin_accept', {message: 'admin' + '  has accepted the item'})
                 props.confirmation()
             }
         })

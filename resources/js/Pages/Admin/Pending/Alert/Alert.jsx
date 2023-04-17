@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
-const socket = io.connect("")
 //const socket = io.connect("http://127.0.0.1:8001")
 
 export default function ConditionalAlert(props) {
@@ -18,7 +17,7 @@ export default function ConditionalAlert(props) {
         )
 
         if(accepted === true){
-            socket.emit('Admin_accept', {message: value.name + '  has accepted the item'})
+            //socket.emit('Admin_accept', {message: value.name + '  has accepted the item'})
         }
     }
     const declineClick = () => {
@@ -28,8 +27,7 @@ export default function ConditionalAlert(props) {
         )
 
         if(accepted === false){
-
-            socket.emit('Admin_accept', {message: value.name + '  has accepted the item'})
+            //socket.emit('Admin_accept', {message: value.name + '  has accepted the item'})
         }
     }
     const cancelClick = () => {

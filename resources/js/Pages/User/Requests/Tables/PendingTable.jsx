@@ -3,15 +3,13 @@ import React, { useEffect, useState } from "react";
 import RequestData from "./data/RequestData";
 import io from "socket.io-client";
 import Loader from "../../../../components/Loader";
-
-const socket = io.connect("")
 //const socket = io.connect("http://127.0.0.1:8001");
 
 export default function PendingTable({ className }) {
     const [pendingData, setPendingData] = useState([]);
 
     const sendMessage = () => {
-        socket.emit("User_Accept", { message: "test" });
+        //socket.emit("User_Accept", { message: "test" });
     };
 
     const pendingDataMapper = (data) => {

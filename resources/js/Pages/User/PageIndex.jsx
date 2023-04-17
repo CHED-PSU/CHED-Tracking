@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
-const socket = io.connect("")
-//const socket = io.connect("http://127.0.0.1:8001")
-
 import Sidebar from "./Components/Sidebar";
 import Widgets from "./Components/Widgets";
 import Home from "./Home/Index";

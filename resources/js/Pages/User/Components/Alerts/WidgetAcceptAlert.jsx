@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import io from "socket.io-client";
-const socket = io.connect("")
 //const socket = io.connect("http://127.0.0.1:8001")
 
 
@@ -21,7 +20,7 @@ export default function ConditionalAlert(props) {
                 user_id: value.id
             }).then( res => {
                 props.feedback('none','Successfully accepted','check')
-                socket.emit('User_return_item', {message: value.name + '  has accepted the item'})
+                //socket.emit('User_return_item', {message: value.name + '  has accepted the item'})
             })
         } catch (e){
             console.log(e)

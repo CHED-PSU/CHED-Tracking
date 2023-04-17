@@ -3,7 +3,7 @@ import ICSIssuedNotification from "./notification components/ICSIssuedNotificati
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import io from "socket.io-client";
-const socket = io.connect("");
+//const socket = io.connect("");
 //const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Widgets(props) {
