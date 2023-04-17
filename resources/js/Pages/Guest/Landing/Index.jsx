@@ -142,7 +142,7 @@ export default function Landing() {
             setAlertNoButton("Okay");
         } else {
             window.location.href =
-                "http://10.41.1.140:8080/procproject3.5/session-checker?token=" +
+                "http://10.41.1.140:8080/procproject3.5/token-checker.php?token=" +
                 tokenOnly;
         }
     }
