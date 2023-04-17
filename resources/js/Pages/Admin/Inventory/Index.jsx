@@ -201,7 +201,7 @@ export default function Inventory({ className }) {
                                 value={data.uri_id}
                                 className="text-sm font-medium btn-color-4 text-white w-fit px-5 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white rounded-full"
                             >
-                                {toggleSort === "all" ? "Reissue" : "Return"}
+                                {toggleSort === "all" ? "Transfer" : "Return"}
                             </button>
                         </div>
                     </td>
@@ -546,7 +546,7 @@ export default function Inventory({ className }) {
                                 >
                                     <i className="fa-solid fa-box-archive text-sm"></i>
                                     {toggleSort === "all"
-                                        ? "Reissue"
+                                        ? "Transfer"
                                         : "Return/Renew"}
                                 </button>
                             </div>
