@@ -230,16 +230,16 @@ export default function Landing() {
                             <div className="flex-col gap-6 font-extrabold text-xl pt-10
                                 2xl:pr-14 xl:pr-4 lg:pr-5
                                 2xl:flex xl:flex lg:flex md:hidden hidden
-                                2xl:w-[300px] xl:w-[25px] w-[300px]
+                                2xl:w-[300px] xl:w-[225px] w-[300px]
                                 2xl:h-[400px] xl:h-[300px] h-[400px]
                                 ">
                                 <h1 className="leading-16 text-[#242526]
-                                2xl:text-5xl xl:text-4xl
+                                2xl:text-5xl xl:text-4xl text-5xl
                                 ">
                                     Efficient systems{" "}
                                 </h1>
                                 <h4 className="font-medium text-[#434343] leading-8
-                                2xl:text-lg xl:text-base
+                                2xl:text-lg xl:text-base text-lg
                                 ">
                                     To streamline the supply chain and ensure
                                     optimal inventory levels.
@@ -248,7 +248,7 @@ export default function Landing() {
                             <div
                                 onClick={() => clickProcure(value.role, "open")}
                                 className="cursor-pointer hover:bg-[#FFD7D7] bg-[#FF9FBF] text-white flex flex-col justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150
-                                2xl:w-[300px] xl:w-[25px] w-[300px]
+                                2xl:w-[300px] xl:w-[225px] w-[300px]
                                 2xl:h-[400px] xl:h-[300px] h-[400px]
                                 xl:gap-8 lg:gap-4 md:gap-3 gap-10
                                 2xl:text-lg xl:text-base lg:text-sm md:text-xs"
@@ -262,7 +262,7 @@ export default function Landing() {
                             <div
                                 onClick={() => clickInventory(value.role, "open")}
                                 className="cursor-pointer hover:bg-[#FDFF83] bg-[#FFDE6A] text-white flex flex-col justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150
-                                2xl:w-[300px] xl:w-[25px] w-[300px]
+                                2xl:w-[300px] xl:w-[225px] w-[300px]
                                 2xl:h-[400px] xl:h-[300px] h-[400px]
                                 xl:gap-8 lg:gap-4 md:gap-3 gap-10
                                 2xl:text-lg xl:text-base lg:text-sm md:text-xs"
@@ -276,7 +276,7 @@ export default function Landing() {
                             <div
                                 onClick={handleClick}
                                 className="cursor-pointer bg-[#2F52FF] hover:bg-[#82B4FF] text-white flex flex-col justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150
-                                2xl:w-[300px] xl:w-[25px] w-[300px]
+                                2xl:w-[300px] xl:w-[225px] w-[300px]
                                 2xl:h-[400px] xl:h-[300px] h-[400px]
                                 xl:gap-8 lg:gap-4 md:gap-3 gap-10
                                 2xl:text-lg xl:text-base lg:text-sm md:text-xs"

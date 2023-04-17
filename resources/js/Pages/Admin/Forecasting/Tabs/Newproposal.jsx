@@ -145,7 +145,7 @@ export default function Newproposal({
                                             Date
                                         </th>
                                         <th className="w-40 font-medium text-left">
-                                            Defects
+                                            Costs
                                         </th>
                                     </tr>
                                 </thead>
