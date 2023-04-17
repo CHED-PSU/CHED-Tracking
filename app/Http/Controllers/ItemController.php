@@ -596,7 +596,7 @@ class ItemController extends Controller
 
         foreach ($req->input('selectedId') as $data) {
             $assigned_to = DB::table('users')
-                ->select('firstname', 'surname')
+                ->select('firstname', 'surname', 'suffix')
                 ->where('id', $req->input('user_id'))
                 ->first();
 
@@ -605,7 +605,7 @@ class ItemController extends Controller
                 ->where('uri.uri_id', $data)
                 ->update([
                     'uri.status' => 'Transferred',
-                    'ui.item_status' => 'Transferred',
+                    'ui.item_status' => 'Transferred to ' . $assigned_to->firstname . ' ' . $assigned_to->surname . ($assigned_to->suffix ? ' ' . trim($assigned_to->suffix) : ''),
                     'ui.assigned_to_user' => $req->input('user_id')
                 ]);
 

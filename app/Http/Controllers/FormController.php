@@ -535,7 +535,7 @@ class FormController extends Controller
         DB::table('user_returned_items as uri')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->where('uri.uri_id', $req->input('id'))
-            ->update(['item_status' => 'return']);
+            ->update(['item_status' => 'returned']);
 
         Db::table('returned_items_info')->insert(['uri_id' => $req->input('id')]);
     }
