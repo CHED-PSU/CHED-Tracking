@@ -72,7 +72,7 @@ class FormController extends Controller
     {
         $getItems = DB::table('trackings as t')
             ->select('it.id', 'pri.quantity')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->where('t.id', $req->input('listId'))
@@ -148,7 +148,7 @@ class FormController extends Controller
 
         $getTotalItems = DB::table('trackings as t')
             ->join('users_notification as un', 't.id', '=', 'un.trackings_id')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
             ->where('t.received_by', $req->input('user_id'))
             ->where('un.confirmation', 'accepted')
@@ -163,7 +163,7 @@ class FormController extends Controller
     //ICS Table
     public function getICS(Request $request)
     {
-        $subQuery = DB::table('inventory_tracking as it')
+        $subQuery = DB::table('inventory_trackings as it')
             ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
@@ -194,7 +194,7 @@ class FormController extends Controller
     {
         $getItems = DB::table('trackings as t')
             ->select('ia.serial_no', 'pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -210,7 +210,7 @@ class FormController extends Controller
             ->select('t.tracking_id', 'u1.firstname as issuerf', 'ui.item_status', 'u1.middlename as issuerM', 'u1.surname as issuerS', 'u1.suffix as issuerSuf', 'u2.firstname as receiverf', 'u2.middlename as receiverM', 'u2.surname as receiverS', 'u2.suffix as receiverSuf', 'u1.designation as receiverD', 'u2.designation as issuerD', 't.created_at as issuerDate', 'ui.created_at as receiverDate')
             ->join('users as u1', 'u1.id', '=', 't.issued_by')
             ->join('users as u2', 'u2.id', '=', 't.received_by')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
             ->where('t.id', $req->input('id'))
             ->first();
@@ -240,7 +240,7 @@ class FormController extends Controller
     //PAR Table
     public function getPAR(Request $request)
     {
-        $subQuery = DB::table('inventory_tracking as it')
+        $subQuery = DB::table('inventory_trackings as it')
             ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
@@ -270,7 +270,7 @@ class FormController extends Controller
     {
         $getItems = DB::table('trackings as t')
             ->select('ia.serial_no', 'pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -286,7 +286,7 @@ class FormController extends Controller
             ->select('u3.designation as assignedD', 'u3.firstname as assignedF', 'u3.middlename as assignedM', 'u3.surname as assignedS', 'u3.suffix as assignedSuf', 't.tracking_id', 'u1.firstname as issuerf', 'ui.item_status', 'u1.middlename as issuerM', 'u1.surname as issuerS', 'u1.suffix as issuerSuf', 'u2.firstname as receiverf', 'u2.middlename as receiverM', 'u2.surname as receiverS', 'u2.suffix as receiverSuf', 'u1.designation as receiverD', 'u2.designation as issuerD', 't.created_at as issuerDate', 'ui.created_at as receiverDate')
             ->join('users as u1', 'u1.id', '=', 't.issued_by')
             ->join('users as u2', 'u2.id', '=', 't.received_by')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('users as u3', 'u3.id', '=', 'it.assigned_to')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
             ->where('t.id', $req->input('id'))
@@ -322,7 +322,7 @@ class FormController extends Controller
     {
         $items = DB::table('trackings as t')
             ->select('ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.article', 'pi.code as code', 'it.eul', 'ui.item_status as remarks', 'it.id', 'it.assigned_to', 'ua.firstname', 'ua.middlename', 'ua.surname', 'ua.suffix')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -348,7 +348,7 @@ class FormController extends Controller
     {
         $items = DB::table('trackings as t')
             ->select('ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.article', 'pi.code as code', 'it.eul', 'ui.item_status as remarks', 'it.id')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -374,7 +374,7 @@ class FormController extends Controller
         $getItems = DB::table('user_returned_items as uri')
             ->select('uri.created_at', 'pri.price', 'pi.code', 'pi.description', 'pi.article', 'uri.uri_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -392,7 +392,7 @@ class FormController extends Controller
         $getItemsAccepted = DB::table('user_returned_items as uri')
             ->select('uri.created_at', 'pri.price', 'pi.code', 'pi.description', 'pi.article', 'uri.uri_id', 'uri.defect', 'uri.status', 'uri.updated_at')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -479,7 +479,7 @@ class FormController extends Controller
         $getreturnedItemsdata = DB::table('user_returned_items as uri')
             ->select('pu.name as unit', 'pi.description as brand', 'pi.article as article', 'pi.code as property_no', 'pri.price as acquisition', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'uri.uri_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -517,7 +517,7 @@ class FormController extends Controller
         $user_id = DB::table('user_returned_items as uri')
             ->select('uri.user_id', 'uri.ui_id', 'ui.inventory_tracking_id', 'it.trackings_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->where('uri.uri_id', $req->input('id'))
             ->first();
 
@@ -550,7 +550,7 @@ class FormController extends Controller
         $user_id = DB::table('user_returned_items as uri')
             ->select('uri.user_id', 'uri.ui_id', 'ui.inventory_tracking_id', 'it.trackings_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->where('uri.uri_id', $req->input('id'))
             ->first();
 
@@ -576,7 +576,7 @@ class FormController extends Controller
     public function getUserIcsControls(Request $req)
     {
 
-        $subQuery = DB::table('inventory_tracking as it')
+        $subQuery = DB::table('inventory_trackings as it')
             ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
@@ -595,7 +595,7 @@ class FormController extends Controller
             ->select('t.tracking_id', 'u1.prefix as issuerPre', 'u1.firstname as issuerf', 'u1.middlename as issuerM', 'u1.surname as issuerS', 'u1.suffix as issuerSuf', 'u2.firstname as receiverf', 'u2.surname as receiverS', 'u1.designation as receiverD', 'u2.designation as issuerD', 't.created_at as issuerDate', 'ui.created_at as receiverDate')
             ->join('users as u1', 'u1.id', '=', 't.issued_by')
             ->join('users as u2', 'u2.id', '=', 't.received_by')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
             ->where('t.received_by', $req->input('id'))
             ->first();
@@ -613,7 +613,7 @@ class FormController extends Controller
     {
         $getICS = DB::table('trackings as t')
             ->select('t.tracking_id as trackingCode', 't.issued_by', 'it.trackings_id as tracking_id', 'iar.pr_item_uid', 'iar.serial_no', 'pri.price', 'pi.article', 'pi.description', 'pu.name')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as iar', 'iar.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'iar.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -629,7 +629,7 @@ class FormController extends Controller
     //get User PAR Controls
     public function getUserParControls(Request $req)
     {
-        $subQuery = DB::table('inventory_tracking as it')
+        $subQuery = DB::table('inventory_trackings as it')
             ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
@@ -648,7 +648,7 @@ class FormController extends Controller
             ->select('t.tracking_id', 'u1.prefix as issuerPre', 'u1.firstname as issuerf', 'u1.middlename as issuerM', 'u1.surname as issuerS', 'u1.suffix as issuerSuf', 'u2.firstname as receiverf', 'u2.surname as receiverS', 'u1.designation as receiverD', 'u2.designation as issuerD', 't.created_at as issuerDate', 'ui.created_at as receiverDate')
             ->join('users as u1', 'u1.id', '=', 't.issued_by')
             ->join('users as u2', 'u2.id', '=', 't.received_by')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
             ->where('t.received_by', $req->input('id'))
             ->first();
@@ -690,7 +690,7 @@ class FormController extends Controller
         $getItems = DB::table('donation_items as di')
             ->select('rii.created_at as date_acquired', 'pi.code as property_no', 'pi.description', 'pi.article', 'pi.price', 'rii.post_findings as ppe')
             ->join('unserviceable_items as uit', 'uit.id', '=', 'di.unserviceable_id')
-            ->join('inventory_tracking as it', 'uit.inventory_tracking_id', '=', 'it.id')
+            ->join('inventory_trackings as it', 'uit.inventory_tracking_id', '=', 'it.id')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
             ->join('user_returned_items as uri', 'uri.ui_id', '=', 'ui.ui_id')
             ->join('returned_items_info as rii', 'rii.uri_id', '=', 'uri.uri_id')

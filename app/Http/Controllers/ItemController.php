@@ -16,7 +16,7 @@ class ItemController extends Controller
             ->select('un.trackings_id', 't.id', 'pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul')
             ->where('un.trackings_id', $req->input('listId'))
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -34,7 +34,7 @@ class ItemController extends Controller
             ->where('an.id', $req->input('listId'))
             ->join('users_notification as un', 'un.id', '=', 'an.un_id')
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
-            ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -62,7 +62,7 @@ class ItemController extends Controller
     {
         $getUserItems = DB::table('user_items as ui')
             ->select('pi.description', 'pi.article', 'ui.created_at', 'ui.ui_id', 'pi.code', 'pri.quantity')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('trackings as t', 't.id', '=', 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -95,7 +95,7 @@ class ItemController extends Controller
     {
         $getUserItemsData = DB::table('user_items as ui as ui')
             ->select('pu.name as type', 'pi.description as brand', 'pi.article', 'pi.code', 'ui.ui_id', 'pri.price')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('trackings as t', 't.id', 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -147,7 +147,7 @@ class ItemController extends Controller
             ->select('u.img', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'pi.code as code', 'pi.article as article', 'pi.description', 'uri.uri_id', 'pri.price', 'uri.created_at', 'uri.defect', 't.tracking_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -165,7 +165,7 @@ class ItemController extends Controller
         $returnedItems = DB::table('user_returned_items as uri')
             ->select('uri.uri_id', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -187,7 +187,7 @@ class ItemController extends Controller
         $returnedItems = DB::table('user_returned_items as uri')
             ->select('uri.uri_id', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -205,7 +205,7 @@ class ItemController extends Controller
         $returnedItems = DB::table('user_returned_items as uri')
             ->select('uri.uri_id', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -224,7 +224,7 @@ class ItemController extends Controller
         $getAdminReturnedItemsData = DB::table('user_returned_items as uri')
             ->select('uri.status', 'rii.pre_nature as nature', 'rii.updated_at as lastRepair', 'req.designation as reqD', 'rec.designation as recD', 'pi.article as article', 'pu.name as abbr', 'pri.price', 'pi.description as description', 'pi.code as property_no', 'uri.defect', 'req.firstname as reqF', 'req.middlename as reqM', 'req.surname as reqS', 'req.suffix as reqSuf', 'rec.firstname as recF', 'rec.middlename as recM', 'rec.surname as recS', 'rec.suffix as recSuf', 'uri.created_at', 'uri.uri_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -332,7 +332,7 @@ class ItemController extends Controller
             ->select('t.received_by')
             ->join('user_returned_items as uri', 'uri.uri_id', '=', 'rii.uri_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('trackings as t', 't.id', '=', 'it.trackings_id')
             ->where('uri.uri_id', $req->input('id'))
             ->first();
@@ -380,7 +380,7 @@ class ItemController extends Controller
         $item_id = DB::table('user_returned_items as uri')
             ->select('it.purchase_request_item_id', 'it.eul', 'pri.price')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('purchase_request_items as pri', 'pri.id', '=', 'it.purchase_request_item_id')
             ->where('uri.uri_id', $req->input('data')['rii_id'])
             ->first();
@@ -392,7 +392,7 @@ class ItemController extends Controller
             $description = 'ICS';
         }
 
-        DB::table('inventory_tracking')
+        DB::table('inventory_trackings')
             ->insert([
                 'trackings_id' => $tracking_id,
                 'purchase_request_item_id' => $item_id->purchase_request_item_id,
@@ -425,7 +425,7 @@ class ItemController extends Controller
         $inventory_tracking_id = DB::table('user_returned_items as uri')
             ->select('it.id', 't.received_by', 'uri.defect')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('trackings as t', 't.id', '=', 'it.trackings_id')
             ->where('uri.uri_id', $req->input('id'))
             ->first();
@@ -448,7 +448,7 @@ class ItemController extends Controller
         $inventory_items = DB::table('user_returned_items as uri')
             ->select('uri.uri_id', 'pi.code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -468,7 +468,7 @@ class ItemController extends Controller
         $inventory_items = DB::table('user_returned_items as uri')
             ->select('uri.uri_id', 'pi.code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -522,7 +522,7 @@ class ItemController extends Controller
             $price = DB::table('user_returned_items as uri')
                 ->select('pri.price')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-                ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+                ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
                 ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
                 ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
                 ->where('uri.uri_id', $data)
@@ -551,11 +551,11 @@ class ItemController extends Controller
             $getItemId =  DB::table('user_returned_items as uri')
                 ->select('it.item_id')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-                ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+                ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
                 ->where('uri.uri_id', $data)
                 ->first();
 
-            DB::table('inventory_tracking')
+            DB::table('inventory_trackings')
                 ->insert([
                     'trackings_id' => $tracking_id,
                     'item_id'      => $getItemId->item_id,
@@ -607,7 +607,7 @@ class ItemController extends Controller
             $price = DB::table('user_returned_items as uri')
                 ->select('pri.price')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-                ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+                ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
                 ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
                 ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
                 ->where('uri.uri_id', $data)
@@ -638,11 +638,11 @@ class ItemController extends Controller
             $getItemId =  DB::table('user_returned_items as uri')
                 ->select('it.item_id')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-                ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+                ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
                 ->where('uri.uri_id', $data)
                 ->first();
 
-            DB::table('inventory_tracking')
+            DB::table('inventory_trackings')
                 ->insert([
                     'trackings_id' => $tracking_id,
                     'item_id'      => $getItemId->item_id,
@@ -672,7 +672,7 @@ class ItemController extends Controller
     {
         $items = DB::table('unserviceable_items as ut')
             ->select('u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'pi.code', 'pi.description', 'pi.article', 't.created_at', 'ut.remarks', 'ut.id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ut.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ut.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -683,7 +683,7 @@ class ItemController extends Controller
 
         $status = DB::table('unserviceable_items as ut')
             ->select('u.firstname', 'u.surname', 'pi.code', 'pi.description', 'pi.article', 't.created_at', 'ut.remarks', 'ut.id')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ut.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ut.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -704,7 +704,7 @@ class ItemController extends Controller
 
             $itemsDetails = DB::table('unserviceable_items as uit')
                 ->select('rii.created_at as date_acquired', 'pi.code as property_no', 'pi.description', 'pi.article', 'pi.price', 'rii.post_findings as ppe')
-                ->join('inventory_tracking as it', 'uit.inventory_tracking_id', '=', 'it.id')
+                ->join('inventory_trackings as it', 'uit.inventory_tracking_id', '=', 'it.id')
                 ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
                 ->join('user_returned_items as uri', 'uri.ui_id', '=', 'ui.ui_id')
                 ->join('returned_items_info as rii', 'rii.uri_id', '=', 'uri.uri_id')
@@ -727,7 +727,7 @@ class ItemController extends Controller
     {
         $getItems = DB::table('unserviceable_items as ui')
             ->select('it.created_at as date_acquired', 'pi.article', 'pi.code as property_no', 'pi.price as amount')
-            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ii', 'ii.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ii.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
