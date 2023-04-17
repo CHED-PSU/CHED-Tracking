@@ -3,7 +3,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import Alert from "../Alerts/Alert";
 import io from "socket.io-client";
-const socket = io.connect("http://127.0.0.1:8001");
+const socket = io.connect("");
+//const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Landing() {
     useEffect(() => {
@@ -198,8 +199,8 @@ export default function Landing() {
                     </div>
 
                     <div className="z-0 bg-cover bg-center bg-circle-huge absolute right-0 mt-10
-                        2xl:w-[850px] xl:w-[500px] lg:w-[600px] w-[960px] 
-                        2xl:h-[800px] xl:h-[550px] lg:h-[600px] h-[920px] 
+                        2xl:w-[850px] xl:w-[500px] lg:w-[600px] w-[960px]
+                        2xl:h-[800px] xl:h-[550px] lg:h-[600px] h-[920px]
                     "></div>
                     <div className="bg-cover bg-center bg-bg-pattern absolute bottom-0"></div>
 
@@ -225,13 +226,13 @@ export default function Landing() {
                         </div>
                         <div className="flex rounded-2xl bg-white mt-6 border-2 border-[#0E37FD]
                         2xl:gap-10 lg:gap-5 md:gap-4
-                        2xl:p-10 xl:p-5 p-10 
+                        2xl:p-10 xl:p-5 p-10
                         ">
                             <div className="flex-col gap-6 font-extrabold text-xl pt-10
                                 2xl:pr-14 xl:pr-4 lg:pr-5
                                 2xl:flex xl:flex lg:flex md:hidden hidden
-                                2xl:w-[300px] xl:w-[25px] w-[300px] 
-                                2xl:h-[400px] xl:h-[300px] h-[400px] 
+                                2xl:w-[300px] xl:w-[25px] w-[300px]
+                                2xl:h-[400px] xl:h-[300px] h-[400px]
                                 ">
                                 <h1 className="leading-16 text-[#242526]
                                 2xl:text-5xl xl:text-4xl
@@ -239,7 +240,7 @@ export default function Landing() {
                                     Efficient systems{" "}
                                 </h1>
                                 <h4 className="font-medium text-[#434343] leading-8
-                                2xl:text-lg xl:text-base 
+                                2xl:text-lg xl:text-base
                                 ">
                                     To streamline the supply chain and ensure
                                     optimal inventory levels.
@@ -248,42 +249,42 @@ export default function Landing() {
                             <div
                                 onClick={() => clickProcure(value.role, "open")}
                                 className="cursor-pointer hover:bg-[#FFD7D7] bg-[#FF9FBF] text-white flex flex-col justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150
-                                2xl:w-[300px] xl:w-[25px] w-[300px] 
-                                2xl:h-[400px] xl:h-[300px] h-[400px] 
-                                xl:gap-8 lg:gap-4 md:gap-3 gap-10 
+                                2xl:w-[300px] xl:w-[25px] w-[300px]
+                                2xl:h-[400px] xl:h-[300px] h-[400px]
+                                xl:gap-8 lg:gap-4 md:gap-3 gap-10
                                 2xl:text-lg xl:text-base lg:text-sm md:text-xs"
                             >
                                 <div className="bg-cover bg-center bg-procurement-icon
-                                2xl:w-[200px] xl:w-[140px] w-[200px] 
-                                2xl:h-[200px] xl:h-[140px] h-[200px] 
+                                2xl:w-[200px] xl:w-[140px] w-[200px]
+                                2xl:h-[200px] xl:h-[140px] h-[200px]
                                 "></div>
                                 <p>Procurement</p>
                             </div>
                             <div
                                 onClick={() => clickInventory(value.role, "open")}
                                 className="cursor-pointer hover:bg-[#FDFF83] bg-[#FFDE6A] text-white flex flex-col justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150
-                                2xl:w-[300px] xl:w-[25px] w-[300px] 
-                                2xl:h-[400px] xl:h-[300px] h-[400px] 
-                                xl:gap-8 lg:gap-4 md:gap-3 gap-10 
+                                2xl:w-[300px] xl:w-[25px] w-[300px]
+                                2xl:h-[400px] xl:h-[300px] h-[400px]
+                                xl:gap-8 lg:gap-4 md:gap-3 gap-10
                                 2xl:text-lg xl:text-base lg:text-sm md:text-xs"
                             >
                                 <div className="bg-cover bg-center bg-inventory-icon
-                                2xl:w-[200px] xl:w-[140px] w-[200px] 
-                                2xl:h-[200px] xl:h-[140px] h-[200px] 
+                                2xl:w-[200px] xl:w-[140px] w-[200px]
+                                2xl:h-[200px] xl:h-[140px] h-[200px]
                                 "></div>
                                 <p>Inventory</p>
                             </div>
                             <div
                                 onClick={handleClick}
                                 className="cursor-pointer bg-[#2F52FF] hover:bg-[#82B4FF] text-white flex flex-col justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150
-                                2xl:w-[300px] xl:w-[25px] w-[300px] 
-                                2xl:h-[400px] xl:h-[300px] h-[400px] 
-                                xl:gap-8 lg:gap-4 md:gap-3 gap-10 
+                                2xl:w-[300px] xl:w-[25px] w-[300px]
+                                2xl:h-[400px] xl:h-[300px] h-[400px]
+                                xl:gap-8 lg:gap-4 md:gap-3 gap-10
                                 2xl:text-lg xl:text-base lg:text-sm md:text-xs"
                             >
                                 <div className="bg-cover bg-center bg-tracking-icon
-                                2xl:w-[185px] xl:w-[130px] w-[200px] 
-                                2xl:h-[200px] xl:h-[140px] h-[200px] 
+                                2xl:w-[185px] xl:w-[130px] w-[200px]
+                                2xl:h-[200px] xl:h-[140px] h-[200px]
                                 ">
                                 </div>
                                 <p>Tracking</p>
