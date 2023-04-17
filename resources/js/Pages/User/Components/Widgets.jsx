@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import ICSIssuedNotification from "./notification components/ICSIssuedNotification";
+import IssuedNotification from "./notification components/IssuedNotification";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import io from "socket.io-client";
@@ -484,7 +484,7 @@ export default function Widgets(props) {
             </div>
 
             {openNotifSpecList ? (
-                <ICSIssuedNotification
+                <IssuedNotification
                     confirmation={confirmation}
                     listId={listId != null ? listId : null}
                     setOpenNotifSpecList={setOpenNotifSpecList}

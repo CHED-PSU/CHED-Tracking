@@ -13,7 +13,7 @@ class ItemController extends Controller
     public function getNotifSecListItems(Request $req)
     {
         $items = DB::table('users_notification as un')
-            ->select('un.trackings_id', 't.id', 'pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul')
+            ->select('un.trackings_id', 't.id', 'pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
             ->where('un.trackings_id', $req->input('listId'))
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
@@ -21,6 +21,7 @@ class ItemController extends Controller
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->join('users as u', 'u.id', '=', 'it.assigned_to')
             ->where('ia.category_id', '!=', 1)
             ->get();
 
@@ -174,7 +175,8 @@ class ItemController extends Controller
             ->where('uri.confirmation', 'accepted')
             ->where('uri.status', '!=', 'Unserviceable')
             ->where('uri.status', '!=', 'Inventories')
-            ->where('uri.status', '!=', 'Reassigned')
+            ->where('uri.status', '!=', 'Transferred')
+            ->where('uri.status', '!=', 'Renewed')
             ->where('uri.status', '!=', 'Returned to Owner')
             ->orderBy('created_at', 'DESC')
             ->get();
@@ -194,7 +196,7 @@ class ItemController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.confirmation', 'accepted')
-            ->whereIn('uri.status', ['Inventories', 'Returned to Owner'])
+            ->whereIn('uri.status', ['Inventories', 'Returned to Owner', 'Transferred', 'Renewed'])
             ->get();
 
         return response()->json(['returnedItemsInventory' => $returnedItems]);
@@ -540,7 +542,7 @@ class ItemController extends Controller
         }
 
         $data = [
-            'tracking_id' => $form . '-' . date('Y') . '-' . date('m') . '-' . $num + 1,
+            'tracking_id' => $form . '-' . date('Y') . '-' . date('m') . '-' . str_pad($num + 1, 3, '0', STR_PAD_LEFT),
             'issued_by'   => $req->input('issued_by'),
             'received_by' => $req->input('user_id')
         ];
@@ -602,13 +604,13 @@ class ItemController extends Controller
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
                 ->where('uri.uri_id', $data)
                 ->update([
-                    'uri.status' => 'Reassigned',
-                    'ui.item_status' => 'Reassigned',
+                    'uri.status' => 'Transferred',
+                    'ui.item_status' => 'Transferred',
                     'ui.assigned_to_user' => $req->input('user_id')
                 ]);
 
             $price = DB::table('user_returned_items as uri')
-                ->select('pri.price')
+                ->select('pri.price', 'ia.category_id')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
                 ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
                 ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -621,14 +623,14 @@ class ItemController extends Controller
             $total += $price->price;
         }
 
-        if ($total > 50000) {
+        if ($price->category_id == 3) {
             $form = 'PAR';
-        } else {
+        } else if ($price->category_id == 2){
             $form = 'ICS';
         }
 
         $data = [
-            'tracking_id' => $form . '-' . date('Y') . '-' . date('m') . '-' . $num + 1,
+            'tracking_id' => $form . '-' . date('Y') . '-' . date('m') . '-' . str_pad($num + 1, 3, '0', STR_PAD_LEFT),
             'issued_by'   => $req->input('issued_by'),
             'received_by' => $req->input('user_id')
         ];

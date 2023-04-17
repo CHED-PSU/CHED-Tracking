@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Alert from "../Alerts/WidgetAcceptAlert";
+import { toUpper } from "lodash";
 
-export default function ICSIssuedNotification({
+export default function IssuedNotification({
     listId,
     setOpenNotifSpecList,
     closer,
@@ -54,8 +55,6 @@ export default function ICSIssuedNotification({
         setOpenAlert(val);
     };
 
-    console.log(items);
-
     const itemsData = (item) => {
         let counter = 0;
         return item.map((data) => {
@@ -65,23 +64,41 @@ export default function ICSIssuedNotification({
                     key={counter}
                     className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
                 >
-                    <td className="text-center px-3 border">{data.quantity}</td>
-                    <td className="text-center px-3 border">{data.unit}</td>
+                    <td className="text-center px-3 border">1</td>
+                    <td className="text-center px-3 border">
+                        {toUpper(data.unit)}
+                    </td>
                     <td className="text-center px-3 border">
                         {parseInt(data.price) * parseInt(data.quantity)}
                     </td>
-                    <td className="text-left px-3 py-3 border">
+                    <td className="text-left border">
                         <div className="flex items-center">
-                            <div className="font-semibold mr-3">
-                                {data.article}
+                            <div className="font-semibold border-r py-3 px-3">
+                                {toUpper(data.article)}
                             </div>
-                            <div>{data.description}</div>
+                            <div className="px-3 py-3">
+                                {toUpper(data.description)}
+                            </div>
                         </div>
                     </td>
                     <td className="text-left px-3 border">
                         {data.inventory_no}
                     </td>
-                    <td className="text-center px-3 border">{data.eul}</td>
+                    <td className="text-center px-3 border">
+                        {toUpper(data.eul)}
+                    </td>
+                    <td className="text-center px-3 border">
+                        {toUpper(
+                            data.firstname +
+                                " " +
+                                (data.middlename == null
+                                    ? ""
+                                    : data.middlename.charAt(0) + "." + " ") +
+                                " " +
+                                data.surname +
+                                (data.suffix == null ? "" : " " + data.suffix)
+                        )}
+                    </td>
                 </tr>
             );
         });
@@ -148,21 +165,21 @@ export default function ICSIssuedNotification({
                 ""
             )}
 
-            {formDetails.description === "ICS" ? (
+            <div
+                className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-30"
+            >
                 <div
-                    id="ICS"
-                    className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-30"
+                    ref={modalBody}
+                    className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-8 py-6 z-20"
                 >
-                    <div
-                        ref={modalBody}
-                        className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-8 py-6 z-20"
+                    <button
+                        onClick={() => setOpenNotifSpecList(false)}
+                        className="closeModal text-xl pb-2"
                     >
-                        <button
-                            onClick={() => setOpenNotifSpecList(false)}
-                            className="closeModal text-xl pb-2"
-                        >
-                            <i className="fa-solid fa-xmark"></i>
-                        </button>
+                        <i className="fa-solid fa-xmark"></i>
+                    </button>
+
+                    {formDetails.description === "ICS" ? (
                         <div className="bg-white dark:bg-darkColor-900 rounded-lg px-5 pt-2 ">
                             <div className="text-center dark:text-white py-2">
                                 <div className="text-sm font-semibold">
@@ -230,6 +247,9 @@ export default function ICSIssuedNotification({
                                             <th className="h-10 w-30 text-center font-medium border px-2">
                                                 Estimated Useful Life
                                             </th>
+                                            <th className="h-10 w-30 text-center font-medium border px-2">
+                                                Assigned to
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody id="slip-table">
@@ -238,7 +258,7 @@ export default function ICSIssuedNotification({
                                         {/* index 2 */}
                                         <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                             <td
-                                                colSpan="6"
+                                                colSpan="7"
                                                 className="text-xs px-2 h-fit text-center"
                                             >
                                                 *nothing follows*
@@ -308,48 +328,7 @@ export default function ICSIssuedNotification({
                                 </div>
                             </div>
                         </div>
-                        <div className="pt-8">
-                            {/* Hide this buttons if the form is already accepted */}
-                            {confirmation === "accepted" ? (
-                                <div className="flex gap-4 pb-4 justify-center">
-                                    <button className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
-                                        Accepted
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="flex gap-4 pb-4 justify-center">
-                                    <button
-                                        onClick={declineHandler}
-                                        className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
-                                    >
-                                        Decline
-                                    </button>
-                                    <button
-                                        onClick={acceptHandler}
-                                        className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
-                                    >
-                                        Accept
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            ) : (
-                <div
-                    id="PAR"
-                    className="fixed inset-0 bg-neutral-700 bg-opacity-75 flex items-center justify-center z-30"
-                >
-                    <div
-                        ref={modalBody}
-                        className="w-1/2 h-fit bg-white shadow-lg rounded-2xl px-8 py-6 z-20"
-                    >
-                        <button
-                            onClick={() => setOpenNotifSpecList(false)}
-                            className="closeModal text-xl pb-2"
-                        >
-                            <i className="fa-solid fa-xmark"></i>
-                        </button>
+                    ) : (
                         <div className="bg-white dark:bg-darkColor-900 rounded-lg px-5 pt-2 ">
                             <div className="text-center dark:text-white py-2">
                                 <div className="text-sm font-semibold">
@@ -417,6 +396,9 @@ export default function ICSIssuedNotification({
                                             <th className="h-10 w-30 text-center font-medium border px-2">
                                                 Estimated Useful Life
                                             </th>
+                                            <th className="h-10 w-30 text-center font-medium border px-2">
+                                                Assigned to
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody id="slip-table">
@@ -425,7 +407,7 @@ export default function ICSIssuedNotification({
                                         {/* index 2 */}
                                         <tr className="text-xs h-10 cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                                             <td
-                                                colSpan="6"
+                                                colSpan="7"
                                                 className="text-xs px-2 h-fit text-center"
                                             >
                                                 *nothing follows*
@@ -495,34 +477,48 @@ export default function ICSIssuedNotification({
                                 </div>
                             </div>
                         </div>
-                        <div className="pt-8">
-                            {/* Hide this buttons if the form is already accepted */}
-                            {confirmation === "accepted" ? (
-                                <div className="flex gap-4 pb-4 justify-center">
-                                    <button className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
-                                        Accepted
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="flex gap-4 pb-4 justify-center">
-                                    <button
-                                        onClick={declineHandler}
-                                        className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
-                                    >
-                                        Decline
-                                    </button>
-                                    <button
-                                        onClick={acceptHandler}
-                                        className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
-                                    >
-                                        Accept
-                                    </button>
-                                </div>
-                            )}
-                        </div>
+                    )}
+                    <div className="pt-8">
+                        {/* Hide this buttons if the form is already accepted */}
+                        {confirmation === "accepted" ? (
+                            <div className="flex gap-4 pb-4 justify-center">
+                                <button className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
+                                    Accepted
+                                </button>
+                            </div>
+                        ) : (
+                            ""
+                        )}
+                        {confirmation === "declined" ? (
+                            <div className="flex gap-4 pb-4 justify-center">
+                                <button className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] ">
+                                    Declined
+                                </button>
+                            </div>
+                        ) : (
+                            ""
+                        )}
+                        {confirmation === "TBD" ? (
+                            <div className="flex gap-4 pb-4 justify-center">
+                                <button
+                                    onClick={declineHandler}
+                                    className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
+                                >
+                                    Decline
+                                </button>
+                                <button
+                                    onClick={acceptHandler}
+                                    className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
+                                >
+                                    Accept
+                                </button>
+                            </div>
+                        ) : (
+                            ""
+                        )}
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 }

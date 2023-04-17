@@ -225,7 +225,10 @@ export default function Return({ className }) {
                         <div className="flex gap-4 justify-center">
                             {data.status === "Unserviceable" ||
                             data.status === "Inventories" ||
-                            data.status === "Returned to Owner" ? (
+                            data.status === "Returned to Owner" || 
+                            data.status === "Renewed" || 
+                            data.status === "Transferred"
+                            ? (
                                 <div
                                     onClick={() => {
                                         clickForms("view-form"),
