@@ -11,10 +11,8 @@ export default function ICSIssuedNotification({
     let modalBody = useRef();
 
     const [Loading, setLoading] = useState(false);
-
     const [items, setItems] = useState([]);
     const [formDetails, setFormDetails] = useState([]);
-
     const domain = window.location.href;
     const url = new URL(domain);
     const user = localStorage.getItem("localSession");
@@ -55,6 +53,8 @@ export default function ICSIssuedNotification({
     const clickAlert = (val) => {
         setOpenAlert(val);
     };
+
+    console.log(items);
 
     const itemsData = (item) => {
         let counter = 0;

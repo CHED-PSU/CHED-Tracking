@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ICSNotification from "./Notification/ICSNotification";
 import Profilesett from "./ProfileSettings/ProfileSettings";
 import io from "socket.io-client";
-const socket = io.connect("")
+const socket = io.connect("");
 //const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Widgets({ className, toggleDarkMode, setSidebar }) {
@@ -104,9 +104,15 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
             setRead(true);
             console.log(data.message);
         });
-        socket.on("connect", () => {
-            console.log("Connected to server");
-          });
+
+        const getNotification = async () => {
+            const response = await axios.post("/api/getNotificationItems", {
+                id: value.id,
+            });
+            const data = response.data;
+            setRead(true);
+        };
+        getNotification();
     }, [socket]);
 
     const notifClick = async () => {

@@ -12,11 +12,10 @@ class ItemController extends Controller
     //User notification area
     public function getNotifSecListItems(Request $req)
     {
-
         $items = DB::table('users_notification as un')
-            ->select('pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul')
-            ->join('trackings as t', 'un.trackings_id', '=', 't.id')
+            ->select('un.trackings_id', 't.id', 'pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul')
             ->where('un.trackings_id', $req->input('listId'))
+            ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->join('inventory_tracking as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -30,7 +29,6 @@ class ItemController extends Controller
 
     public function getAdminNotifSecListItems(Request $req)
     {
-
         $items = DB::table('admin_notification as an')
             ->select('t.id as tracking_id', 'pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul')
             ->where('an.id', $req->input('listId'))
@@ -592,10 +590,10 @@ class ItemController extends Controller
         $total = 0;
 
         foreach ($req->input('selectedId') as $data) {
-           $assigned_to = DB::table('users')
-            ->select    ('firstname' ,'surname')
-            ->where('id',$req->input('user_id'))
-            ->first();
+            $assigned_to = DB::table('users')
+                ->select('firstname', 'surname')
+                ->where('id', $req->input('user_id'))
+                ->first();
 
             DB::table('user_returned_items as uri')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
@@ -725,29 +723,28 @@ class ItemController extends Controller
     }
 
     //YearlyUnserviceableReport
-    public function YearlyUnserviceableReport(Request $req){
+    public function YearlyUnserviceableReport(Request $req)
+    {
         $getItems = DB::table('unserviceable_items as ui')
-        ->select('it.created_at as date_acquired','pi.article','pi.code as property_no','pi.price as amount')
-        ->join('inventory_tracking as it','it.id','=','ui.inventory_tracking_id')
-        ->join('iar_items as ii','ii.id','=','it.item_id')
-        ->join('purchase_request_items as pri','pri.pr_item_uid','=','ii.pr_item_uid')
-        ->join('product_items as pi','pi.id','=','pri.product_item_id')
-        ->whereYear('ui.created_at',$req->input('year'))
-        ->get();
+            ->select('it.created_at as date_acquired', 'pi.article', 'pi.code as property_no', 'pi.price as amount')
+            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('iar_items as ii', 'ii.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ii.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->whereYear('ui.created_at', $req->input('year'))
+            ->get();
 
 
         $total = 0.00;
 
-        foreach($getItems as $i){
+        foreach ($getItems as $i) {
             $total += $i->amount;
         }
 
-        $months = ['January','February','March','April','May','June','July','August','September','November','December'];
+        $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'];
 
         $month = date('m');
 
-        return response()->json(['items' => $getItems, 'total' => $total,'Month' => $months[$month-1]]);
+        return response()->json(['items' => $getItems, 'total' => $total, 'Month' => $months[$month - 1]]);
     }
 }
-
-

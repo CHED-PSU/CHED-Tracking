@@ -18,6 +18,7 @@ class FormController extends Controller
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->join('users as u', 't.issued_by', '=', 'u.id')
             ->where('t.received_by', $request->input('id'))
+            ->orderBy('un.created_at', 'DESC')
             ->get();
 
         $NotificationItemsUnread = DB::table('users_notification as un')
@@ -26,6 +27,7 @@ class FormController extends Controller
             ->join('users as u', 't.issued_by', '=', 'u.id')
             ->where('t.received_by', $request->input('id'))
             ->where('un.ns_id', 2)
+            ->orderBy('un.created_at', 'DESC')
             ->get();
 
         return response()->json([
@@ -424,6 +426,30 @@ class FormController extends Controller
         return response()->json(['admin_notification' => $getAdminNotification, 'admin_unread_notification' => $getAdminNotificationUnread]);
     }
 
+    public function getAdminNotificationPing()
+    {
+        $getAdminNotification = DB::table('admin_notification as an')
+            ->select('an.id', 'an.user_id', 'u.prefix', 'u.firstname', 'u.surname', 'u.suffix', 'an.created_at', 'an.description', 'an.ns_id')
+            ->join('users as u', 'u.id', '=', 'an.user_id')
+            ->where('an.ns_id', 2)
+            ->first();
+
+        return response()->json(['admin_notification' => $getAdminNotification]);
+    }
+
+    public function getUserNotificationPing(Request $req)
+    {
+        $getUserNotification = DB::table('users_notification as un')
+            ->select('un.confirmation', 'un.description', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'un.created_at', 'un.ns_id', 'un.np_id', 't.id', 'un.id as notifId')
+            ->join('trackings as t', 'un.trackings_id', '=', 't.id')
+            ->join('users as u', 't.issued_by', '=', 'u.id')
+            ->where('t.received_by', $req->input('id'))
+            ->where('un.ns_id', 2)
+            ->first();
+
+        return response()->json(['user_notification' => $getUserNotification]);
+    }
+
     public function getAdminNotificationIsRead(Request $req)
     {
         $getAdminNotificationIsRead = DB::table('admin_notification as an')
@@ -489,17 +515,19 @@ class FormController extends Controller
             ->update(['confirmation' => 'accepted', 'received_by' => $req->input('user_id')]);
 
         $user_id = DB::table('user_returned_items as uri')
-            ->select('uri.user_id')
+            ->select('uri.user_id', 'uri.ui_id', 'ui.inventory_tracking_id', 'it.trackings_id')
+            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->where('uri.uri_id', $req->input('id'))
             ->first();
 
-
         DB::table('users_notification')
             ->insert([
+                'trackings_id' => $user_id->trackings_id,
                 'user_id' => $req->input('user_id'),
                 'to_user_id' => $user_id->user_id,
                 'ns_id'   => 2,
-                'np_id'   => 3,
+                'np_id'   => 2,
                 'confirmation' => 'accepted',
                 'description' => 'has accepted your request for return an item'
             ]);
@@ -511,6 +539,7 @@ class FormController extends Controller
 
         Db::table('returned_items_info')->insert(['uri_id' => $req->input('id')]);
     }
+
     //decline pending request
     public function declinePendingRequest(Request $req)
     {
@@ -519,12 +548,15 @@ class FormController extends Controller
             ->update(['confirmation' => 'declined']);
 
         $user_id = DB::table('user_returned_items as uri')
-            ->select('uri.user_id')
+            ->select('uri.user_id', 'uri.ui_id', 'ui.inventory_tracking_id', 'it.trackings_id')
+            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+            ->join('inventory_tracking as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->where('uri.uri_id', $req->input('id'))
             ->first();
 
         DB::table('users_notification')
             ->insert([
+                'trackings_id' => $user_id->trackings_id,
                 'user_id' => $req->input('user_id'),
                 'to_user_id' => $user_id->user_id,
                 'ns_id'   => 2,

@@ -90,8 +90,11 @@ Route::post('getUsersAcceptedRequests', [FormController::class, 'getUsersAccepte
 
 //get admin notification items
 Route::get('getAdminNotification', [FormController::class, 'getAdminNotification']);
+Route::get('getAdminNotificationPing', [FormController::class, 'getAdminNotificationPing']);
+Route::get('getUserNotificationPing', [FormController::class, 'getUserNotificationPing']);
 Route::post('getAdminNotificationIsRead', [FormController::class, 'getAdminNotificationIsRead']);
 Route::get('getAdminRequest', [FormController::class, 'getAdminRequest']);
+
 //Admin Dashboard
 Route::get('getAdminDashboardData', [GeneralController::class, 'getAdminDashboardData']);
 //Admin Pending Items

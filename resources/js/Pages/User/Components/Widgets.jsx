@@ -3,7 +3,7 @@ import ICSIssuedNotification from "./notification components/ICSIssuedNotificati
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import io from "socket.io-client";
-const socket = io.connect("")
+const socket = io.connect("");
 //const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Widgets(props) {
@@ -73,6 +73,14 @@ export default function Widgets(props) {
         socket.on("user_notif", (data) => {
             setRead(true);
         });
+        const getNotification = async () => {
+            const response = await axios.post("/api/getNotificationItems", {
+                id: value.id,
+            });
+            const data = response.data;
+            setRead(true);
+        };
+        getNotification();
     }, [socket]);
 
     useEffect(() => {
@@ -121,12 +129,15 @@ export default function Widgets(props) {
     const [listId, setListId] = useState();
     const [confirmation, setConfirmation] = useState();
 
-    const notifSpecList = (id, notifId, confirmation) => {
+    const notifSpecList = (id, notifId, confirmation, modal) => {
         setListId(id);
         setConfirmation(confirmation);
         isRead(notifId);
-        setOpenNotifSpecList(!openNotifSpecList);
-        setOpenNotifDropdown(!openNotifDropdown);
+
+        if (modal == true) {
+            setOpenNotifSpecList(!openNotifSpecList);
+            setOpenNotifDropdown(!openNotifDropdown);
+        }
     };
 
     function isRead(index) {
@@ -143,17 +154,6 @@ export default function Widgets(props) {
     //for Notification mapping
     const [notificationItems, setNotificationItems] = useState([]);
     const [notificationItemsUnread, setNotificationItemsUnread] = useState([]);
-
-    async function getNotificationItems() {
-        try {
-            const res = await axios.post("/api/getNotificationItems", {
-                id: value.id,
-            });
-            setNotificationItems(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const getNotif = async () => {
         setLoading(true);
@@ -172,8 +172,11 @@ export default function Widgets(props) {
     };
 
     const notifMapper = (items) => {
+        let counter = 0;
         if (items.length > 0) {
             return items.map((data) => {
+                counter++;
+
                 var created_at = new Date(data.created_at);
 
                 let today = new Date();
@@ -184,14 +187,27 @@ export default function Widgets(props) {
 
                 return (
                     <li
-                        key={data.id}
-                        onClick={() =>
-                            notifSpecList(
-                                data.id,
-                                data.notifId,
-                                data.confirmation
-                            )
-                        }
+                        key={counter}
+                        onClick={() => {
+                            if (
+                                data.description == "ICS" ||
+                                data.description == "PAR"
+                            ) {
+                                notifSpecList(
+                                    data.id,
+                                    data.notifId,
+                                    data.confirmation,
+                                    true
+                                );
+                            } else {
+                                notifSpecList(
+                                    data.id,
+                                    data.notifId,
+                                    data.confirmation,
+                                    false
+                                );
+                            }
+                        }}
                         className="flex justify-between items-center 2xl:py-3 xl:py-2 py-2 gap-1 border-sh dark:border-neutral-700 border hover:bg-slate-100 rounded-md dark:hover:bg-darkColor-700 cursor-pointer"
                     >
                         <div className="flex h-full items-center justify-between gap-3 px-3">
@@ -206,11 +222,13 @@ export default function Widgets(props) {
                                         {displayName(data, true)}
                                     </span>{" "}
                                     <span className="">
-                                        {" "}
-                                        has issued you an {
-                                            data.description
-                                        }{" "}
-                                        form.
+                                        {" " +
+                                            (data.description == "ICS" ||
+                                            data.description == "PAR"
+                                                ? "has issued you an " +
+                                                  data.description +
+                                                  " form"
+                                                : data.description)}
                                     </span>
                                 </div>
                                 <div className="text-xs text-blue-400">
