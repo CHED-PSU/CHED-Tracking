@@ -76,7 +76,7 @@ export default function ItemTab({ className }) {
     function clickDisposeModal(index) {
         setOpenDisposeModal(index);
     }
-    
+
     useEffect(() => {
         const getUnserviceableItems = async () => {
             setLoading(true);
@@ -206,6 +206,10 @@ export default function ItemTab({ className }) {
             setOpenDonationForm(true);
             clickDisposeModal("close");
         }
+        if (index === "Destruction") {
+            setOpenDestructionSalesForm(true);
+            clickDisposeModal("close");
+        }
     };
 
     const [currentPage, setCurrentPage] = useState(0);
@@ -285,7 +289,15 @@ export default function ItemTab({ className }) {
                 ""
             )}
 
-            {openDestructionSalesForm ? <DestructionSalesForm /> : ""}
+            {openDestructionSalesForm ? (
+                <DestructionSalesForm
+                    selectedIds={selectedIds}
+                    setOpenDonationForm={setOpenDonationForm}
+                    confirmation={confirmation}
+                />
+            ) : (
+                ""
+            )}
 
             <div className="w-full flex justify-end  items-center h-16">
                 <button

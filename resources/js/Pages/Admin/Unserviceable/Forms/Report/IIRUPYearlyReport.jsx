@@ -1,4 +1,5 @@
-import React, { createRef, useRef } from "react";
+import axios from "axios";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 
 export default function IIRUPYearlyReport(props) {
@@ -15,6 +16,77 @@ export default function IIRUPYearlyReport(props) {
           }`,
         documentTitle: "IAIRUP",
     });
+
+    const [loading, setLoading] = useState(true);
+    const [items, setItems] = useState(true);
+    const [total, setTotal] = useState(true);
+    const [month, setMonth] = useState(true);
+
+    const getUnserviceableReport = async () => {
+        setLoading(true);
+        try {
+            await axios
+                .post("api/YearlyUnserviceableReport", { year: props.year })
+                .then((res) => {
+                    setItems(res.data.items);
+                    setTotal(res.data.total)
+                    setMonth(res.data.Month)
+                });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getUnserviceableReport();
+    }, []);
+
+    const itemsMapper = (items) => {
+        return items?.map((data) => {
+            return (
+                <tr className="text-[11px] avoid h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
+                    <td className="px-1 text-center border border-text-gray">
+                    {data.date_acquired}
+                    </td>
+                    <td className=" px-1 border border-text-gray">
+                        {data.article}
+                    </td>
+                    <td className="px-1 text-left border border-text-gray">
+                    {data.property_no}
+                    </td>
+                    <td className="px-1 text-center border border-text-gray">
+                        1
+                    </td>
+                    <td className="px-1 text-right border border-text-gray">
+                        {data.amount}
+                    </td>
+                    <td className="px-1 text-right border border-text-gray">
+                    {data.amount}
+                    </td>
+                    <td className="px-1 text-right border border-text-gray">
+                    {data.amount}
+                    </td>
+                    <td className="px-1 text-right border border-text-gray"></td>
+                    <td className="px-1 text-right border border-text-gray">
+                    {data.amount}
+                    </td>
+                    <td className="px-1 text-center border border-text-gray">
+                        UNSERVICEABLE
+                    </td>
+                    <td className="px-1 text-center border border-text-gray"></td>
+                    <td className="px-1 text-center border border-text-gray"></td>
+                    <td className="px-1 text-center border border-text-gray"></td>
+                    <td className="px-1 text-center border border-text-gray"></td>
+                    <td className="px-1 text-center border border-text-gray"></td>
+                    <td className="px-1 text-center border border-text-gray"></td>
+                    <td className="px-1 text-center border border-text-gray"></td>
+                    <td className="px-1 text-center border border-text-gray"></td>
+                </tr>
+            );
+        });
+    };
 
     return (
         <div
@@ -69,7 +141,7 @@ export default function IIRUPYearlyReport(props) {
                                 INVENTORY AND INSPECTION REPORT OF UNSERVICEABLE
                                 PROPERTY
                             </div>
-                            <p>As of March 2022</p>
+                            <p>As of {month} 2022</p>
                         </div>
                         <div className="flex items-center">
                             <div className="w-1/2">
@@ -299,45 +371,7 @@ export default function IIRUPYearlyReport(props) {
                                     </tr>
 
                                     {/* Table Content */}
-                                    <tr className="text-[11px] avoid h-fit cursor-default dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-                                        <td className="px-1 text-center border border-text-gray">
-                                            2012
-                                        </td>
-                                        <td className=" px-1 border border-text-gray">
-                                            PRINTER: HP Deskjet 2060 Colored
-                                            Printer SN:
-                                        </td>
-                                        <td className="px-1 text-left border border-text-gray">
-                                            2012-05-11-002-CHEDRO11-SUPPLY UNIT
-                                        </td>
-                                        <td className="px-1 text-center border border-text-gray">
-                                            1
-                                        </td>
-                                        <td className="px-1 text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="px-1 text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="px-1 text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="px-1 text-right border border-text-gray"></td>
-                                        <td className="px-1 text-right border border-text-gray">
-                                            0.00
-                                        </td>
-                                        <td className="px-1 text-center border border-text-gray">
-                                            UNSERVICEABLE
-                                        </td>
-                                        <td className="px-1 text-center border border-text-gray"></td>
-                                        <td className="px-1 text-center border border-text-gray"></td>
-                                        <td className="px-1 text-center border border-text-gray"></td>
-                                        <td className="px-1 text-center border border-text-gray"></td>
-                                        <td className="px-1 text-center border border-text-gray"></td>
-                                        <td className="px-1 text-center border border-text-gray"></td>
-                                        <td className="px-1 text-center border border-text-gray"></td>
-                                        <td className="px-1 text-center border border-text-gray"></td>
-                                    </tr>
+                                    {!loading ? itemsMapper(Object.values(items)) : ''}
 
                                     {/* Total */}
                                     <tr className="text-[0.7rem] avoid">
@@ -349,17 +383,17 @@ export default function IIRUPYearlyReport(props) {
                                         </td>
                                         <td className=" font-medium text-center border border-text-gray"></td>
                                         <td className=" font-medium text-right border border-text-gray">
-                                            677,294.00
+                                            {!loading ? total : ''}
                                         </td>
                                         <td className=" font-medium text-right border border-text-gray">
-                                            677,294.00
+                                        {!loading ? total : ''}
                                         </td>
                                         <td className=" font-medium text-right border border-text-gray">
-                                            677,294.00
+                                        {!loading ? total : ''}
                                         </td>
                                         <td className=" font-medium text-center border border-text-gray"></td>
                                         <td className=" font-medium text-right border border-text-gray">
-                                            677,294.00
+                                        {!loading ? total : ''}
                                         </td>
                                         <td className=" font-medium text-center border border-text-gray"></td>
                                         <td

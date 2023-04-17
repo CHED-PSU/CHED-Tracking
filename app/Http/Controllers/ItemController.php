@@ -721,4 +721,31 @@ class ItemController extends Controller
 
         return response()->json(['items' => $array]);
     }
+
+    //YearlyUnserviceableReport
+    public function YearlyUnserviceableReport(Request $req){
+        $getItems = DB::table('unserviceable_items as ui')
+        ->select('it.created_at as date_acquired','pi.article','pi.code as property_no','pi.price as amount')
+        ->join('inventory_tracking as it','it.id','=','ui.inventory_tracking_id')
+        ->join('iar_items as ii','ii.id','=','it.item_id')
+        ->join('purchase_request_items as pri','pri.pr_item_uid','=','ii.pr_item_uid')
+        ->join('product_items as pi','pi.id','=','pri.product_item_id')
+        ->whereYear('ui.created_at',$req->input('year'))
+        ->get();
+
+
+        $total = 0.00;
+
+        foreach($getItems as $i){
+            $total += $i->amount;
+        }
+
+        $months = ['January','February','March','April','May','June','July','August','September','November','December'];
+
+        $month = date('m');
+
+        return response()->json(['items' => $getItems, 'total' => $total,'Month' => $months[$month-1]]);
+    }
 }
+
+

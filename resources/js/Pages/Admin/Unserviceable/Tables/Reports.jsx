@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import IIRUPMonthlyReport from "../Forms/Report/IIRUPMonthlyReport";
+import IIRUPYearlyReport from "../Forms/Report/IIRUPYearlyReport";
 
 export default function Reports({ className, items }) {
     const [selectYear, setSelectYear] = useState("Yearly");
     const [year, setYear] = useState("default");
     const [openIIRUPMonthlyReport, setOpenIIRUPMonthlyReport] = useState("close");
 
-    function clickIIRUPMonthlyReport(index) {
+    function clickIIRUPMonthlyReport(index,year) {
         setOpenIIRUPMonthlyReport(index);
+        setYear(year)
+    }
+
+    function clickIIRUPYearlyReport(index,year) {
+        setOpenIIRUPMonthlyReport(index);
+        setYear(year)
     }
 
     function clickTabs(index) {
@@ -23,8 +30,9 @@ export default function Reports({ className, items }) {
     return (
         <div className={className + " w-full h-full relative"}>
 
-            {openIIRUPMonthlyReport === "open" ? <IIRUPMonthlyReport
-                clickIIRUPMonthlyReport={clickIIRUPMonthlyReport}
+            {openIIRUPMonthlyReport === "open" ? <IIRUPYearlyReport
+                clickIIRUPMonthlyReport={clickIIRUPYearlyReport}
+                year ={year ? year : 2023}
                 className={""}
             /> : ""}
 
@@ -86,7 +94,7 @@ export default function Reports({ className, items }) {
                                 <a className="text-left flex items-center w-full h-8 gap-3 pl-6">
                                     <div className="">
                                         <h4 className="text-2xl font-medium text-text-black">
-                                            2022
+                                            2023
                                         </h4>
 
                                     </div>
@@ -109,7 +117,7 @@ export default function Reports({ className, items }) {
                                     <div className="">
                                         <button
                                             className="btn-color-3 rounded-full py-2 px-3 text-text-black"
-                                            onClick={() => clickIIRUPMonthlyReport("open")}
+                                            onClick={() => clickIIRUPYearlyReport("open", 2023)}
                                         >
                                             <i className="fa-solid fa-eye"></i> View
                                         </button>

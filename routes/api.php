@@ -119,6 +119,9 @@ Route::post('getUserICS', [FormController::class, 'getUserICS']);
 //get User PAR Controls
 Route::post('getUserParControls', [FormController::class, 'getUserParControls']);
 
+//getUserList
+Route::get('getUserLists', [GeneralController::class, 'getUserLists']);
+
 //Admin Returned Items
 // Admin Returned Items Fetcher
 Route::get('getReturnedItems', [ItemController::class, 'getReturnedItems']);
@@ -162,6 +165,11 @@ Route::post('donationReport', [FormController::class, 'donationReport']);
 Route::get('getDonationMasterList', [FormController::class, 'getDonationMasterList']);
 //fetcher of Donation infromation
 Route::post('getDonationInformation', [FormController::class, 'getDonationInformation']);
+
+
+
+//Yearly Unserviceable Report
+Route::post('YearlyUnserviceableReport', [ItemController::class, 'YearlyUnserviceableReport']);
 
 //Admin forecasting Items
 Route::get('forecast', [ForecastingController::class, 'forecast']);

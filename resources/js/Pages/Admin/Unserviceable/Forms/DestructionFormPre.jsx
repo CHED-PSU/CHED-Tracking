@@ -1,7 +1,8 @@
-import React, { createRef, useRef } from "react";
+import axios from "axios";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 
-export default function DestructionForm({ className }) {
+export default function DestructionForm(props) {
     const ref = useRef();
     const handlePrint = useReactToPrint({
         content: () => ref.current,
@@ -13,16 +14,59 @@ export default function DestructionForm({ className }) {
               margin-bottom: 0.5in;
             }
           }`,
-        documentTitle: 'emp-data',
-    })
+        documentTitle: "emp-data",
+    });
+
+    const [loading, setLoading] = useState(true);
+    const [items, setItems] = useState();
+    const [users, setUsers] = useState();
 
     function clickBtn(index) {
         props.setBtnType(index);
     }
 
-    return (
+    const getUsers = async () => {
+        setLoading(true);
+        try {
+            await axios.get("api/getUsers").then((res) => {
+                setUsers(res.data.user_lists);
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        <div className={className + " fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"}>
+    const getItems = async () => {
+        setLoading(true);
+        try {
+            await axios
+                .post("api/getUnserviceableItemsDetails", {
+                    item_ids: props.selectedIds,
+                })
+                .then((res) => {
+                    setItems(res.data.items);
+                });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getItems();
+        getUsers();
+    }, []);
+
+    return (
+        <div
+            className={
+                props.className +
+                " fixed inset-0 bg-white w-full h-full flex flex-col items-center space-y-10 z-40"
+            }
+        >
             <div className="dark:bg-darkColor-800 h-full w-fit border-x border-[#C8C8C8] overflow-y-auto pb-10">
                 {/* header */}
                 <div className="flex justify-between py-5 mb-5 mx-10 border-b-2">
@@ -52,7 +96,9 @@ export default function DestructionForm({ className }) {
                 {/* data table */}
                 <div className="bg-white dark:bg-darkColor-900 rounded-lg border mx-10 ">
                     <div ref={ref} className="w-[8.27in] px-6 py-6">
-                        <div className="flex justify-end text-ss font-medium italic pb-2">Appendix 65</div>
+                        <div className="flex justify-end text-ss font-medium italic pb-2">
+                            Appendix 65
+                        </div>
                         <div className="text-center dark:text-white py-2">
                             <div className="text-sm font-semibold">
                                 WASTE MATERIALS REPORT
@@ -84,17 +130,26 @@ export default function DestructionForm({ className }) {
                         <div className="mt-4">
                             <div className="flex justify-between text-sm">
                                 <div className="border border-r-0 border-b-0 w-3/4 p-2 text-xs text-th">
-                                    Place of Storage: <font className="font-medium text-black">
-                                    <input type="text" name="" id="" className="border-b-2 border-darkColor-800 outline-none"/>
+                                    Place of Storage:{" "}
+                                    <font className="font-medium text-black">
+                                        <input
+                                            type="text"
+                                            name=""
+                                            id=""
+                                            className="border-b-2 border-darkColor-800 outline-none"
+                                        />
                                     </font>
                                 </div>
                                 <div className="border border-b-0 w-1/4 p-2 text-xs">
-                                    Date :  <font className="font-medium">0</font>
+                                    Date :{" "}
+                                    <font className="font-medium">0</font>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <div className="border border-b-0 w-full p-2 text-xs text-th">
-                                    <font className="font-medium text-black">ITEMS FOR DISPOSAL</font>
+                                    <font className="font-medium text-black">
+                                        ITEMS FOR DISPOSAL
+                                    </font>
                                 </div>
                             </div>
                             <table
@@ -103,26 +158,44 @@ export default function DestructionForm({ className }) {
                             >
                                 <thead>
                                     <tr className="text-xs border dark:border-neutral-700 text-th dark:text-white cursor-default">
-                                        <th rowSpan={4} className="h-10 w-20 font-medium border">
+                                        <th
+                                            rowSpan={4}
+                                            className="h-10 w-20 font-medium border"
+                                        >
                                             Item
                                         </th>
-                                        <th rowSpan={4} className="h-10 w-20 font-medium border">
+                                        <th
+                                            rowSpan={4}
+                                            className="h-10 w-20 font-medium border"
+                                        >
                                             Quantity
                                         </th>
-                                        <th rowSpan={4} className="h-10 w-40 font-medium border">
+                                        <th
+                                            rowSpan={4}
+                                            className="h-10 w-40 font-medium border"
+                                        >
                                             Unit
                                         </th>
-                                        <th rowSpan={4} className="h-10 font-medium border">
+                                        <th
+                                            rowSpan={4}
+                                            className="h-10 font-medium border"
+                                        >
                                             Description
                                         </th>
                                     </tr>
                                     <tr className="text-xs">
-                                        <th colSpan={3} className="h-10 w-40 font-medium border text-center">
+                                        <th
+                                            colSpan={3}
+                                            className="h-10 w-40 font-medium border text-center"
+                                        >
                                             Record of Sales
                                         </th>
                                     </tr>
                                     <tr className="text-xs">
-                                        <th colSpan={3} className="h-10 w-40 font-medium border text-center">
+                                        <th
+                                            colSpan={3}
+                                            className="h-10 w-40 font-medium border text-center"
+                                        >
                                             Official Receipt
                                         </th>
                                     </tr>
@@ -148,9 +221,7 @@ export default function DestructionForm({ className }) {
                                                 <div className="font-semibold mr-3">
                                                     default
                                                 </div>
-                                                <div>
-                                                    default
-                                                </div>
+                                                <div>default</div>
                                             </div>
                                         </td>
                                         <td className="text-center px-3 border">
@@ -164,8 +235,17 @@ export default function DestructionForm({ className }) {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colSpan={6} className="text-left py-3 border"><div className="ml-3 text-sm font-medium">Total</div></td>
-                                        <td className="text-center px-3 border text-sm font-medium">15,610.00</td>
+                                        <td
+                                            colSpan={6}
+                                            className="text-left py-3 border"
+                                        >
+                                            <div className="ml-3 text-sm font-medium">
+                                                Total
+                                            </div>
+                                        </td>
+                                        <td className="text-center px-3 border text-sm font-medium">
+                                            15,610.00
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -176,50 +256,67 @@ export default function DestructionForm({ className }) {
                                     Certified Correct:
                                 </div>
                                 <div className="text-center py-4">
-
-                                    <div
-                                        className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-
-                                    >CHERYL A. TAGALOG</div>
+                                    <div className="pt-1 text-center text-sm underline font-semibold dark:text-white">
+                                    <input
+                                            type="text"
+                                            name=""
+                                            id=""
+                                            className="border-b w-100 border-black font-semibold outline-none uppercase"
+                                        />
+                                    </div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
-                                        Signature Over Printed Name of Supply and/or Property Custodian
+                                        Signature Over Printed Name of Supply
+                                        and/or Property Custodian
                                     </div>
                                 </div>
                             </div>
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2">
                                 <div className="text-left text-xs font-medium dark:text-white w-full ml-6">
-                                Disposal Approved:
+                                    Disposal Approved:
                                 </div>
                                 <div className="text-center py-4">
-
-                                    <div
-                                        className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-
-                                    >RAUL C. ALVAREZ JR. CESO III</div>
+                                    <div className="pt-1 text-center text-sm underline font-semibold dark:text-white">
+                                        <input
+                                            type="text"
+                                            name=""
+                                            id=""
+                                            className="border-b w-100 border-black font-semibold outline-none uppercase"
+                                        />
+                                    </div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
-                                        Signature Over Printed Name of Head of Agency/Entity of his/her Authorized Representative
+                                        Signature Over Printed Name of Head of
+                                        Agency/Entity of his/her Authorized
+                                        Representative
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full text-center text-sm font-medium py-3 border border-t-0">CERTIFICATE OF INSPECTION</div>
+                        <div className="w-full text-center text-sm font-medium py-3 border border-t-0">
+                            CERTIFICATE OF INSPECTION
+                        </div>
                         <div className="w-full text-sm py-3 border border-t-0">
-                            <h6 className="ml-10 text-xs font-medium">I Hereby certify that the property enumerated above was disposed of as follows:</h6>
+                            <h6 className="ml-10 text-xs font-medium">
+                                I Hereby certify that the property enumerated
+                                above was disposed of as follows:
+                            </h6>
                             <ul className="ml-28 text-xs py-4 space-y-2">
                                 <li className="flex gap-4">
                                     Item
                                     <div className="w-20 border-b"></div>
                                     Destroyed
                                 </li>
-                                <li className="flex gap-4">Item
+                                <li className="flex gap-4">
+                                    Item
                                     <div className="w-20 border-b"></div>
                                     Sold at private sale
                                 </li>
-                                <li className="flex gap-4">Item
+                                <li className="flex gap-4">
+                                    Item
                                     <div className="w-20 border-b"></div>
                                     Sold at public auction
                                 </li>
-                                <li className="flex gap-4">Item
+                                <li className="flex gap-4">
+                                    Item
                                     <div className="w-20 border-b"></div>
                                     Transferred without cost to
                                     <div className="w-20 border-b"></div>
@@ -232,38 +329,41 @@ export default function DestructionForm({ className }) {
                                     Certified Correct:
                                 </div>
                                 <div className="text-center py-4">
-
-                                    <div
-                                        className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-
-                                    >MYRIAM B. FLORES</div>
+                                    <div className="pt-1 text-center text-sm underline font-semibold dark:text-white">
+                                        <input
+                                            type="text"
+                                            name=""
+                                            id=""
+                                            className="border-b w-100 border-black font-semibold outline-none uppercase"
+                                        />
+                                    </div>
                                     <div className="dark:text-gray-400 w-80 text-xs">
-                                        Signature Over Printed Name of Inspection Officer
+                                        Signature Over Printed Name of
+                                        Inspection Officer
                                     </div>
                                 </div>
                             </div>
                             <div className="flex justify-center w-1/2 flex-none flex-col items-center py-2">
                                 <div className="text-left text-xs font-medium dark:text-white w-full ml-6">
-                                Witness to Disposal:
+                                    Witness to Disposal:
                                 </div>
                                 <div className="text-center py-4">
-                                    <div
-                                        className="pt-1 text-center text-sm underline font-semibold dark:text-white"
-                                    >HELENA L. VALDEZ</div>
+                                    <input
+                                        type="text"
+                                        name=""
+                                        id=""
+                                        className="border-b w-100 border-black font-semibold outline-none uppercase"
+                                    />
                                     <div className="dark:text-gray-400 w-80 text-xs">
-                                    Signature Over Printed Name of Witness
+                                        Signature Over Printed Name of Witness
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 {/* data table */}
             </div>
         </div>
-
     );
 }
-
-
