@@ -154,7 +154,7 @@ export default function Landing() {
     if (value) {
         if (value.Authenticated) {
             return (
-                <div className="flex  w-full h-screen bg-[#011284] flex-col items-center justify-center">
+                <div className="flex w-full h-screen bg-[#011284] flex-col items-center justify-center">
                     {/* Loader */}
                     {loading == true ? <Loader /> : ""}
                     {/* Loader */}
@@ -174,75 +174,118 @@ export default function Landing() {
                         ""
                     )}
 
-                    <div className="w-fit fixed z-30 top-10 right-10 flex flex-col items-end space-y-3 2xl:space-x-4 xl:space-x-3 space-x-3">
+                    <div className="w-full fixed top-0 z-30 flex gap-4 items-center justify-end
+                    xl:py-14 py-20
+                    xl:px-20 px-28">
                         {/* Profile Button */}
+                        <p className="text-white font-medium 2xl:text-base xl:text-xs">{displayName(value, false)}</p>
                         <button
                             onClick={() => clickLogout("open")}
-                            className="outline-none flex 2xl:h-12 xl:h-10 h-10 w-fit border border-[#D8DCDF] dark:border-darkColor-800 bg-bg-iconLight dark:bg-bg-iconDark hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover active:bg-bg-iconLightActive dark:active:bg-bg-iconDarkActive dark:text-lightColor-900 rounded-full justify-between transition duration-300 ease-in-out"
+                            title="Log Out"
+                            className="outline-none flex 2xl:h-12 xl:h-10 h-10 w-10 2xl:w-12 xl:w-10 dark:border-darkColor-800 bg-bg-iconLight dark:bg-bg-iconDark hover:bg-bg-iconLightHover dark:hover:bg-bg-iconDarkHover active:bg-bg-iconLightActive dark:active:bg-bg-iconDarkActive dark:text-lightColor-900 rounded-full justify-between transition duration-300 ease-in-out"
                         >
-                            <div className="flex w-full justify-between pl-4 pr-2 xl:items-center items-center xl:h-full h-full rounded-xl gap-2">
-                                <div className=" text-left">
-                                    <h4 className="text-xs font-bold">
-                                        {displayName(value, false)}
-                                    </h4>
-                                    <p className="text-ss 2xl:block xl:hidden hidden">
-                                        {value.role}
-                                    </p>
+                            <div className="flex relative w-full justify-between xl:items-center items-center xl:h-full h-full rounded-xl ">
+                                <div className="bg-black/30 w-full h-full opacity-0 hover:opacity-100 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center transition ease-in-out delay-150">
+                                    <i className="fa-solid text-xl fa-arrow-right-from-bracket text-darkColor-800"></i>
                                 </div>
                                 {displayPhoto(
                                     value.img,
                                     value.firstname,
-                                    "2xl:w-8 2xl:h-8 xl:w-7 xl:h-7 w-7 h-7"
+                                    "w-full h-full border-white"
                                 )}
                             </div>
                         </button>
                     </div>
 
-                    <div className="z-0 w-[920px] h-[920px] bg-cover bg-center bg-circle-huge absolute right-0"></div>
-                    <div className="z-0 w-full h-[150px] bg-cover bg-center bg-bg-pattern absolute bottom-0"></div>
-                    <div className="flex flex-col gap-14 z-10">
+                    <div className="z-0 bg-cover bg-center bg-circle-huge absolute right-0 mt-10
+                        2xl:w-[850px] xl:w-[500px] lg:w-[600px] w-[960px] 
+                        2xl:h-[800px] xl:h-[550px] lg:h-[600px] h-[920px] 
+                    "></div>
+                    <div className="bg-cover bg-center bg-bg-pattern absolute bottom-0"></div>
+
+                    <div className="flex flex-col z-10
+                     xl:gap-4 gap-14
+                     ">
                         <div className="flex flex-col gap-5 mt-18 w-full items-left cursor-default">
-                            <h5 className="text-white font-medium">
+                            <h5 className="text-white font-medium
+                            2xl:text-base xl:text-sm lg:text-sm md:text-sm
+                            ">
                                 CHEDRO XI
                             </h5>
-                            <h2 className="text-7xl font-bold text-white">
+                            <h2 className="font-bold text-white
+                            2xl:text-7xl xl:text-4xl lg:text-5xl md:text-4xl
+                            ">
                                 Make Your Operations
                             </h2>
-                            <h2 className="text-7xl font-bold text-[#F9D909]">
+                            <h2 className="font-bold text-[#F9D909]
+                            2xl:text-7xl xl:text-4xl lg:text-5xl md:text-4xl
+                            ">
                                 Smoother
                             </h2>
                         </div>
-                        <div className="flex p-10 rounded-2xl gap-10 bg-white mt-6 border-2 border-[#0E37FD]">
-                            <div className="w-[300px] h-[400px] cursor-default flex flex-col gap-6 font-extrabold text-xl pr-14 pt-10">
-                                <h1 className="text-5xl text-[#242526] leading-16">
+                        <div className="flex rounded-2xl bg-white mt-6 border-2 border-[#0E37FD]
+                        2xl:gap-10 lg:gap-5 md:gap-4
+                        2xl:p-10 xl:p-5 p-10 
+                        ">
+                            <div className="flex-col gap-6 font-extrabold text-xl pt-10
+                                2xl:pr-14 xl:pr-4 lg:pr-5
+                                2xl:flex xl:flex lg:flex md:hidden hidden
+                                2xl:w-[300px] xl:w-[25px] w-[300px] 
+                                2xl:h-[400px] xl:h-[300px] h-[400px] 
+                                ">
+                                <h1 className="leading-16 text-[#242526]
+                                2xl:text-5xl xl:text-4xl
+                                ">
                                     Efficient systems{" "}
                                 </h1>
-                                <h4 className="font-medium text-lg text-[#434343] leading-8">
+                                <h4 className="font-medium text-[#434343] leading-8
+                                2xl:text-lg xl:text-base 
+                                ">
                                     To streamline the supply chain and ensure
                                     optimal inventory levels.
                                 </h4>
                             </div>
                             <div
                                 onClick={() => clickProcure(value.role, "open")}
-                                className="w-[300px] h-[400px] cursor-pointer bg-[#FF9FBF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl"
+                                className="cursor-pointer hover:bg-[#FFD7D7] bg-[#FF9FBF] text-white flex flex-col justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150
+                                2xl:w-[300px] xl:w-[25px] w-[300px] 
+                                2xl:h-[400px] xl:h-[300px] h-[400px] 
+                                xl:gap-8 lg:gap-4 md:gap-3 gap-10 
+                                2xl:text-lg xl:text-base lg:text-sm md:text-xs"
                             >
-                                <div className="h-[200px] w-[200px] bg-cover bg-center bg-procurement-icon"></div>
+                                <div className="bg-cover bg-center bg-procurement-icon
+                                2xl:w-[200px] xl:w-[140px] w-[200px] 
+                                2xl:h-[200px] xl:h-[140px] h-[200px] 
+                                "></div>
                                 <p>Procurement</p>
                             </div>
                             <div
-                                onClick={() =>
-                                    clickInventory(value.role, "open")
-                                }
-                                className="w-[300px] h-[400px] cursor-pointer bg-[#FFDE6A] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl"
+                                onClick={() => clickInventory(value.role, "open")}
+                                className="cursor-pointer hover:bg-[#FDFF83] bg-[#FFDE6A] text-white flex flex-col justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150
+                                2xl:w-[300px] xl:w-[25px] w-[300px] 
+                                2xl:h-[400px] xl:h-[300px] h-[400px] 
+                                xl:gap-8 lg:gap-4 md:gap-3 gap-10 
+                                2xl:text-lg xl:text-base lg:text-sm md:text-xs"
                             >
-                                <div className="h-[200px] w-[200px] bg-cover bg-center bg-inventory-icon"></div>
+                                <div className="bg-cover bg-center bg-inventory-icon
+                                2xl:w-[200px] xl:w-[140px] w-[200px] 
+                                2xl:h-[200px] xl:h-[140px] h-[200px] 
+                                "></div>
                                 <p>Inventory</p>
                             </div>
                             <div
                                 onClick={handleClick}
-                                className="w-[300px] h-[400px] cursor-pointer bg-[#2F52FF] text-white flex flex-col gap-10 justify-center items-center font-extrabold text-xl rounded-3xl"
+                                className="cursor-pointer bg-[#2F52FF] hover:bg-[#82B4FF] text-white flex flex-col justify-center items-center font-extrabold text-xl rounded-3xl transition ease-in-out delay-150
+                                2xl:w-[300px] xl:w-[25px] w-[300px] 
+                                2xl:h-[400px] xl:h-[300px] h-[400px] 
+                                xl:gap-8 lg:gap-4 md:gap-3 gap-10 
+                                2xl:text-lg xl:text-base lg:text-sm md:text-xs"
                             >
-                                <div className="h-[200px] w-[200px] bg-cover bg-center bg-tracking-icon"></div>
+                                <div className="bg-cover bg-center bg-tracking-icon
+                                2xl:w-[185px] xl:w-[130px] w-[200px] 
+                                2xl:h-[200px] xl:h-[140px] h-[200px] 
+                                ">
+                                </div>
                                 <p>Tracking</p>
                             </div>
                         </div>

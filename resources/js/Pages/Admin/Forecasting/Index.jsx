@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import AdminBg from "../../../Components/AdminBg";
 import Disposal from "./Tabs/Disposal";
 import Newproposal from "./Tabs/Newproposal";
 import Loader from "../../../components/Loader";
@@ -55,11 +54,7 @@ export default function Forecasting({ className }) {
             {Loading ? <Loader /> : ""}
             {/* Loader */}
 
-            <div className="absolute -right-14 bottom-0 w-1/3">
-                <AdminBg />
-            </div>
-
-            <div className="z-20 py-3 flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
+            <div className="z-20 py-3 flex flex-col 2xl:px-10 xl:px-5 px-5">
                 {/*tab buttons*/}
                 <div className="pb-3">
                     <ul className="flex gap-4">
@@ -71,7 +66,7 @@ export default function Forecasting({ className }) {
                                     : "btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
                             }
                         >
-                            <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
+                            <div className="select-none h-10 text-xs w-fit px-5 flex items-center">
                                 Annual Cost
                             </div>
                         </li>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import AdminBg from "../../../Components/AdminBg";
 import ICSTable from "./Tables/ICSTable";
 import PARTable from "./Tables/PARTable";
 import IndividualTable from "./Tables/IndividualTable";
@@ -16,9 +15,6 @@ export default function Logs({ className }) {
 
     return (
         <div className={className + " flex justify-center"}>
-            <div className="absolute -right-14 bottom-0 w-1/3">
-                <AdminBg />
-            </div>
             <div className="z-20 pt-3 flex flex-col items-center 2xl:px-10 xl:px-5 px-5">
                 {/*tab buttons*/}
                 <div className="pb-3 h-14 items-center w-full flex justify-between ">

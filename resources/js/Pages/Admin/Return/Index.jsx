@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import ReactPaginate from "react-paginate";
-import AdminBg from "../../../Components/AdminBg";
 import InspectionForm from "./Forms/InspectionForm";
 import AssignModal from "./Modals/Assign";
 import DisposeModal from "./Modals/Dispose";
@@ -64,15 +63,12 @@ export default function Return({ className }) {
     };
 
     const getUsers = async () => {
-        setLoading(true);
         try {
             await axios.get("api/getUsers").then((response) => {
                 setUsers(response.data.users);
             });
         } catch (e) {
             console.log(e);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -229,7 +225,7 @@ export default function Return({ className }) {
                         <div className="flex gap-4 justify-center">
                             {data.status === "Unserviceable" ||
                             data.status === "Inventories" ||
-                            data.status === "returned to owner" ? (
+                            data.status === "Returned to Owner" ? (
                                 <div
                                     onClick={() => {
                                         clickForms("view-form"),
@@ -530,9 +526,6 @@ export default function Return({ className }) {
                 ""
             )}
 
-            <div className="absolute -right-14 bottom-0 w-1/3">
-                <AdminBg />
-            </div>
             <div className="z-20 pt-[14px] flex flex-col items-center 2xl:px-10 xl:px-5 px-5 ">
                 <div className="pb-3 h-14 items-center w-full">
                     <div className="">

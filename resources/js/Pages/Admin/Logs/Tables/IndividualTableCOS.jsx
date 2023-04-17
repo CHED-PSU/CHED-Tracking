@@ -38,7 +38,6 @@ export default function IndividualTableCOS({ className }) {
                 setLoading(false);
             }
         };
-
         getUsers();
     }, []);
 

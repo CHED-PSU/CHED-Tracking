@@ -70,6 +70,15 @@ class GeneralController extends Controller
 
     //Admin Logs
     //Admin User Data Fetcher
+    public function getUserLists()
+    {
+        $userList = DB::table('users')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
+            ->join('roles as r', 'r.id', '=', 'users.role_id')
+            ->get();
+
+        return response()->json(['user_lists' => $userList]);
+    }
     public function getUserListsICS()
     {
         $userList = DB::table('users')

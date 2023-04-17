@@ -161,7 +161,6 @@ export default function ICSDetails(props) {
                                             Fund Cluster:
                                         </div>
                                         <div className="text-xs  dark:text-gray-400 font-semibold">
-                                            {""}
                                         </div>
                                     </div>
                                 </div>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ICSModal from "./Modals/ICSModal";
 import PARModal from "./Modals/PARModal";
-import AdminBg from "../../../components/AdminBg";
 import axios from "axios";
 import Loader from "../../../components/Loader";
 import Searchbar from "../Components/Searchbar";
@@ -180,7 +179,6 @@ export default function Pending({ className }) {
     return (
         <div className={className + " 2xl:px-10 xl:px-5 px-5"}>
             <div className="absolute -right-14 bottom-0 w-1/3 -z-10">
-                <AdminBg />
             </div>
 
             {/* Modals */}

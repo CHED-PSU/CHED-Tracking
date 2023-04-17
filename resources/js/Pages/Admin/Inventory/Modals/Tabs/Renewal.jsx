@@ -56,32 +56,61 @@ export default function Renewal({
         setAlertFunction(true);
     };
 
+    function displayPhoto(profilePhoto, name, className) {
+        if (profilePhoto == null) {
+            return (
+                <span
+                    className={
+                        className +
+                        " bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full"
+                    }
+                >
+                    {name.substring(0, 1)}
+                </span>
+            );
+        } else {
+            return (
+                <img
+                    draggable="false"
+                    src="./img/profile-pic.jpeg"
+                    className={
+                        className + " rounded-full bg-gray-500 object-cover"
+                    }
+                />
+            );
+        }
+    }
+
     return (
         <div className={className}>
             <div className="">
                 <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default">
-                    {/* Dummy data
-                    <img
-                        src="./img/profile-pic.jpeg"
-                        alt="profile"
-                        className="rounded-full w-18 h-18 object-cover"
-                    /> */}
-                    <span className="bg-red-500 w-18 h-14 rounded-full"></span>
-
+                    {displayPhoto(
+                        users[user_id - 1].img,
+                        users[user_id - 1].firstname,
+                        "w-14 h-14"
+                    )}
                     <div className="w-full space-y-2">
                         <div className="border-b-2 border-gray-300 w-full">
                             <h2 className="pl-[10px] text-xl text-text-gray-2 font-semibold">
                                 {users?.length !== 0
                                     ? users[user_id - 1].firstname +
                                       " " +
-                                      users[user_id - 1].surname
+                                      (users[user_id - 1].middlename
+                                          ? users[
+                                                user_id - 1
+                                            ].middlename.substring(0, 1) + "."
+                                          : "") +
+                                      users[user_id - 1].surname +
+                                      " " +
+                                      (users[user_id - 1].suffix || "")
                                     : ""}
                             </h2>
                         </div>
-                        <p className="pl-[10px] text-sm text-red-500 font-medium">
+                        <p className="pl-[10px] text-sm font-medium">
                             {users?.length !== 0
                                 ? users[user_id - 1].designation
-                                : ""}CEPS
+                                : "N/A"}
                         </p>
                     </div>
                 </div>

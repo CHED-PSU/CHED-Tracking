@@ -38,7 +38,6 @@ export default function IndividualTable({ className }) {
                 setLoading(false);
             }
         };
-
         getUsers();
     }, []);
 
