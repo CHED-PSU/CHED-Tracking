@@ -5,12 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Trackagamitan</title>
+    <title>CHEDRO XI</title>
 
-    <link rel="shortcut icon" type="image/png" href="{{ URL::asset('img/logo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ URL::asset('img/CHED_Logo.png') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/fontawesome.min.css') }} ">
     <link rel="stylesheet" href="{{ URL::asset('css/all.min.css') }} ">
-    
+
     <!-- Vite -->
     @viteReactRefresh
     @vite(['resources/css/app.css','resources/js/app.jsx'])

@@ -148,7 +148,7 @@ export default function Landing() {
     }
 
     function clickInventory(role, index) {
-        window.location.href = "http://10.41.1.142:8000/login-page/" + token;
+        window.location.href = "http://10.41.2.167:8000/login-page/" + token;
     }
 
     if (value) {
