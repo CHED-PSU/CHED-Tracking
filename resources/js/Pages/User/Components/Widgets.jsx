@@ -3,7 +3,6 @@ import ICSIssuedNotification from "./notification components/ICSIssuedNotificati
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import io from "socket.io-client";
-//const socket = io.connect("");
 //const socket = io.connect("http://127.0.0.1:8001");
 
 export default function Widgets(props) {
@@ -69,10 +68,13 @@ export default function Widgets(props) {
         }
     }
 
+    // useEffect(() => {
+    //     socket.on("user_notif", (data) => {
+    //         setRead(true);
+    //     });
+    // }, [socket]);
+
     useEffect(() => {
-        socket.on("user_notif", (data) => {
-            setRead(true);
-        });
         const getNotification = async () => {
             const response = await axios.post("/api/getNotificationItems", {
                 id: value.id,
@@ -81,9 +83,7 @@ export default function Widgets(props) {
             setRead(true);
         };
         getNotification();
-    }, [socket]);
 
-    useEffect(() => {
         setName(value.name);
         setRole(value.role);
     });
