@@ -28,7 +28,7 @@ export default function UserList(props) {
     }
 
     function displayPhoto(profilePhoto, name) {
-        if (profilePhoto == null) {
+        if (profilePhoto == null || profilePhoto == 'default.png') {
             return (
                 <span
                     className={

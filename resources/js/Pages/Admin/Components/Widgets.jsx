@@ -39,7 +39,7 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
     };
 
     function displayPhoto(profilePhoto, name, className) {
-        if (profilePhoto == null) {
+        if (profilePhoto == null || profilePhoto == 'default.png') {
             return (
                 <span
                     className={

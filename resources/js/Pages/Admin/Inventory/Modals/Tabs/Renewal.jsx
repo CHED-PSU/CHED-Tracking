@@ -57,7 +57,7 @@ export default function Renewal({
     };
 
     function displayPhoto(profilePhoto, name, className) {
-        if (profilePhoto == null) {
+        if (profilePhoto == null || profilePhoto == 'default.png') {
             return (
                 <span
                     className={

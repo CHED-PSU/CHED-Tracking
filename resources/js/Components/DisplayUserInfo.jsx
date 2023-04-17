@@ -53,7 +53,7 @@ export default function DisplayUserInfo({
 
     function displayData(name, profilePhoto, nameWithPrefix, prefix, isPhoto) {
         if (isPhoto == true) {
-            if (profilePhoto == null) {
+            if (profilePhoto == null || profilePhoto == 'default.png') {
                 return (
                     <span
                         className={

@@ -65,7 +65,7 @@ export default function Pending({ className }) {
     };
 
     function displayPhoto(profilePhoto, name) {
-        if (profilePhoto == null) {
+        if (profilePhoto == null || profilePhoto == 'default.png') {
             return (
                 <span
                     className={

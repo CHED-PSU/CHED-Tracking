@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Accepted from "./AcceptedRequest/Accepted";
-import Loader from "../../../Components/Loader";
+import Loader from "../../../components/Loader";
 
 export default function Index(props) {
     const [numberOfItems, setNumberOfItems] = useState();
@@ -55,7 +55,7 @@ export default function Index(props) {
     }, []);
 
     function displayPhoto(profilePhoto, name) {
-        if (profilePhoto == null) {
+        if (profilePhoto == null || profilePhoto == 'default.png') {
             return (
                 <span
                     className={
