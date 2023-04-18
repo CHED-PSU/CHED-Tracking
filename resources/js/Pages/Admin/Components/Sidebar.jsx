@@ -19,7 +19,9 @@ export default function Sidebar(props) {
     }
 
     return (
-        <div className="sticky top-0 flex flex-none flex-col h-screen 2xl:w-72 xl:w-[280px] lg:w-[280px] w-[260px] bg-white dark:bg-darkColor-800 text-center border-r border-neutral-200 dark:border-[#434343] shrink-0 z-20 transition-all duration-150 transform">
+        <div className="sticky top-0 flex flex-none flex-col bg-white dark:bg-darkColor-800 text-center border-r border-neutral-200 dark:border-[#434343] shrink-0 z-20 transition-all duration-150 transform
+        2xl:w-72 xl:w-[240px] lg:w-[280px] md:w-[220px] w-[260px] 
+        h-screen ">
             {/* Logo */}
             <div
                 className="flex-none 2xl:h-[118px] xl:h-[100px] h-[100px] dark:border-neutral-700"
@@ -31,7 +33,7 @@ export default function Sidebar(props) {
                         className="flex items-center font-semibold text-gray-600 dark:text-gray-50 gap-3 cursor-pointer"
                     >
                         <AppLogo className="2xl:w-10 2xl:h-10 xl:w-8 xl:h-8 w-8 h-8" />
-                        <h4 className="select-none font-bold">
+                        <h4 className="select-none font-bold xl:text-sm">
                             Trac
                             <font className="text-primary dark:text-[#476aca]">
                                 Kagamitan
@@ -51,14 +53,15 @@ export default function Sidebar(props) {
                             onClick={() => clickSidebar("dashboard")}
                             className={
                                 props.sidebar === "dashboard"
-                                    ? "activePage dark:bg-darkHoverPage mx-6"
-                                    : "hover:hoverPage dark:hover:darkHoverPage mx-6"
+                                    ? "activePage dark:bg-darkHoverPage xl:mx-4 mx-6"
+                                    : "hover:hoverPage dark:hover:darkHoverPage xl:mx-4 mx-6"
                             }
                         >
-                            <div className="flex w-full items-center justify-between pl-6 pr-4 cursor-pointer h-12 py-3 select-none">
-                                <div className="flex items-center gap-4">
-                                    <i className="fa-solid fa-square-poll-horizontal 2xl:text-3xl xl:text-2xl text-2xl"></i>
-                                    <h4 className="text-[13px] leading-3 font-medium">Dashboard</h4>
+                            <div className="flex w-full items-center justify-between p-4 cursor-pointer h-12 py-3 select-none">
+                                <div className="flex items-center
+                                 xl:gap-3 gap-4">
+                                    <i className="fa-solid fa-square-poll-horizontal 2xl:text-3xl xl:text-xl text-2xl"></i>
+                                    <h4 className="xl:text-[12px] text-[13px] leading-3 font-medium">Dashboard</h4>
                                 </div>
                                 <span className={
                                     props.sidebar === "dashboard"
@@ -73,14 +76,16 @@ export default function Sidebar(props) {
                             onClick={() => clickSidebar("pending")}
                             className={
                                 props.sidebar === "pending"
-                                    ? "activePage dark:bg-darkHoverPage mx-6"
-                                    : "hover:hoverPage dark:hover:darkHoverPage mx-6"
+                                    ? "activePage dark:bg-darkHoverPage xl:mx-4 mx-6"
+                                    : "hover:hoverPage dark:hover:darkHoverPage xl:mx-4 mx-6"
                             }
                         >
-                            <div className="flex w-full items-center justify-between pl-6 pr-4 cursor-pointer 2xl:h-12 xl:h-12 h-14 py-3 select-none">
-                                <div className="flex items-center gap-4">
-                                    <i className="fa-solid fa-envelope-open-text 2xl:text-2xl xl:text-xl text-lg"></i>
-                                    <h4 className="text-[13px] leading-3 font-medium">Pending Requests</h4>
+                            <div className="flex w-full items-center justify-between p-4 cursor-pointer 2xl:h-12 xl:h-10 h-14 py-3 select-none">
+                                <div className="flex items-center
+                                xl:gap-3 gap-4">
+                                    <i className="fa-solid fa-envelope-open-text 
+                                    2xl:text-2xl xl:text-lg text-lg"></i>
+                                    <h4 className="xl:text-[12px] text-[13px] leading-3 font-medium">Pending Requests</h4>
                                 </div>
                                 <span className={
                                     props.sidebar === "pending"
@@ -95,14 +100,15 @@ export default function Sidebar(props) {
                             onClick={() => clickSidebar("logs")}
                             className={
                                 props.sidebar === "logs"
-                                    ? "activePage dark:bg-darkHoverPage mx-6"
-                                    : "hover:hoverPage dark:hover:darkHoverPage mx-6"
+                                    ? "activePage dark:bg-darkHoverPage xl:mx-4 mx-6"
+                                    : "hover:hoverPage dark:hover:darkHoverPage xl:mx-4 mx-6"
                             }
                         >
-                            <div className="flex w-full items-center justify-between gap-4 pl-6 pr-4 cursor-pointer 2xl:h-12 xl:h-12 h-14 py-3 select-none">
-                                <div className="flex items-center gap-4">
+                            <div className="flex w-full items-center justify-between gap-4 p-4 cursor-pointer 2xl:h-12 xl:h-10 h-14 py-3 select-none">
+                                <div className="flex items-center
+                                xl:gap-3 gap-4">
                                     <i className="fa-solid fa-list-check 2xl:text-2xl xl:text-xl text-lg"></i>
-                                    <h4 className="text-[13px] leading-3 font-medium">Logs</h4>
+                                    <h4 className="xl:text-[12px] text-[13px] leading-3 font-medium">Logs</h4>
                                 </div>
                                 <span className={
                                     props.sidebar === "logs"
@@ -117,14 +123,15 @@ export default function Sidebar(props) {
                             onClick={() => clickSidebar("return")}
                             className={
                                 props.sidebar === "return"
-                                    ? "activePage dark:bg-darkHoverPage mx-6"
-                                    : "hover:hoverPage dark:hover:darkHoverPage mx-6"
+                                    ? "activePage dark:bg-darkHoverPage xl:mx-4 mx-6"
+                                    : "hover:hoverPage dark:hover:darkHoverPage xl:mx-4 mx-6"
                             }
                         >
-                            <div className="flex w-full items-center justify-between gap-4 pl-6 pr-4 cursor-pointer 2xl:h-12 xl:h-12 h-14 py-3 select-none">
-                                <div className="flex items-center gap-4">
-                                    <i className="fa-solid fa-box-archive 2xl:text-2xl xl:text-xl text-lg"></i>
-                                    <h4 className="text-[13px] leading-3 font-medium">Return Items</h4>
+                            <div className="flex w-full items-center justify-between gap-4 p-4 cursor-pointer 2xl:h-12 xl:h-10 h-14 py-3 select-none">
+                                <div className="flex items-center
+                                xl:gap-3 gap-4">
+                                    <i className="fa-solid fa-box-archive 2xl:text-2xl xl:text-md text-lg"></i>
+                                    <h4 className="xl:text-[12px] text-[13px] leading-3 font-medium">Return Items</h4>
                                 </div>
                                 <span className={
                                     props.sidebar === "return"
@@ -139,14 +146,15 @@ export default function Sidebar(props) {
                             onClick={() => clickSidebar("inventory")}
                             className={
                                 props.sidebar === "inventory"
-                                    ? "activePage dark:bg-darkHoverPage mx-6"
-                                    : "hover:hoverPage dark:hover:darkHoverPage mx-6"
+                                    ? "activePage dark:bg-darkHoverPage xl:mx-4 mx-6"
+                                    : "hover:hoverPage dark:hover:darkHoverPage xl:mx-4 mx-6"
                             }
                         >
-                            <div className="flex w-full items-center justify-between gap-4 pl-6 pr-4 cursor-pointer 2xl:h-12 xl:h-12 h-14 py-3 select-none">
-                                <div className="flex items-center gap-4">
-                                    <i className="fa-solid fa-box-open 2xl:text-xl xl:text-lg text-lg"></i>
-                                    <h4 className="text-[13px] leading-3 font-medium">Inventory</h4>
+                            <div className="flex w-full items-center justify-between gap-4 p-4 cursor-pointer 2xl:h-12 xl:h-10 h-14 py-3 select-none">
+                                <div className="flex items-center
+                                xl:gap-3 gap-4">
+                                    <i className="fa-solid fa-box-open 2xl:text-xl xl:text-base text-lg"></i>
+                                    <h4 className="xl:text-[12px] text-[13px] leading-3 font-medium">Inventory</h4>
                                 </div>
                                 <span className={
                                     props.sidebar === "inventory"
@@ -161,14 +169,15 @@ export default function Sidebar(props) {
                             onClick={() => clickSidebar("unserv")}
                             className={
                                     props.sidebar === "unserv"
-                                    ? "activePage dark:bg-darkHoverPage mx-6"
-                                    : "hover:hoverPage dark:hover:darkHoverPage mx-6"
+                                    ? "activePage dark:bg-darkHoverPage xl:mx-4 mx-6"
+                                    : "hover:hoverPage dark:hover:darkHoverPage xl:mx-4 mx-6"
                             }
                         >
-                            <div className="flex w-full items-center justify-between gap-4 pl-6 pr-4 cursor-pointer 2xl:h-12 xl:h-12 h-14 py-3 select-none">
-                                <div className="flex items-center gap-4">
-                                    <i className="fa-solid fa-dumpster 2xl:text-xl xl:text-lg text-lg"></i>
-                                    <h4 className="text-[13px] leading-3 font-medium">Unserviceable</h4>
+                            <div className="flex w-full items-center justify-between gap-4 p-4 cursor-pointer 2xl:h-12 xl:h-10 h-14 py-3 select-none">
+                                <div className="flex items-center
+                                xl:gap-3 gap-4">
+                                    <i className="fa-solid fa-dumpster 2xl:text-xl xl:text-md text-lg"></i>
+                                    <h4 className="xl:text-[12px] text-[13px] leading-3 font-medium">Unserviceable</h4>
                                 </div>
                                 <span className={
                                     props.sidebar === "unserv"
@@ -183,14 +192,15 @@ export default function Sidebar(props) {
                             onClick={() => clickSidebar("forecast")}
                             className={
                                 props.sidebar === "forecast"
-                                    ? "activePage dark:bg-darkHoverPage mx-6"
-                                    : "hover:hoverPage dark:hover:darkHoverPage mx-6"
+                                    ? "activePage dark:bg-darkHoverPage xl:mx-4 mx-6"
+                                    : "hover:hoverPage dark:hover:darkHoverPage xl:mx-4 mx-6"
                             }
                         >
-                            <div className="flex w-full items-center justify-between gap-4 pl-6 pr-4 cursor-pointer 2xl:h-12 xl:h-12 h-14 py-3 select-none">
-                                <div className="flex items-center gap-4">
-                                    <i className="fa-solid fa-chart-line 2xl:text-2xl xl:text-xl text-lg"></i>
-                                    <h4 className="text-[13px] leading-3 font-medium">Forecasting</h4>
+                            <div className="flex w-full items-center justify-between gap-4 p-4 cursor-pointer 2xl:h-12 xl:h-12 h-14 py-3 select-none">
+                                <div className="flex items-center
+                                xl:gap-3 gap-4">
+                                    <i className="fa-solid fa-chart-line 2xl:text-2xl xl:text-lg text-lg"></i>
+                                    <h4 className="xl:text-[12px] text-[13px] leading-3 font-medium">Forecasting</h4>
                                 </div>
                                 <span className={
                                     props.sidebar === "forecast"

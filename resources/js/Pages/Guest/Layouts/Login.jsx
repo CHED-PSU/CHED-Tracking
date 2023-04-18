@@ -11,16 +11,16 @@ export default function Login({ children }) {
             <div className="justify-center items-end flex-col px-5 cursor-default w-full lg:flex hidden">
                 <img
                     src="./img/guest_illustration.png"
-                    className="2xl:w-[950px] xl:w-[650px] w-[650px]"
+                    className="2xl:w-[950px] xl:w-[650px] md:none sm:none w-[650px]"
                     draggable="false"
                 />
             </div>
 
             {/* Right Column */}
-            <div className="xl:w-[45%] w-[45%] flex flex-none justify-center items-center px-5">
-                <div className="flex flex-col 2xl:w-[500px] xl:w-[450px] w-[450px] 2xl:space-y-14 xl:space-y-8 space-y-8">
+            <div className="xl:w-[45%] md:w-[100%] sm:w-[100%] w-[45%] flex flex-none justify-center items-center px-5">
+                <div className="flex flex-col 2xl:w-[500px] xl:w-[450px] md:w-[360px] sm:w-[360px] w-[450px] 2xl:space-y-14 xl:space-y-8 space-y-8">
                     <div className="flex flex-col 2xl:gap-16 xl:gap-8 h-fit text-darkColor-700 items-center">
-                        <ChedLogo className="2xl:h-36 xl:h-24" />
+                        <ChedLogo className="2xl:h-36 xl:h-24 h-20 md:mb-5 sm:mb-5" />
                         <div className="h-fit space-y-2 text-center">
                             <p className="2xl:text-2xl xl:text-lg text-lg font-bold text-darkColor-700 dark:text-white">
                                 Welcome!
@@ -36,7 +36,7 @@ export default function Login({ children }) {
                         <div className="h-fit">{children}</div>
                     </div>
                     <div className="flex justify-center dark:text-lightColor-700">
-                        <p className="text-xs mt-4 select-none">
+                        <p className="md:text-ss text-xs mt-4 select-none">
                             © 2022 CHEDRO XI. All rights reserved.
                         </p>
                     </div>

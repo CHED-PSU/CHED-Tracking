@@ -143,14 +143,14 @@ export default function Dashboard({ className }) {
                 {Loading ? <Loader /> : ""}
                 {/* Loader */}
 
-                <div className="flex 2xl:w-2/3 xl:w-[70%] w-[65%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5 border-r border-neutral-200 dark:border-[#434343]">
+                <div className="flex 2xl:w-2/3 xl:w-[67%] w-[65%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5 border-r border-neutral-200 dark:border-[#434343]">
                     <div className="flex w-full 2xl:h-60 xl:h-40 h-40 flex-none 2xl:gap-6 xl:gap-4 gap-4">
                         <div className="flex w-1/2 justify-end 2xl:px-10 xl:px-6 px-6 items-center rounded-2xl bg-cover bg-center bg-card-1 gap-10 drop-shadow-card1">
                             <div className="w-full flex-none text-right flex flex-col items-end 2xl:truncate">
                                 <div className="2xl:font-bold xl:font-semibold font-semibold text-white 2xl:text-xl xl:text-base text-lg">
                                     Total Users
                                 </div>
-                                <div className="text-xs text-white 2xl:w-fit xl:w-3/5 w-3/5">
+                                <div className="xl:text-ss text-xs text-white 2xl:w-fit xl:w-3/5 w-3/5">
                                     TracKagamitan's current users.
                                 </div>
                                 <div className="mt-2 2xl:text-5xl xl:text-4xl text-4xl font-bold text-white w-3/5">
@@ -163,7 +163,7 @@ export default function Dashboard({ className }) {
                                 <div className="2xl:font-bold xl:font-semibold font-semibold truncate 2xl:text-xl xl:text-base text-lg">
                                     Pending Requests
                                 </div>
-                                <div className="text-xs">
+                                <div className="xl:text-ss text-xs">
                                     Total Pending Request for today.
                                 </div>
                                 <div className="mt-2 xl:w-[64%] w-[64%] 2xl:text-5xl xl:text-4xl text-4xl font-bold truncate">
@@ -197,7 +197,7 @@ export default function Dashboard({ className }) {
                                 <div className="font-bold xl:text-sm truncate dark:text-white">
                                     Total Donated Items
                                 </div>
-                                <div className="text-xs dark:text-[#c4c4c4]">
+                                <div className="xl:text-ss text-xs dark:text-[#c4c4c4]">
                                     Donated Unserviceable Equipment.
                                 </div>
                             </div>
@@ -210,7 +210,7 @@ export default function Dashboard({ className }) {
                                 <div className="font-bold xl:text-sm truncate dark:text-white">
                                     Total Destructed Items
                                 </div>
-                                <div className="text-xs dark:text-[#c4c4c4]">
+                                <div className="xl:text-ss text-xs dark:text-[#c4c4c4]">
                                     Destructed Unserviceable Equipment.
                                 </div>{" "}
                             </div>
@@ -223,7 +223,7 @@ export default function Dashboard({ className }) {
                                 <div className="font-bold xl:text-sm truncate dark:text-white">
                                     Total Sold Items
                                 </div>
-                                <div className="text-xs dark:text-[#c4c4c4]">
+                                <div className="xl:text-ss text-xs dark:text-[#c4c4c4]">
                                     Sold Unserviceable Equipment.
                                 </div>
                             </div>{" "}
