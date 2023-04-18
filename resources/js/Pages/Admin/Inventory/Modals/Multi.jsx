@@ -152,7 +152,7 @@ export default function Assign({
                         <div className="space-y-3">
                             <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default">
                                 {displayPhoto(
-                                    users[selectedPerson - 1].img,
+                                    (users[selectedPerson - 1].img ? users[selectedPerson - 1].img : null),
                                     users[selectedPerson - 1].firstname,
                                     "w-14 h-14"
                                 )}
