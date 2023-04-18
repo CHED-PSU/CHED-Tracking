@@ -432,7 +432,7 @@ export default function InventorySticker(props) {
                             <div className="flex gap-2 px-2 items-center bg-black text-white text-[5px] text-center pt-1 py-1">
                                 {data.serial_no ? (
                                     <BarCode
-                                        className="h-8 bg-white"
+                                        className="w-fit h-8 bg-white"
                                         serial_no={data.serial_no}
                                     />
                                 ) : (

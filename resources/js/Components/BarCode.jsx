@@ -1,15 +1,18 @@
 import React from "react";
+import Code from "react-barcode";
 
-export default function BarCode({className, serial_no}) {
+export default function BarCode({ className, serial_no }) {
     if (serial_no) {
+        const styles = {
+            height: "100%",
+            objectFit: "cover",
+        };
         return (
-            <img
-                draggable="false"
-                src="./img/barcode.png"
-                className={className}
-            />
+            <div className={className}>
+                <Code draggable="false" value={serial_no} style={styles} />
+            </div>
         );
     } else {
         return "";
     }
-};
+}
