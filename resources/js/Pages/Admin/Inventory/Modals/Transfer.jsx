@@ -10,9 +10,7 @@ export default function Transfer({
     getInventoryItems,
     unselect,
 }) {
-    const [toggleTabs, setToggleTabs] = useState("pre-owner");
     const [openAlert, setOpenAlert] = useState(false);
-
     const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
     const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
     const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
@@ -51,8 +49,8 @@ export default function Transfer({
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState();
     const [usersJO, setUsersJO] = useState();
-    const [selectedPerson, setSelectedPerson] = useState(1);
-    const [selectedPersonJO, setSelectedPersonJO] = useState(0);
+    const [selectedPerson, setSelectedPerson] = useState(0);
+    const [selectedPersonJO, setSelectedPersonJO] = useState([]);
 
     useEffect(() => {
         const getUser = async () => {
@@ -88,18 +86,19 @@ export default function Transfer({
         setAlert(true);
     };
 
-    function clickTabs(index) {
-        setToggleTabs(index);
-    }
-
     let modalBody = useRef();
 
     const personChanger = (e) => {
         setSelectedPerson(e.target.value);
     };
 
-    const personChangerJO = (e) => {
-        setSelectedPersonJO(parseInt(e.target.value));
+    const personChangerJO = (index, e) => {
+        const selectedPersonId = parseInt(e.target.value);
+        setSelectedPersonJO(prevState => {
+            const updatedState = [...prevState];
+            updatedState[index] = selectedPersonId;
+            return updatedState;
+        });
     };
 
     function displayPhoto(profilePhoto, name, className) {
@@ -173,7 +172,7 @@ export default function Transfer({
                     <td className="p-2 border">
                         <div className="flex flex-col justify-between items-center">
                             <select
-                                onChange={personChangerJO}
+                                onChange={(e) => personChangerJO(index, e)}
                                 name=""
                                 id="Assigned-to"
                                 className="w-full text-sm rounded-md border border-neutral-500 p-2 outline-none cursor-pointer"
@@ -228,7 +227,7 @@ export default function Transfer({
                     <div className={className}>
                         <div className="space-y-3">
                             <div className="flex bg-gray-100 rounded-xl py-4 px-5 gap-3 cursor-default items-center">
-                                {loading ? (
+                                {selectedPerson == 0 ? (
                                     <img
                                         draggable="false"
                                         src="./img/profile-pic.jpeg"
@@ -243,8 +242,8 @@ export default function Transfer({
                                 )}
                                 <div className="w-full space-y-1">
                                     <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-lg h-8 w-full">
-                                        {loading
-                                            ? ""
+                                        {selectedPerson == 0
+                                            ? "Please select a user"
                                             : users[selectedPerson - 1]
                                                   .firstname +
                                               " " +
@@ -263,9 +262,9 @@ export default function Transfer({
                                               (users[selectedPerson - 1]
                                                   .suffix || "")}
                                     </div>
-                                    <div className="font-medium pl-[10px] text-sm h-8 rounded-md w-56">
-                                        {loading
-                                            ? ""
+                                    <div className="font-medium pl-[10px] text-sm h-8 rounded-md">
+                                        {selectedPerson == 0
+                                            ? "Select on the dropdown menu"
                                             : users[selectedPerson - 1]
                                                   .designation
                                             ? users[selectedPerson - 1]
@@ -288,6 +287,7 @@ export default function Transfer({
                                         id="Status"
                                         className="w-full text-sm rounded-md border border-neutral-500 p-2 outline-none cursor-pointer"
                                     >
+                                <option value={0}>None</option>
                                         {loading
                                             ? ""
                                             : users?.map((data) => {

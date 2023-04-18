@@ -668,8 +668,6 @@ class ItemController extends Controller
                 ->where('uri.uri_id', $data)
                 ->first();
 
-
-
             $total += $price->price;
         }
 
@@ -688,7 +686,7 @@ class ItemController extends Controller
         $tracking_id = DB::table('trackings')
             ->insertGetId($data);
 
-        foreach ($req->input('selectedId') as $data) {
+        foreach ($req->input('selectedId') as $key => $data) {
 
             $getItemId =  DB::table('user_returned_items as uri')
                 ->select('it.item_id', 'it.eul')
@@ -697,17 +695,19 @@ class ItemController extends Controller
                 ->where('uri.uri_id', $data)
                 ->first();
 
-            if ($req->input('user_id') == 0) {
-                $assigned_to = $req->input('user_id');
+            $assigned_to_raw = $req->input('assigned_to')[$key];
+
+            if ($assigned_to_raw == 0) {
+                $assigned_to_id = $req->input('user_id');
             } else {
-                $assigned_to = $req->input('assigned_to');
+                $assigned_to_id = $assigned_to_raw;
             }
 
             DB::table('inventory_trackings')
                 ->insert([
                     'trackings_id' => $tracking_id,
                     'item_id'      => $getItemId->item_id,
-                    'assigned_to'  => $assigned_to,
+                    'assigned_to'  => $assigned_to_id,
                     'eul'          => $getItemId->eul
                 ]);
         }
