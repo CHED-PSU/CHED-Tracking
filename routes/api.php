@@ -110,6 +110,7 @@ Route::post('declinePendingRequest', [FormController::class, 'declinePendingRequ
 
 // Admin Users Data Fetcher
 Route::get('getUserLists', [GeneralController::class, 'getUserLists']);
+Route::get('getUserListsJO', [GeneralController::class, 'getUserListsJO']);
 Route::get('getUserListsICS', [GeneralController::class, 'getUserListsICS']);
 Route::get('getUserListsPAR', [GeneralController::class, 'getUserListsPAR']);
 Route::get('getUserListsIIR', [GeneralController::class, 'getUserListsIIR']);
@@ -147,6 +148,7 @@ Route::post('moveItemstoUnserviceableItems', [ItemController::class, 'moveItemst
 //Admin Inventories
 //Inventory Items Fetcher
 Route::get('getItemsofInventories', [ItemController::class, 'getItemsofInventories']);
+Route::post('getItemsofInventoriesById', [ItemController::class, 'getItemsofInventoriesById']);
 Route::post('getInventorySorted', [ItemController::class, 'getInventorySorted']);
 //admin return item to previous owner
 Route::post('returnToPreviousOwner', [ItemController::class, 'returnToPreviousOwner']);

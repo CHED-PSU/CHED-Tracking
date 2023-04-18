@@ -1,3 +1,4 @@
+import { toUpper } from "lodash";
 import React, { useState, useEffect, useRef } from "react";
 import Alert from "../Alerts/MultiModalAlert";
 import axios from "axios";
@@ -9,9 +10,7 @@ export default function Transfer({
     getInventoryItems,
     unselect,
 }) {
-    const [toggleTabs, setToggleTabs] = useState("pre-owner");
     const [openAlert, setOpenAlert] = useState(false);
-
     const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
     const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
     const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
@@ -49,7 +48,9 @@ export default function Transfer({
 
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState();
-    const [selectedPerson, setSelectedPerson] = useState(1);
+    const [usersJO, setUsersJO] = useState();
+    const [selectedPerson, setSelectedPerson] = useState(0);
+    const [selectedPersonJO, setSelectedPersonJO] = useState([]);
 
     useEffect(() => {
         const getUser = async () => {
@@ -64,7 +65,20 @@ export default function Transfer({
                 setLoading(false);
             }
         };
+        const getUserJO = async () => {
+            setLoading(true);
+            try {
+                await axios.get("api/getUserListsJO").then((res) => {
+                    setUsersJO(res.data.user_lists);
+                });
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        };
         getUser();
+        getUserJO();
     }, []);
 
     const confirmHandler = (event) => {
@@ -72,27 +86,19 @@ export default function Transfer({
         setAlert(true);
     };
 
-    function clickTabs(index) {
-        setToggleTabs(index);
-    }
-
     let modalBody = useRef();
-
-    useEffect(() => {
-        const handler = (event) => {
-            if (!modalBody.current.contains(event.target)) {
-                clickMultiModal("close");
-            }
-        };
-        document.addEventListener("mousedown", handler);
-
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    });
 
     const personChanger = (e) => {
         setSelectedPerson(e.target.value);
+    };
+
+    const personChangerJO = (index, e) => {
+        const selectedPersonId = parseInt(e.target.value);
+        setSelectedPersonJO(prevState => {
+            const updatedState = [...prevState];
+            updatedState[index] = selectedPersonId;
+            return updatedState;
+        });
     };
 
     function displayPhoto(profilePhoto, name, className) {
@@ -120,6 +126,80 @@ export default function Transfer({
         }
     }
 
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        function getInventory(index) {
+            try {
+                axios.post("api/getItemsofInventoriesById", { id: index }).then((response) => {
+                    setItems(response.data.inventory_items_all);
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        getInventory(selectedId);
+    }, [selectedId]);
+
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
+    const itemsMapper = (items) => {
+        return items?.map((data, index) => {
+            return (
+                <tr key={index}>
+                    <td className="text-center p-2 border text-sm w-20">1</td>
+                    <td className="text-center p-2 border text-sm">
+                        {toUpper(data.unit)}
+                    </td>
+                    <td className="text-center p-2 border text-sm">
+                        {formattedAmount(data.price)}
+                    </td>
+                    <td className="text-center p-2 border text-sm">
+                        {toUpper(data.article)}
+                    </td>
+                    <td className="text-center p-2 border text-sm">
+                        <p className="w-28 truncate">
+                            {toUpper(data.description)}
+                        </p>
+                    </td>
+                    <td className="text-center p-2 border text-sm">
+                        {data.code}
+                    </td>
+                    <td className="p-2 border">
+                        <div className="flex flex-col justify-between items-center">
+                            <select
+                                onChange={(e) => personChangerJO(index, e)}
+                                name=""
+                                id="Assigned-to"
+                                className="w-full text-sm rounded-md border border-neutral-500 p-2 outline-none cursor-pointer"
+                            >
+                                <option value={0}>None</option>
+                                {loading
+                                    ? ""
+                                    : usersJO?.map((data) => {
+                                          return (
+                                              <option
+                                                  key={data.id}
+                                                  value={data.id}
+                                              >
+                                                  {data.firstname +
+                                                      " " +
+                                                      data.surname}
+                                              </option>
+                                          );
+                                      })}
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            );
+        });
+    };
+
     return (
         <div className={className}>
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-50">
@@ -127,7 +207,7 @@ export default function Transfer({
                     ref={modalBody}
                     className="w-2/5 bg-white dark:bg-darkColor-800 shadow-lg rounded-2xl px-12 py-10 space-y-4 z-20"
                 >
-                    <div className="flex flex-col items-center text-center dark:text-white cursor-default">
+                    <div className="flex flex-col items-center text-center dark:text-white cursor-default pb-2">
                         <div className="w-full text-left">
                             <button
                                 onClick={() => clickMultiModal("close")}
@@ -136,12 +216,8 @@ export default function Transfer({
                                 <i className="fa-solid fa-xmark"></i>
                             </button>
                         </div>
-                        <img
-                            src="./img/assignto_icon.png"
-                            className="w-12 pb-3"
-                        />
                         <div className="text-2xl text-gray-800 font-semibold">
-                            Assign a Personnel
+                            Transfer to other user
                         </div>
                         <div className="text-xs">
                             Choose which user do you want to assign the item
@@ -150,24 +226,24 @@ export default function Transfer({
 
                     <div className={className}>
                         <div className="space-y-3">
-                            <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default items-center">
-                                {/* {displayPhoto(
-                                    users[selectedPerson - 1].img,
-                                    users[selectedPerson - 1].firstname,
-                                    "w-14 h-14"
-                                )} */}
-                                <img
-                                    draggable="false"
-                                    src="./img/profile-pic.jpeg"
-                                    className={
-                                        className +
-                                        " w-18 h-18 rounded-full bg-gray-500 object-cover"
-                                    }
-                                />
-                                <div className="w-full space-y-2">
+                            <div className="flex bg-gray-100 rounded-xl py-4 px-5 gap-3 cursor-default items-center">
+                                {selectedPerson == 0 ? (
+                                    <img
+                                        draggable="false"
+                                        src="./img/profile-pic.jpeg"
+                                        className="w-18 h-18 rounded-full bg-gray-500 object-cover"
+                                    />
+                                ) : (
+                                    displayPhoto(
+                                        users[selectedPerson - 1].img,
+                                        users[selectedPerson - 1].firstname,
+                                        "w-18 h-18"
+                                    )
+                                )}
+                                <div className="w-full space-y-1">
                                     <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-lg h-8 w-full">
-                                        {loading
-                                            ? ""
+                                        {selectedPerson == 0
+                                            ? "Please select a user"
                                             : users[selectedPerson - 1]
                                                   .firstname +
                                               " " +
@@ -186,9 +262,9 @@ export default function Transfer({
                                               (users[selectedPerson - 1]
                                                   .suffix || "")}
                                     </div>
-                                    <div className="font-medium pl-[10px] text-sm h-8 rounded-md w-56">
-                                        {loading
-                                            ? ""
+                                    <div className="font-medium pl-[10px] text-sm h-8 rounded-md">
+                                        {selectedPerson == 0
+                                            ? "Select on the dropdown menu"
                                             : users[selectedPerson - 1]
                                                   .designation
                                             ? users[selectedPerson - 1]
@@ -198,7 +274,6 @@ export default function Transfer({
                                 </div>
                             </div>
                             <form action="">
-                               
                                 <div className="flex flex-col justify-between">
                                     <label
                                         htmlFor="Status"
@@ -212,6 +287,7 @@ export default function Transfer({
                                         id="Status"
                                         className="w-full text-sm rounded-md border border-neutral-500 p-2 outline-none cursor-pointer"
                                     >
+                                <option value={0}>None</option>
                                         {loading
                                             ? ""
                                             : users?.map((data) => {
@@ -228,38 +304,37 @@ export default function Transfer({
                                               })}
                                     </select>
                                 </div>
-                                
-                                <table className="w-full my-8">
+
+                                <table className="w-full my-6">
                                     <thead>
                                         <tr>
-                                            <th className="font-medium p-2 border text-xs">Qty</th>
-                                            <th className="font-medium p-2 border text-xs">Unit</th>
-                                            <th className="font-medium p-2 border text-xs">Amount</th>
-                                            <th className="font-medium p-2 border text-xs" colSpan={2}>Description</th>
-                                            <th className="font-medium p-2 border text-xs w-80">Inventory Item No.</th>
-                                            <th className="font-medium p-2 border text-xs w-64">Assign to</th>
+                                            <th className="font-medium p-2 border text-xs">
+                                                Qty
+                                            </th>
+                                            <th className="font-medium p-2 border text-xs">
+                                                Unit
+                                            </th>
+                                            <th className="font-medium p-2 border text-xs">
+                                                Amount
+                                            </th>
+                                            <th
+                                                className="font-medium p-2 border text-xs"
+                                                colSpan={2}
+                                            >
+                                                Description
+                                            </th>
+                                            <th className="font-medium p-2 border text-xs w-80">
+                                                Inventory Item No.
+                                            </th>
+                                            <th className="font-medium p-2 border text-xs w-64">
+                                                Assign to
+                                            </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td className="text-center p-2 border text-sm w-20">1</td>
-                                            <td className="text-center p-2 border text-sm">UNIT</td>
-                                            <td className="text-center p-2 border text-sm">30,200</td>
-                                            <td className="text-center p-2 border text-sm">Laptop</td>
-                                            <td className="text-center p-2 border text-sm"><p className="w-28 truncate">LIGHTWEIGHT</p></td>
-                                            <td className="text-center p-2 border text-sm">43211503-LAP002</td>
-                                            <td className="p-2 border">
-                                                <div className="flex flex-col justify-between items-center">
-                                                    <select className="w-full rounded-md border text-xs border-neutral-500 p-2 outline-none cursor-pointer">
-                                                    <option value="none">Select User</option>
-                                                    </select>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                    <tbody>{itemsMapper(items)}</tbody>
                                 </table>
-                                
-                                <div className="flex justify-center mt-[50px]">
+
+                                <div className="flex justify-center">
                                     <button
                                         onClick={confirmHandler}
                                         className="w-28 h-10 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
@@ -267,7 +342,6 @@ export default function Transfer({
                                         Confirm
                                     </button>
                                 </div>
-                                
                             </form>
                         </div>
                     </div>
@@ -282,6 +356,7 @@ export default function Transfer({
                             alertFunction={alertFunction}
                             selectedId={selectedId}
                             selectedPerson={selectedPerson}
+                            selectedPersonJO={selectedPersonJO}
                             setAlert={setAlert}
                             confirmation={confirmation}
                         />

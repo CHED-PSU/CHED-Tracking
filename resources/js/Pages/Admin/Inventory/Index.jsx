@@ -222,7 +222,7 @@ export default function Inventory({ className }) {
         if (index === "sorted") {
             setOpenSortedModal('open-sorted');
         } else if (index === "all") {
-            setOpenMultiModal('open-multi');
+            setOpenMultiModal('open-transfer');
         } else if (index === "close") {
             setOpenMultiModal(index);
         }
@@ -565,17 +565,6 @@ export default function Inventory({ className }) {
                                     onClick={() => {
                                         toggleSort === "all"
                                             ? clickMultiModal("open-transfer")
-                                            : '';
-                                    }}
-                                    className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
-                                >
-                                    <i className="fa-solid fa-box-archive text-sm"></i>
-                                        Sample
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        toggleSort === "all"
-                                            ? clickMultiModal("open-multi")
                                             : clickSortedModal("open-sorted");
                                     }}
                                     className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"

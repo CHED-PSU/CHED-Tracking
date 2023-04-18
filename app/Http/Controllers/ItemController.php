@@ -14,6 +14,7 @@ class ItemController extends Controller
     {
         $items = DB::table('users_notification as un')
             ->select('un.trackings_id', 't.id', 'pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
+            ->where('un.id', $req->input('notifID'))
             ->where('un.trackings_id', $req->input('listId'))
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
@@ -393,7 +394,7 @@ class ItemController extends Controller
         $description = '';
         if ($item_id->category_id == 3) {
             $description = 'PAR';
-        } else if ($item_id->category_id == 2){
+        } else if ($item_id->category_id == 2) {
             $description = 'ICS';
         }
 
@@ -490,6 +491,31 @@ class ItemController extends Controller
 
         return response()->json(['inventory_items' => $inventory_items, 'users' => $getUsers]);
     }
+
+    public function getItemsofInventoriesById(Request $req)
+    {
+        $idArray = $req->input('id');
+        $inventory_items_all = collect();
+
+        foreach ($idArray as $id) {
+            $items = DB::table('user_returned_items as uri')
+                ->select('uri.uri_id', 'pi.code', 'pri.price', 'pu.name as unit', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'u.img', 'uri.status', 'u.id')
+                ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+                ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
+                ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+                ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+                ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+                ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+                ->join('users as u', 'u.id', '=', 'uri.user_id')
+                ->where('uri.status', 'Inventories')
+                ->where('uri.uri_id', $id)
+                ->get();
+            $inventory_items_all = $inventory_items_all->concat($items);
+        }
+
+        return response()->json(['inventory_items_all' => $inventory_items_all]);
+    }
+
     public function getInventorySorted(Request $req)
     {
         $inventory_items = DB::table('user_returned_items as uri')
@@ -561,7 +587,7 @@ class ItemController extends Controller
 
         if ($price->category_id == 3) {
             $form = 'PAR';
-        } else if ($price->category_id == 2){
+        } else if ($price->category_id == 2) {
             $form = 'ICS';
         }
 
@@ -642,14 +668,12 @@ class ItemController extends Controller
                 ->where('uri.uri_id', $data)
                 ->first();
 
-
-
             $total += $price->price;
         }
 
         if ($price->category_id == 3) {
             $form = 'PAR';
-        } else if ($price->category_id == 2){
+        } else if ($price->category_id == 2) {
             $form = 'ICS';
         }
 
@@ -662,21 +686,29 @@ class ItemController extends Controller
         $tracking_id = DB::table('trackings')
             ->insertGetId($data);
 
-        foreach ($req->input('selectedId') as $data) {
+        foreach ($req->input('selectedId') as $key => $data) {
 
             $getItemId =  DB::table('user_returned_items as uri')
-                ->select('it.item_id')
+                ->select('it.item_id', 'it.eul')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
                 ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
                 ->where('uri.uri_id', $data)
                 ->first();
 
+            $assigned_to_raw = $req->input('assigned_to')[$key];
+
+            if ($assigned_to_raw == 0) {
+                $assigned_to_id = $req->input('user_id');
+            } else {
+                $assigned_to_id = $assigned_to_raw;
+            }
+
             DB::table('inventory_trackings')
                 ->insert([
                     'trackings_id' => $tracking_id,
                     'item_id'      => $getItemId->item_id,
-                    'assigned_to'  => $req->input('user_id'),
-                    'eul'          => 'none'
+                    'assigned_to'  => $assigned_to_id,
+                    'eul'          => $getItemId->eul
                 ]);
         }
 

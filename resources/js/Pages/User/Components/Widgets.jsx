@@ -128,9 +128,11 @@ export default function Widgets(props) {
     const [openNotifSpecList, setOpenNotifSpecList] = useState(false);
     const [listId, setListId] = useState();
     const [confirmation, setConfirmation] = useState();
+    const [notifID, setNotifID] = useState();
 
     const notifSpecList = (id, notifId, confirmation, modal) => {
         setListId(id);
+        setNotifID(notifId);
         setConfirmation(confirmation);
         isRead(notifId);
 
@@ -486,6 +488,7 @@ export default function Widgets(props) {
             {openNotifSpecList ? (
                 <IssuedNotification
                     confirmation={confirmation}
+                    notifID={notifID}
                     listId={listId != null ? listId : null}
                     setOpenNotifSpecList={setOpenNotifSpecList}
                     closer={closer}
