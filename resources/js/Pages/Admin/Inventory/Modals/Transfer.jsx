@@ -1,6 +1,7 @@
 import { toUpper } from "lodash";
 import React, { useState, useEffect, useRef } from "react";
 import MultiModalAlert from "../Alerts/MultiModalAlert";
+import Alert from "../Alerts/Alert";
 import axios from "axios";
 
 export default function Transfer({
@@ -11,6 +12,7 @@ export default function Transfer({
     unselect,
 }) {
     const [openAlert, setOpenAlert] = useState(false);
+    const [openAlertSuccess, setOpenAlertSuccess] = useState(false);
     const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
     const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
     const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
@@ -38,6 +40,14 @@ export default function Transfer({
         getInventory(selectedId);
     }, [selectedId]);
 
+    function clickAlert(index) {
+        setOpenAlertSuccess(index);
+
+        if (index == false) {
+            clickMultiModal("close");
+        }
+    }
+
     const confirmation = (index) => {
         setAlertIcon("check");
         setAlertHeader("Success");
@@ -46,9 +56,9 @@ export default function Transfer({
         setAlertNoButton("okay");
         setAlertYesButton("Confirm");
         setOpenAlert(false);
+        clickAlert(true);
         setAlertFunction(true);
         getInventoryItems();
-        clickMultiModal("close")
     };
 
     const setAlert = (index) => {
@@ -117,7 +127,7 @@ export default function Transfer({
 
     const personChangerJO = (index, e) => {
         const selectedPersonId = parseInt(e.target.value);
-        setSelectedPersonJO(prevState => {
+        setSelectedPersonJO((prevState) => {
             const updatedState = [...prevState];
             updatedState[index] = selectedPersonId;
             return updatedState;
@@ -181,7 +191,7 @@ export default function Transfer({
         const defaultValues = items.map(() => 0);
         setSelectedPersonJO(defaultValues);
         defaultValues.forEach((value, index) => {
-            personChangerJO(index, {target: {value}});
+            personChangerJO(index, { target: { value } });
         });
     }, [items]);
 
@@ -374,6 +384,19 @@ export default function Transfer({
                             selectedPersonJO={selectedPersonJO}
                             setAlert={setAlert}
                             confirmation={confirmation}
+                        />
+                    ) : (
+                        ""
+                    )}
+                    {openAlertSuccess ? (
+                        <Alert
+                            alertIcon={alertIcon}
+                            alertHeader={alertHeader}
+                            alertDesc={alertDesc}
+                            alertButtonColor={alertButtonColor}
+                            alertYesButton={alertYesButton}
+                            alertNoButton={alertNoButton}
+                            clickAlert={clickAlert}
                         />
                     ) : (
                         ""
