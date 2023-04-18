@@ -697,7 +697,7 @@ class ItemController extends Controller
 
             $assigned_to_raw = $req->input('assigned_to')[$key];
 
-            if ($assigned_to_raw == 0) {
+            if ($assigned_to_raw == 0 || $assigned_to_raw == null) {
                 $assigned_to_id = $req->input('user_id');
             } else {
                 $assigned_to_id = $assigned_to_raw;

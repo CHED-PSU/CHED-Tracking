@@ -84,7 +84,7 @@ export default function Index({ className }) {
         return itemsData.map((data) => {
             return (
                 <tr key={data.ui_id} className="bg-[#F5F5F5]">
-                    <td className="text-center rounded-tableRow">
+                    {/* <td className="text-center rounded-tableRow">
                         <input
                             type="checkbox"
                             className="h-4 w-4"
@@ -92,8 +92,8 @@ export default function Index({ className }) {
                             value={data.ui_id}
                             onClick={handleChangeCheckBox}
                         />
-                    </td>
-                    <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
+                    </td> */}
+                    <td className="2xl:text-[17px] xl:text-base text-base font-medium text-center text-text-black rounded-tableRow">
                         1
                     </td>
                     <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
@@ -180,20 +180,20 @@ export default function Index({ className }) {
             )}
 
             <div className="w-[80%] space-y-5 z-20">
-                <div className="flex justify-between w-full">
-                    <button
+                <div className="flex justify-center w-full">
+                    {/* <button
                         onClick={selectAllHandler}
                         className="h-10 text-sm font-medium text-black w-fit px-5 flex items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
                     >
                         {selectAll ? "Deselect All" : "Select All"}
-                    </button>
+                    </button> */}
                     <div className="flex gap-4">
                         <Searchbar
                             setSearchTerm={setSearchTerm}
                             search={search}
                             className="h-10"
                         />
-                        <button
+                        {/* <button
                             onClick={() => {
                                 clickUnderDev("open"), returnHandler();
                             }}
@@ -201,15 +201,15 @@ export default function Index({ className }) {
                         >
                             <i className="fa-solid fa-box-archive text-base"></i>
                             Return
-                        </button>
+                        </button> */}
                     </div>
                 </div>
                 <div className="">
                     <table className="w-full border-separate border-spacing-y-3">
                         <thead className="text-xs text-th dark:text-white cursor-default">
                             <tr className="">
-                                <th className="w-24"></th>
-                                <th className="font-medium text-left w-24">
+                                {/* <th className="w-24"></th> */}
+                                <th className="font-medium text-center w-24">
                                     Quantity
                                 </th>
                                 <th className="font-medium text-left">
@@ -222,7 +222,7 @@ export default function Index({ className }) {
                                     Description
                                 </th>
                                 <th className="font-medium text-left">Date</th>
-                                <th className=" w-44"></th>
+                                <th className=" w-40"></th>
                             </tr>
                         </thead>
                         <tbody>

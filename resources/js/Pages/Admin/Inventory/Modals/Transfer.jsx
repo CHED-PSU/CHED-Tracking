@@ -1,6 +1,6 @@
 import { toUpper } from "lodash";
 import React, { useState, useEffect, useRef } from "react";
-import Alert from "../Alerts/MultiModalAlert";
+import MultiModalAlert from "../Alerts/MultiModalAlert";
 import axios from "axios";
 
 export default function Transfer({
@@ -18,6 +18,25 @@ export default function Transfer({
     const [alertYesButton, setAlertYesButton] = useState("Yes");
     const [alertNoButton, setAlertNoButton] = useState("No");
     const [alertFunction, setAlertFunction] = useState();
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState();
+    const [usersJO, setUsersJO] = useState();
+
+    useEffect(() => {
+        function getInventory(index) {
+            try {
+                axios
+                    .post("api/getItemsofInventoriesById", { id: index })
+                    .then((response) => {
+                        setItems(response.data.inventory_items_all);
+                    });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        getInventory(selectedId);
+    }, [selectedId]);
 
     const confirmation = (index) => {
         setAlertIcon("check");
@@ -26,31 +45,32 @@ export default function Transfer({
         setAlertButtonColor("none");
         setAlertNoButton("okay");
         setAlertYesButton("Confirm");
+        setOpenAlert(false);
         setAlertFunction(true);
+        getInventoryItems();
+        clickMultiModal("close")
     };
 
     const setAlert = (index) => {
-        setAlertIcon("question");
-        setAlertHeader("Confirmation");
-        setAlertDesc("Do you really want to return the items?");
-        setAlertButtonColor("blue");
-        setAlertNoButton("Cancel");
-        setAlertYesButton("Confirm");
-        setAlertFunction(true);
-        setOpenAlert(index);
-
-        if (index === false) {
-            getInventoryItems();
-            unselect();
-            clickMultiModal("close");
+        if (selectedPerson == 0) {
+            setAlertIcon("exclamation");
+            setAlertHeader("Receiver not found");
+            setAlertDesc("Please choose a receiver on the dropdown.");
+            setAlertButtonColor("none");
+            setAlertNoButton("Okay");
+            setAlertFunction(true);
+            setOpenAlert(index);
+        } else {
+            setAlertIcon("question");
+            setAlertHeader("Confirmation");
+            setAlertDesc("Do you really want to return the items?");
+            setAlertButtonColor("blue");
+            setAlertNoButton("Cancel");
+            setAlertYesButton("Confirm");
+            setAlertFunction(true);
+            setOpenAlert(index);
         }
     };
-
-    const [loading, setLoading] = useState(true);
-    const [users, setUsers] = useState();
-    const [usersJO, setUsersJO] = useState();
-    const [selectedPerson, setSelectedPerson] = useState(0);
-    const [selectedPersonJO, setSelectedPersonJO] = useState([]);
 
     useEffect(() => {
         const getUser = async () => {
@@ -88,6 +108,9 @@ export default function Transfer({
 
     let modalBody = useRef();
 
+    const [selectedPerson, setSelectedPerson] = useState(0);
+    const [selectedPersonJO, setSelectedPersonJO] = useState([]);
+
     const personChanger = (e) => {
         setSelectedPerson(e.target.value);
     };
@@ -100,52 +123,6 @@ export default function Transfer({
             return updatedState;
         });
     };
-
-    function displayPhoto(profilePhoto, name, className) {
-        if (profilePhoto == null || profilePhoto == "default.png") {
-            return (
-                <span
-                    className={
-                        className +
-                        " bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full"
-                    }
-                >
-                    {name.substring(0, 1)}
-                </span>
-            );
-        } else {
-            return (
-                <img
-                    draggable="false"
-                    src="./img/profile-pic.jpeg"
-                    className={
-                        className + " rounded-full bg-gray-500 object-cover"
-                    }
-                />
-            );
-        }
-    }
-
-    const [items, setItems] = useState([]);
-
-    useEffect(() => {
-        function getInventory(index) {
-            try {
-                axios.post("api/getItemsofInventoriesById", { id: index }).then((response) => {
-                    setItems(response.data.inventory_items_all);
-                });
-            } catch (e) {
-                console.log(e);
-            }
-        }
-        getInventory(selectedId);
-    }, [selectedId]);
-
-    function formattedAmount(index) {
-        const amount = index;
-        const formattedAmount = Math.abs(amount).toLocaleString();
-        return formattedAmount;
-    }
 
     const itemsMapper = (items) => {
         return items?.map((data, index) => {
@@ -200,6 +177,45 @@ export default function Transfer({
         });
     };
 
+    useEffect(() => {
+        const defaultValues = items.map(() => 0);
+        setSelectedPersonJO(defaultValues);
+        defaultValues.forEach((value, index) => {
+            personChangerJO(index, {target: {value}});
+        });
+    }, [items]);
+
+    function displayPhoto(profilePhoto, name, className) {
+        if (profilePhoto == null || profilePhoto == "default.png") {
+            return (
+                <span
+                    className={
+                        className +
+                        " bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full"
+                    }
+                >
+                    {name.substring(0, 1)}
+                </span>
+            );
+        } else {
+            return (
+                <img
+                    draggable="false"
+                    src="./img/profile-pic.jpeg"
+                    className={
+                        className + " rounded-full bg-gray-500 object-cover"
+                    }
+                />
+            );
+        }
+    }
+
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
     return (
         <div className={className}>
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-50">
@@ -223,7 +239,6 @@ export default function Transfer({
                             Choose which user do you want to assign the item
                         </div>
                     </div>
-
                     <div className={className}>
                         <div className="space-y-3">
                             <div className="flex bg-gray-100 rounded-xl py-4 px-5 gap-3 cursor-default items-center">
@@ -287,7 +302,7 @@ export default function Transfer({
                                         id="Status"
                                         className="w-full text-sm rounded-md border border-neutral-500 p-2 outline-none cursor-pointer"
                                     >
-                                <option value={0}>None</option>
+                                        <option value={0}>None</option>
                                         {loading
                                             ? ""
                                             : users?.map((data) => {
@@ -346,7 +361,7 @@ export default function Transfer({
                         </div>
                     </div>
                     {openAlert ? (
-                        <Alert
+                        <MultiModalAlert
                             alertIcon={alertIcon}
                             alertHeader={alertHeader}
                             alertDesc={alertDesc}

@@ -83,7 +83,7 @@ export default function ConditionalAlert(props) {
                         {/* Red Button */}
 
                         {/* Red Button */}
-                        <div onClick={()=> {acceptHandler()}} className={props.  alertButtonColor === "blue" ? "" : "hidden"}>
+                        <div onClick={()=> {acceptHandler()}} className={props.alertButtonColor === "blue" ? "" : "hidden"}>
                             <div  className="bg-primary text-white rounded-full px-5 py-3 cursor-pointer font-semibold">
                                 {props.alertYesButton}
                             </div>

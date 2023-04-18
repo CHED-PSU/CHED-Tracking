@@ -48,6 +48,7 @@ Route::post('declineIssuedForm', [FormController::class, 'declineIssuedForm']);
 
 //unread notif
 Route::post('getUnread', [GeneralController::class, 'getUnread']);
+Route::post('getAdminUnread', [GeneralController::class, 'getAdminUnread']);
 
 //recent Issuance
 Route::post('HomeData', [FormController::class, 'HomeData']);

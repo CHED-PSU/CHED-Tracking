@@ -24,7 +24,7 @@ export default function Index() {
                 setRead(res.data.read)
             })
         }catch(e){
-
+            console.log(e);
         }
     }
 

@@ -19,7 +19,7 @@ export default function Widgets(props) {
     }
 
     function displayPhoto(profilePhoto, name, className) {
-        if (profilePhoto == null || profilePhoto == 'default.png') {
+        if (profilePhoto == null || profilePhoto == "default.png") {
             return (
                 <span
                     className={
@@ -139,6 +139,8 @@ export default function Widgets(props) {
         if (modal == true) {
             setOpenNotifSpecList(!openNotifSpecList);
             setOpenNotifDropdown(!openNotifDropdown);
+        } else {
+            getNotif();
         }
     };
 

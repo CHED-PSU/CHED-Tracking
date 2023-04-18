@@ -39,7 +39,7 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
     };
 
     function displayPhoto(profilePhoto, name, className) {
-        if (profilePhoto == null || profilePhoto == 'default.png') {
+        if (profilePhoto == null || profilePhoto == "default.png") {
             return (
                 <span
                     className={
@@ -105,16 +105,19 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
     //     });
     // }, [socket]);
 
+    const getNotification = async () => {
+        try {
+            axios.post("api/getAdminUnread", { id: value.id }).then((res) => {
+                setRead(res.data.read);
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     useEffect(() => {
-        const getNotification = async () => {
-            const response = await axios.get("/api/getAdminNotification");
-            const data = response.data;
-            if(data.admin_unread_notification != ''){
-                return setRead(true)
-            }
-        };
         getNotification();
-    })
+    }, []);
 
     const notifClick = async () => {
         setLoading(true);

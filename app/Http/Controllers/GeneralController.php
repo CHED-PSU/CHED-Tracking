@@ -48,6 +48,7 @@ class GeneralController extends Controller
             ->select('t.tracking_id', 'u1.firstname as ufirstname', 'u2.id as rID', 'u1.id as uID', 'u1.surname as uSurname', 'u1.suffix as uSuffix', 't.created_at', 'u2.firstname as rfirstname', 'u2.surname as rSurname', 'u2.suffix as rSuffix',)
             ->join('users as u1', 'u1.id', '=', 't.issued_by')
             ->join('users as u2', 'u2.id', '=', 't.received_by')
+            ->orderBy('t.created_at', 'DESC')
             ->get();
 
         $countDonated = DB::table('unserviceable_items')
@@ -150,6 +151,19 @@ class GeneralController extends Controller
     {
         $count = DB::table('users_notification')
             ->where('to_user_id', $req->input('id'))
+            ->where('ns_id', 2)
+            ->count();
+
+        if ($count > 0) {
+            return response()->json(['read' => true]);
+        } else {
+            return response()->json(['read' => false]);
+        }
+    }
+
+    public function getAdminUnread(Request $req)
+    {
+        $count = DB::table('admin_notification')
             ->where('ns_id', 2)
             ->count();
 
