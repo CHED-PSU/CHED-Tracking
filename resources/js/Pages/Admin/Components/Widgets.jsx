@@ -495,7 +495,7 @@ export default function Widgets({ className, toggleDarkMode, setSidebar }) {
                             >
                                 <div className="flex justify-between gap-3 2xl:px-3 xl:px-2 px-2">
                                     <div className="flex-col">
-                                        <h2 className="text-sm font-semibold">
+                                        <h2 className="text-sm font-medium">
                                             Back to homepage
                                         </h2>
                                     </div>
