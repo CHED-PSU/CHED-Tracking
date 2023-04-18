@@ -150,7 +150,7 @@ export default function Transfer({
 
                     <div className={className}>
                         <div className="space-y-3">
-                            <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default">
+                            <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default items-center">
                                 {/* {displayPhoto(
                                     users[selectedPerson - 1].img,
                                     users[selectedPerson - 1].firstname,
@@ -202,7 +202,7 @@ export default function Transfer({
                                 <div className="flex flex-col justify-between">
                                     <label
                                         htmlFor="Status"
-                                        className="text-base font-semibold"
+                                        className="text-sm font-semibold"
                                     >
                                         Select a Receiver:
                                     </label>
@@ -210,7 +210,7 @@ export default function Transfer({
                                         onChange={personChanger}
                                         name=""
                                         id="Status"
-                                        className="w-full rounded-md border border-neutral-500 p-4 outline-none cursor-pointer"
+                                        className="w-full text-sm rounded-md border border-neutral-500 p-2 outline-none cursor-pointer"
                                     >
                                         {loading
                                             ? ""
@@ -228,7 +228,6 @@ export default function Transfer({
                                               })}
                                     </select>
                                 </div>
-                                
                                 
                                 <table className="w-full my-8">
                                     <thead>
