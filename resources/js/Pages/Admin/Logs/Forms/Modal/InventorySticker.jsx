@@ -233,7 +233,7 @@ export default function InventorySticker(props) {
                                     </div>
                                 </div>
                                 <QRCode
-                                    className="w-10 h-10 bg-white p-1"
+                                    className="w-10 h-10 bg-white p-1 flex-none"
                                     serial_no={data.serial_no}
                                 />
                             </div>
