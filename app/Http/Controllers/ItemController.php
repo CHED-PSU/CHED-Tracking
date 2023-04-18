@@ -82,7 +82,7 @@ class ItemController extends Controller
                 'created_at' => $item->created_at,
                 'ui_id'      => $item->ui_id,
                 'code'       => $item->code,
-                'quantity'   => $item->quantity,
+                'quantity'   => 1,
                 'check'      => false
             ];
 

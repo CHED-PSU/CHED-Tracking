@@ -94,7 +94,7 @@ export default function Index({ className }) {
                         />
                     </td>
                     <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
-                        {data.quantity}
+                        1
                     </td>
                     <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
                         {data.code}
@@ -172,7 +172,7 @@ export default function Index({ className }) {
             }
         >
             {Loading ? <Loader /> : ""}
-            
+
             {openUnderDev == "open" ? (
                 <UnderDev clickUnderDev={clickUnderDev} />
             ) : (

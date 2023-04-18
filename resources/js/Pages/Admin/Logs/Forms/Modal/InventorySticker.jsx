@@ -138,10 +138,10 @@ export default function InventorySticker(props) {
                             />
                         </div>
                     </td>
-                    <td className="text-center px-3 border">{data.quantity}</td>
+                    <td className="text-center px-3 border">1</td>
                     <td className="text-center px-3 border">{data.unit}</td>
                     <td className="text-center px-3 border">
-                        {formattedAmount(data.quantity * data.price)}
+                        {formattedAmount(data.price)}
                     </td>
                     <td className="text-left px-3 py-3 border">
                         <div className="font-semibold">{data.article}</div>
@@ -214,7 +214,7 @@ export default function InventorySticker(props) {
         return items?.map((data) => {
             if (selectedItems.includes(data.id)) {
                 const stickers = [];
-                for (let i = 0; i < data.quantity; i++) {
+                for (let i = 0; i < 1; i++) {
                     stickers.push(
                         <div
                             key={i}

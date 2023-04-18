@@ -19,7 +19,7 @@ export default function ParItemLists(props) {
     return (
         <>
         <tr className="text-xs font-medium h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
-            <td rowSpan={2} className="text-center px-3 border border-darkColor-700">{props.data.quantity}</td>
+            <td rowSpan={2} className="text-center px-3 border border-darkColor-700">1</td>
             <td rowSpan={2}  className="text-center px-3 border border-darkColor-700">
                 {toUpper(props.data.unit)}
             </td>
@@ -36,8 +36,7 @@ export default function ParItemLists(props) {
             <td className="text-center border border-darkColor-700">{formatDateDisplay(props.receivedDate)}</td>
             <td className="text-center border border-darkColor-700">
                 {formattedAmount(
-                    parseFloat(props.data.quantity) *
-                        parseFloat(props.data.price)
+                    parseFloat(props.data.price)
                 )}
             </td>
         </tr>

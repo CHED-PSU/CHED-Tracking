@@ -69,7 +69,7 @@ export default function IssuedNotification({
                         {toUpper(data.unit)}
                     </td>
                     <td className="text-center px-3 border">
-                        {parseInt(data.price) * parseInt(data.quantity)}
+                        {parseInt(data.price)}
                     </td>
                     <td className="text-left border">
                         <div className="flex items-center">

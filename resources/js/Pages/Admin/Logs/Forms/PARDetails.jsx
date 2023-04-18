@@ -44,7 +44,7 @@ export default function PARDetails(props) {
             return (
                 <tr key={index} className="avoid text-xs h-fit cursor-default border border-darkColor-700 dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white">
                     <td className="text-center px-3 border border-darkColor-700">
-                        {data.quantity}
+                        1
                     </td>
                     <td className="text-center px-3 border border-darkColor-700">
                         {toUpper(data.unit)}
@@ -62,7 +62,7 @@ export default function PARDetails(props) {
                         {props.dateAcquired}
                     </td>
                     <td className="text-center border border-darkColor-700">
-                        {formattedAmount(data.quantity * data.price)}
+                        {formattedAmount(data.price)}
                     </td>
                 </tr>
             );

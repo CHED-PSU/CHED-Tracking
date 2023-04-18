@@ -71,7 +71,7 @@ class FormController extends Controller
     public function acceptIssuedForm(Request $req)
     {
         $getItems = DB::table('trackings as t')
-            ->select('it.id', 'pri.quantity')
+            ->select('it.id')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -164,7 +164,7 @@ class FormController extends Controller
     public function getICS(Request $request)
     {
         $subQuery = DB::table('inventory_trackings as it')
-            ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
+            ->select(DB::raw("SUM(pri.price * 1) as total"), 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
 
@@ -241,7 +241,7 @@ class FormController extends Controller
     public function getPAR(Request $request)
     {
         $subQuery = DB::table('inventory_trackings as it')
-            ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
+            ->select(DB::raw("SUM(pri.price * 1) as total"), 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
 
@@ -577,7 +577,7 @@ class FormController extends Controller
     {
 
         $subQuery = DB::table('inventory_trackings as it')
-            ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
+            ->select(DB::raw("SUM(pri.price * 1) as total"), 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
 
@@ -630,7 +630,7 @@ class FormController extends Controller
     public function getUserParControls(Request $req)
     {
         $subQuery = DB::table('inventory_trackings as it')
-            ->select(DB::raw("SUM(pri.price * pri.quantity) as total"), 'it.trackings_id')
+            ->select(DB::raw("SUM(pri.price * 1) as total"), 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
 

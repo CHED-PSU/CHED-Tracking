@@ -42,10 +42,10 @@ export default function ICSNotification({
                     key={counter}
                     className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
                 >
-                    <td className="text-center px-3 border">{data.quantity}</td>
+                    <td className="text-center px-3 border">1</td>
                     <td className="text-center px-3 border">{data.unit}</td>
                     <td className="text-center px-3 border">
-                        {parseInt(data.price) * parseInt(data.quantity)}
+                        {parseInt(data.price)}
                     </td>
                     <td className="text-left px-3 py-3 border">
                         <div className="flex items-center">

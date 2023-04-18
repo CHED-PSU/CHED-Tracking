@@ -45,12 +45,12 @@ export default function ICSDetails(props) {
                     key={index}
                     className="avoid text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
                 >
-                    <td className="text-center px-2 border">{data.quantity}</td>
+                    <td className="text-center px-2 border">1</td>
                     <td className="text-center px-2 border">
                         {toUpper(data.unit)}
                     </td>
                     <td className="text-center px-2 border">
-                        {formattedAmount(data.quantity * data.price)}
+                        {formattedAmount(data.price)}
                     </td>
                     <td className="text-left px-2 py-3 border">
                         <div className="font-semibold">

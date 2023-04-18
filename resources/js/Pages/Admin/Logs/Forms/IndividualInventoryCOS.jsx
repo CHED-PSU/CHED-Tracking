@@ -41,10 +41,10 @@ export default function IndividualInventoryCOS(props) {
                     <td className="text-left px-2 border">
                         {data.description}
                     </td>
-                    <td className="text-center px-2 border">{data.qty}</td>
+                    <td className="text-center px-2 border">1</td>
                     <td className="text-center px-2 border">{data.code}</td>
                     <td className="text-center px-2 border">
-                        {formattedAmount(data.qty * data.amount)}
+                        {formattedAmount(data.amount)}
                     </td>
                     <td className="text-center px-2 border">
                         {formatDateDisplay(data.date)}
