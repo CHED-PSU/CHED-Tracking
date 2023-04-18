@@ -155,6 +155,7 @@ class ItemController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('trackings as t', 't.id', '=', 'it.trackings_id')
             ->where('uri.confirmation', 'pending')
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return response()->json(['pending_items' => $getPendingItems]);
