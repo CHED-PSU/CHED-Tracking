@@ -100,14 +100,14 @@ export default function PreOwner({
                                     : ""}
                             </h2>
                         </div>
-                        <p className="pl-[10px] text-sm font-medium">
+                        <p className="pl-[10px] text-sm font-medium pb-2">
                             {users[user_id - 1].designation
                                 ? users[user_id - 1].designation
                                 : "N/A"}
                         </p>
                     </div>
                 </div>
-                <div className="flex justify-center mt-[50px]">
+                <div className="flex justify-center mt-6">
                     <button
                         onClick={() => setAlert(true)}
                         className="w-28 h-10 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
