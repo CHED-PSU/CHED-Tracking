@@ -125,7 +125,7 @@ export default function Transfer({
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-50">
                 <div
                     ref={modalBody}
-                    className="w-1/3 bg-white dark:bg-darkColor-800 shadow-lg rounded-2xl px-12 py-10 space-y-4 z-20"
+                    className="w-2/5 bg-white dark:bg-darkColor-800 shadow-lg rounded-2xl px-12 py-10 space-y-4 z-20"
                 >
                     <div className="flex flex-col items-center text-center dark:text-white cursor-default">
                         <div className="w-full text-left">
@@ -198,12 +198,13 @@ export default function Transfer({
                                 </div>
                             </div>
                             <form action="">
+                               
                                 <div className="flex flex-col justify-between">
                                     <label
                                         htmlFor="Status"
                                         className="text-base font-semibold"
                                     >
-                                        Select a User:
+                                        Select a Receiver:
                                     </label>
                                     <select
                                         onChange={personChanger}
@@ -227,6 +228,38 @@ export default function Transfer({
                                               })}
                                     </select>
                                 </div>
+                                
+                                
+                                <table className="w-full my-8">
+                                    <thead>
+                                        <tr>
+                                            <th className="font-medium p-2 border text-xs">Qty</th>
+                                            <th className="font-medium p-2 border text-xs">Unit</th>
+                                            <th className="font-medium p-2 border text-xs">Amount</th>
+                                            <th className="font-medium p-2 border text-xs" colSpan={2}>Description</th>
+                                            <th className="font-medium p-2 border text-xs w-80">Inventory Item No.</th>
+                                            <th className="font-medium p-2 border text-xs w-64">Assign to</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="text-center p-2 border text-sm w-20">1</td>
+                                            <td className="text-center p-2 border text-sm">UNIT</td>
+                                            <td className="text-center p-2 border text-sm">30,200</td>
+                                            <td className="text-center p-2 border text-sm">Laptop</td>
+                                            <td className="text-center p-2 border text-sm"><p className="w-28 truncate">LIGHTWEIGHT</p></td>
+                                            <td className="text-center p-2 border text-sm">43211503-LAP002</td>
+                                            <td className="p-2 border">
+                                                <div className="flex flex-col justify-between items-center">
+                                                    <select className="w-full rounded-md border text-xs border-neutral-500 p-2 outline-none cursor-pointer">
+                                                    <option value="none">Select User</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
                                 <div className="flex justify-center mt-[50px]">
                                     <button
                                         onClick={confirmHandler}
@@ -235,6 +268,7 @@ export default function Transfer({
                                         Confirm
                                     </button>
                                 </div>
+                                
                             </form>
                         </div>
                     </div>
