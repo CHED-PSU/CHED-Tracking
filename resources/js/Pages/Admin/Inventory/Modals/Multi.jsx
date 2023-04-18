@@ -2,7 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import Alert from "../Alerts/MultiModalAlert";
 import axios from "axios";
 
-export default function Assign({ className, clickMultiModal, selectedId,getInventoryItems,unselect }) {
+export default function Assign({
+    className,
+    clickMultiModal,
+    selectedId,
+    getInventoryItems,
+    unselect,
+}) {
     const [toggleTabs, setToggleTabs] = useState("pre-owner");
     const [openAlert, setOpenAlert] = useState(false);
 
@@ -13,7 +19,6 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
     const [alertYesButton, setAlertYesButton] = useState("Yes");
     const [alertNoButton, setAlertNoButton] = useState("No");
     const [alertFunction, setAlertFunction] = useState();
-
 
     const confirmation = (index) => {
         setAlertIcon("check");
@@ -35,11 +40,10 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
         setAlertFunction(true);
         setOpenAlert(index);
 
-
-        if(index === false){
-            getInventoryItems()
-            unselect()
-            clickMultiModal('close')
+        if (index === false) {
+            getInventoryItems();
+            unselect();
+            clickMultiModal("close");
         }
     };
 
@@ -91,6 +95,31 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
         setSelectedPerson(e.target.value);
     };
 
+    function displayPhoto(profilePhoto, name, className) {
+        if (profilePhoto == null || profilePhoto == "default.png") {
+            return (
+                <span
+                    className={
+                        className +
+                        " bg-blue-900 flex-none dark:bg-blue-600 flex justify-center items-center 2xl:text-xl xl:text-base text-base text-white font-semibold rounded-full"
+                    }
+                >
+                    {name.substring(0, 1)}
+                </span>
+            );
+        } else {
+            return (
+                <img
+                    draggable="false"
+                    src="./img/profile-pic.jpeg"
+                    className={
+                        className + " rounded-full bg-gray-500 object-cover"
+                    }
+                />
+            );
+        }
+    }
+
     return (
         <div className={className}>
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-50">
@@ -122,32 +151,41 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
                     <div className={className}>
                         <div className="space-y-3">
                             <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default">
-                                <img
-                                    src="./img/profile-pic.jpeg"
-                                    alt="profile"
-                                    className="rounded-full w-18 h-18 object-cover"
-                                />
+                                {displayPhoto(
+                                    users[selectedPerson - 1].img,
+                                    users[selectedPerson - 1].firstname,
+                                    "w-14 h-14"
+                                )}
                                 <div className="w-full space-y-2">
                                     <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-lg h-8 w-full">
                                         {loading
                                             ? ""
-                                            : users[selectedPerson - 1].firstname +
-                                            " " +
-                                            (users[selectedPerson - 1].middlename
-                                                ? users[
-                                                      selectedPerson - 1
-                                                  ].middlename.substring(0, 1) + "."
-                                                : "") +
-                                            users[selectedPerson - 1].surname +
-                                            " " +
-                                            (users[selectedPerson - 1].suffix || "")}
+                                            : users[selectedPerson - 1]
+                                                  .firstname +
+                                              " " +
+                                              (users[selectedPerson - 1]
+                                                  .middlename
+                                                  ? users[
+                                                        selectedPerson - 1
+                                                    ].middlename.substring(
+                                                        0,
+                                                        1
+                                                    ) + "."
+                                                  : "") +
+                                              users[selectedPerson - 1]
+                                                  .surname +
+                                              " " +
+                                              (users[selectedPerson - 1]
+                                                  .suffix || "")}
                                     </div>
                                     <div className="font-medium pl-[10px] text-sm h-8 rounded-md w-56">
                                         {loading
                                             ? ""
-                                            : (users[selectedPerson - 1]
-                                                  .designation ? users[selectedPerson - 1]
-                                                  .designation : 'N/A')}
+                                            : users[selectedPerson - 1]
+                                                  .designation
+                                            ? users[selectedPerson - 1]
+                                                  .designation
+                                            : "N/A"}
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +207,10 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
                                             ? ""
                                             : users?.map((data) => {
                                                   return (
-                                                      <option key={data.id} value={data.id}>
+                                                      <option
+                                                          key={data.id}
+                                                          value={data.id}
+                                                      >
                                                           {data.firstname +
                                                               " " +
                                                               data.surname}
@@ -200,8 +241,8 @@ export default function Assign({ className, clickMultiModal, selectedId,getInven
                             alertFunction={alertFunction}
                             selectedId={selectedId}
                             selectedPerson={selectedPerson}
-                            setAlert = {setAlert}
-                            confirmation = {confirmation}
+                            setAlert={setAlert}
+                            confirmation={confirmation}
                         />
                     ) : (
                         ""

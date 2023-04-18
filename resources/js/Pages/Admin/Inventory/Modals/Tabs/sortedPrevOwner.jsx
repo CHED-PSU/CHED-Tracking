@@ -101,7 +101,7 @@ export default function PreOwner({
                             </h2>
                         </div>
                         <p className="pl-[10px] text-sm font-medium">
-                            {users?.length !== 0
+                            {users[user_id - 1].designation
                                 ? users[user_id - 1].designation
                                 : "N/A"}
                         </p>

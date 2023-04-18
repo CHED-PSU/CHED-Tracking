@@ -53,13 +53,13 @@ export default function Assign({
                             className="w-12 pb-3"
                         />
                         <div className="text-2xl text-gray-800 font-semibold">
-                            Assign a Personnel
+                            Return to Previous Owner
                         </div>
                         <div className="text-xs">
-                            Choose which user do you want to assign the item
+                            Confirm to return the item to the owner.
                         </div>
                     </div>
-                    <div className="flex justify-center pb-5">
+                    {/* <div className="flex justify-center pb-5">
                         <div className="flex bg-gray-200 rounded-full">
                             <button
                                 onClick={() => clickTabs("pre-owner")}
@@ -82,7 +82,7 @@ export default function Assign({
                                 Renewal
                             </button>
                         </div>
-                    </div>
+                    </div> */}
 
                     {toggleTabs === "pre-owner" ? (
                         <PreOwner
@@ -96,7 +96,7 @@ export default function Assign({
                     ) : (
                         ""
                     )}
-                    {toggleTabs === "renewal" ? (
+                    {/* {toggleTabs === "renewal" ? (
                         <Renewal
                             clickSortedModal={clickSortedModal}
                             users={users}
@@ -107,7 +107,7 @@ export default function Assign({
                         />
                     ) : (
                         ""
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>

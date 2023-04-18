@@ -500,12 +500,12 @@ export default function IssuedNotification({
                         )}
                         {confirmation === "TBD" ? (
                             <div className="flex gap-4 pb-4 justify-center">
-                                <button
+                                {/* <button
                                     onClick={declineHandler}
                                     className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full font-semibold text-[#707070] bg-[#F5F5F5] border border-[#BBBBBB] "
                                 >
                                     Decline
-                                </button>
+                                </button> */}
                                 <button
                                     onClick={acceptHandler}
                                     className="2xl:h-12 xl:h-9 h-9 w-fit px-8 py-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"

@@ -547,7 +547,7 @@ export default function Inventory({ className }) {
                                     <i className="fa-solid fa-box-archive text-sm"></i>
                                     {toggleSort === "all"
                                         ? "Transfer"
-                                        : "Return/Renew"}
+                                        : "Return"}
                                 </button>
                             </div>
                         </div>
