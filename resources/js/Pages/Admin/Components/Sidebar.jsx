@@ -205,10 +205,10 @@ export default function Sidebar(props) {
             </div>
 
             <div className="flex-none h-36 flex text-center items-center mx-6">
-                <button onClick={handleLogOut} className="font-semibold 2xl:text-md xl:text-[15px] text-[15px] text-neutral-700 hover:text-neutral-900 hover:bg-gray-100 dark:hover:bg-[#313131] dark:text-neutral-400 dark:hover:text-neutral-50 mx-auto rounded-full w-full transition duration-500 ease-in-out">
+                <button onClick={handleLogOut} className="font-semibold 2xl:text-sm xl:text-[15px] text-[15px] text-neutral-700 hover:text-neutral-900 hover:bg-gray-100 dark:hover:bg-[#313131] dark:text-neutral-400 dark:hover:text-neutral-50 mx-auto rounded-full w-full transition duration-500 ease-in-out">
                     <div className="flex items-center justify-center gap-3 w-full h-10">
                         <i className="fa-solid fa-door-open"></i>
-                        <p>Exit</p>
+                        <p>Back to homepage</p>
                     </div>
                 </button>
 
