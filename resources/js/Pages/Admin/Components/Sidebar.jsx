@@ -187,7 +187,7 @@ export default function Sidebar(props) {
                             </div>
                         </li>
 
-                        {/* Forecasting Link */}
+                        {/* page Forecasting Link */}
                         <li
                             onClick={() => clickSidebar("forecast")}
                             className={
