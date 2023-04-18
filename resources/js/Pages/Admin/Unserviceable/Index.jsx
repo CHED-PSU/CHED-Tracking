@@ -29,7 +29,7 @@ export default function Unserviceable({ className }) {
                             }
                         >
                             <div className="select-none h-10 text-xs w-fit px-5 flex items-center cursor-pointer">
-                                Item
+                                Items
                             </div>
                         </li>
                         <li
