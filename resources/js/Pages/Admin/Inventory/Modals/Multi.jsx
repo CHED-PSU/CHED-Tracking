@@ -151,11 +151,19 @@ export default function Assign({
                     <div className={className}>
                         <div className="space-y-3">
                             <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default">
-                                {displayPhoto(
-                                    (users[selectedPerson - 1].img ? users[selectedPerson - 1].img : null),
+                                {/* {displayPhoto(
+                                    users[selectedPerson - 1].img,
                                     users[selectedPerson - 1].firstname,
                                     "w-14 h-14"
-                                )}
+                                )} */}
+                                <img
+                                    draggable="false"
+                                    src="./img/profile-pic.jpeg"
+                                    className={
+                                        className +
+                                        " w-18 h-18 rounded-full bg-gray-500 object-cover"
+                                    }
+                                />
                                 <div className="w-full space-y-2">
                                     <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-lg h-8 w-full">
                                         {loading
