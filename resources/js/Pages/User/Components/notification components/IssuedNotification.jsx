@@ -6,6 +6,7 @@ import { toUpper } from "lodash";
 export default function IssuedNotification({
     listId,
     setOpenNotifSpecList,
+    notifID,
     closer,
     confirmation,
 }) {
@@ -26,6 +27,7 @@ export default function IssuedNotification({
             await axios
                 .post("api/getNotifSecListItems", {
                     listId: listId,
+                    notifID: notifID,
                 })
                 .then((res) => {
                     setItems(res.data.items);

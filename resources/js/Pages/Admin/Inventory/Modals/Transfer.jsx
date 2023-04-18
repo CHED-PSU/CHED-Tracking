@@ -52,6 +52,7 @@ export default function Transfer({
     const [users, setUsers] = useState();
     const [usersJO, setUsersJO] = useState();
     const [selectedPerson, setSelectedPerson] = useState(1);
+    const [selectedPersonJO, setSelectedPersonJO] = useState(0);
 
     useEffect(() => {
         const getUser = async () => {
@@ -95,6 +96,10 @@ export default function Transfer({
 
     const personChanger = (e) => {
         setSelectedPerson(e.target.value);
+    };
+
+    const personChangerJO = (e) => {
+        setSelectedPersonJO(parseInt(e.target.value));
     };
 
     function displayPhoto(profilePhoto, name, className) {
@@ -168,11 +173,12 @@ export default function Transfer({
                     <td className="p-2 border">
                         <div className="flex flex-col justify-between items-center">
                             <select
+                                onChange={personChangerJO}
                                 name=""
                                 id="Assigned-to"
                                 className="w-full text-sm rounded-md border border-neutral-500 p-2 outline-none cursor-pointer"
                             >
-                                <option value="None">None</option>
+                                <option value={0}>None</option>
                                 {loading
                                     ? ""
                                     : usersJO?.map((data) => {
@@ -202,7 +208,7 @@ export default function Transfer({
                     ref={modalBody}
                     className="w-2/5 bg-white dark:bg-darkColor-800 shadow-lg rounded-2xl px-12 py-10 space-y-4 z-20"
                 >
-                    <div className="flex flex-col items-center text-center dark:text-white cursor-default">
+                    <div className="flex flex-col items-center text-center dark:text-white cursor-default pb-2">
                         <div className="w-full text-left">
                             <button
                                 onClick={() => clickMultiModal("close")}
@@ -211,12 +217,8 @@ export default function Transfer({
                                 <i className="fa-solid fa-xmark"></i>
                             </button>
                         </div>
-                        <img
-                            src="./img/assignto_icon.png"
-                            className="w-12 pb-3"
-                        />
                         <div className="text-2xl text-gray-800 font-semibold">
-                            Assign a Personnel
+                            Transfer to other user
                         </div>
                         <div className="text-xs">
                             Choose which user do you want to assign the item
@@ -225,7 +227,7 @@ export default function Transfer({
 
                     <div className={className}>
                         <div className="space-y-3">
-                            <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default items-center">
+                            <div className="flex bg-gray-100 rounded-xl py-4 px-5 gap-3 cursor-default items-center">
                                 {loading ? (
                                     <img
                                         draggable="false"
@@ -239,7 +241,7 @@ export default function Transfer({
                                         "w-18 h-18"
                                     )
                                 )}
-                                <div className="w-full space-y-2">
+                                <div className="w-full space-y-1">
                                     <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-lg h-8 w-full">
                                         {loading
                                             ? ""
@@ -303,7 +305,7 @@ export default function Transfer({
                                     </select>
                                 </div>
 
-                                <table className="w-full my-8">
+                                <table className="w-full my-6">
                                     <thead>
                                         <tr>
                                             <th className="font-medium p-2 border text-xs">
@@ -332,7 +334,7 @@ export default function Transfer({
                                     <tbody>{itemsMapper(items)}</tbody>
                                 </table>
 
-                                <div className="flex justify-center mt-[50px]">
+                                <div className="flex justify-center">
                                     <button
                                         onClick={confirmHandler}
                                         className="w-28 h-10 p-1 rounded-full bg-primary dark:bg-active-icon hover:btn-color-2 text-lightColor-800 font-semibold"
@@ -354,6 +356,7 @@ export default function Transfer({
                             alertFunction={alertFunction}
                             selectedId={selectedId}
                             selectedPerson={selectedPerson}
+                            selectedPersonJO={selectedPersonJO}
                             setAlert={setAlert}
                             confirmation={confirmation}
                         />

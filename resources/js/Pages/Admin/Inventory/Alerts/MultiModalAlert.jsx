@@ -11,7 +11,7 @@ export default function ConditionalAlert(props) {
 
     const acceptHandler = () => {
 
-        axios.post('api/mutliAssignToOtherUser',{user_id: props.selectedPerson, selectedId: props.selectedId, issued_by: value.id}).then(res => {
+        axios.post('api/mutliAssignToOtherUser',{user_id: props.selectedPerson, assigned_to: props.selectedPersonJO, selectedId: props.selectedId, issued_by: value.id}).then(res => {
             if(res.data.success === 'success'){
                 //socket.emit('Admin_accept', {message: 'admin' + '  has accepted the item'})
                 props.confirmation()

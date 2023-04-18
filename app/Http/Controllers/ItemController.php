@@ -14,6 +14,7 @@ class ItemController extends Controller
     {
         $items = DB::table('users_notification as un')
             ->select('un.trackings_id', 't.id', 'pri.quantity', 'pi.description', 'pi.article', 'pu.name as unit', 'pri.pr_item_uid as inventory_no', 'pri.id', 'pri.price', 'it.eul', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
+            ->where('un.id', $req->input('notifID'))
             ->where('un.trackings_id', $req->input('listId'))
             ->join('trackings as t', 'un.trackings_id', '=', 't.id')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
@@ -690,18 +691,24 @@ class ItemController extends Controller
         foreach ($req->input('selectedId') as $data) {
 
             $getItemId =  DB::table('user_returned_items as uri')
-                ->select('it.item_id')
+                ->select('it.item_id', 'it.eul')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
                 ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
                 ->where('uri.uri_id', $data)
                 ->first();
 
+            if ($req->input('user_id') == 0) {
+                $assigned_to = $req->input('user_id');
+            } else {
+                $assigned_to = $req->input('assigned_to');
+            }
+
             DB::table('inventory_trackings')
                 ->insert([
                     'trackings_id' => $tracking_id,
                     'item_id'      => $getItemId->item_id,
-                    'assigned_to'  => $req->input('user_id'),
-                    'eul'          => 'none'
+                    'assigned_to'  => $assigned_to,
+                    'eul'          => $getItemId->eul
                 ]);
         }
 
