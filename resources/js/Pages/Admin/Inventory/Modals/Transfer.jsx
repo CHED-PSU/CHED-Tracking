@@ -7,6 +7,7 @@ export default function Transfer({
     clickMultiModal,
     selectedId,
     getInventoryItems,
+    unselect,
 }) {
     const [toggleTabs, setToggleTabs] = useState("pre-owner");
     const [openAlert, setOpenAlert] = useState(false);

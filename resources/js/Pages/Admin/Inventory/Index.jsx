@@ -449,6 +449,7 @@ export default function Inventory({ className }) {
                     clickMultiModal={clickMultiModal}
                     getInventoryItems={getInventoryItems}
                     selectedId={selectedIds}
+                    unselect={unselect}
                 />
             ) : (
                 ""
