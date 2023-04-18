@@ -511,7 +511,8 @@ class ItemController extends Controller
     public function multiReturnAndRenew(Request $req)
     {
         $num = DB::table('trackings')
-            ->where('created_at', date('F Y'))
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
             ->count();
 
         $total = 0;

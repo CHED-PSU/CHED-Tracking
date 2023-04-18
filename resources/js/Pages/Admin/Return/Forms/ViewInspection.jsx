@@ -450,7 +450,7 @@ export default function ViewInspection(props) {
                                                     </p>
                                                 </>
                                             ) : (
-                                                "Not inspected yet."
+                                                "Not yet inspected."
                                             )}
                                         </div>
                                     </div>
@@ -479,7 +479,7 @@ export default function ViewInspection(props) {
                                                     <p>{PreApprovedInfo[1]}</p>
                                                 </>
                                             ) : (
-                                                "Not inspected yet."
+                                                "Not yet inspected."
                                             )}
                                         </div>{" "}
                                     </div>
@@ -544,7 +544,7 @@ export default function ViewInspection(props) {
                                                     </p>
                                                 </>
                                             ) : (
-                                                "Not inspected yet."
+                                                "Not yet inspected."
                                             )}
                                         </div>
                                         <div>
@@ -556,7 +556,7 @@ export default function ViewInspection(props) {
                                                     <p>{PostApprovedInfo[1]}</p>
                                                 </>
                                             ) : (
-                                                "Not inspected yet."
+                                                "Not yet inspected."
                                             )}
                                         </div>
                                     </div>

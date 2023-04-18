@@ -566,7 +566,9 @@ export default function InspectionForm(props) {
                                                     </p>
                                                 </>
                                             ) : (
-                                                "Not inspected yet."
+                                                <h5 className="font-semibold">
+                                                    Not yet inspected.
+                                                </h5>
                                             )}
                                         </div>
                                     </div>
@@ -595,7 +597,7 @@ export default function InspectionForm(props) {
                                                     <p>{PreApprovedInfo[1]}</p>
                                                 </>
                                             ) : (
-                                                "Not inspected yet."
+                                                "Not yet inspected."
                                             )}
                                         </div>{" "}
                                     </div>
@@ -660,7 +662,9 @@ export default function InspectionForm(props) {
                                                     </p>
                                                 </>
                                             ) : (
-                                                "Not inspected yet."
+                                                <h5 className="font-semibold">
+                                                    Not yet inspected.
+                                                </h5>
                                             )}
                                         </div>
                                         <div>
@@ -672,7 +676,7 @@ export default function InspectionForm(props) {
                                                     <p>{PostApprovedInfo[1]}</p>
                                                 </>
                                             ) : (
-                                                "Not inspected yet."
+                                                "Not yet inspected."
                                             )}
                                         </div>
                                     </div>
