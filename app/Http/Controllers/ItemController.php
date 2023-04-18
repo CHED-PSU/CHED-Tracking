@@ -173,7 +173,7 @@ class ItemController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.confirmation', 'accepted')
-            ->where('uri.status', '!=', 'Unserviceable')
+            ->where('uri.status', '!=', 'Disposed')
             ->where('uri.status', '!=', 'Inventories')
             ->where('uri.status', '!=', 'Transferred')
             ->where('uri.status', '!=', 'Renewed')
@@ -214,7 +214,7 @@ class ItemController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.confirmation', 'accepted')
-            ->where('uri.status', '=', 'Unserviceable')
+            ->where('uri.status', '=', 'Disposed')
             ->get();
 
         return response()->json(['returnedItemsUnserviceable' => $returnedItems]);
@@ -439,13 +439,34 @@ class ItemController extends Controller
             ->insert([
                 'inventory_tracking_id' => $inventory_tracking_id->id,
                 'prev_owner'            => $inventory_tracking_id->received_by,
-                'remarks'               => 'has been moved due to unserviceable due to ' . $inventory_tracking_id->defect,
+                'remarks'               => 'has been moved to unserviceable due to ' . $inventory_tracking_id->defect,
                 'status'                => 'stand_by'
             ]);
 
         DB::table('user_returned_items as uri')
             ->where('uri.uri_id', $req->input('id'))
-            ->update(['status' => 'Unserviceable']);
+            ->update(['status' => 'Disposed']);
+
+        $getUserItems = DB::table('user_returned_items as uri')
+            ->select('ui.ui_id')
+            ->where('uri.uri_id', $req->input('id'))
+            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+            ->first();
+
+        DB::table('user_items as ui')
+            ->where('ui.ui_id', $getUserItems->ui_id)
+            ->update(['item_status' => 'disposed']);
+
+        DB::table('users_notification')
+            ->insert([
+                'trackings_id' => $inventory_tracking_id->id,
+                'user_id'      => $req->input('from'),
+                'to_user_id'   => $inventory_tracking_id->received_by,
+                'ns_id'        => 2,
+                'np_id'        => 2,
+                'confirmation' => 'accepted',
+                'description'  => 'has disposed your item.'
+            ]);
     }
     //get inventory items
     public function getItemsofInventories(Request $req)

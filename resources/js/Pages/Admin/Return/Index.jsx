@@ -223,12 +223,11 @@ export default function Return({ className }) {
                     {/* actions */}
                     <td>
                         <div className="flex gap-4 justify-center">
-                            {data.status === "Unserviceable" ||
+                            {data.status === "Disposed" ||
                             data.status === "Inventories" ||
-                            data.status === "Returned to Owner" || 
-                            data.status === "Renewed" || 
-                            data.status === "Transferred"
-                            ? (
+                            data.status === "Returned to Owner" ||
+                            data.status === "Renewed" ||
+                            data.status === "Transferred" ? (
                                 <div
                                     onClick={() => {
                                         clickForms("view-form"),
@@ -244,15 +243,14 @@ export default function Return({ className }) {
                                     <button
                                         value={data.id}
                                         className={`flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn ${
-                                            data.status !== "Unserviceable" &&
+                                            data.status !== "Disposed" &&
                                             data.status !== "Inventories"
                                                 ? ""
                                                 : "opacity-50"
                                         }`}
                                         onClick={() => {
                                             if (
-                                                data.status ===
-                                                    "Unserviceable" ||
+                                                data.status === "Disposed" ||
                                                 data.status === "Inventories"
                                             ) {
                                                 clickButtonDisable(
@@ -298,20 +296,13 @@ export default function Return({ className }) {
 
                                     <button
                                         className={`flex justify-center items-center w-10 h-10 p-2 text-[16px] text-text-black rounded-full default-btn ${
-                                            data.status !== "Unserviceable" &&
-                                            data.status !==
-                                                "Ready for Return" &&
-                                            data.status !== "Inventories"
+                                            data.status == "Unserviceable"
                                                 ? ""
                                                 : "opacity-50"
                                         }`}
                                         onClick={() => {
                                             if (
-                                                data.status !==
-                                                    "Unserviceable" &&
-                                                data.status !==
-                                                    "Ready for Return" &&
-                                                data.status !== "Inventories"
+                                                data.status == "Unserviceable"
                                             ) {
                                                 clickDisposeModal(
                                                     "open",
@@ -407,7 +398,7 @@ export default function Return({ className }) {
             <td>
                 <a className="text-left pl-6 flex items-center w-full h-12 gap-3">
                     <div className="flex flex-none items-center">
-                    <span className="w-6 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
+                        <span className="w-6 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
                     </div>
                 </a>
             </td>
@@ -415,7 +406,6 @@ export default function Return({ className }) {
             <td>
                 <a className="text-left flex items-center w-full h-12 gap-3">
                     <div className="flex flex-none items-center">
-
                         <span className="w-12 h-12 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
                     </div>
                     <div className="flex flex-col gap-2">
@@ -435,17 +425,13 @@ export default function Return({ className }) {
             </td>
             {/* item status */}
             <td>
-                <div
-                    className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
-                >
+                <div className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer">
                     <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
                 </div>
             </td>
             {/* actions */}
             <td>
-                <div
-                    className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
-                >
+                <div className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer">
                     <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
                 </div>
             </td>

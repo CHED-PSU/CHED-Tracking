@@ -78,6 +78,7 @@ export default function Dispose({
                                 <option value="none">None</option>
                                 <option value="Donation">Donation</option>
                                 <option value="Destruction">Destruction</option>
+                                <option value="Transfer">Transfer</option>
                                 <option value="Sales">Sales</option>
                             </select>
                         </div>

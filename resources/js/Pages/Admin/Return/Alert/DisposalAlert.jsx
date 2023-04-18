@@ -9,8 +9,13 @@ export default function ConditionalAlert(props) {
         props.clickDisposeModal(false)
     }
 
+    const user = localStorage.getItem("localSession");
+    const value = JSON.parse(user);
+
+    console.log(value.id);
+
     const acceptHandler = () => {
-        axios.post('api/moveItemstoUnserviceableItems', {id: props.id})
+        axios.post('api/moveItemstoUnserviceableItems', {id: props.id, from: value.id})
         props.success()
         props.LoadData()
     }

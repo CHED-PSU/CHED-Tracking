@@ -749,8 +749,8 @@ export default function InspectionForm(props) {
                                 >
                                     Ready for Return
                                 </option>
-                                <option id="Returned" value="Returned">
-                                    Returned
+                                <option id="Unserviceable" value="Unserviceable">
+                                    Unserviceable
                                 </option>
                             </select>
                         </div>
