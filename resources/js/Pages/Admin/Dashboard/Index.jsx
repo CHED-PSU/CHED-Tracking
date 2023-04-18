@@ -181,7 +181,7 @@ export default function Dashboard({ className }) {
                                             Pending
                                         </div>
                                     </div>
-                                    <div className="flex 2xl:gap-3 xl:gap-2 gap-2 items-center">
+                                    <div className="flex 2xl:gap-3 xl:gap-2 gap-2 items-center ">
                                         <div className="2xl:h-4 2xl:w-4 xl:h-3 xl:w-3 h-3 w-3 rounded-sm bg-[#FFFFFF]"></div>
                                         <div className="dark:text-white">
                                             Accepted
