@@ -147,6 +147,7 @@ Route::post('moveItemstoUnserviceableItems', [ItemController::class, 'moveItemst
 //Admin Inventories
 //Inventory Items Fetcher
 Route::get('getItemsofInventories', [ItemController::class, 'getItemsofInventories']);
+Route::post('getItemsofInventoriesById', [ItemController::class, 'getItemsofInventoriesById']);
 Route::post('getInventorySorted', [ItemController::class, 'getInventorySorted']);
 //admin return item to previous owner
 Route::post('returnToPreviousOwner', [ItemController::class, 'returnToPreviousOwner']);

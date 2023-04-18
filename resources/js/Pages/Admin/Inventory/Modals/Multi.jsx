@@ -1,5 +1,6 @@
+import { toUpper } from "lodash";
 import React, { useState, useEffect, useRef } from "react";
-import Alert from "../Alerts/MultiModalAlert";
+import MultiModalAlert from "../Alerts/MultiModalAlert";
 import axios from "axios";
 
 export default function Assign({
@@ -120,6 +121,34 @@ export default function Assign({
         }
     }
 
+    const [items, setItems] = useState([]);
+    useEffect(() => {
+        const fetchInventoryItems = async () => {
+            const promises = selectedId.map(async (id) => {
+                const res = await axios.post("api/getItemsofInventoriesById", {
+                    id,
+                });
+                return res.data.inventory_items;
+            });
+            try {
+                const results = await Promise.all(promises);
+                const mergedItems = results.flat();
+                setItems(mergedItems);
+            } catch (e) {
+                console.log(e);
+            }
+        };
+
+        fetchInventoryItems();
+    }, [selectedId]);
+    console.log(items);
+
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
     return (
         <div className={className}>
             <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-50">
@@ -151,19 +180,19 @@ export default function Assign({
                     <div className={className}>
                         <div className="space-y-3">
                             <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default">
-                                {/* {displayPhoto(
-                                    users[selectedPerson - 1].img,
-                                    users[selectedPerson - 1].firstname,
-                                    "w-14 h-14"
-                                )} */}
-                                <img
-                                    draggable="false"
-                                    src="./img/profile-pic.jpeg"
-                                    className={
-                                        className +
-                                        " w-18 h-18 rounded-full bg-gray-500 object-cover"
-                                    }
-                                />
+                                {loading ? (
+                                    <img
+                                        draggable="false"
+                                        src="./img/profile-pic.jpeg"
+                                        className="w-18 h-18 rounded-full bg-gray-500 object-cover"
+                                    />
+                                ) : (
+                                    displayPhoto(
+                                        users[selectedPerson - 1].img,
+                                        users[selectedPerson - 1].firstname,
+                                        "w-18 h-18"
+                                    )
+                                )}{" "}
                                 <div className="w-full space-y-2">
                                     <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-lg h-8 w-full">
                                         {loading
@@ -182,9 +211,11 @@ export default function Assign({
                                                   : "") +
                                               users[selectedPerson - 1]
                                                   .surname +
-                                              " " +
-                                              (users[selectedPerson - 1]
-                                                  .suffix || "")}
+                                              (users[selectedPerson - 1].suffix
+                                                  ? " " +
+                                                    users[selectedPerson - 1]
+                                                        .suffix
+                                                  : "")}
                                     </div>
                                     <div className="font-medium pl-[10px] text-sm h-8 rounded-md w-56">
                                         {loading
@@ -221,7 +252,11 @@ export default function Assign({
                                                       >
                                                           {data.firstname +
                                                               " " +
-                                                              data.surname}
+                                                              data.surname +
+                                                              (data.suffix
+                                                                  ? " " +
+                                                                    data.suffix
+                                                                  : "")}
                                                       </option>
                                                   );
                                               })}
@@ -239,7 +274,7 @@ export default function Assign({
                         </div>
                     </div>
                     {openAlert ? (
-                        <Alert
+                        <MultiModalAlert
                             alertIcon={alertIcon}
                             alertHeader={alertHeader}
                             alertDesc={alertDesc}
