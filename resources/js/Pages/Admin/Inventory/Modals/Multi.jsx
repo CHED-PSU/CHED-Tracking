@@ -121,27 +121,26 @@ export default function Assign({
         }
     }
 
-    const [items, setItems] = useState([]);
-    useEffect(() => {
-        const fetchInventoryItems = async () => {
-            const promises = selectedId.map(async (id) => {
-                const res = await axios.post("api/getItemsofInventoriesById", {
-                    id,
-                });
-                return res.data.inventory_items;
-            });
-            try {
-                const results = await Promise.all(promises);
-                const mergedItems = results.flat();
-                setItems(mergedItems);
-            } catch (e) {
-                console.log(e);
-            }
-        };
+    // const [items, setItems] = useState([]);
+    // useEffect(() => {
+    //     const fetchInventoryItems = async () => {
+    //         const promises = selectedId.map(async (id) => {
+    //             const res = await axios.post("api/getItemsofInventoriesById", {
+    //                 id,
+    //             });
+    //             return res.data.inventory_items;
+    //         });
+    //         try {
+    //             const results = await Promise.all(promises);
+    //             const mergedItems = results.flat();
+    //             setItems(mergedItems);
+    //         } catch (e) {
+    //             console.log(e);
+    //         }
+    //     };
 
-        fetchInventoryItems();
-    }, [selectedId]);
-    console.log(items);
+    //     fetchInventoryItems();
+    // }, [selectedId]);
 
     function formattedAmount(index) {
         const amount = index;

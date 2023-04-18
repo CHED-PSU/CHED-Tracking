@@ -1,3 +1,4 @@
+import { toUpper } from "lodash";
 import React, { useState, useEffect, useRef } from "react";
 import Alert from "../Alerts/MultiModalAlert";
 import axios from "axios";
@@ -49,6 +50,7 @@ export default function Transfer({
 
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState();
+    const [usersJO, setUsersJO] = useState();
     const [selectedPerson, setSelectedPerson] = useState(1);
 
     useEffect(() => {
@@ -64,7 +66,20 @@ export default function Transfer({
                 setLoading(false);
             }
         };
+        const getUserJO = async () => {
+            setLoading(true);
+            try {
+                await axios.get("api/getUserListsJO").then((res) => {
+                    setUsersJO(res.data.user_lists);
+                });
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        };
         getUser();
+        getUserJO();
     }, []);
 
     const confirmHandler = (event) => {
@@ -77,19 +92,6 @@ export default function Transfer({
     }
 
     let modalBody = useRef();
-
-    useEffect(() => {
-        const handler = (event) => {
-            if (!modalBody.current.contains(event.target)) {
-                clickMultiModal("close");
-            }
-        };
-        document.addEventListener("mousedown", handler);
-
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    });
 
     const personChanger = (e) => {
         setSelectedPerson(e.target.value);
@@ -119,6 +121,79 @@ export default function Transfer({
             );
         }
     }
+
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        function getInventory(index) {
+            try {
+                axios.post("api/getItemsofInventoriesById", { id: index }).then((response) => {
+                    setItems(response.data.inventory_items_all);
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        getInventory(selectedId);
+    }, [selectedId]);
+
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
+    }
+
+    const itemsMapper = (items) => {
+        return items?.map((data, index) => {
+            return (
+                <tr key={index}>
+                    <td className="text-center p-2 border text-sm w-20">1</td>
+                    <td className="text-center p-2 border text-sm">
+                        {toUpper(data.unit)}
+                    </td>
+                    <td className="text-center p-2 border text-sm">
+                        {formattedAmount(data.price)}
+                    </td>
+                    <td className="text-center p-2 border text-sm">
+                        {toUpper(data.article)}
+                    </td>
+                    <td className="text-center p-2 border text-sm">
+                        <p className="w-28 truncate">
+                            {toUpper(data.description)}
+                        </p>
+                    </td>
+                    <td className="text-center p-2 border text-sm">
+                        {data.code}
+                    </td>
+                    <td className="p-2 border">
+                        <div className="flex flex-col justify-between items-center">
+                            <select
+                                name=""
+                                id="Assigned-to"
+                                className="w-full text-sm rounded-md border border-neutral-500 p-2 outline-none cursor-pointer"
+                            >
+                                <option value="None">None</option>
+                                {loading
+                                    ? ""
+                                    : usersJO?.map((data) => {
+                                          return (
+                                              <option
+                                                  key={data.id}
+                                                  value={data.id}
+                                              >
+                                                  {data.firstname +
+                                                      " " +
+                                                      data.surname}
+                                              </option>
+                                          );
+                                      })}
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            );
+        });
+    };
 
     return (
         <div className={className}>
@@ -151,19 +226,19 @@ export default function Transfer({
                     <div className={className}>
                         <div className="space-y-3">
                             <div className="flex bg-gray-100 rounded-xl py-5 px-6 gap-3 cursor-default items-center">
-                                {/* {displayPhoto(
-                                    users[selectedPerson - 1].img,
-                                    users[selectedPerson - 1].firstname,
-                                    "w-14 h-14"
-                                )} */}
-                                <img
-                                    draggable="false"
-                                    src="./img/profile-pic.jpeg"
-                                    className={
-                                        className +
-                                        " w-18 h-18 rounded-full bg-gray-500 object-cover"
-                                    }
-                                />
+                                {loading ? (
+                                    <img
+                                        draggable="false"
+                                        src="./img/profile-pic.jpeg"
+                                        className="w-18 h-18 rounded-full bg-gray-500 object-cover"
+                                    />
+                                ) : (
+                                    displayPhoto(
+                                        users[selectedPerson - 1].img,
+                                        users[selectedPerson - 1].firstname,
+                                        "w-18 h-18"
+                                    )
+                                )}
                                 <div className="w-full space-y-2">
                                     <div className="border-b-2 border-gray-300 font-semibold pl-[10px] text-lg h-8 w-full">
                                         {loading
@@ -198,7 +273,6 @@ export default function Transfer({
                                 </div>
                             </div>
                             <form action="">
-                               
                                 <div className="flex flex-col justify-between">
                                     <label
                                         htmlFor="Status"
@@ -228,37 +302,36 @@ export default function Transfer({
                                               })}
                                     </select>
                                 </div>
-                                
+
                                 <table className="w-full my-8">
                                     <thead>
                                         <tr>
-                                            <th className="font-medium p-2 border text-xs">Qty</th>
-                                            <th className="font-medium p-2 border text-xs">Unit</th>
-                                            <th className="font-medium p-2 border text-xs">Amount</th>
-                                            <th className="font-medium p-2 border text-xs" colSpan={2}>Description</th>
-                                            <th className="font-medium p-2 border text-xs w-80">Inventory Item No.</th>
-                                            <th className="font-medium p-2 border text-xs w-64">Assign to</th>
+                                            <th className="font-medium p-2 border text-xs">
+                                                Qty
+                                            </th>
+                                            <th className="font-medium p-2 border text-xs">
+                                                Unit
+                                            </th>
+                                            <th className="font-medium p-2 border text-xs">
+                                                Amount
+                                            </th>
+                                            <th
+                                                className="font-medium p-2 border text-xs"
+                                                colSpan={2}
+                                            >
+                                                Description
+                                            </th>
+                                            <th className="font-medium p-2 border text-xs w-80">
+                                                Inventory Item No.
+                                            </th>
+                                            <th className="font-medium p-2 border text-xs w-64">
+                                                Assign to
+                                            </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td className="text-center p-2 border text-sm w-20">1</td>
-                                            <td className="text-center p-2 border text-sm">UNIT</td>
-                                            <td className="text-center p-2 border text-sm">30,200</td>
-                                            <td className="text-center p-2 border text-sm">Laptop</td>
-                                            <td className="text-center p-2 border text-sm"><p className="w-28 truncate">LIGHTWEIGHT</p></td>
-                                            <td className="text-center p-2 border text-sm">43211503-LAP002</td>
-                                            <td className="p-2 border">
-                                                <div className="flex flex-col justify-between items-center">
-                                                    <select className="w-full rounded-md border text-xs border-neutral-500 p-2 outline-none cursor-pointer">
-                                                    <option value="none">Select User</option>
-                                                    </select>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                    <tbody>{itemsMapper(items)}</tbody>
                                 </table>
-                                
+
                                 <div className="flex justify-center mt-[50px]">
                                     <button
                                         onClick={confirmHandler}
@@ -267,7 +340,6 @@ export default function Transfer({
                                         Confirm
                                     </button>
                                 </div>
-                                
                             </form>
                         </div>
                     </div>

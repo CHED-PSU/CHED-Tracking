@@ -393,7 +393,7 @@ class ItemController extends Controller
         $description = '';
         if ($item_id->category_id == 3) {
             $description = 'PAR';
-        } else if ($item_id->category_id == 2){
+        } else if ($item_id->category_id == 2) {
             $description = 'ICS';
         }
 
@@ -493,24 +493,26 @@ class ItemController extends Controller
 
     public function getItemsofInventoriesById(Request $req)
     {
-        $inventory_items = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id', 'pi.code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'u.img', 'uri.status', 'u.id')
-            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
-            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
-            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
-            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
-            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
-            ->join('users as u', 'u.id', '=', 'uri.user_id')
-            ->where('uri.status', 'Inventories')
-            ->where('uri.uri_id', $req->input('id'))
-            ->get();
+        $idArray = $req->input('id');
+        $inventory_items_all = collect();
 
-        $getUsers = DB::table('users')
-            ->select('prefix', 'firstname', 'middlename', 'surname', 'suffix', 'id')
-            ->get();
+        foreach ($idArray as $id) {
+            $items = DB::table('user_returned_items as uri')
+                ->select('uri.uri_id', 'pi.code', 'pri.price', 'pu.name as unit', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'u.img', 'uri.status', 'u.id')
+                ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+                ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
+                ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+                ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+                ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+                ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+                ->join('users as u', 'u.id', '=', 'uri.user_id')
+                ->where('uri.status', 'Inventories')
+                ->where('uri.uri_id', $id)
+                ->get();
+            $inventory_items_all = $inventory_items_all->concat($items);
+        }
 
-        return response()->json(['inventory_items' => $inventory_items, 'users' => $getUsers]);
+        return response()->json(['inventory_items_all' => $inventory_items_all]);
     }
 
     public function getInventorySorted(Request $req)
@@ -584,7 +586,7 @@ class ItemController extends Controller
 
         if ($price->category_id == 3) {
             $form = 'PAR';
-        } else if ($price->category_id == 2){
+        } else if ($price->category_id == 2) {
             $form = 'ICS';
         }
 
@@ -672,7 +674,7 @@ class ItemController extends Controller
 
         if ($price->category_id == 3) {
             $form = 'PAR';
-        } else if ($price->category_id == 2){
+        } else if ($price->category_id == 2) {
             $form = 'ICS';
         }
 

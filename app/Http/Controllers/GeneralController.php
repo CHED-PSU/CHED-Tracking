@@ -79,6 +79,16 @@ class GeneralController extends Controller
 
         return response()->json(['user_lists' => $userList]);
     }
+    public function getUserListsJO()
+    {
+        $userList = DB::table('users')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
+            ->join('roles as r', 'r.id', '=', 'users.role_id')
+            ->where('users.role_id', 5)
+            ->get();
+
+        return response()->json(['user_lists' => $userList]);
+    }
     public function getUserListsICS()
     {
         $userList = DB::table('users')
