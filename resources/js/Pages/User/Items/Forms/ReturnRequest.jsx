@@ -182,11 +182,8 @@ export default function ReturnRequest(props) {
                         <label htmlFor="Status" className="text-base font-semibold">Status</label>
                         <select onChange={optionHandler} name="purpose" id="Status" className="w-full rounded-md border border-neutral-500 p-4 outline-none">
                             <option value="None">None</option>
-                            <option value="Dispose">Dispose</option>
                             <option value="Return for Repair">Return for Repair</option>
-                            <option value="Return for Renewal">Return for Renewal</option>
-                            <option value="Return to Stock">Returned to stock</option>
-                            <option value="Other">Other</option>
+                            <option value="Return for Disposal">Returned for Disposal</option>
                         </select>
                         {isOther ?
                             <>

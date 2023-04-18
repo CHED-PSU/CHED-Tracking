@@ -172,8 +172,10 @@ export default function ICSModal(props) {
                                 </div>
                                 <div className="">
                                     Serial No:{" "}
-                                    <font className="dark:text-gray-400">
-                                        {""}
+                                    <font className="dark:text-gray-400 font-medium text-sm">
+                                        {Loading
+                                            ? "N/A"
+                                            : returnedItemsData[0].serial_no}
                                     </font>
                                 </div>
                                 <div className="">
@@ -190,12 +192,15 @@ export default function ICSModal(props) {
                                 </div>
                                 <div className="">
                                     Nature of last repair:{" "}
-                                    {Loading
-                                        ? "N/A"
-                                        : returnedItemsInfo[0].pre_nature == null
-                                        ? "Not yet repaired."
-                                        : returnedItemsInfo[0].pre_nature}
-                                    <font className="dark:text-gray-400"></font>
+                                    <font className="dark:text-gray-400 font-medium text-sm">
+                                        {Loading
+                                            ? "N/A"
+                                            : returnedItemsInfo[0].pre_nature ==
+                                              null
+                                            ? "Not yet repaired."
+                                            : returnedItemsInfo[0].pre_nature}
+                                        <font className="dark:text-gray-400"></font>
+                                    </font>
                                 </div>
                             </div>
                             <div className="">
@@ -209,15 +214,15 @@ export default function ICSModal(props) {
                                 </div>
                                 <div className="">
                                     Property No:{" "}
-                                    <font className="dark:text-gray-400">
+                                    <font className="dark:text-gray-400 font-medium text-sm">
                                         {Loading
                                             ? "N/A"
                                             : returnedItemsData[0].property_no}
                                     </font>
                                 </div>
                                 <div className="">
-                                    Date of last repair:{" "}
-                                    <font className="dark:text-gray-400">
+                                    Date of Last Repair:{" "}
+                                    <font className="dark:text-gray-400 font-medium text-sm">
                                         {Loading
                                             ? "N/A"
                                             : returnedItemsInfo[0].pre_nature ==
@@ -229,21 +234,33 @@ export default function ICSModal(props) {
                                               )}
                                     </font>
                                 </div>
+                                <div className="">
+                                    Return Status:{" "}
+                                    <font className="dark:text-gray-400 font-medium text-sm">
+                                    {Loading
+                                            ? "N/A"
+                                            : returnedItemsData[0].status}
+                                    </font>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="dark:text-white">
                         <div className="text-sm">DEFECT:</div>
                         <div className="text-sm dark:text-gray-400 max-h-20 mb-4">
-                            {Loading ? "N/A" : returnedItemsData[0].defect}
+                            <font className="dark:text-gray-400 font-medium text-sm">
+                                {Loading ? "N/A" : returnedItemsData[0].defect}
+                            </font>
                         </div>
                     </div>
                     <div className="text-sm">
                         <div className="dark:text-white">Request by:</div>
                         <div className="dark:text-gray-400">
-                            {Loading
-                                ? "N/A"
-                                : displayName(returnedItemsData[0], false)}
+                            <font className="dark:text-gray-400 font-medium text-sm">
+                                {Loading
+                                    ? "N/A"
+                                    : displayName(returnedItemsData[0], false)}
+                            </font>
                         </div>
                     </div>
                     <div className="text-xs dark:text-gray-300">
