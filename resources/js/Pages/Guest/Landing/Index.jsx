@@ -99,21 +99,21 @@ export default function Landing() {
     };
 
     const handleLogOut = () => {
-        axios({
-            url: "/api/logoutToken",
-            method: "post",
-            headers: headers(),
-        }).then((response) => {
-            if (response.data.status === true) {
-                localStorage.removeItem("localSession");
-                localStorage.removeItem("token");
-                nav("/");
-            }
-        });
+        // axios({
+        //     url: "/api/logoutToken",
+        //     method: "post",
+        //     headers: headers(),
+        // }).then((response) => {
+        //     if (response.data.status === true) {
+        //         localStorage.removeItem("localSession");
+        //         localStorage.removeItem("token");
+        //         nav("/");
+        //     }
+        // });
 
-        // localStorage.removeItem("localSession");
-        // localStorage.removeItem("token");
-        // nav("/");
+        localStorage.removeItem("localSession");
+        localStorage.removeItem("token");
+        nav("/");
     };
 
     const [openAlert, setOpenAlert] = useState("question"); // none, check, question, or exclamation
