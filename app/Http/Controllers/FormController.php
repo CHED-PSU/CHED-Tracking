@@ -477,7 +477,7 @@ class FormController extends Controller
     public function getReturnedItemsData(Request $req)
     {
         $getreturnedItemsdata = DB::table('user_returned_items as uri')
-            ->select('pu.name as unit', 'pi.description as brand', 'pi.article as article', 'pi.code as property_no', 'pri.price as acquisition', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'uri.uri_id')
+            ->select('ia.serial_no', 'uri.status', 'pu.name as unit', 'pi.description as brand', 'pi.article as article', 'ia.stock_property_no as property_no', 'pri.price as acquisition', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'uri.uri_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
