@@ -4,6 +4,7 @@ import Searchbar from "../Components/Searchbar";
 import SortedModal from "./Modals/Sorted";
 import SingleModal from "./Modals/Single";
 import MultiModal from "./Modals/Multi";
+import Transfer from "./Modals/Transfer";
 import Alert from "./Alerts/Alert";
 import axios from "axios";
 30;
@@ -195,7 +196,7 @@ export default function Inventory({ className }) {
                     <td>
                         <div className="w-full flex justify-center">
                             <button
-                                onClick={() => {clickModalSingle(toggleSort),
+                                onClick={() => {unselect(),clickModalSingle(toggleSort),
                                     handleSelectSingleItem(data.uri_id);
                                 }}
                                 value={data.uri_id}
@@ -248,6 +249,19 @@ export default function Inventory({ className }) {
 
     function clickMultiModal(index) {
         if (index === "open-multi") {
+            if (selectedMultipleIds?.length !== 0) {
+                setSelectSingleIds([]);
+                setOpenMultiModal(index);
+            } else {
+                setOpenAlert(true);
+                setAlertIcon("exclamation");
+                setAlertHeader("No selected items.");
+                setAlertDesc("Please select an item on the checkbox.");
+                setAlertNoButton("Okay");
+            }
+        }
+
+        if (index === "open-transfer") {
             if (selectedMultipleIds?.length !== 0) {
                 setSelectSingleIds([]);
                 setOpenMultiModal(index);
@@ -430,6 +444,16 @@ export default function Inventory({ className }) {
                 ""
             )}
 
+            {openMultiModal === "open-transfer" ? (
+                <Transfer
+                    clickMultiModal={clickMultiModal}
+                    getInventoryItems={getInventoryItems}
+                    selectedId={selectedIds}
+                />
+            ) : (
+                ""
+            )}
+
             {openAlert ? (
                 <Alert
                     alertIcon={alertIcon}
@@ -535,7 +559,18 @@ export default function Inventory({ className }) {
                                 ""
                             )}
 
-                            <div className="w-56 flex justify-end">
+                            <div className="w-56 flex justify-end gap-3">
+                                <button
+                                    onClick={() => {
+                                        toggleSort === "all"
+                                            ? clickMultiModal("open-transfer")
+                                            : '';
+                                    }}
+                                    className="text-sm font-medium text-black w-fit px-4 py-2 flex gap-2 items-center cursor-pointer btn-color-3 border border-border-iconLight dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 rounded-full"
+                                >
+                                    <i className="fa-solid fa-box-archive text-sm"></i>
+                                        Sample
+                                </button>
                                 <button
                                     onClick={() => {
                                         toggleSort === "all"
