@@ -193,7 +193,7 @@ class FormController extends Controller
     public function getIcsDetails(Request $req)
     {
         $getItems = DB::table('trackings as t')
-            ->select('ia.serial_no', 'pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
+            ->select('ia.stock_property_no', 'pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -269,7 +269,7 @@ class FormController extends Controller
     public function getParDetails(Request $req)
     {
         $getItems = DB::table('trackings as t')
-            ->select('ia.serial_no', 'pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
+            ->select('ia.stock_property_no', 'pri.quantity', 'pu.name as unit', 'ui.item_status', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -477,7 +477,7 @@ class FormController extends Controller
     public function getReturnedItemsData(Request $req)
     {
         $getreturnedItemsdata = DB::table('user_returned_items as uri')
-            ->select('ia.serial_no', 'uri.status', 'pu.name as unit', 'pi.description as brand', 'pi.article as article', 'ia.stock_property_no as property_no', 'pri.price as acquisition', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'uri.uri_id')
+            ->select('ia.stock_property_no', 'uri.status', 'pu.name as unit', 'pi.description as brand', 'pi.article as article', 'ia.stock_property_no as property_no', 'pri.price as acquisition', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'uri.uri_id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -612,7 +612,7 @@ class FormController extends Controller
     public function getUserICS(Request $req)
     {
         $getICS = DB::table('trackings as t')
-            ->select('t.tracking_id as trackingCode', 't.issued_by', 'it.trackings_id as tracking_id', 'iar.pr_item_uid', 'iar.serial_no', 'pri.price', 'pi.article', 'pi.description', 'pu.name')
+            ->select('t.tracking_id as trackingCode', 't.issued_by', 'it.trackings_id as tracking_id', 'iar.pr_item_uid', 'iar.stock_property_no', 'pri.price', 'pi.article', 'pi.description', 'pu.name')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as iar', 'iar.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'iar.pr_item_uid')

@@ -234,7 +234,7 @@ export default function InventorySticker(props) {
                                 </div>
                                 <QRCode
                                     className="w-10 h-10 bg-white p-1 flex-none"
-                                    serial_no={data.serial_no}
+                                    serial_no={data.stock_property_no}
                                 />
                             </div>
                             <div className="bg-black text-white text-ss font-bold text-center">
@@ -267,8 +267,8 @@ export default function InventorySticker(props) {
                                             <td className="h-3">SERIAL NO.</td>
                                             <td className="text-[8px] font-medium">
                                                 :{" "}
-                                                {data.serial_no
-                                                    ? data.serial_no
+                                                {data.stock_property_no
+                                                    ? data.stock_property_no
                                                     : "N/A"}
                                             </td>
                                         </tr>
@@ -430,10 +430,10 @@ export default function InventorySticker(props) {
                                 NOTE: PLEASE DO NOT REMOVE
                             </div>
                             <div className="flex gap-2 px-2 items-center bg-black text-white text-[5px] text-center pt-1 py-1">
-                                {data.serial_no ? (
+                                {data.stock_property_no ? (
                                     <BarCode
                                         className="w-fit h-8 bg-white"
-                                        serial_no={data.serial_no}
+                                        serial_no={data.stock_property_no}
                                     />
                                 ) : (
                                     <div className="h-8"></div>

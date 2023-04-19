@@ -150,7 +150,7 @@ export default function Inventory({ className }) {
                             <input
                                 type="checkbox"
                                 className="u_items"
-                                value={data.uri_id}
+                                value={data.uri_id + "|" + data.tracking_id}
                                 onChange={handleSelectItem}
                             />
                         </div>
@@ -176,7 +176,7 @@ export default function Inventory({ className }) {
                                     {data.description}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
-                                    Item Code: {data.code}
+                                    {data.tracking_id.split("-")[0]} Code: {data.tracking_id}
                                 </p>
                             </div>
                         </a>
@@ -212,11 +212,34 @@ export default function Inventory({ className }) {
     };
 
     const [openAlert, setOpenAlert] = useState(false);
+    const [allowed, setAllowed] = useState(true);
     const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
     const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
     const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
     const [alertNoButton, setAlertNoButton] = useState("No");
+    const [checkboxIds, setCheckboxIds] = useState([]);
+    const [selectSingleIds, setSelectSingleIds] = useState([]);
     const [selectedMultipleIds, setSelectedMultipleIds] = useState([]);
+    const [selectedMultipleTrackIds, setSelectedMultipleTrackIds] = useState(
+        []
+    );
+    const selectedIds =
+        selectSingleIds != "" ? selectSingleIds : selectedMultipleIds;
+
+    useEffect(() => {
+        if (checkboxIds.length > 0) {
+            const ids = [];
+            const trackIds = [];
+            checkboxIds.forEach((item) => {
+                const [id, trackId] = item.split("|");
+                const code = trackId.split("-")[0];
+                ids.push(parseInt(id));
+                trackIds.push(code);
+            });
+            setSelectedMultipleIds(ids);
+            setSelectedMultipleTrackIds(trackIds);
+        }
+    }, [checkboxIds]);
 
     function clickModalSingle(index) {
         if (index === "sorted") {
@@ -230,7 +253,7 @@ export default function Inventory({ className }) {
 
     function clickSortedModal(index) {
         if (index === "open-sorted") {
-            if (selectedMultipleIds?.length !== 0) {
+            if (checkboxIds?.length !== 0) {
                 setSelectSingleIds([]);
                 setOpenSortedModal(index);
             } else {
@@ -249,7 +272,7 @@ export default function Inventory({ className }) {
 
     function clickMultiModal(index) {
         if (index === "open-multi") {
-            if (selectedMultipleIds?.length !== 0) {
+            if (checkboxIds?.length !== 0) {
                 setSelectSingleIds([]);
                 setOpenMultiModal(index);
             } else {
@@ -259,12 +282,23 @@ export default function Inventory({ className }) {
                 setAlertDesc("Please select an item on the checkbox.");
                 setAlertNoButton("Okay");
             }
-        }
-
-        if (index === "open-transfer") {
-            if (selectedMultipleIds?.length !== 0) {
-                setSelectSingleIds([]);
-                setOpenMultiModal(index);
+        } else if (index === "open-transfer") {
+            if (checkboxIds?.length !== 0) {
+                if (checkboxIds?.length > 1) {
+                    if (allowed) {
+                        setSelectSingleIds([]);
+                        setOpenMultiModal(index);
+                    } else {
+                        setOpenAlert(true);
+                        setAlertIcon("exclamation");
+                        setAlertHeader("Transfer restrictions.");
+                        setAlertDesc("PAR Items must transfer individually.");
+                        setAlertNoButton("Okay");
+                    }
+                } else {
+                    setSelectSingleIds([]);
+                    setOpenMultiModal(index);
+                }
             } else {
                 setOpenAlert(true);
                 setAlertIcon("exclamation");
@@ -272,9 +306,7 @@ export default function Inventory({ className }) {
                 setAlertDesc("Please select an item on the checkbox.");
                 setAlertNoButton("Okay");
             }
-        }
-
-        if (index === "close") {
+        } else if (index === "close") {
             setOpenMultiModal(index);
         }
     }
@@ -288,7 +320,7 @@ export default function Inventory({ className }) {
     }
 
     const unselect = () => {
-        setSelectedMultipleIds([]);
+        setCheckboxIds([]);
         const checkbox = document.querySelector("#select-all");
         checkbox.checked = false;
         const checkboxes = document.querySelectorAll(".u_items");
@@ -298,9 +330,8 @@ export default function Inventory({ className }) {
     };
 
     //Select Only One
-    const [selectSingleIds, setSelectSingleIds] = useState([]);
-
     const handleSelectSingleItem = (itemId) => {
+        setSelectedMultipleTrackIds([]);
         setSelectSingleIds([itemId]);
     };
 
@@ -310,13 +341,13 @@ export default function Inventory({ className }) {
             const checkboxes = document.querySelectorAll(".u_items");
             const ids = [];
             checkboxes.forEach((checkbox) => {
-                ids.push(parseInt(checkbox.value));
+                ids.push(checkbox.value);
                 checkbox.checked = true;
             });
-            setSelectedMultipleIds(ids);
+            setCheckboxIds(ids);
         } else {
             // Clear the selected IDs array and uncheck all the checkboxes
-            setSelectedMultipleIds([]);
+            setCheckboxIds([]);
             const checkboxes = document.querySelectorAll(".u_items");
             checkboxes.forEach((checkbox) => {
                 checkbox.checked = false;
@@ -333,16 +364,14 @@ export default function Inventory({ className }) {
     };
 
     const handleSelectItem = (event) => {
-        const itemId = parseInt(event.target.value);
+        const itemId = event.target.value;
         const isChecked = event.target.checked;
         if (isChecked) {
             // Add the selected item ID to the array
-            setSelectedMultipleIds([...selectedMultipleIds, itemId]);
+            setCheckboxIds([...checkboxIds, itemId]);
         } else {
             // Remove the selected item ID from the array
-            setSelectedMultipleIds(
-                selectedMultipleIds.filter((id) => id !== itemId)
-            );
+            setCheckboxIds(checkboxIds.filter((id) => id !== itemId));
         }
 
         // Check if all checkboxes are checked or not
@@ -367,8 +396,20 @@ export default function Inventory({ className }) {
         selectAllCheckbox.addEventListener("change", handleSelectAll);
     }, []);
 
-    const selectedIds =
-        selectSingleIds != "" ? selectSingleIds : selectedMultipleIds;
+    function parTransfer(code) {
+        if (code.length > 1) {
+            const hasPAR = code.includes("PAR");
+            if (hasPAR == false) {
+                setAllowed(true);
+            }
+        } else {
+            setAllowed(false);
+        }
+    }
+
+    useEffect(() => {
+        parTransfer(selectedMultipleTrackIds);
+    }, [selectedMultipleTrackIds]);
 
     function formatDateDisplay(dateString) {
         const date = new Date(dateString);

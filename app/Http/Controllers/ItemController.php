@@ -568,7 +568,7 @@ class ItemController extends Controller
     public function getIssuedFormDetails(Request $req)
     {
         $getItems = DB::table('inventory_trackings as it')
-            ->select('ia.serial_no', 'pri.quantity', 'pu.name as unit', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.img', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
+            ->select('ia.stock_property_no', 'pri.quantity', 'pu.name as unit', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.img', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')

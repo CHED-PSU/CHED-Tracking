@@ -175,7 +175,7 @@ export default function ICSModal(props) {
                                     <font className="dark:text-gray-400 font-medium text-sm">
                                         {Loading
                                             ? "N/A"
-                                            : returnedItemsData[0].serial_no}
+                                            : returnedItemsData[0].stock_property_no}
                                     </font>
                                 </div>
                                 <div className="">
