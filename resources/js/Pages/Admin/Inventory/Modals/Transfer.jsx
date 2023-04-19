@@ -154,7 +154,7 @@ export default function Transfer({
                         </p>
                     </td>
                     <td className="text-center p-2 border text-sm">
-                        {data.code}
+                        {data.property_no}
                     </td>
                     <td className="p-2 border">
                         <div className="flex flex-col justify-between items-center">

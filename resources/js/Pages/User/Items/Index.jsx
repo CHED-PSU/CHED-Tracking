@@ -97,7 +97,7 @@ export default function Index({ className }) {
                         1
                     </td>
                     <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
-                        {data.code}
+                        {data.property_no}
                     </td>
                     <td className="text-sm">{data.article}</td>
                     <td className="text-sm">{data.description}</td>

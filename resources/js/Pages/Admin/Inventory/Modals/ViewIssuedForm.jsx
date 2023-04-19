@@ -60,7 +60,7 @@ export default function ViewIssuedForm({
                             {toUpper(data.description)}
                         </div>
                     </td>
-                    <td className="text-left px-2 border">{data.code}</td>
+                    <td className="text-left px-2 border">{data.property_no}</td>
                     <td className="text-center px-2 border">
                         {toUpper(data.eul)}
                     </td>

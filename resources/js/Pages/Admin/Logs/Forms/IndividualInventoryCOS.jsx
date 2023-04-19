@@ -42,7 +42,7 @@ export default function IndividualInventoryCOS(props) {
                         {data.description}
                     </td>
                     <td className="text-center px-2 border">1</td>
-                    <td className="text-center px-2 border">{data.code}</td>
+                    <td className="text-center px-2 border">{data.property_no}</td>
                     <td className="text-center px-2 border">
                         {formattedAmount(data.amount)}
                     </td>
