@@ -36,10 +36,10 @@ export default function IndividualInventoryCOS(props) {
                 >
                     <td className="text-center px-2 border">{index + 1}</td>
                     <td className="text-center px-2 border">
-                        {data.article}
+                        {toUpper(data.article)}
                     </td>
                     <td className="text-left px-2 border">
-                        {data.description}
+                        {toUpper((data.make_model ? data.make_model + ', ' : '') + data.description + (data.color ? ', ' + data.color : ''))}
                     </td>
                     <td className="text-center px-2 border">1</td>
                     <td className="text-center px-2 border">{data.property_no}</td>

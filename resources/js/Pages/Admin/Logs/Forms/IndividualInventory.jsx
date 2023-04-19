@@ -36,13 +36,13 @@ export default function IndividualInventory(props) {
                 >
                     <td className="text-center px-2 border">{index + 1}</td>
                     <td className="text-center px-2 border">
-                        {data.article}
+                        {toUpper(data.article)}
                     </td>
                     <td className="text-left px-2 border">
-                        {data.description}
+                        {toUpper((data.make_model ? data.make_model + ', ' : '') + data.description + (data.color ? ', ' + data.color : ''))}
                     </td>
                     <td className="text-center px-2 border">1</td>
-                    <td className="text-center px-2 border"></td>
+                    <td className="text-center px-2 border">{data.serial_no}</td>
                     <td className="text-center px-2 border">{data.code}</td>
                     <td className="text-center px-2 border">
                         {formattedAmount(data.amount)}

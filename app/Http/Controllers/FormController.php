@@ -321,7 +321,7 @@ class FormController extends Controller
     public function getIndividualItems(Request $req)
     {
         $items = DB::table('trackings as t')
-            ->select('ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.article', 'ia.stock_property_no as code', 'it.eul', 'ui.item_status as remarks', 'it.id', 'it.assigned_to', 'ua.firstname', 'ua.middlename', 'ua.surname', 'ua.suffix')
+            ->select('ia.serial_no as serial_no', 'ia.color', 'ia.make_model', 'ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.article', 'ia.stock_property_no as code', 'it.eul', 'ui.item_status as remarks', 'it.id', 'it.assigned_to', 'ua.firstname', 'ua.middlename', 'ua.surname', 'ua.suffix')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
@@ -347,7 +347,7 @@ class FormController extends Controller
     public function getIndividualItemsCOS(Request $req)
     {
         $items = DB::table('trackings as t')
-            ->select('ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.article', 'pi.code as code', 'it.eul', 'ui.item_status as remarks', 'it.id')
+            ->select('ia.serial_no as serial_no', 'ia.color', 'ia.make_model', 'ui.ui_id', 't.created_at as date', 'u.designation', 'pri.quantity as qty', 'pu.name as unit', 'pri.price as amount', 'pi.description', 'pi.article', 'pi.code as code', 'it.eul', 'ui.item_status as remarks', 'it.id')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
