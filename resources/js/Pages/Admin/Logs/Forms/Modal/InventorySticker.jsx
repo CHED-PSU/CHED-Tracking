@@ -265,10 +265,10 @@ export default function InventorySticker(props) {
                                         </tr>
                                         <tr>
                                             <td className="h-3">DESCRIPTION</td>
-                                            <td className="text-[8px] font-medium flex">
+                                            <td className="text-[7px] font-medium flex">
                                                 :&nbsp;
                                                 <p className="w-[185px] truncate">
-                                                    {data.description}
+                                                    {toUpper((data.make_model ? data.make_model + ', ' : '') + data.description + (data.color ? ', ' + data.color : ''))}
                                                 </p>
                                             </td>
                                         </tr>
