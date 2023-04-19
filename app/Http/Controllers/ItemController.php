@@ -540,6 +540,56 @@ class ItemController extends Controller
         return response()->json(['inventory_items' => $inventory_items, 'users' => $getUsers]);
     }
 
+    //Get issued forms
+    public function getIssuedForm(Request $req)
+    {
+        $subQuery = DB::table('inventory_trackings as it')
+            ->select(DB::raw("SUM(pri.price * 1) as total"), 'it.trackings_id')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')->groupBy('it.trackings_id');
+
+        $result = DB::table('trackings as t')
+            ->joinSub($subQuery, 'subData', function ($join) {
+                $join->on('t.id', '=', 'subData.trackings_id');
+            })
+            ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
+            ->join('users as u', 'u.id', '=', 't.received_by')
+            ->where('ui.confirmation', $req->input('status'))
+            ->where(function ($query) {
+                $query->orWhere('ui.description', 'ICS')
+                    ->orWhere('ui.description', 'PAR');
+            })
+            ->where('ui.confirmation', $req->input('status'))
+            ->get();
+
+        return response()->json(['issued_forms_control' => $result]);
+    }
+
+    public function getIssuedFormDetails(Request $req)
+    {
+        $getItems = DB::table('inventory_trackings as it')
+            ->select('ia.serial_no', 'pri.quantity', 'pu.name as unit', 'pri.price', 'pi.description', 'pi.article', 'pi.code', 'pi.code as property_no', 'it.eul', 'it.id', 'it.assigned_to', 'u.img', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->join('product_subcategories as ps', 'ps.id', '=', 'pi.product_category_id')
+            ->join('users as u', 'u.id', '=', 'it.assigned_to')
+            ->where('it.trackings_id', $req->input('id'))
+            ->where('ia.category_id', '!=', 1)
+            ->get();
+
+        $getFormDetails = DB::table('trackings as t')
+            ->select('t.tracking_id', 'u1.firstname as issuerf', 'u1.middlename as issuerM', 'u1.surname as issuerS', 'u1.suffix as issuerSuf', 'u2.img', 'u2.firstname', 'u2.middlename', 'u2.surname', 'u2.suffix', 'u1.designation as receiverD', 'u2.designation')
+            ->join('users as u1', 'u1.id', '=', 't.issued_by')
+            ->join('users as u2', 'u2.id', '=', 't.received_by')
+            ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
+            ->where('t.id', $req->input('id'))
+            ->first();
+
+        return response()->json(['issued_forms_details' => $getItems, 'issued_forms_details_info' => $getFormDetails]);
+    }
+
     //admin sorted multi return to prev owner
     public function multiReturnToPrevOwner(Request $req)
     {

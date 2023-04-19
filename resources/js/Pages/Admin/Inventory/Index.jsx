@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Searchbar from "../Components/Searchbar";
 import InventoryTab from "./Tables/Inventory";
+import Issued from "./Tables/Issued";
 
 export default function Inventory({ className }) {
     const [toggleTabs, setToggleTabs] = useState("items");
@@ -45,6 +46,7 @@ export default function Inventory({ className }) {
                 </div>
                 <div className="flex flex-col h-full w-[1100px] items-center mb-12 pb-2 pt-0 px-4 border rounded-lg bg-white dark:border-[#434343] dark:bg-darkColor-800">
                     {toggleTabs === "items" ? <InventoryTab /> : ""}
+                    {toggleTabs === "issued" ? <Issued /> : ""}
                 </div>
             </div>
         </div>

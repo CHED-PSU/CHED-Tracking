@@ -151,6 +151,9 @@ Route::post('moveItemstoUnserviceableItems', [ItemController::class, 'moveItemst
 Route::get('getItemsofInventories', [ItemController::class, 'getItemsofInventories']);
 Route::post('getItemsofInventoriesById', [ItemController::class, 'getItemsofInventoriesById']);
 Route::post('getInventorySorted', [ItemController::class, 'getInventorySorted']);
+//Issued Forms
+Route::post('getIssuedForm', [ItemController::class, 'getIssuedForm']);
+Route::post('getIssuedFormDetails', [ItemController::class, 'getIssuedFormDetails']);
 //admin return item to previous owner
 Route::post('returnToPreviousOwner', [ItemController::class, 'returnToPreviousOwner']);
 //admin issue to another owner
