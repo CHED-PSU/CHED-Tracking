@@ -333,6 +333,7 @@ class FormController extends Controller
             ->where('t.received_by', $req->input('id'))
             ->where('ui.item_status', 'owned')
             ->where('ia.category_id', '!=', 1)
+            ->orderBy('ui.created_at', 'DESC')
             ->get();
 
         $total_price = 0;
@@ -357,6 +358,7 @@ class FormController extends Controller
             ->join('users as u', 'u.id', '=', 't.received_by')
             ->where('it.assigned_to', $req->input('id'))
             ->where('ui.item_status', 'owned')
+            ->orderBy('ui.created_at', 'DESC')
             ->get();
 
         $total_price = 0;
@@ -381,6 +383,7 @@ class FormController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->where('uri.user_id', $req->input('id'))
             ->where('uri.confirmation', 'Pending')
+            ->orderBy('uri.created_at', 'DESC')
             ->get();
 
         return response()->json(['data' => $getItems]);

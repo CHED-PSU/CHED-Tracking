@@ -587,6 +587,7 @@ class ItemController extends Controller
                     ->orWhere('ui.description', 'PAR');
             })
             ->where('ui.confirmation', $req->input('status'))
+            ->orderBy('ui.created_at', 'DESC')
             ->get();
 
         return response()->json(['issued_forms_control' => $result]);
