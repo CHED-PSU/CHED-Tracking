@@ -57,7 +57,7 @@ export default function Sidebar(props) {
                                     : "hover:hoverPage dark:hover:darkHoverPage xl:mx-4 mx-6"
                             }
                         >
-                            <div className="flex w-full items-center justify-between p-4 cursor-pointer h-12 py-3 select-none">
+                            <div className="flex w-full items-center justify-between p-4 cursor-pointer xl:h-10 h-12 py-3 select-none">
                                 <div className="flex items-center
                                  xl:gap-3 gap-4">
                                     <i className="fa-solid fa-square-poll-horizontal 2xl:text-3xl xl:text-xl text-2xl"></i>
@@ -196,7 +196,7 @@ export default function Sidebar(props) {
                                     : "hover:hoverPage dark:hover:darkHoverPage xl:mx-4 mx-6"
                             }
                         >
-                            <div className="flex w-full items-center justify-between gap-4 p-4 cursor-pointer 2xl:h-12 xl:h-12 h-14 py-3 select-none">
+                            <div className="flex w-full items-center justify-between gap-4 p-4 cursor-pointer 2xl:h-12 xl:h-10 h-14 py-3 select-none">
                                 <div className="flex items-center
                                 xl:gap-3 gap-4">
                                     <i className="fa-solid fa-chart-line 2xl:text-2xl xl:text-lg text-lg"></i>
@@ -215,7 +215,7 @@ export default function Sidebar(props) {
             </div>
 
             <div className="flex-none h-36 flex text-center items-center mx-6">
-                <button onClick={handleLogOut} className="font-semibold 2xl:text-sm xl:text-[15px] text-[15px] text-neutral-700 hover:text-neutral-900 hover:bg-gray-100 dark:hover:bg-[#313131] dark:text-neutral-400 dark:hover:text-neutral-50 mx-auto rounded-full w-full transition duration-500 ease-in-out">
+                <button onClick={handleLogOut} className="font-semibold 2xl:text-sm xl:text-[12px] text-[15px] text-neutral-700 hover:text-neutral-900 hover:bg-gray-100 dark:hover:bg-[#313131] dark:text-neutral-400 dark:hover:text-neutral-50 mx-auto rounded-full w-full transition duration-500 ease-in-out">
                     <div className="flex items-center justify-center gap-3 w-full h-10">
                         <i className="fa-solid fa-door-open"></i>
                         <p>Back to homepage</p>
