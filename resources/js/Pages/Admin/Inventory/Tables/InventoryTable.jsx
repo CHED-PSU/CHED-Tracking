@@ -7,7 +7,7 @@ import Transfer from "../Modals/Transfer";
 import Alert from "../Alerts/Alert";
 import axios from "axios";
 
-export default function Inventory({ className }) {
+export default function InventoryTable({ className }) {
     const [openSortedModal, setOpenSortedModal] = useState("close");
     const [openSingleModal, setOpenSingleModal] = useState("close");
     const [openMultiModal, setOpenMultiModal] = useState("close");
@@ -52,12 +52,6 @@ export default function Inventory({ className }) {
     }, []);
 
     const [toggleSort, setToggleSort] = useState("all");
-
-    useEffect(() => {
-        if (toggleSort === "all") {
-            setPersonSelected(1);
-        }
-    }, [toggleSort]);
 
     function clickSort(index) {
         if (index === "all") {
@@ -176,7 +170,8 @@ export default function Inventory({ className }) {
                                     {data.description}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
-                                    {data.tracking_id.split("-")[0]} Code: {data.tracking_id}
+                                    {data.tracking_id.split("-")[0]} Code:{" "}
+                                    {data.tracking_id}
                                 </p>
                             </div>
                         </a>
@@ -544,18 +539,13 @@ export default function Inventory({ className }) {
                             <div className="">
                                 <select
                                     onChange={changeUser}
-                                    value={personSelected ? personSelected : ""}
                                     name=""
-                                    id=""
-                                    className=" w-80 rounded-md text-sm border border-neutral-300 px-3 py-1 outline-none"
+                                    id="Status"
+                                    className="w-full text-sm rounded-md border border-neutral-500 p-2 outline-none cursor-pointer"
                                 >
-                                    <option id="1" value="1">
-                                        Jermine R. Basister
-                                    </option>
-
                                     {loading
                                         ? ""
-                                        : users.map((data) => {
+                                        : users?.map((data) => {
                                               return (
                                                   <option
                                                       key={data.id}

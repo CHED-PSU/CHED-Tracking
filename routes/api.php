@@ -111,7 +111,6 @@ Route::post('declinePendingRequest', [FormController::class, 'declinePendingRequ
 
 // Admin Users Data Fetcher
 Route::get('getUserLists', [GeneralController::class, 'getUserLists']);
-Route::get('getUserListsJO', [GeneralController::class, 'getUserListsJO']);
 Route::get('getUserListsICS', [GeneralController::class, 'getUserListsICS']);
 Route::get('getUserListsPAR', [GeneralController::class, 'getUserListsPAR']);
 Route::get('getUserListsIIR', [GeneralController::class, 'getUserListsIIR']);

@@ -63,7 +63,7 @@ class ItemController extends Controller
     public function getuserIndividualItems(Request $req)
     {
         $getUserItems = DB::table('user_items as ui')
-            ->select('pi.description', 'pi.article', 'ui.created_at', 'ui.ui_id', 'ia.stock_property_no as code', 'pri.quantity')
+            ->select('pi.description', 'pi.article', 'ui.created_at', 'ui.ui_id', 't.tracking_id as code', 'pri.quantity')
             ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('trackings as t', 't.id', '=', 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
@@ -95,20 +95,42 @@ class ItemController extends Controller
     //User Items Data Fetcher
     public function getItemRequestData(Request $req)
     {
-        $getUserItemsData = DB::table('user_items as ui as ui')
-            ->select('pu.name as type', 'pi.description as brand', 'pi.article', 'pi.code', 'ui.ui_id', 'pri.price')
+        $getUserItemsData = DB::table('user_items as ui')
+            ->select('pu.name as unit', 'pi.description as brand', 't.tracking_id', 'pi.article as article', 'ia.serial_no as serial_no', 'ia.stock_property_no as property_no', 'pri.price as acquisition')
             ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('trackings as t', 't.id', 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
-            ->where('ui_id', $req->input('ui_id'))
+            ->where('ui.ui_id', $req->input('ui_id'))
             ->first();
 
-        // var_dump($getUserItemsData);
+        $getUserReturnedItemsInfo = DB::table('user_returned_items as uri')
+            ->select('uri.status', 'uri.uri_id')
+            ->where('uri.ui_id', $req->input('ui_id'))
+            ->get();
+
+        $getReturnedItemsInfo = DB::table('returned_items_info as rii')
+            ->where('rii.uri_id', $req->input('id'))
+            ->get();
+
+        if ($getReturnedItemsInfo->isNotEmpty()) {
+            $data = [
+                'pre_nature' => $getReturnedItemsInfo->first()->pre_nature,
+                'updated_at' => $getReturnedItemsInfo->first()->updated_at
+            ];
+        } else {
+            $data = [
+                'pre_nature' => null,
+                'updated_at' => null
+            ];
+        }
+
         return response()->json([
-            'itemData' => $getUserItemsData
+            'itemData' => $getUserItemsData,
+            'itemDataRII' => $data,
+            'itemDataURI' => $getUserReturnedItemsInfo
         ]);
     }
 
@@ -484,6 +506,7 @@ class ItemController extends Controller
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.status', 'Inventories')
+            ->orderBy('uri.created_at', 'DESC')
             ->get();
 
         $getUsers = DB::table('users')
@@ -500,16 +523,18 @@ class ItemController extends Controller
 
         foreach ($idArray as $id) {
             $items = DB::table('user_returned_items as uri')
-                ->select('uri.uri_id', 'pi.code', 'pri.price', 'pu.name as unit', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'u.img', 'uri.status', 'u.id')
+                ->select('t.tracking_id', 'uri.uri_id', 'ia.stock_property_no as code', 'pri.price', 'pu.name as unit', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'u.img', 'uri.status', 'u.id')
                 ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
                 ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
                 ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+                ->join('trackings as t', 't.id', '=', 'it.trackings_id')
                 ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
                 ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
                 ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
                 ->join('users as u', 'u.id', '=', 'uri.user_id')
                 ->where('uri.status', 'Inventories')
                 ->where('uri.uri_id', $id)
+                ->orderBy('uri.created_at', 'DESC')
                 ->get();
 
             $inventory_items_all = $inventory_items_all->concat($items);
@@ -521,16 +546,18 @@ class ItemController extends Controller
     public function getInventorySorted(Request $req)
     {
         $inventory_items = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id', 'ia.stock_property_no as code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'uri.status', 'u.id')
+            ->select('t.tracking_id', 'uri.uri_id', 'ia.stock_property_no as code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('trackings as t', 't.id', '=', 'it.trackings_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
             ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
             ->join('users as u', 'u.id', '=', 'uri.user_id')
             ->where('uri.status', 'Inventories')
             ->where('uri.user_id', $req->input('id'))
+            ->orderBy('uri.created_at', 'DESC')
             ->get();
 
         $getUsers = DB::table('users')

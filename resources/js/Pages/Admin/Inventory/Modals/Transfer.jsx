@@ -88,18 +88,7 @@ export default function Transfer({
             try {
                 await axios.get("api/getUserLists").then((res) => {
                     setUsers(res.data.user_lists);
-                });
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
-        };
-        const getUserJO = async () => {
-            setLoading(true);
-            try {
-                await axios.get("api/getUserListsJO").then((res) => {
-                    setUsersJO(res.data.user_lists);
+                    setUsersJO(res.data.user_lists_jo);
                 });
             } catch (e) {
                 console.log(e);
@@ -108,7 +97,6 @@ export default function Transfer({
             }
         };
         getUser();
-        getUserJO();
     }, []);
 
     const confirmHandler = (event) => {
@@ -154,7 +142,7 @@ export default function Transfer({
                         </p>
                     </td>
                     <td className="text-center p-2 border text-sm">
-                        {data.property_no}
+                        {data.code}
                     </td>
                     <td className="p-2 border">
                         <div className="flex flex-col justify-between items-center">
@@ -224,6 +212,31 @@ export default function Transfer({
         const amount = index;
         const formattedAmount = Math.abs(amount).toLocaleString();
         return formattedAmount;
+    }
+
+    function displayName(data, prefix) {
+        const middleInitial = data.middlename
+            ? data.middlename.substring(0, 1) + "."
+            : "";
+        const fullNamePrefixArr = [
+            data.prefix || "",
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+        const fullNameArr = [
+            data.firstname || "",
+            middleInitial,
+            data.surname || "",
+            data.suffix || "",
+        ];
+
+        if (prefix == false) {
+            return fullNameArr.filter(Boolean).join(" ");
+        } else {
+            return fullNamePrefixArr.filter(Boolean).join(" ");
+        }
     }
 
     return (
@@ -321,9 +334,7 @@ export default function Transfer({
                                                           key={data.id}
                                                           value={data.id}
                                                       >
-                                                          {data.firstname +
-                                                              " " +
-                                                              data.surname}
+                                                          {displayName(data, false)}
                                                       </option>
                                                   );
                                               })}

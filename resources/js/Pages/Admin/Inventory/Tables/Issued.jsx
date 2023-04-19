@@ -86,7 +86,7 @@ export default function Issued({ className }) {
                     <td className="text-left pl-6 pr-3 text-text-gray text-2base">
                         {data.tracking_id}
                     </td>
-                    <td className="text-left">
+                    <td className="text-left px-3">
                         <div className="flex flex-col gap-1">
                             <h5 className="text-base text-text-black font-semibold"></h5>
                             <h6 className="text-text-gray text-2base">
@@ -147,22 +147,6 @@ export default function Issued({ className }) {
         }
     };
 
-    function getFormDetails(index) {
-        setLoading(true);
-        try {
-            axios
-                .post("api/getIssuedFormDetails", { id: index })
-                .then((res) => {
-                    setItems(res.data.issued_forms_details);
-                    setItemsControlDetails(res.data.issued_forms_details_info);
-                });
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
-        }
-    }
-
     const getPending = async () => {
         setLoading(true);
         try {
@@ -192,6 +176,22 @@ export default function Issued({ className }) {
             setLoading(false);
         }
     };
+
+    function getFormDetails(index) {
+        setLoading(true);
+        try {
+            axios
+                .post("api/getIssuedFormDetails", { id: index })
+                .then((res) => {
+                    setItems(res.data.issued_forms_details);
+                    setItemsControlDetails(res.data.issued_forms_details_info);
+                });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
         getPending();
@@ -310,7 +310,7 @@ export default function Issued({ className }) {
                                 Amount
                             </th>
                             <th className="h-10 2xl:w-40 xl:w-10 w-10 font-medium text-left px-3">
-                                Issued By
+                                Issued To
                             </th>
                             <th className="h-10 2xl:w-40 xl:w-10 w-10 font-medium text-left px-3">
                                 Form Status
@@ -325,7 +325,7 @@ export default function Issued({ className }) {
                             loadingSkeleton
                         ) : itemsControl?.length === 0 ? (
                             <tr className="h-18 text-xs border dark:border-neutral-700 text-th dark:bg-darkColor-700 dark:text-white cursor-default">
-                                <td colSpan={5}>
+                                <td colSpan={6}>
                                     <div className="flex text-sm justify-center item-center">
                                         There is no data yet.
                                     </div>

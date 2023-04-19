@@ -159,9 +159,11 @@ export default function ICSModal(props) {
                         </div>
                     </div>
                     <div className="dark:text-white">
-                        <div className="text-sm">Description of Property</div>
                         <div className="text-sm flex justify-between">
                             <div className="">
+                                <div className="text-sm">
+                                    Description of Property
+                                </div>
                                 <div className="">
                                     Type :{" "}
                                     <font className="dark:text-gray-400 font-medium text-sm">
@@ -175,7 +177,7 @@ export default function ICSModal(props) {
                                     <font className="dark:text-gray-400 font-medium text-sm">
                                         {Loading
                                             ? "N/A"
-                                            : returnedItemsData[0].stock_property_no}
+                                            : returnedItemsData[0].serial_no}
                                     </font>
                                 </div>
                                 <div className="">
@@ -204,6 +206,14 @@ export default function ICSModal(props) {
                                 </div>
                             </div>
                             <div className="">
+                                <div className="text-sm">
+                                    Control No:{" "}
+                                    <font className="dark:text-gray-400 font-medium text-sm">
+                                        {Loading
+                                            ? "N/A"
+                                            : returnedItemsData[0].tracking_id}
+                                    </font>
+                                </div>
                                 <div className="">
                                     Brand/Model:{" "}
                                     <font className="dark:text-gray-400 font-medium text-sm">
@@ -237,7 +247,7 @@ export default function ICSModal(props) {
                                 <div className="">
                                     Return Status:{" "}
                                     <font className="dark:text-gray-400 font-medium text-sm">
-                                    {Loading
+                                        {Loading
                                             ? "N/A"
                                             : returnedItemsData[0].status}
                                     </font>

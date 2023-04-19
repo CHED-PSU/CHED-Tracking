@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Searchbar from "../Components/Searchbar";
-import InventoryTab from "./Tables/Inventory";
+import InventoryTab from "./Tables/InventoryTable";
 import Issued from "./Tables/Issued";
 
 export default function Inventory({ className }) {
