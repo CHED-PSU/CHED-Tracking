@@ -405,7 +405,6 @@ export default function Inventory({ className }) {
 
     return (
         <>
-            {" "}
             {openSortedModal === "open-sorted" ? (
                 <SortedModal
                     clickSortedModal={clickSortedModal}
@@ -466,47 +465,37 @@ export default function Inventory({ className }) {
             )}
             <div className="w-full h-full relative">
                 <div className="w-full flex items-center justify-between h-16">
-                    <div className="w-56">
-                        <div className="w-fit h-fit flex items-center text-xs rounded-full bg-gray-100  -space-x-2">
-                            {toggleSort === "all" ? (
-                                <div
-                                    onClick={() => {
-                                        clickSort("all"), unselect();
-                                    }}
-                                    className="w-[72px] py-2 bg-pink-500 text-white text-center font-medium rounded-full cursor-pointer dark:text-white z-10"
-                                >
-                                    All
+                    <div className="flex justify-between items-center h-16">
+                        <ul className="flex">
+                            <li
+                                onClick={() => {
+                                    clickSort("all"), unselect();
+                                }}
+                                className={
+                                    toggleSort === "all"
+                                        ? "text-pink-500 font-medium bg-pink-50 rounded-md"
+                                        : "text-[#707070] hover:text-[#4b4b4b]"
+                                }
+                            >
+                                <div className="text-xs font-semibold cursor-pointer p-3 ">
+                                    Transfer / Renew
                                 </div>
-                            ) : (
-                                <div
-                                    onClick={() => {
-                                        clickSort("all"), unselect();
-                                    }}
-                                    className="w-[72px] py-2 rounded-full text-center font-medium cursor-pointer dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 dark:bg-darkColor-700 dark:border-white transition duration-500 ease-in-out"
-                                >
-                                    All
+                            </li>
+                            <li
+                                onClick={() => {
+                                    clickSort("sorted"), unselect();
+                                }}
+                                className={
+                                    toggleSort === "sorted"
+                                        ? "text-pink-500 font-medium bg-pink-50 rounded-md"
+                                        : "text-[#707070] hover:text-[#4b4b4b]"
+                                }
+                            >
+                                <div className="text-xs font-semibold cursor-pointer p-3  ">
+                                    {"Return (Previous Owner)"}
                                 </div>
-                            )}
-                            {toggleSort === "sorted" ? (
-                                <div
-                                    onClick={() => {
-                                        clickSort("sorted"), unselect();
-                                    }}
-                                    className="w-[72px] py-2 bg-pink-500 text-white text-center font-medium rounded-full cursor-pointer dark:text-white z-10"
-                                >
-                                    Sorted
-                                </div>
-                            ) : (
-                                <div
-                                    onClick={() => {
-                                        clickSort("sorted"), unselect();
-                                    }}
-                                    className="w-[72px] py-2 rounded-full text-center font-medium cursor-pointer dark:text-white hover:bg-neutral-200 dark:hover:bg-lightColor-600 transition duration-500 ease-in-out"
-                                >
-                                    Sorted
-                                </div>
-                            )}
-                        </div>
+                            </li>
+                        </ul>
                     </div>
 
                     {toggleSort === "sorted" ? (

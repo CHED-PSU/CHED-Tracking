@@ -474,9 +474,10 @@ class ItemController extends Controller
     public function getItemsofInventories(Request $req)
     {
         $inventory_items = DB::table('user_returned_items as uri')
-            ->select('uri.uri_id', 'pi.code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'u.img', 'uri.status', 'u.id')
+            ->select('t.tracking_id', 'uri.uri_id', 'pi.code', 'pi.description', 'pi.article', 'uri.created_at', 'uri.defect', 'u.prefix', 'u.firstname', 'u.middlename', 'u.surname', 'u.suffix', 'u.designation', 'u.img', 'uri.status', 'u.id')
             ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
             ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('trackings as t', 't.id', '=', 'it.trackings_id')
             ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
             ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
             ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
@@ -510,6 +511,7 @@ class ItemController extends Controller
                 ->where('uri.status', 'Inventories')
                 ->where('uri.uri_id', $id)
                 ->get();
+
             $inventory_items_all = $inventory_items_all->concat($items);
         }
 
