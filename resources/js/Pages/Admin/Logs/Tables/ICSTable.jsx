@@ -4,7 +4,7 @@ import ReactPaginate from "react-paginate";
 import ICSControl from "../Forms/ICSControl";
 import UserList from "../TableList/UserList";
 
-export default function ICSTable({ className }) {
+export default function ICSTable({ className, toggleTabs }) {
     const [openForms, setOpenForms] = useState("close");
     const [Loading, setLoading] = useState(true);
     const [UserLists, setUserLists] = useState();
@@ -34,8 +34,10 @@ export default function ICSTable({ className }) {
                 setLoading(false);
             }
         };
-        getUsers();
-    }, []);
+        if (toggleTabs == "ics") {
+            getUsers();
+        }
+    }, [toggleTabs]);
 
     function clickForms(index) {
         setOpenForms(index);
@@ -137,9 +139,7 @@ export default function ICSTable({ className }) {
             </td>
             {/* mobile no */}
             <td>
-                <div
-                    className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer"
-                >
+                <div className="flex justify-center items-center w-full h-12 gap-3 cursor-pointer">
                     <span className="w-20 h-4 bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></span>
                 </div>
             </td>

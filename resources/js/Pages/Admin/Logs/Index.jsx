@@ -77,24 +77,28 @@ export default function Logs({ className }) {
                     {/*ICS Table*/}
                     <ICSTable
                         className={toggleTabs === "ics" ? "" : "hidden"}
+                        toggleTabs={toggleTabs}
                     />
                     {/*ICS Table*/}
 
                     {/*PAR Table*/}
                     <PARTable
                         className={toggleTabs === "par" ? "" : "hidden"}
+                        toggleTabs={toggleTabs}
                     />
                     {/*PAR Table*/}
 
                     {/*Individual Inventory Table*/}
                     <IndividualTable
                         className={toggleTabs === "iir" ? "" : "hidden"}
+                        toggleTabs={toggleTabs}
                     />
                     {/*Individual Inventory Table*/}
 
                     {/*Individual Inventory Table*/}
                     <IndividualTableCOS
                         className={toggleTabs === "iij" ? "" : "hidden"}
+                        toggleTabs={toggleTabs}
                     />
                     {/*Individual Inventory Table*/}
                 </div>

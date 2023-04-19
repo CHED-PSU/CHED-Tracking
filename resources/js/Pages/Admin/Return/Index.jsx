@@ -17,7 +17,6 @@ export default function Return({ className }) {
     const [Loading, setLoading] = useState(true);
     const [returnedItems, setReturnedItems] = useState();
     const [id, setId] = useState();
-    const [users, setUsers] = useState();
     const [openAlert, setOpenAlert] = useState(false);
     const [alertIcon, setAlertIcon] = useState("question"); // none, check, question, or exclamation
     const [alertHeader, setAlertHeader] = useState("Please set Alert Header");
@@ -26,6 +25,10 @@ export default function Return({ className }) {
     const [alertYesButton, setAlertYesButton] = useState("Yes");
     const [alertNoButton, setAlertNoButton] = useState("No");
     const [buttonDisable, setButtonDisable] = useState("close");
+    const [returnedItemsByStatus, setReturnedItemsByStatus] = useState([]);
+    const [status, setStatus] = useState("all");
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 8;
 
     function clickButtonDisable(index, type) {
         if (type == "Unserviceable") {
@@ -49,11 +52,46 @@ export default function Return({ className }) {
         }
     }
 
+    async function getReturnedItemsByStatus() {
+        if (status == "all") {
+            getReturnedItems();
+        } else if (status == "Inventories") {
+            try {
+                await axios
+                    .get("api/getReturnedItemsInventory")
+                    .then((response) => {
+                        const data = response.data;
+                        setReturnedItemsByStatus(data.returnedItemsInventory);
+                    });
+            } catch (e) {
+                console.log(e);
+            }
+        } else {
+            try {
+                await axios
+                    .get("api/getReturnedItemsUnserviceable")
+                    .then((response) => {
+                        const data = response.data;
+                        setReturnedItemsByStatus(
+                            data.returnedItemsUnserviceable
+                        );
+                    });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
+
+    useEffect(() => {
+        getReturnedItemsByStatus();
+    }, [status]);
+
     const getReturnedItems = async () => {
         setLoading(true);
         try {
             await axios.get("api/getReturnedItems").then((response) => {
                 setReturnedItems(response.data.returnedItems);
+                setReturnedItemsByStatus(response.data.returnedItems);
             });
         } catch (e) {
             console.log(e);
@@ -61,21 +99,6 @@ export default function Return({ className }) {
             setLoading(false);
         }
     };
-
-    const getUsers = async () => {
-        try {
-            await axios.get("api/getUsers").then((response) => {
-                setUsers(response.data.users);
-            });
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    useEffect(() => {
-        getReturnedItems();
-        getUsers();
-    }, []);
 
     const success = () => {
         setAlertIcon("check");
@@ -95,7 +118,6 @@ export default function Return({ className }) {
     function clickForms(index) {
         getReturnedItems();
         getReturnedItemsByStatus();
-        getUsers();
         setOpenForms(index);
     }
 
@@ -324,57 +346,9 @@ export default function Return({ className }) {
         });
     };
 
-    const [returnedItemsByStatus, setReturnedItemsByStatus] = useState([]);
-    const [status, setStatus] = useState("all");
-
-    async function getReturnedItemsByStatus() {
-        if (status == "all") {
-            try {
-                await axios.get("api/getReturnedItems").then((response) => {
-                    setReturnedItemsByStatus(response.data.returnedItems);
-                });
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
-        } else if (status == "Inventories") {
-            try {
-                await axios
-                    .get("api/getReturnedItemsInventory")
-                    .then((response) => {
-                        const data = response.data;
-                        setReturnedItemsByStatus(data.returnedItemsInventory);
-                    });
-            } catch (e) {
-                console.log(e);
-            }
-        } else {
-            try {
-                await axios
-                    .get("api/getReturnedItemsUnserviceable")
-                    .then((response) => {
-                        const data = response.data;
-                        setReturnedItemsByStatus(
-                            data.returnedItemsUnserviceable
-                        );
-                    });
-            } catch (e) {
-                console.log(e);
-            }
-        }
-    }
-
-    useEffect(() => {
-        getReturnedItemsByStatus();
-    }, [status]);
-
     function clickFilter(index) {
         setStatus(index);
     }
-
-    const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 8;
 
     const handlePageClick = ({ selected: selectedPage }) => {
         setCurrentPage(selectedPage);

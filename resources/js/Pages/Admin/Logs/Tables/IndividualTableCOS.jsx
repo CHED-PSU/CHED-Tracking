@@ -4,7 +4,7 @@ import ReactPaginate from "react-paginate";
 import IndividualInventoryCOS from "../Forms/IndividualInventoryCOS";
 import UserList from "../TableList/UserList";
 
-export default function IndividualTableCOS({ className }) {
+export default function IndividualTableCOS({ className, toggleTabs }) {
     const [openForms, setOpenForms] = useState("close");
     const [Loading, setLoading] = useState(true);
     const [UserLists, setUserLists] = useState();
@@ -38,8 +38,10 @@ export default function IndividualTableCOS({ className }) {
                 setLoading(false);
             }
         };
-        getUsers();
-    }, []);
+        if (toggleTabs == "iij") {
+            getUsers();
+        }
+    }, [toggleTabs]);
 
     const userMapper = (items) => {
         return items?.map((data) => {

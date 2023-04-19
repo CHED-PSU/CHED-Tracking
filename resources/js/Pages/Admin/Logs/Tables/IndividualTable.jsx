@@ -4,7 +4,7 @@ import ReactPaginate from "react-paginate";
 import IndividualInventory from "../Forms/IndividualInventory";
 import UserList from "../TableList/UserList";
 
-export default function IndividualTable({ className }) {
+export default function IndividualTable({ className, toggleTabs }) {
     const [openForms, setOpenForms] = useState("close");
     const [Loading, setLoading] = useState(true);
     const [UserLists, setUserLists] = useState();
@@ -38,8 +38,10 @@ export default function IndividualTable({ className }) {
                 setLoading(false);
             }
         };
-        getUsers();
-    }, []);
+        if (toggleTabs == "iir") {
+            getUsers();
+        }
+    }, [toggleTabs]);
 
     const userMapper = (items) => {
         return items?.map((data) => {

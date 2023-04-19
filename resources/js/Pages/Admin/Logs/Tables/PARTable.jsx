@@ -4,7 +4,7 @@ import ReactPaginate from "react-paginate";
 import PARControl from "../Forms/PARControl";
 import UserList from "../TableList/UserList";
 
-export default function PARTable({ className }) {
+export default function PARTable({ className, toggleTabs }) {
     const [openForms, setOpenForms] = useState("close");
     const [Loading, setLoading] = useState(true);
     const [parControl, setParControl] = useState();
@@ -39,8 +39,10 @@ export default function PARTable({ className }) {
                 setLoading(false);
             }
         };
-        getUsers();
-    }, []);
+        if (toggleTabs == "par") {
+            getUsers();
+        }
+    }, [toggleTabs]);
 
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 9;
