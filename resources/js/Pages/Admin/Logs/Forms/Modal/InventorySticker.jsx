@@ -4,6 +4,7 @@ import Alert from "./Alert";
 import MiniLogo from "../../../../../Components/Mini-logo";
 import BarCode from "../../../../../Components/BarCode";
 import QRCode from "../../../../../Components/QRCode";
+import { toUpper } from "lodash";
 
 export default function InventorySticker(props) {
     const stickerRef = useRef();
@@ -15,6 +16,8 @@ export default function InventorySticker(props) {
     const [alertDesc, setAlertDesc] = useState("Please set Alert Description");
     const [alertNoButton, setAlertNoButton] = useState("No");
     const [accept, setAccept] = useState(false);
+    const user = localStorage.getItem("localSession");
+    const value = JSON.parse(user);
 
     function clickPreview(index) {
         setOpenPreview(index);
@@ -28,6 +31,12 @@ export default function InventorySticker(props) {
         setAlertNoButton("Okay");
         setAccept("acceptNotif");
         setOpenAlert(index);
+    }
+
+    function formattedAmount(index) {
+        const amount = index;
+        const formattedAmount = Math.abs(amount).toLocaleString();
+        return formattedAmount;
     }
 
     function formattedAmount(index) {
@@ -234,7 +243,7 @@ export default function InventorySticker(props) {
                                 </div>
                                 <QRCode
                                     className="w-10 h-10 bg-white p-1 flex-none"
-                                    serial_no={data.stock_property_no}
+                                    serial_no={data.property_no}
                                 />
                             </div>
                             <div className="bg-black text-white text-ss font-bold text-center">
@@ -267,8 +276,8 @@ export default function InventorySticker(props) {
                                             <td className="h-3">SERIAL NO.</td>
                                             <td className="text-[8px] font-medium">
                                                 :{" "}
-                                                {data.stock_property_no
-                                                    ? data.stock_property_no
+                                                {data.serial_no
+                                                    ? data.serial_no
                                                     : "N/A"}
                                             </td>
                                         </tr>
@@ -278,8 +287,7 @@ export default function InventorySticker(props) {
                                             </td>
                                             <td className="text-[8px] font-medium">
                                                 :{" "}
-                                                {props.formDetails.ics_no ||
-                                                    props.formDetails.par_no}
+                                                {data.property_no}
                                             </td>
                                         </tr>
                                         <tr>
@@ -290,7 +298,7 @@ export default function InventorySticker(props) {
                                                 :{" "}
                                                 {formatDateDisplay(
                                                     props.formDetails
-                                                        .issued_date,
+                                                        .received_date,
                                                     0,
                                                     true
                                                 )}
@@ -299,7 +307,7 @@ export default function InventorySticker(props) {
                                         <tr>
                                             <td className="h-3">AMOUNT</td>
                                             <td className="text-[8px] font-medium">
-                                                : {data.price}
+                                                : P {formattedAmount(data.price)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -410,19 +418,36 @@ export default function InventorySticker(props) {
                                         <td className="border-r border-black text-[8px] text-center font-semibold">
                                             CHEDROXI
                                         </td>
-                                        <td className="border-r border-black text-[6px] font-medium">
-                                            {""}
+                                        <td className="border-r border-black text-[6px] text-center font-medium">
+                                            {toUpper(
+                                                value.firstname.charAt(0) +
+                                                    value.surname
+                                            )}
                                         </td>
-                                        <td className="border-r border-black text-[6px] font-medium">
-                                            {""}
+                                        <td className="border-r border-black text-[6px] text-center font-medium">
+                                            {toUpper(
+                                                value.firstname.charAt(0) +
+                                                    value.surname
+                                            )}
                                         </td>
-                                        <td className="border-r border-black text-[6px] font-medium">
-                                            {""}
+                                        <td className="border-r border-black text-[6px] text-center font-medium">
+                                            {toUpper(
+                                                value.firstname.charAt(0) +
+                                                    value.surname
+                                            )}
                                         </td>
-                                        <td className="border-r border-black text-[6px] font-medium">
-                                            {""}
+                                        <td className="border-r border-black text-[6px] text-center font-medium">
+                                            {toUpper(
+                                                value.firstname.charAt(0) +
+                                                    value.surname
+                                            )}
                                         </td>
-                                        <td className="text-[6px]">{""}</td>
+                                        <td className="border-r border-black text-[6px] text-center font-medium">
+                                            {toUpper(
+                                                value.firstname.charAt(0) +
+                                                    value.surname
+                                            )}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -430,10 +455,10 @@ export default function InventorySticker(props) {
                                 NOTE: PLEASE DO NOT REMOVE
                             </div>
                             <div className="flex gap-2 px-2 items-center bg-black text-white text-[5px] text-center pt-1 py-1">
-                                {data.stock_property_no ? (
+                                {data.property_no == 0 ? (
                                     <BarCode
                                         className="w-fit h-8 bg-white"
-                                        serial_no={data.stock_property_no}
+                                        serial_no={data.property_no}
                                     />
                                 ) : (
                                     <div className="h-8"></div>
