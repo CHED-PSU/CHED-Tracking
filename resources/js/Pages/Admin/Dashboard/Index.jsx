@@ -143,7 +143,7 @@ export default function Dashboard({ className }) {
                 {Loading ? <Loader /> : ""}
                 {/* Loader */}
 
-                <div className="flex 2xl:w-2/3 xl:w-[67%] w-[65%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5 border-r border-neutral-200 dark:border-[#434343]">
+                <div className="flex 2xl:w-2/3 xl:w-[63%] w-[65%] h-full flex-col 2xl:space-y-5 xl:space-y-3 space-y-3 2xl:py-5 xl:py-3 py-3 2xl:pr-10 xl:pr-5 pr-5 border-r border-neutral-200 dark:border-[#434343]">
                     <div className="flex w-full 2xl:h-60 xl:h-40 h-40 flex-none 2xl:gap-6 xl:gap-4 gap-4">
                         <div className="flex w-1/2 justify-end 2xl:px-10 xl:px-6 px-6 items-center rounded-2xl bg-cover bg-center bg-card-1 gap-10 drop-shadow-card1">
                             <div className="w-full flex-none text-right flex flex-col items-end 2xl:truncate">
@@ -194,7 +194,7 @@ export default function Dashboard({ className }) {
                     <div className="w-full h-fit flex justify-between 2xl:gap-5 xl:gap-3 gap-3 z-10">
                         <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-3 p-4 text-[#434343] rounded-xl border border-[#DDDDDD] dark:border-[#434343] bg-white dark:bg-darkColor-800">
                             <div className="h-fit 2xl:space-y-1">
-                                <div className="font-bold xl:text-sm truncate dark:text-white">
+                                <div className="xl:font-medium font-bold xl:text-sm truncate dark:text-white">
                                     Total Donated Items
                                 </div>
                                 <div className="xl:text-ss text-xs dark:text-[#c4c4c4]">
@@ -207,7 +207,7 @@ export default function Dashboard({ className }) {
                         </div>
                         <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 text-[#434343] rounded-xl border border-[#DDDDDD] dark:border-[#434343] bg-white dark:bg-darkColor-800">
                             <div className="h-fit 2xl:space-y-1">
-                                <div className="font-bold xl:text-sm truncate dark:text-white">
+                                <div className="xl:font-medium font-bold xl:text-sm truncate dark:text-white">
                                     Total Destructed Items
                                 </div>
                                 <div className="xl:text-ss text-xs dark:text-[#c4c4c4]">
@@ -220,7 +220,7 @@ export default function Dashboard({ className }) {
                         </div>
                         <div className="w-1/3 2xl:p-6 xl:px-4 xl:py-2 p-4 rounded-xl text-[#434343] border border-[#DDDDDD] dark:border-[#434343] bg-white dark:bg-darkColor-800">
                             <div className="h-fit 2xl:space-y-1">
-                                <div className="font-bold xl:text-sm truncate dark:text-white">
+                                <div className="xl:font-medium font-bold xl:text-sm truncate dark:text-white">
                                     Total Sold Items
                                 </div>
                                 <div className="xl:text-ss text-xs dark:text-[#c4c4c4]">
