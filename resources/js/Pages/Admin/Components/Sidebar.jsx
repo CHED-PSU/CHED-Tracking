@@ -19,7 +19,7 @@ export default function Sidebar(props) {
     }
 
     return (
-        <div className="sticky top-0 flex flex-none flex-col bg-white dark:bg-darkColor-800 text-center border-r border-neutral-200 dark:border-[#434343] shrink-0 z-20 transition-all duration-150 transform
+        <div className="sticky top-0 overflow-x-auto flex flex-none flex-col bg-white dark:bg-darkColor-800 text-center border-r border-neutral-200 dark:border-[#434343] shrink-0 z-20 transition-all duration-150 transform
         2xl:w-72 xl:w-[240px] lg:w-[280px] md:w-[220px] w-[260px] 
         h-screen ">
             {/* Logo */}

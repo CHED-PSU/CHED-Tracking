@@ -498,21 +498,21 @@ export default function Return({ className }) {
                 <div className="flex flex-col h-full w-[1100px] items-center mb-12 pt-3 py-2 px-4 border dark:border-[#434343] rounded-lg bg-white dark:bg-darkColor-800">
                     <div className="w-full flex  items-center h-14 pb-2 gap-5">
                         <button
-                            className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
+                            className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-9 h-9 text-[16px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("all")}
                             title="Returned"
                         >
                             <i className="fa-solid fa-box-archive"></i>
                         </button>
                         <button
-                            className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
+                            className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-9 h-9 text-[16px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("Unserviceable")}
                             title="Unserviceable"
                         >
                             <i className="fa-solid fa-trash-can-arrow-up"></i>
                         </button>
                         <button
-                            className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-8 h-8 p-4 text-[14px] text-text-black rounded-full default-btn"
+                            className="flex justify-center items-center dark:bg-darkColor-800 dark:border-[#434343] dark:hover:bg-[#434343] dark:text-white gap-1 w-9 h-9 text-[16px] text-text-black rounded-full default-btn"
                             onClick={() => clickFilter("Inventories")}
                             title="Inventory"
                         >

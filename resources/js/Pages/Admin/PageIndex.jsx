@@ -46,7 +46,7 @@ export default function Index() {
     return (
         <div className="relative w-full h-screen flex bg-[#fafafa] dark:bg-darkColor-900 transition-all duration-150 transform overflow-hidden">
             <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
-            <div className="relative flex flex-col flex-auto w-auto h-screen">
+            <div className="relative flex flex-col flex-auto w-auto h-screen overflow-auto">
                 <nav className="h-fit flex justify-between border-b border-neutral-200 dark:border-neutral-700 2xl:py-5 xl:py-2 py-2 2xl:px-10 xl:px-5 px-5">
                     {/* Titles */}
                     <div className="w-full">
