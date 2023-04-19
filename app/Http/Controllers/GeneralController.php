@@ -66,7 +66,16 @@ class GeneralController extends Controller
             ->where('status', 'sold')
             ->count();
 
-        return response()->json(['total_users' => $totalUsers, 'recent_issuance' => $recentIssuance, 'countDonated' => $countDonated, 'countDestructed' => $countDestructed, 'countSold' => $countSold]);
+        $pendingCount = DB::table('user_returned_items')
+            ->where('confirmation', 'pending')
+            ->count();
+
+        $acceptedCount = DB::table('user_returned_items')
+            ->where('confirmation', 'accepted')
+            ->count();
+
+
+        return response()->json(['pending' => $pendingCount, 'accepted' => $acceptedCount, 'total_users' => $totalUsers, 'recent_issuance' => $recentIssuance, 'countDonated' => $countDonated, 'countDestructed' => $countDestructed, 'countSold' => $countSold]);
     }
 
     //Admin Logs
@@ -170,13 +179,14 @@ class GeneralController extends Controller
     }
 
     //Logout Delete Token
-    public function logoutToken(Request $request){
+    public function logoutToken(Request $request)
+    {
         $token = PersonalAccessToken::findToken($request->bearerToken());
         session()->forget('name');
         session()->forget('role');
         session()->forget('user_id');
 
-        if($token){
+        if ($token) {
             $token->delete();
             return response()->json(['status' => true]);
         } else {

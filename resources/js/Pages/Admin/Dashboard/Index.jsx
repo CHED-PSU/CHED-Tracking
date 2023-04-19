@@ -58,19 +58,18 @@ export default function Dashboard({ className }) {
         const getAdminDashboardData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get("api/getAdminDashboardData");
-                const data = response.data;
-                setTotalUsers(data.total_users);
-                setRecentIssuance(data.recent_issuance);
-                setDonation(data.countDonated);
-                setDestruction(data.countDestructed);
-                setSales(data.countSold);
-
                 await axios
-                    .get("api/getPendingAcceptedRequests")
+                    .get("api/getAdminDashboardData")
                     .then((response) => {
-                        setCountPending(response.data.pending);
-                        setCountAccepted(response.data.accepted);
+                        const data = response.data;
+
+                        setTotalUsers(data.total_users);
+                        setRecentIssuance(data.recent_issuance);
+                        setDonation(data.countDonated);
+                        setDestruction(data.countDestructed);
+                        setSales(data.countSold);
+                        setCountPending(data.pending);
+                        setCountAccepted(data.accepted);
 
                         setPendingReq({
                             labels: ["Accepted", "Yellow"],
@@ -79,8 +78,8 @@ export default function Dashboard({ className }) {
                                     label: "Requests",
                                     data: Loading
                                         ? [
-                                              response.data.accepted,
-                                              response.data.pending,
+                                              data.accepted,
+                                              data.pending,
                                           ]
                                         : "",
                                     backgroundColor: [
