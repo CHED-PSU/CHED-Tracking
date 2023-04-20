@@ -57,9 +57,9 @@ class ForecastingController extends Controller
             $count++;
             $temp = $data->year*$slope+$yInt;
             array_push($predicted_data,$temp);
-        }  
+        }
 
-        $getpdataX = [];        
+        $getpdataX = [];
         $getpdataY = [];
 
         for($x = $yearStopped+1;  $x <= $yearStopped+3; $x++){
@@ -76,7 +76,7 @@ class ForecastingController extends Controller
             $getpdataY[] = (object) $dataY;
         }
 
-        
+
         return response()->json([
             'data' => $getdata,
             'predicted'=>intval($predict),
@@ -183,17 +183,4 @@ class ForecastingController extends Controller
             'predicted' => intval($predict)
         ]);
     }
-    public function totalCostPerYear(){
-        $getdata =DB::table('test_data')
-        ->limit(12)
-        ->orderBy('year', 'desc')
-        ->get();
-
-        return response()->json([
-            'data' => $getdata
-        ]);
-    }
-
-
-
 }

@@ -44,6 +44,11 @@ class GeneralController extends Controller
         $totalUsers = DB::table('users')
             ->count();
 
+        $getdata = DB::table('test_data')
+            ->limit(12)
+            ->orderBy('year', 'desc')
+            ->get();
+
         $recentIssuance = DB::table('trackings as t')
             ->select('t.tracking_id', 'u1.firstname as ufirstname', 'u2.id as rID', 'u1.id as uID', 'u1.surname as uSurname', 'u1.suffix as uSuffix', 't.created_at', 'u2.img as rImg', 'u2.firstname as rfirstname', 'u2.surname as rSurname', 'u2.suffix as rSuffix',)
             ->join('users as u1', 'u1.id', '=', 't.issued_by')
@@ -75,7 +80,7 @@ class GeneralController extends Controller
             ->count();
 
 
-        return response()->json(['pending' => $pendingCount, 'accepted' => $acceptedCount, 'total_users' => $totalUsers, 'recent_issuance' => $recentIssuance, 'countDonated' => $countDonated, 'countDestructed' => $countDestructed, 'countSold' => $countSold]);
+        return response()->json(['data' => $getdata, 'pending' => $pendingCount, 'accepted' => $acceptedCount, 'total_users' => $totalUsers, 'recent_issuance' => $recentIssuance, 'countDonated' => $countDonated, 'countDestructed' => $countDestructed, 'countSold' => $countSold]);
     }
 
     //Admin Logs

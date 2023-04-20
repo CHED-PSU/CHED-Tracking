@@ -62,7 +62,6 @@ export default function Dashboard({ className }) {
                     .get("api/getAdminDashboardData")
                     .then((response) => {
                         const data = response.data;
-
                         setTotalUsers(data.total_users);
                         setRecentIssuance(data.recent_issuance);
                         setDonation(data.countDonated);
@@ -70,6 +69,7 @@ export default function Dashboard({ className }) {
                         setSales(data.countSold);
                         setCountPending(data.pending);
                         setCountAccepted(data.accepted);
+                        setYearData(data.data);
 
                         setPendingReq({
                             labels: ["Accepted", "Yellow"],
@@ -77,10 +77,7 @@ export default function Dashboard({ className }) {
                                 {
                                     label: "Requests",
                                     data: Loading
-                                        ? [
-                                              data.accepted,
-                                              data.pending,
-                                          ]
+                                        ? [data.accepted, data.pending]
                                         : "",
                                     backgroundColor: [
                                         "rgba(255, 255, 255, 1)",
@@ -92,10 +89,6 @@ export default function Dashboard({ className }) {
                             ],
                         });
                     });
-
-                axios.get("api/totalCostPerYear").then((response) => {
-                    setYearData(response.data.data);
-                });
             } catch (e) {
                 console.log(e);
             } finally {

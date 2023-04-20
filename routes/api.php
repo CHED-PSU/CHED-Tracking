@@ -183,4 +183,3 @@ Route::post('YearlyUnserviceableReport', [ItemController::class, 'YearlyUnservic
 //Admin forecasting Items
 Route::get('forecast', [ForecastingController::class, 'forecast']);
 Route::post('forecastSpecific', [ForecastingController::class, 'forecastSpecific']);
-Route::get('totalCostPerYear', [ForecastingController::class, 'totalCostPerYear']);

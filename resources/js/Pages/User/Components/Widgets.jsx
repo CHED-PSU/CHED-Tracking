@@ -7,11 +7,9 @@ import io from "socket.io-client";
 
 export default function Widgets(props) {
     const [toggleTabs, setToggleTabs] = useState("all");
-    const [read, setRead] = useState(false);
     const user = localStorage.getItem("localSession");
     const value = JSON.parse(user);
-    const [name, setName] = useState("default");
-    const [role, setRole] = useState("default");
+    const role = value.role;
     const [Loading, setLoading] = useState(true);
 
     function clickTabs(index) {
@@ -73,20 +71,6 @@ export default function Widgets(props) {
     //         setRead(true);
     //     });
     // }, [socket]);
-
-    useEffect(() => {
-        const getNotification = async () => {
-            const response = await axios.post("/api/getNotificationItems", {
-                id: value.id,
-            });
-            const data = response.data;
-            setRead(true);
-        };
-        getNotification();
-
-        setName(value.name);
-        setRole(value.role);
-    });
 
     //for Logout
     const nav = useNavigate();
