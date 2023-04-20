@@ -1,4 +1,5 @@
 import { data } from "autoprefixer";
+import { toUpper } from "lodash";
 import React from "react";
 
 export default function AcceptedData(props) {
@@ -24,8 +25,8 @@ export default function AcceptedData(props) {
                         <img src="./img/profile-pic.jpeg" alt="" className="rounded-full bg-gray-500 w-9 h-9 object-cover" />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <h4 className="text-[17px] font-medium text-text-black">{props.article}</h4>
-                        <p className="text-[#878787] text-[14px] truncate w-80">{props.description}</p>
+                        <h4 className="text-[17px] font-medium text-text-black">{toUpper(props.article)}</h4>
+                        <p className="text-[#878787] text-[14px] truncate w-80">{toUpper((props.make_model ? props.make_model : '') + (props.color ? ', ' + props.color : '') + (props.sku ? ', SN: ' + props.sku : ''))}</p>
                     </div>
                 </a>
             </td>

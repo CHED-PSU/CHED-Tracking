@@ -31,7 +31,7 @@ export default function ParItemLists(props) {
             <td className="text-center border border-darkColor-700"></td>
         </tr>
         <tr className="font-medium text-ss">
-            <td className="text-left font-medium p-3 border border-darkColor-700">{toUpper(props.data.description)}</td>
+            <td className="text-left font-medium p-3 border border-darkColor-700">{toUpper((props.data.make_model ? props.data.make_model : '') + (props.data.color ? ', ' + props.data.color : '') + (props.data.sku ? ', SN: ' + props.data.sku : ''))}</td>
             <td className="text-center border border-darkColor-700">{props.data.property_no}</td>
             <td className="text-center border border-darkColor-700">{formatDateDisplay(props.receivedDate)}</td>
             <td className="text-center border border-darkColor-700">

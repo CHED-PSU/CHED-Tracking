@@ -227,9 +227,12 @@ export default function Widgets(props) {
                                     </span>{" "}
                                     <span className="">
                                         {" " +
-                                            (data.description == "ICS" ||
-                                            data.description == "PAR"
+                                            (data.description == "ICS"
                                                 ? "has issued you an " +
+                                                  data.description +
+                                                  " form"
+                                                : data.description == "PAR"
+                                                ? "has issued you a " +
                                                   data.description +
                                                   " form"
                                                 : data.description)}

@@ -1,4 +1,5 @@
 import { data } from "autoprefixer";
+import { toUpper } from "lodash";
 import React from "react";
 
 export default function RequestData(props) {
@@ -12,7 +13,7 @@ export default function RequestData(props) {
                                 {props.article}
                             </h4>
                             <p className="text-sm text-[#434343] truncate">
-                                {props.description}
+                                {toUpper((props.make_model ? props.make_model : '') + (props.color ? ', ' + props.color : '') + (props.sku ? ', SN: ' + props.sku : ''))}
                             </p>
                         </div>
 
@@ -21,7 +22,7 @@ export default function RequestData(props) {
                                 Date: {props.date}
                             </h4>
                             <h4 className="text-[#888888]">
-                                Acquisition: Php 45,742.52
+                                Acquisition:
                             </h4>
                         </div>
                     </div>

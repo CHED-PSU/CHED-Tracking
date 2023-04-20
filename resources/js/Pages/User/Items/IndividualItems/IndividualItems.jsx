@@ -1,4 +1,5 @@
 import { data } from "autoprefixer";
+import { toUpper } from "lodash";
 import React, {useState} from "react";
 
 export default function IndividualItems(props) {
@@ -23,7 +24,7 @@ export default function IndividualItems(props) {
             <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
                 {props.code}
             </td>
-            <td className="text-sm">{props.description}</td>
+            <td className="text-sm">{toUpper((props.make_model ? props.make_model : '') + (props.color ? ', ' + props.color : '') + (props.sku ? ', SN: ' + props.sku : ''))}</td>
             <td className="text-sm">{props.date}</td>
             <td className="text-center py-3 rounded-tableRow">
                 <button value={props.value}

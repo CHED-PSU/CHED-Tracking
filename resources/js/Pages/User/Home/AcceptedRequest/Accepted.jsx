@@ -1,3 +1,4 @@
+import { toUpper } from "lodash";
 import react from "react";
 
 
@@ -12,11 +13,11 @@ export default function Accepted(props) {
 
     return (
         <tr key={props.data.uri_id} className="bg-white">
-            <td className="text-center 2xl:text-base xl:text-sm text-sm rounded-tableRow">
+            <td className="text-center text-sm rounded-tableRow">
                 {props.data.uri_id}
             </td>
-            <td className="2xl:text-base xl:text-sm text-sm font-semibold text-text-black">
-                {props.data.description}
+            <td className="text-sm font-semibold text-text-black">
+                {toUpper((props.data.make_model ? props.data.make_model : '') + (props.data.color ? ', ' + props.data.color : '') + (props.data.sku ? ', SN: ' + props.data.sku : ''))}
             </td>
             <td className="2xl:text-sm xl:text-[13px] text-[13px]">
                 {props.data.defect}

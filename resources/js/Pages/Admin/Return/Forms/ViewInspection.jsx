@@ -1,6 +1,7 @@
 import React, { createRef, useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
+import { toUpper } from "lodash";
 
 export default function ViewInspection(props) {
     const ref = useRef();
@@ -221,7 +222,7 @@ export default function ViewInspection(props) {
                                             Type:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? returnedItemsData.article
+                                                    ? toUpper(returnedItemsData.article)
                                                     : ""}
                                             </font>
                                         </div>
@@ -259,7 +260,7 @@ export default function ViewInspection(props) {
                                             Brand/Model:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? returnedItemsData.description
+                                                    ? toUpper((returnedItemsData.make_model ? returnedItemsData.make_model : '') + (returnedItemsData.color ? ', ' + returnedItemsData.color : '') + (returnedItemsData.sku ? ', SN: ' + returnedItemsData.sku : ''))
                                                     : ""}
                                             </font>
                                         </div>

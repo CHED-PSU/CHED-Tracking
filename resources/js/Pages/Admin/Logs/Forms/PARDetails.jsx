@@ -53,7 +53,7 @@ export default function PARDetails(props) {
                         <div className="px-3 py-1 font-semibold border-b border-darkColor-700">
                             {data.article}
                         </div>
-                        <div className="px-3 py-1">{toUpper(data.make_model ? data.make_model + ', ' : '') + data.description + (data.color ? ', ' + data.color : '')}</div>
+                        <div className="px-3 py-1">{toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}</div>
                     </td>
                     <td className="text-center border border-darkColor-700">
                         {data.property_no}

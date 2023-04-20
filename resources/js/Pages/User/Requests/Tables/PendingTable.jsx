@@ -21,6 +21,9 @@ export default function PendingTable({ className }) {
                         button={"Pending"}
                         article={data.article}
                         description={data.description}
+                        make_model={data.make_model}
+                        sku={data.sku}
+                        color={data.color}
                         date={data.created_at}
                         value={data.id}
                         buttoN={sendMessage}

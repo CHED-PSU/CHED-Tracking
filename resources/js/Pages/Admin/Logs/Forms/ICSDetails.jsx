@@ -59,7 +59,7 @@ export default function ICSDetails(props) {
                     </td>
                     <td className="text-left px-2 py-3 border">
                         <div className="min-w-[100px]">
-                            {toUpper((data.make_model ? data.make_model + ', ' : '') + data.description + (data.color ? ', ' + data.color : ''))}
+                            {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
                         </div>
                     </td>
                     <td className="text-left px-2 border">{data.property_no}</td>

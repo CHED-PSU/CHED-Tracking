@@ -5,6 +5,7 @@ import PARModal from "./Modals/PARModal";
 import axios from "axios";
 import Loader from "../../../components/Loader";
 import Searchbar from "../Components/Searchbar";
+import { toUpper } from "lodash";
 
 export default function Pending({ className }) {
     const [openICSModal, setOpenICSModal] = useState("close");
@@ -139,7 +140,7 @@ export default function Pending({ className }) {
                             <div className="w-[500px] truncate flex flex-col">
                                 <div className=" dark:text-white gap-1 items-center">
                                     <h4 className="2xl:text-base xl:text-base text-base font-semibold 2xl:mb-0 xl:-mb-1 -mb-1">
-                                        {data.article}
+                                        {toUpper(data.article)}
                                     </h4>
                                     <p className="text-sm text-[#434343]">
                                         Requested by: {displayName(data, true)}
@@ -148,7 +149,7 @@ export default function Pending({ className }) {
 
                                 <div className="text-xs dark:text-gray-300 2xl:mt-2 mt-1">
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
-                                        Description: {data.description}
+                                        Description: {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
                                     </div>
                                     <div className="text-[#888888] dark:text-gray-400 truncate">
                                         Defect: {data.defect}

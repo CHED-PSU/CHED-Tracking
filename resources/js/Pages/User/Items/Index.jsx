@@ -4,6 +4,7 @@ import UnderDev from "../../../Components/UnderDev";
 import Searchbar from "../Components/Searchbar";
 import ReturnRequest from "./Forms/ReturnRequest";
 import axios from "axios";
+import { toUpper } from "lodash";
 
 export default function Index({ className }) {
     const [checkedData, setCheckedData] = useState([]);
@@ -99,8 +100,8 @@ export default function Index({ className }) {
                     <td className="2xl:text-[17px] xl:text-base text-base font-medium text-text-black">
                         {data.code}
                     </td>
-                    <td className="text-sm">{data.article}</td>
-                    <td className="text-sm">{data.description}</td>
+                    <td className="text-sm">{toUpper(data.article)}</td>
+                    <td className="text-sm">{toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}</td>
                     <td className="text-sm">
                         {formatDateDisplay(data.created_at)}
                     </td>

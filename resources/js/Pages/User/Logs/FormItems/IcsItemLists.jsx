@@ -22,7 +22,7 @@ export default function IcsItemLists({ data }) {
             </td>
             <td className="text-left px-2 py-3 border">
                 <div className="min-w-[100px]">
-                    {upperCase(data.description)}
+                    {upperCase((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
                 </div>
             </td>
             <td className="text-left px-3 border">{data.property_no}</td>

@@ -16,6 +16,9 @@ export default function AcceptedTable({ className }) {
                         button={"Accepted"}
                         article={data.article}
                         description={data.description}
+                        make_model={data.make_model}
+                        sku={data.sku}
+                        color={data.color}
                         date={data.created_at}
                         status={data.status}
                         value={data.uri_id}

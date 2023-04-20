@@ -39,7 +39,7 @@ export default function IndividualInventory(props) {
                         {toUpper(data.article)}
                     </td>
                     <td className="text-left px-2 border">
-                        {toUpper((data.make_model ? data.make_model + ', ' : '') + data.description + (data.color ? ', ' + data.color : ''))}
+                        {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
                     </td>
                     <td className="text-center px-2 border">1</td>
                     <td className="text-center px-2 border">{data.serial_no}</td>

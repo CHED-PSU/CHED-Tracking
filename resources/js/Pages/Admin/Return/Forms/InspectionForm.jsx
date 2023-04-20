@@ -2,6 +2,7 @@ import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 import React, { useEffect, useState, useRef } from "react";
 import SaveAlert from "../Alert/SaveAlert";
+import { toUpper } from "lodash";
 
 export default function InspectionForm(props) {
     const ref = useRef();
@@ -49,7 +50,9 @@ export default function InspectionForm(props) {
         if (type == "back") {
             setAlertIcon("question");
             setAlertHeader("Discard Changes");
-            setAlertDesc("Are you sure you want to go back without saving changes?");
+            setAlertDesc(
+                "Are you sure you want to go back without saving changes?"
+            );
             setAlertNoButton("Cancel");
             setAlertYesButton("Confirm");
         } else {
@@ -176,8 +179,8 @@ export default function InspectionForm(props) {
 
     const [isChanged, setIsChanged] = useState(false);
 
-    function clickChange(){
-        setIsChanged(false)
+    function clickChange() {
+        setIsChanged(false);
     }
 
     const preInspection = (e) => {
@@ -337,7 +340,9 @@ export default function InspectionForm(props) {
                                             Type:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? returnedItemsData.article
+                                                    ? toUpper(
+                                                          returnedItemsData.article
+                                                      )
                                                     : ""}
                                             </font>
                                         </div>
@@ -375,7 +380,19 @@ export default function InspectionForm(props) {
                                             Brand/Model:{" "}
                                             <font className="font-semibold">
                                                 {returnedItemsData
-                                                    ? returnedItemsData.description
+                                                    ? toUpper(
+                                                          (returnedItemsData.make_model
+                                                              ? returnedItemsData.make_model
+                                                              : "") +
+                                                              (returnedItemsData.color
+                                                                  ? ", " +
+                                                                    returnedItemsData.color
+                                                                  : "") +
+                                                              (returnedItemsData.sku
+                                                                  ? ", SN: " +
+                                                                    returnedItemsData.sku
+                                                                  : "")
+                                                      )
                                                     : ""}
                                             </font>
                                         </div>
@@ -749,7 +766,10 @@ export default function InspectionForm(props) {
                                 >
                                     Ready for Return
                                 </option>
-                                <option id="Unserviceable" value="Unserviceable">
+                                <option
+                                    id="Unserviceable"
+                                    value="Unserviceable"
+                                >
                                     Unserviceable
                                 </option>
                             </select>

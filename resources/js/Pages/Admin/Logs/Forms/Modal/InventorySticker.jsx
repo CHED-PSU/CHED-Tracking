@@ -156,7 +156,7 @@ export default function InventorySticker(props) {
                         <div className="font-semibold">{data.article}</div>
                     </td>
                     <td className="text-left px-3 py-3 border">
-                        <div className="min-w-[100px]">{data.description}</div>
+                        <div className="min-w-[100px]">{(data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : '')}</div>
                     </td>
                     <td className="flex justify-center items-center px-2 h-14">
                         <button
@@ -268,7 +268,7 @@ export default function InventorySticker(props) {
                                             <td className="text-[7px] font-medium flex">
                                                 :&nbsp;
                                                 <p className="w-[185px] truncate">
-                                                    {toUpper((data.make_model ? data.make_model + ', ' : '') + data.description + (data.color ? ', ' + data.color : ''))}
+                                                    {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
                                                 </p>
                                             </td>
                                         </tr>

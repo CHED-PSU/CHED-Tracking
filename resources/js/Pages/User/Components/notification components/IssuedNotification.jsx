@@ -79,7 +79,7 @@ export default function IssuedNotification({
                                 {toUpper(data.article)}
                             </div>
                             <div className="px-3 py-3">
-                                {toUpper(data.description)}
+                                {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
                             </div>
                         </div>
                     </td>

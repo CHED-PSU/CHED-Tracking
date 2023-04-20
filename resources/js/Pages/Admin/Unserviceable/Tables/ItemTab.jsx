@@ -4,6 +4,7 @@ import ReactPaginate from "react-paginate";
 import DisposeModal from "../Modals/Dispose";
 import DonationForm from "../Forms/DonationFormPre";
 import DestructionSalesForm from "../Forms/DestructionFormPre";
+import { toUpper } from "lodash";
 
 export default function ItemTab({ className }) {
     const [Loading, setLoading] = useState(true);
@@ -153,7 +154,7 @@ export default function ItemTab({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3">
                             <div className="flex flex-col pr-2 gap-1">
                                 <h4 className="text-[15px] font-medium text-text-black">
-                                    {data.article}
+                                    {toUpper(data.article)}
                                 </h4>
                                 <p className="text-[#878787] text-[14px]">
                                     Previous owner: {displayName(data, true)}
@@ -166,7 +167,7 @@ export default function ItemTab({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3">
                             <div className="flex flex-col gap-1">
                                 <h5 className="text-[14px] font-medium text-text-black w-72 truncate">
-                                    {data.description}
+                                    {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
                                 </h5>
                                 <p className="text-[#878787] text-[14px]">
                                     Item Code: {data.code}
@@ -179,7 +180,7 @@ export default function ItemTab({ className }) {
                         <a className="text-left flex items-center w-full h-12 gap-3 pr-2">
                             <div className="flex flex-col gap-1">
                                 <p className="text-[#878787] text-[14px]">
-                                    {data.remarks}
+                                    {toUpper(data.remarks)}
                                 </p>
                             </div>
                         </a>

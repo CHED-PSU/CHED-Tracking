@@ -138,7 +138,7 @@ export default function Transfer({
                     </td>
                     <td className="text-center p-2 border text-sm">
                         <p className="w-28 truncate">
-                            {toUpper(data.description)}
+                            {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
                         </p>
                     </td>
                     <td className="text-center p-2 border text-sm">

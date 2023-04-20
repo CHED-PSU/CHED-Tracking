@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { toUpper } from "lodash";
 
 export default function ICSNotification({
     className,
@@ -43,22 +44,22 @@ export default function ICSNotification({
                     className="text-xs h-fit cursor-default border dark:border-neutral-700 bg-white dark:bg-darkColor-800 dark:text-white"
                 >
                     <td className="text-center px-3 border">1</td>
-                    <td className="text-center px-3 border">{data.unit}</td>
+                    <td className="text-center px-3 border">{toUpper(data.unit)}</td>
                     <td className="text-center px-3 border">
                         {parseInt(data.price)}
                     </td>
                     <td className="text-left px-3 py-3 border">
                         <div className="flex items-center">
                             <div className="font-semibold mr-3">
-                                {data.article}
+                                {toUpper(data.article)}
                             </div>
-                            <div>{data.description}</div>
+                            <div>{toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}</div>
                         </div>
                     </td>
                     <td className="text-left px-3 border">
                         {data.inventory_no}
                     </td>
-                    <td className="text-center px-3 border">{data.eul}</td>
+                    <td className="text-center px-3 border">{toUpper(data.eul)}</td>
                 </tr>
             );
         });
