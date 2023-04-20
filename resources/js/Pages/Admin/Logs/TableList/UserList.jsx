@@ -69,19 +69,6 @@ export default function UserList(props) {
                     </div>
                 </a>
             </td>
-            {/* status */}
-            <td>
-                <a className="text-left flex items-center w-full h-12 gap-3">
-                    <div className="flex flex-col gap-1 items-center w-full">
-                        <div className="">
-                            <h5 className="p-1 px-2 w-fit text-[14px] text-red-500 dark:text-neutral-400 dark:bg-[#434343] offlineUser rounded-full flex items-center gap-1">
-                                <i className="fa-solid fa-circle text-[7px]"></i>
-                                Offline
-                            </h5>
-                        </div>
-                    </div>
-                </a>
-            </td>
             {/* email */}
             <td>
                 <a className="text-center flex items-center w-full h-12 gap-3 pl-4">
@@ -89,6 +76,14 @@ export default function UserList(props) {
                         <p className=" text-[14px] font-medium truncate w-72">
                             {props.designation == null ? "N/A" : props.designation}
                         </p>
+                    </div>
+                </a>
+            </td>
+            {/* status */}
+            <td>
+                <a className="text-left flex items-center w-full h-12 gap-3">
+                    <div className="flex flex-col gap-1 items-center w-full">
+                        <div className="">Total {props.type == 'ics-control' ? 'ICS' : props.type == 'par-control' ? 'PAR' : ""} Amount : {props.totalPrice}</div>
                     </div>
                 </a>
             </td>

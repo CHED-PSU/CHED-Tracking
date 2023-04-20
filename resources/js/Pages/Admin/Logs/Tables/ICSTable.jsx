@@ -11,6 +11,7 @@ export default function ICSTable({ className, toggleTabs }) {
     const [IcsControl, setIcsControl] = useState();
     const [IcsDetails, setIcsDetails] = useState();
     const [totalPrice, setTotalPrice] = useState();
+    const [totalPriceList, setTotalPriceList] = useState();
     const [userName, setUserName] = useState();
     const [designation, setDesignation] = useState();
 
@@ -28,6 +29,7 @@ export default function ICSTable({ className, toggleTabs }) {
                 const response = await axios.get("api/getUserListsICS");
                 const data = response.data;
                 setUserLists(data.user_lists);
+                setTotalPriceList(data.total_price);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -78,9 +80,10 @@ export default function ICSTable({ className, toggleTabs }) {
 
     const pageCount = Math.ceil((UserLists?.length || 0) / itemsPerPage);
 
-    const userMapper = (items) => {
-        return items?.map((data) => {
+    const userMapper = (userList, totalPrices) => {
+        return userList?.map((data) => {
             if (data.role_id != 5) {
+                const totalPrice = totalPrices[data.id] || 0; // get the total price for the current user, default to 0 if not found
                 return (
                     <UserList
                         key={data.id}
@@ -97,6 +100,7 @@ export default function ICSTable({ className, toggleTabs }) {
                         id={data.id}
                         type={"ics-control"}
                         getData={getData}
+                        totalPrice={totalPrice} // pass the total price as a prop to the UserList component
                         clickForms={clickForms}
                     />
                 );
@@ -170,11 +174,11 @@ export default function ICSTable({ className, toggleTabs }) {
                         <th className="h-10 w-80 font-medium text-left pl-6">
                             Name
                         </th>
-                        <th className="h-10 w-42 font-medium text-center">
-                            User Status
-                        </th>
                         <th className="h-10 w-20 pl-4 font-medium text-center">
                             Position
+                        </th>
+                        <th className="h-10 w-42 font-medium text-center">
+                            Issued Items
                         </th>
                         <th className="h-10 font-medium text-center">
                             Actions
@@ -195,7 +199,7 @@ export default function ICSTable({ className, toggleTabs }) {
                             </td>
                         </tr>
                     ) : (
-                        userMapper(slicedData)
+                        userMapper(slicedData, totalPriceList)
                     )}
                     {/*item 2*/}
                 </tbody>

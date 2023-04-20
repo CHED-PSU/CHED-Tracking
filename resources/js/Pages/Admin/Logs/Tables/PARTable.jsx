@@ -12,6 +12,7 @@ export default function PARTable({ className, toggleTabs }) {
     const [totalPrice, setTotalPrice] = useState();
     const [UserLists, setUserLists] = useState();
     const [userName, setUserName] = useState();
+    const [totalPriceList, setTotalPriceList] = useState();
     const [designation, setDesignation] = useState();
 
     function passDesignation(index) {
@@ -33,6 +34,7 @@ export default function PARTable({ className, toggleTabs }) {
                 const response = await axios.get("api/getUserListsPAR");
                 const data = response.data;
                 setUserLists(data.user_lists);
+                setTotalPriceList(data.total_price);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -58,9 +60,10 @@ export default function PARTable({ className, toggleTabs }) {
 
     const pageCount = Math.ceil((UserLists?.length || 0) / itemsPerPage);
 
-    const userMapper = (items) => {
+    const userMapper = (items, totalPrices) => {
         return items?.map((data) => {
             if (data.role_id != 5) {
+                const totalPrice = totalPrices[data.id] || 0; // get the total price for the current user, default to 0 if not found
                 return (
                     <UserList
                         key={data.id}
@@ -76,6 +79,7 @@ export default function PARTable({ className, toggleTabs }) {
                         name={data.name}
                         getID={getID}
                         id={data.id}
+                        totalPrice={totalPrice} // pass the total price as a prop to the UserList component
                         type={"par-control"}
                         getData={getData}
                         clickForms={clickForms}
@@ -181,11 +185,11 @@ export default function PARTable({ className, toggleTabs }) {
                         <th className="h-10 w-80 font-medium text-left pl-6">
                             Name
                         </th>
-                        <th className="h-10 w-42 font-medium text-center">
-                            User Status
-                        </th>
                         <th className="h-10 w-20 pl-4 font-medium text-center">
                             Position
+                        </th>
+                        <th className="h-10 w-42 font-medium text-center">
+                            User Status
                         </th>
                         <th className="h-10 font-medium text-center">
                             Actions
@@ -206,7 +210,7 @@ export default function PARTable({ className, toggleTabs }) {
                             </td>
                         </tr>
                     ) : (
-                        userMapper(slicedData)
+                        userMapper(slicedData, totalPriceList)
                     )}
                     {/*item 2*/}
                 </tbody>

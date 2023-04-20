@@ -181,11 +181,11 @@ export default function IndividualTable({ className, toggleTabs }) {
                         <th className="h-10 w-80 font-medium text-left pl-6">
                             Name
                         </th>
-                        <th className="h-10 w-42 font-medium text-center">
-                            User Status
-                        </th>
                         <th className="h-10 w-20 pl-4 font-medium text-center">
                             Position
+                        </th>
+                        <th className="h-10 w-42 font-medium text-center">
+                            User Status
                         </th>
                         <th className="h-10 font-medium text-center">
                             Actions

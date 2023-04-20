@@ -97,38 +97,150 @@ class GeneralController extends Controller
     public function getUserListsICS()
     {
         $userList = DB::table('users')
-            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id as id')
             ->join('roles as r', 'r.id', '=', 'users.role_id')
             ->get();
 
-        return response()->json(['user_lists' => $userList]);
+        $totalPrices = [];
+
+        foreach ($userList as $user) {
+            $subQuery = DB::table('inventory_trackings as it')
+                ->select(DB::raw("SUM(pri.price * 1) as total"), 'it.trackings_id')
+                ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+                ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+                ->groupBy('it.trackings_id');
+
+            $result = DB::table('trackings as t')
+                ->joinSub($subQuery, 'subData', function ($join) {
+                    $join->on('t.id', '=', 'subData.trackings_id');
+                })
+                ->where('t.received_by', $user->id)
+                ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
+                ->where('ui.description', 'ICS')
+                ->where('ui.confirmation', 'accepted')
+                ->get();
+
+            $totalPrice = 0;
+
+            foreach ($result as $item) {
+                $totalPrice += $item->total;
+            }
+
+            $totalPrices[$user->id] = $totalPrice;
+        }
+
+        return response()->json(['user_lists' => $userList, 'total_price' => $totalPrices]);
     }
     public function getUserListsPAR()
     {
         $userList = DB::table('users')
-            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id as id')
             ->join('roles as r', 'r.id', '=', 'users.role_id')
             ->get();
 
-        return response()->json(['user_lists' => $userList]);
+        $totalPrices = [];
+
+        foreach ($userList as $user) {
+            $subQuery = DB::table('inventory_trackings as it')
+                ->select(DB::raw("SUM(pri.price * 1) as total"), 'it.trackings_id')
+                ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+                ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+                ->groupBy('it.trackings_id');
+
+            $result = DB::table('trackings as t')
+                ->joinSub($subQuery, 'subData', function ($join) {
+                    $join->on('t.id', '=', 'subData.trackings_id');
+                })
+                ->where('t.received_by', $user->id)
+                ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
+                ->where('ui.description', 'PAR')
+                ->where('ui.confirmation', 'accepted')
+                ->get();
+
+            $totalPrice = 0;
+
+            foreach ($result as $item) {
+                $totalPrice += $item->total;
+            }
+
+            $totalPrices[$user->id] = $totalPrice;
+        }
+
+        return response()->json(['user_lists' => $userList, 'total_price' => $totalPrices]);
     }
     public function getUserListsIIR()
     {
         $userList = DB::table('users')
-            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id as id')
             ->join('roles as r', 'r.id', '=', 'users.role_id')
             ->get();
 
-        return response()->json(['user_lists' => $userList]);
+        $totalPrices = [];
+
+        foreach ($userList as $user) {
+            $subQuery = DB::table('inventory_trackings as it')
+                ->select(DB::raw("SUM(pri.price * 1) as total"), 'it.trackings_id')
+                ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+                ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+                ->groupBy('it.trackings_id');
+
+            $result = DB::table('trackings as t')
+                ->joinSub($subQuery, 'subData', function ($join) {
+                    $join->on('t.id', '=', 'subData.trackings_id');
+                })
+                ->where('t.received_by', $user->id)
+                ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
+                ->where('ui.description', 'ICS')
+                ->where('ui.confirmation', 'accepted')
+                ->get();
+
+            $totalPrice = 0;
+
+            foreach ($result as $item) {
+                $totalPrice += $item->total;
+            }
+
+            $totalPrices[$user->id] = $totalPrice;
+        }
+
+        return response()->json(['user_lists' => $userList, 'total_price' => $totalPrices]);
     }
     public function getUserListsIIC()
     {
         $userList = DB::table('users')
-            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id')
+            ->select('users.prefix', 'users.img', 'users.firstname', 'users.middlename', 'users.surname', 'users.suffix', 'users.designation', 'users.role_id', 'r.name', 'users.id as id')
             ->join('roles as r', 'r.id', '=', 'users.role_id')
             ->get();
 
-        return response()->json(['user_lists' => $userList]);
+        $totalPrices = [];
+
+        foreach ($userList as $user) {
+            $subQuery = DB::table('inventory_trackings as it')
+                ->select(DB::raw("SUM(pri.price * 1) as total"), 'it.trackings_id')
+                ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+                ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+                ->groupBy('it.trackings_id');
+
+            $result = DB::table('trackings as t')
+                ->joinSub($subQuery, 'subData', function ($join) {
+                    $join->on('t.id', '=', 'subData.trackings_id');
+                })
+                ->where('t.received_by', $user->id)
+                ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
+                ->where('ui.description', 'ICS')
+                ->where('ui.confirmation', 'accepted')
+                ->get();
+
+            $totalPrice = 0;
+
+            foreach ($result as $item) {
+                $totalPrice += $item->total;
+            }
+
+            $totalPrices[$user->id] = $totalPrice;
+        }
+
+        return response()->json(['user_lists' => $userList, 'total_price' => $totalPrices]);
     }
 
     //admin return items
