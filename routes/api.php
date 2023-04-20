@@ -98,6 +98,7 @@ Route::get('getAdminRequest', [FormController::class, 'getAdminRequest']);
 
 //Admin Dashboard
 Route::get('getAdminDashboardData', [GeneralController::class, 'getAdminDashboardData']);
+Route::get('totalCostPerYear', [ForecastingController::class, 'totalCostPerYear']);
 //Admin Pending Items
 Route::get('getPendingItems', [ItemController::class, 'getPendingitems']);
 //get Returned Items Data

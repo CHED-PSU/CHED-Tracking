@@ -76,6 +76,10 @@ class ForecastingController extends Controller
             $getpdataY[] = (object) $dataY;
         }
 
+        $getdata =DB::table('test_data')
+        ->limit(12)
+        ->orderBy('year', 'desc')
+        ->get();
 
         return response()->json([
             'data' => $getdata,
@@ -84,10 +88,9 @@ class ForecastingController extends Controller
             'yAxis' => $getdataY,
             'pxAxis' =>$getpdataX,
             'pyAxis' => $getpdataY,
-            'predicted_data' => $predicted_data
+            'predicted_data' => $predicted_data,
+            'data' => $getdata,
         ]);
-
-
     }
 
     public function disposalForecast(Request $request){
@@ -181,6 +184,16 @@ class ForecastingController extends Controller
 
         return response()->json([
             'predicted' => intval($predict)
+        ]);
+    }
+    public function totalCostPerYear(){
+        $getdata =DB::table('test_data')
+        ->limit(12)
+        ->orderBy('year', 'desc')
+        ->get();
+
+        return response()->json([
+            'data' => $getdata
         ]);
     }
 }

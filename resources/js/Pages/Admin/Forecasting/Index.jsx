@@ -21,6 +21,7 @@ export default function Forecasting({ className }) {
     const [dyAxis, dsetyAxis] = useState([]);
     const [dpredictedyAxis, dsetpredictedyAxis] = useState([]);
     const [dpredicted, dsetpredicted] = useState();
+    const [totalCostPerYear, settotalCostPerYear] = useState([]);
 
     function clickTabs(index) {
         setToggleTabs(index);
@@ -38,6 +39,7 @@ export default function Forecasting({ className }) {
                     setpyAxis(response.data.pyAxis);
                     setpredictedyAxis(response.data.predicted_data);
                     setpredicted(response.data.predicted);
+                    settotalCostPerYear(response.data.data);
                 });
             } catch (e) {
                 console.log(e);
@@ -94,6 +96,7 @@ export default function Forecasting({ className }) {
                             yAxis={yAxis}
                             pxAxis={pxAxis}
                             pyAxis={pyAxis}
+                            totalCostPerYear={totalCostPerYear}
                             predictedyAxis={predictedyAxis}
                             predicted={predicted}
                         />

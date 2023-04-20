@@ -11,13 +11,12 @@ export default function Newproposal({
     pyAxis,
     predictedyAxis,
     predicted,
+    totalCostPerYear,
 }) {
-
     const domain = window.location.href;
     const url = new URL(domain);
 
     const predictRef = useRef(null);
-    const [totalCostPerYear, settotalCostPerYear] = useState([]);
     const [projectedValue, setProjectedValue] = useState("");
     const [year, setYear] = useState("");
     const [Loading, setLoading] = useState(true);
@@ -36,22 +35,6 @@ export default function Newproposal({
             setYear(year);
         });
     };
-
-    useEffect(() => {
-        const getTotalCost = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get("api/totalCostPerYear");
-                const data = response.data;
-                settotalCostPerYear(data.data);
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
-        };
-        getTotalCost();
-    }, []);
 
     const dataMapper = (items) => {
         return items?.map((data) => {
@@ -76,11 +59,17 @@ export default function Newproposal({
     };
 
     var data = {
-        labels: [...xAxis.map((data) => data.year), ...pxAxis.map((data) => data.year)],
+        labels: [
+            ...xAxis.map((data) => data.year),
+            ...pxAxis.map((data) => data.year),
+        ],
         datasets: [
             {
                 label: "Actual Data",
-                data: [...yAxis.map((data) => parseInt(data.total_cost)), ...pyAxis.map((data) => parseInt(data.total_cost))],
+                data: [
+                    ...yAxis.map((data) => parseInt(data.total_cost)),
+                    ...pyAxis.map((data) => parseInt(data.total_cost)),
+                ],
                 fill: true,
                 backgroundColor: ["rgba(220, 232, 255, 0.4)"],
                 pointBackgroundColor: "rgba(34, 127, 255, 1)",
