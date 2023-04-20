@@ -6,7 +6,7 @@ import ChedLogo from "../../../components/ChedLogo";
 
 export default function Login({ children }) {
     return (
-        <div className="flex w-full h-screen bg-white">
+        <div className="overflow-auto flex w-full h-screen bg-white">
             {/* Left Column */}
             <div className="justify-center items-end flex-col px-5 cursor-default w-full lg:flex hidden">
                 <img
@@ -17,8 +17,8 @@ export default function Login({ children }) {
             </div>
 
             {/* Right Column */}
-            <div className="xl:w-[45%] md:w-[100%] sm:w-[100%] w-[45%] flex flex-none justify-center items-center px-5">
-                <div className="flex flex-col 2xl:w-[500px] xl:w-[450px] md:w-[360px] sm:w-[360px] w-[450px] 2xl:space-y-14 xl:space-y-8 space-y-8">
+            <div className="xl:w-[45%] w-[100%] flex flex-none justify-center items-center px-5">
+                <div className="flex flex-col 2xl:w-[500px] xl:w-[450px] md:w-[360px] w-[360px] 2xl:space-y-14 xl:space-y-8 space-y-8">
                     <div className="flex flex-col 2xl:gap-16 xl:gap-8 h-fit text-darkColor-700 items-center">
                         <ChedLogo className="2xl:h-36 xl:h-24 h-20 md:mb-5 sm:mb-5" />
                         <div className="h-fit space-y-2 text-center">
@@ -31,7 +31,7 @@ export default function Login({ children }) {
                         </div>
                     </div>
                     <div className="space-y-10">
-                        
+
 
                         <div className="h-fit">{children}</div>
                     </div>

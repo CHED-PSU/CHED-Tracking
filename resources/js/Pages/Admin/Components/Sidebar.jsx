@@ -19,9 +19,7 @@ export default function Sidebar(props) {
     }
 
     return (
-        <div className="sticky top-0 overflow-x-auto flex flex-none flex-col bg-white dark:bg-darkColor-800 text-center border-r border-neutral-200 dark:border-[#434343] shrink-0 z-20 transition-all duration-150 transform
-        2xl:w-72 xl:w-[240px] lg:w-[280px] md:w-[220px] w-[260px] 
-        h-screen ">
+        <div className="sticky top-0 overflow-x-auto flex flex-none flex-col bg-white dark:bg-darkColor-800 text-center border-r border-neutral-200 dark:border-[#434343] shrink-0 z-20 transition-all duration-150 transform w-72">
             {/* Logo */}
             <div
                 className="flex-none 2xl:h-[118px] xl:h-[100px] h-[100px] dark:border-neutral-700"
@@ -83,7 +81,7 @@ export default function Sidebar(props) {
                             <div className="flex w-full items-center justify-between p-4 cursor-pointer 2xl:h-12 xl:h-10 h-14 py-3 select-none">
                                 <div className="flex items-center
                                 xl:gap-3 gap-4">
-                                    <i className="fa-solid fa-envelope-open-text 
+                                    <i className="fa-solid fa-envelope-open-text
                                     2xl:text-2xl xl:text-lg text-lg"></i>
                                     <h4 className="xl:text-[12px] text-[13px] leading-3 font-medium">Pending Requests</h4>
                                 </div>

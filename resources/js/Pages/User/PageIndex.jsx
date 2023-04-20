@@ -64,7 +64,7 @@ export default function Index() {
     }
 
     return (
-        <div className="relative w-full h-screen flex bg-[#fafafa] dark:bg-darkColor-900 transition-all duration-150 transform overflow-x-hidden">
+        <div className="min-w-[1903px] min-h-[961px] overflow-auto relative w-full h-screen flex bg-[#fafafa] dark:bg-darkColor-900 transition-all duration-150 transform overflow-x-hidden">
             <Sidebar
                 clickTabs={clickTabs}
                 toggleTabs={toggleTabs}

@@ -206,12 +206,10 @@ export default function Landing() {
 
                     <div
                         className="z-0 bg-cover bg-center bg-circle-huge absolute right-0 mt-10
-                        2xl:w-[850px] xl:w-[500px] lg:w-[600px] md:w-[540px] w-[960px]
-                        2xl:h-[800px] xl:h-[550px] lg:h-[600px] md:h-[540px] h-[920px]
+                        2xl:w-[850px] xl:w-[500px] lg:w-[600px] md:w-[540px] w-[540px]
+                        2xl:h-[800px] xl:h-[550px] lg:h-[600px] md:h-[540px] h-[540px]
                     "
                     ></div>
-                    <div className="bg-cover bg-center bg-bg-pattern absolute bottom-0"></div>
-
                     <div
                         className="flex flex-col z-10
                      xl:gap-4 md:gap-1 gap-14
