@@ -190,7 +190,10 @@ class GeneralController extends Controller
                 })
                 ->where('t.received_by', $user->id)
                 ->join('users_notification as ui', 'ui.trackings_id', '=', 't.id')
-                ->where('ui.description', 'ICS')
+                ->where(function ($query) {
+                    $query->orWhere('ui.description', 'ICS')
+                        ->orWhere('ui.description', 'PAR');
+                })
                 ->where('ui.confirmation', 'accepted')
                 ->get();
 

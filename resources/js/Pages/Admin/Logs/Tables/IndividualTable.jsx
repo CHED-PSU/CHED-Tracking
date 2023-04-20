@@ -10,6 +10,7 @@ export default function IndividualTable({ className, toggleTabs }) {
     const [UserLists, setUserLists] = useState();
     const [indivItems, setIndivItems] = useState();
     const [totalPrice, setTotalPrice] = useState();
+    const [totalPriceList, setTotalPriceList] = useState();
     const [userName, setUserName] = useState();
     const [designation, setDesignation] = useState();
 
@@ -32,6 +33,7 @@ export default function IndividualTable({ className, toggleTabs }) {
                 const response = await axios.get("api/getUserListsIIR");
                 const data = response.data;
                 setUserLists(data.user_lists);
+                setTotalPriceList(data.total_price);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -43,9 +45,10 @@ export default function IndividualTable({ className, toggleTabs }) {
         }
     }, [toggleTabs]);
 
-    const userMapper = (items) => {
+    const userMapper = (items, totalPrices) => {
         return items?.map((data) => {
             if (data.role_id != 5) {
+                const totalPrice = totalPrices[data.id] || 0; // get the total price for the current user, default to 0 if not found
                 return (
                     <UserList
                         key={data.id}
@@ -58,6 +61,7 @@ export default function IndividualTable({ className, toggleTabs }) {
                         passUserName={passUserName}
                         designation={data.designation}
                         passDesignation={passDesignation}
+                        totalPrice={totalPrice} // pass the total price as a prop to the UserList component
                         name={data.name}
                         id={data.id}
                         getID={getID}
@@ -185,7 +189,7 @@ export default function IndividualTable({ className, toggleTabs }) {
                             Position
                         </th>
                         <th className="h-10 w-42 font-medium text-center">
-                            User Status
+                            Issued Items
                         </th>
                         <th className="h-10 font-medium text-center">
                             Actions
@@ -206,7 +210,7 @@ export default function IndividualTable({ className, toggleTabs }) {
                             </td>
                         </tr>
                     ) : (
-                        userMapper(slicedData)
+                        userMapper(slicedData, totalPriceList)
                     )}
                     {/*item 2*/}
                 </tbody>

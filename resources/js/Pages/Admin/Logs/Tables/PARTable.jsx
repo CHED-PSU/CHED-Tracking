@@ -189,7 +189,7 @@ export default function PARTable({ className, toggleTabs }) {
                             Position
                         </th>
                         <th className="h-10 w-42 font-medium text-center">
-                            User Status
+                            Issued Items
                         </th>
                         <th className="h-10 font-medium text-center">
                             Actions
