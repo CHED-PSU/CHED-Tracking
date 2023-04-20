@@ -58,7 +58,7 @@ export default function Sidebar(props) {
                             </li>
 
                             {/* My Account Link */}
-                            <li
+                            {/* <li
                                 onClick={() => props.clickTabs("account")}
                                 className={
                                     props.toggleTabs === "account"
@@ -70,7 +70,7 @@ export default function Sidebar(props) {
                                     <i className="fa-regular fa-id-card 2xl:text-lg xl:text-sm text-sm"></i>
                                     <h4 className=" leading-3">My Account</h4>
                                 </div>
-                            </li>
+                            </li> */}
 
                             {/* Theme Link */}
                             <li
