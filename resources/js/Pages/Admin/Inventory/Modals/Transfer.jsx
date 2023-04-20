@@ -138,7 +138,11 @@ export default function Transfer({
                     </td>
                     <td className="text-center p-2 border text-sm">
                         <p className="w-28 truncate">
-                            {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
+                            {toUpper(
+                                (data.make_model ? data.make_model : "") +
+                                    (data.color ? ", " + data.color : "") +
+                                    (data.sku ? ", SN: " + data.sku : "")
+                            )}
                         </p>
                     </td>
                     <td className="text-center p-2 border text-sm">
@@ -334,41 +338,45 @@ export default function Transfer({
                                                           key={data.id}
                                                           value={data.id}
                                                       >
-                                                          {displayName(data, false)}
+                                                          {displayName(
+                                                              data,
+                                                              false
+                                                          )}
                                                       </option>
                                                   );
                                               })}
                                     </select>
                                 </div>
-
-                                <table className="w-full my-6">
-                                    <thead>
-                                        <tr>
-                                            <th className="font-medium p-2 border text-xs">
-                                                Qty
-                                            </th>
-                                            <th className="font-medium p-2 border text-xs">
-                                                Unit
-                                            </th>
-                                            <th className="font-medium p-2 border text-xs">
-                                                Amount
-                                            </th>
-                                            <th
-                                                className="font-medium p-2 border text-xs"
-                                                colSpan={2}
-                                            >
-                                                Description
-                                            </th>
-                                            <th className="font-medium p-2 border text-xs w-80">
-                                                Inventory Item No.
-                                            </th>
-                                            <th className="font-medium p-2 border text-xs w-64">
-                                                Assign to
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>{itemsMapper(items)}</tbody>
-                                </table>
+                                <div className="max-h-[300px] overflow-y-auto my-6">
+                                    <table className="w-full">
+                                        <thead>
+                                            <tr>
+                                                <th className="font-medium p-2 border text-xs">
+                                                    Qty
+                                                </th>
+                                                <th className="font-medium p-2 border text-xs">
+                                                    Unit
+                                                </th>
+                                                <th className="font-medium p-2 border text-xs">
+                                                    Amount
+                                                </th>
+                                                <th
+                                                    className="font-medium p-2 border text-xs"
+                                                    colSpan={2}
+                                                >
+                                                    Description
+                                                </th>
+                                                <th className="font-medium p-2 border text-xs w-80">
+                                                    Inventory Item No.
+                                                </th>
+                                                <th className="font-medium p-2 border text-xs w-64">
+                                                    Assign to
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>{itemsMapper(items)}</tbody>
+                                    </table>
+                                </div>
 
                                 <div className="flex justify-center">
                                     <button

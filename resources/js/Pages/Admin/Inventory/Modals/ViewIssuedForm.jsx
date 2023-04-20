@@ -114,7 +114,7 @@ export default function ViewIssuedForm({
 
     return (
         <div className={className}>
-            <div className="fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-50">
+            <div className=" fixed inset-0 bg-neutral-800 bg-opacity-75 h-full flex items-center justify-center z-50">
                 <div
                     ref={modalBody}
                     className="w-2/5 bg-white dark:bg-darkColor-800 shadow-lg rounded-2xl px-12 py-10 space-y-4 z-20"
@@ -127,6 +127,14 @@ export default function ViewIssuedForm({
                             >
                                 <i className="fa-solid fa-xmark"></i>
                             </button>
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className="text-2xl text-gray-800 font-semibold">
+                            Accepted Form
+                        </div>
+                        <div className="text-xs">
+                            This is only for overview
                         </div>
                     </div>
                     <div className={className}>
@@ -154,7 +162,8 @@ export default function ViewIssuedForm({
                                     </div>
                                 </div>
                             </div>
-                            <table className="w-full my-6">
+                            <div className="max-h-[300px] overflow-y-auto my-6">
+                            <table className="w-full">
                                 <thead>
                                     <tr className="text-xs border dark:border-neutral-700 bg-t-bg text-th dark:bg-darkColor-700 dark:text-white cursor-default">
                                         <th className="h-10 px-2 font-medium border">
@@ -185,6 +194,7 @@ export default function ViewIssuedForm({
                                 </thead>
                                 <tbody>{itemsMapper(items)}</tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>
