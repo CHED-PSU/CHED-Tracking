@@ -45,10 +45,10 @@ export default function GuestIndex() {
             setAlertPass("Please enter password.");
         } else {
             axios
-                .get("http://10.41.1.118:8080/sanctum/csrf-cookie")
+                .get("http://10.41.3.10:8080/sanctum/csrf-cookie")
                 .then((response) => {
                     axios
-                        .post("http://10.41.1.118:8080/api/login", {
+                        .post("http://10.41.3.10:8080/api/login", {
                             username: formData.username,
                             password: formData.password,
                         })

@@ -99,21 +99,21 @@ export default function Landing() {
     };
 
     const handleLogOut = () => {
-        // axios({
-        //     url: "/api/logoutToken",
-        //     method: "post",
-        //     headers: headers(),
-        // }).then((response) => {
-        //     if (response.data.status === true) {
-        //         localStorage.removeItem("localSession");
-        //         localStorage.removeItem("token");
-        //         nav("/");
-        //     }
-        // });
+        axios({
+            url: "/api/logoutToken",
+            method: "post",
+            headers: headers(),
+        }).then((response) => {
+            if (response.data.status === true) {
+                localStorage.removeItem("localSession");
+                localStorage.removeItem("token");
+                nav("/");
+            }
+        });
 
-        localStorage.removeItem("localSession");
-        localStorage.removeItem("token");
-        nav("/");
+        // localStorage.removeItem("localSession");
+        // localStorage.removeItem("token");
+        // nav("/");
     };
 
     const [openAlert, setOpenAlert] = useState("question"); // none, check, question, or exclamation
@@ -143,13 +143,13 @@ export default function Landing() {
             setAlertNoButton("Okay");
         } else {
             window.location.href =
-                "http://localhost:80/procproject3.5/token-checker.php?token=" +
+                "http://10.41.3.10:80/CHED-Procurement/token-checker.php?token=" +
                 tokenOnly;
         }
     }
 
     function clickInventory(role, index) {
-        window.location.href = "http://10.41.1.118:8080/login-page/" + token;
+        window.location.href = "http://10.41.3.10:8080/login-page/" + token;
     }
 
     if (value) {
