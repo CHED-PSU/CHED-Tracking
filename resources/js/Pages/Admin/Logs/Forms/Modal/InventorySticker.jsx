@@ -268,7 +268,7 @@ export default function InventorySticker(props) {
                                             <td className="text-[7px] font-medium flex">
                                                 :&nbsp;
                                                 <p className="w-[185px] truncate">
-                                                    {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : '') + (data.sku ? ', SN: ' + data.sku : ''))}
+                                                    {toUpper((data.make_model ? data.make_model : '') + (data.color ? ', ' + data.color : ''))}
                                                 </p>
                                             </td>
                                         </tr>
@@ -276,8 +276,8 @@ export default function InventorySticker(props) {
                                             <td className="h-3">SERIAL NO.</td>
                                             <td className="text-[8px] font-medium">
                                                 :{" "}
-                                                {data.serial_no
-                                                    ? data.serial_no
+                                                {data.sku
+                                                    ? data.sku
                                                     : "N/A"}
                                             </td>
                                         </tr>
