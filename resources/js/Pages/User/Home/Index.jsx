@@ -14,36 +14,17 @@ export default function Index(props) {
     const [Loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const getPendingRequests = async () => {
-            setLoading(true);
-            try {
-                await axios
-                    .post("api/getUsersAcceptedRequests", {
-                        id: value.id,
-                    })
-                    .then((res) => {
-                        setAcceptedItems(res.data.acceptedRequest);
-                    });
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
-        };
-        getPendingRequests();
-    }, []);
-
-    useEffect(() => {
         async function getHomeData() {
             setLoading(true);
             try {
                 await axios
                     .post("api/HomeData", {
-                        user_id: value.id,
+                        id: value.id,
                     })
                     .then((res) => {
                         setRecentIssuance(res.data.recentIssuance);
                         setNumberOfItems(res.data.numberOFItems);
+                        setAcceptedItems(res.data.acceptedRequest);
                     });
             } catch (e) {
                 console.log(e);

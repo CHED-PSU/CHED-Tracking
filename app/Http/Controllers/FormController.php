@@ -143,19 +143,50 @@ class FormController extends Controller
             ->select('users.img', 'users.firstname', 'users.surname', 'users.suffix', 'trackings.tracking_id', 'trackings.created_at', 'roles.name')
             ->join('users', 'users.id', '=', 'trackings.issued_by')
             ->join('roles', 'roles.id', '=', 'users.role_id')
-            ->where('received_by', $req->input('user_id'))
+            ->where('received_by', $req->input('id'))
             ->get();
 
         $getTotalItems = DB::table('trackings as t')
             ->join('users_notification as un', 't.id', '=', 'un.trackings_id')
             ->join('inventory_trackings as it', 'it.trackings_id', '=', 't.id')
             ->join('user_items as ui', 'ui.inventory_tracking_id', '=', 'it.id')
-            ->where('t.received_by', $req->input('user_id'))
+            ->where('t.received_by', $req->input('id'))
             ->where('un.confirmation', 'accepted')
             ->where('ui.item_status', 'owned')
             ->count();
 
-        return response()->json(['recentIssuance' => $recentIssuance, 'numberOFItems' => $getTotalItems]);
+        $getItemsAccepted = DB::table('user_returned_items as uri')
+            ->select('uri.created_at', 'pri.price', 'pi.code', 'pi.description', 'ia.color', 'ia.make_model', 'ia.sku', 'pi.article', 'uri.uri_id', 'uri.defect', 'uri.status', 'uri.updated_at')
+            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->where('uri.user_id', $req->input('id'))
+            ->where('uri.confirmation', 'accepted')
+            ->orderBy('uri.created_at', 'DESC')
+            ->get();
+
+        return response()->json(['recentIssuance' => $recentIssuance, 'numberOFItems' => $getTotalItems, 'acceptedRequest' => $getItemsAccepted]);
+    }
+
+    public function getUsersAcceptedRequests(Request $req)
+    {
+        $getItemsAccepted = DB::table('user_returned_items as uri')
+            ->select('uri.created_at', 'pri.price', 'pi.code', 'pi.description', 'ia.color', 'ia.make_model', 'ia.sku', 'pi.article', 'uri.uri_id', 'uri.defect', 'uri.status', 'uri.updated_at')
+            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
+            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
+            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
+            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
+            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
+            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
+            ->where('uri.user_id', $req->input('id'))
+            ->where('uri.confirmation', 'accepted')
+            ->orderBy('uri.created_at', 'DESC')
+            ->get();
+
+        return response()->json(['acceptedRequest' => $getItemsAccepted]);
     }
 
     //Logs Area
@@ -387,25 +418,6 @@ class FormController extends Controller
             ->get();
 
         return response()->json(['data' => $getItems]);
-    }
-
-    public function getUsersAcceptedRequests(Request $req)
-    {
-
-        $getItemsAccepted = DB::table('user_returned_items as uri')
-            ->select('uri.created_at', 'pri.price', 'pi.code', 'pi.description', 'ia.color', 'ia.make_model', 'ia.sku', 'pi.article', 'uri.uri_id', 'uri.defect', 'uri.status', 'uri.updated_at')
-            ->join('user_items as ui', 'ui.ui_id', '=', 'uri.ui_id')
-            ->join('inventory_trackings as it', 'it.id', '=', 'ui.inventory_tracking_id')
-            ->join('iar_items as ia', 'ia.id', '=', 'it.item_id')
-            ->join('purchase_request_items as pri', 'pri.pr_item_uid', '=', 'ia.pr_item_uid')
-            ->join('product_items as pi', 'pi.id', '=', 'pri.product_item_id')
-            ->join('product_units as pu', 'pu.id', '=', 'pi.product_unit_id')
-            ->where('uri.user_id', $req->input('id'))
-            ->where('uri.confirmation', 'accepted')
-            ->orderBy('uri.created_at', 'DESC')
-            ->get();
-
-        return response()->json(['acceptedRequest' => $getItemsAccepted]);
     }
 
     //Admin Area
